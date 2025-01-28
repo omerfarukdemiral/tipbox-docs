@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-select.min.css">
+    <!-- icon css-->
+    <link rel="stylesheet" href="assets/elagent-icon/style.css">
+    <link rel="stylesheet" href="assets/niceselectpicker/nice-select.css">
+    <link rel="stylesheet" href="assets/animation/animate.css">
+    <link rel="stylesheet" href="assets/mcustomscrollbar/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="css/style-main.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <title>Tokeneconomics - Tipbox Docs</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+    <!-- Firebase Config Script -->
+    <script>
+        // Firebase yapılandırması
+        const firebaseConfig = {
+            apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
+            authDomain: "tipbox-docs.firebaseapp.com",
+            projectId: "tipbox-docs",
+            storageBucket: "tipbox-docs.firebasestorage.app",
+            messagingSenderId: "921740258376",
+            appId: "1:921740258376:web:1ccf200d51d7b4736afc7d",
+            measurementId: "G-6PT22FTSEN"
+        };
+
+        // Firebase'i başlat
+        firebase.initializeApp(firebaseConfig);
+
+        // Kullanıcı bilgilerini güncelleme fonksiyonunu global scope'a taşıyalım
+        window.updateUserProfile = function(user) {
+            if (user) {
+                // Avatar güncelleme
+                const avatarImages = document.querySelectorAll('.user-img, .user-img-sm');
+                const avatarUrl = user.photoURL || 'img/default-avatar.png';
+                avatarImages.forEach(img => {
+                    img.src = avatarUrl;
+                    img.onerror = function() {
+                        this.src = 'img/default-avatar.png';
+                    };
+                });
+
+                // İsim güncelleme
+                const nameElements = document.querySelectorAll('.user-name, .user-name-sm');
+                const displayName = user.displayName || 'Misafir Kullanıcı';
+                nameElements.forEach(el => {
+                    el.textContent = displayName;
+                });
+
+                // Email güncelleme
+                const emailElements = document.querySelectorAll('.user-email, .user-email-sm');
+                const email = user.email || '';
+                emailElements.forEach(el => {
+                    el.textContent = email;
+                });
+            }
+        };
+
+        // Auth state değişikliğini dinle
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (!user) {
+                window.location.href = 'signin.html';
+            } else {
+                console.log('Giriş yapan kullanıcı:', user.displayName);
+                console.log('Email:', user.email);
+                console.log('Profil fotoğrafı:', user.photoURL);
+                
+                // Header yüklendikten sonra kullanıcı bilgilerini güncelle
+                if (document.readyState === 'complete') {
+                    window.updateUserProfile(user);
+                } else {
+                    window.addEventListener('load', function() {
+                        window.updateUserProfile(user);
+                    });
+                }
+            }
+        });
+
+        // Çıkış yapma fonksiyonu
+        function signOut() {
+            firebase.auth().signOut().then(() => {
+                window.location.href = 'signin.html';
+            }).catch((error) => {
+                console.error('Çıkış yapılırken hata oluştu:', error);
+            });
+        }
+    </script>
+
+    <!-- Auth and Profile Update Scripts -->
+    <script src="js/auth.js"></script>
+</head>
+
+<body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true" data-offset="70">
+    <div id="preloader">
+        <div id="ctn-preloader" class="ctn-preloader">
+            <div class="round_spinner">
+                <div class="spinner"></div>
+                <div class="text">
+                    <img src="img/spinner_logo.png" alt="">
+                    <h4><span>Tip</span>Docs</h4>
+                </div>
+            </div>
+            <h2 class="head">Did You Know?</h2>
+            <p></p>
+        </div>
+    </div>
+    
+    <div class="body_wrapper">
+        <!-- Header Component -->
+        <div include-html="../components/header.html"></div>
+
+        <!--================Banner Area =================-->
+        <section class="doc_banner_area search-banner-light">
+            <div class="container">
+                <div class="doc_banner_content">
+                    <form action="#" class="header_search_form">
+                        <div class="header_search_form_info">
+                            <h2>Tokeneconomics</h2>
+                        </div>
+                        <div class="header_search_keyword">
+                            <span class="">Comprehensive overview of the TIPBOX token economics, distribution, and utility within the ecosystem.</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="page_breadcrumb">
+            <div class="container custom_container">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Tipbox</a></li>
+                                <li class="breadcrumb-item active"><a href="tokeneconomics.html">Tokeneconomics</a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-sm-5">
+                        <a href="#" class="date"><i class="icon_clock_alt"></i>Updated on January 15, 2025</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--================Content Area =================-->
+        <section class="doc_documentation_area" id="sticky_doc">
+            <div class="overlay_bg"></div>
+            <div class="container custom_container">
+                <div class="row">
+                    <div class="col-lg-3 doc_mobile_menu display_none">
+                        <aside class="doc_left_sidebarlist">
+                            <div class="open_icon" id="left">
+                                <i class="arrow_carrot-right"></i>
+                                <i class="arrow_carrot-left"></i>
+                            </div>
+                            <div class="scroll">
+                                <ul class="list-unstyled nav-sidebar">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link" data-content-file="tokeneconomics/token-overview.html">
+                                            <img src="img/side-nav/home.png" alt="">Token Overview
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <img src="img/side-nav/layout.png" alt="">Token Distribution
+                                        </a>
+                                        <span class="icon"><i class="arrow_carrot-down"></i></span>
+                                        <ul class="list-unstyled dropdown_nav">
+                                            <li><a href="#" data-content-file="tokeneconomics/distribution/allocation.html">Token Allocation</a></li>
+                                            <li><a href="#" data-content-file="tokeneconomics/distribution/vesting.html">Vesting Schedule</a></li>
+                                            <li><a href="#" data-content-file="tokeneconomics/distribution/release.html">Release Mechanism</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <img src="img/side-nav/briefcase.png" alt="">Token Utility
+                                        </a>
+                                        <span class="icon"><i class="arrow_carrot-down"></i></span>
+                                        <ul class="list-unstyled dropdown_nav">
+                                            <li><a href="#" data-content-file="tokeneconomics/utility/platform-usage.html">Platform Usage</a></li>
+                                            <li><a href="#" data-content-file="tokeneconomics/utility/governance.html">Governance</a></li>
+                                            <li><a href="#" data-content-file="tokeneconomics/utility/staking.html">Staking & Rewards</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <img src="img/side-nav/coding.png" alt="">Token Mechanics
+                                        </a>
+                                        <span class="icon"><i class="arrow_carrot-down"></i></span>
+                                        <ul class="list-unstyled dropdown_nav">
+                                            <li><a href="#" data-content-file="tokeneconomics/mechanics/burning.html">Burning Mechanism</a></li>
+                                            <li><a href="#" data-content-file="tokeneconomics/mechanics/liquidity.html">Liquidity Management</a></li>
+                                            <li><a href="#" data-content-file="tokeneconomics/mechanics/treasury.html">Treasury Operations</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link" data-content-file="tokeneconomics/market-dynamics.html">
+                                            <img src="img/side-nav/chat1.png" alt="">Market Dynamics
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link" data-content-file="tokeneconomics/governance-model.html">
+                                            <img src="img/side-nav/users.png" alt="">Governance Model
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </aside>
+                    </div>
+                    <div class="col-lg-7 col-md-8 doc-middle-content">
+                        <article class="documentation_info">
+                            <div class="documentation_body" id="documentation">
+                                <div class="shortcode_title">
+                                    <h1>Token Economics Overview</h1>
+                                    <p>Welcome to the comprehensive guide to TIPBOX token economics and ecosystem dynamics.</p>
+
+                                    <h2>Token Overview</h2>
+                                    <ul>
+                                        <li>Token Specifications</li>
+                                        <li>Supply Metrics</li>
+                                        <li>Token Standards</li>
+                                    </ul>
+
+                                    <h2>Token Distribution</h2>
+                                    <ul>
+                                        <li>Initial Distribution</li>
+                                        <li>Vesting Schedules</li>
+                                        <li>Release Mechanisms</li>
+                                    </ul>
+
+                                    <h2>Token Utility</h2>
+                                    <ul>
+                                        <li>Platform Integration</li>
+                                        <li>Governance Rights</li>
+                                        <li>Staking Benefits</li>
+                                    </ul>
+
+                                    <h2>Token Mechanics</h2>
+                                    <ul>
+                                        <li>Burning Mechanism</li>
+                                        <li>Liquidity Management</li>
+                                        <li>Treasury Operations</li>
+                                    </ul>
+
+                                    <h2>Market Dynamics</h2>
+                                    <ul>
+                                        <li>Supply & Demand</li>
+                                        <li>Price Stability</li>
+                                        <li>Market Making</li>
+                                    </ul>
+
+                                    <h2>Governance Model</h2>
+                                    <ul>
+                                        <li>Voting Mechanism</li>
+                                        <li>Proposal System</li>
+                                        <li>DAO Structure</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-lg-2 col-md-4 doc_right_mobile_menu">
+                        <div class="open_icon" id="right">
+                            <i class="arrow_carrot-left"></i>
+                            <i class="arrow_carrot-right"></i>
+                        </div>
+                        <div class="doc_rightsidebar scroll">
+                            <div class="pageSideSection">
+                                <div id="font-switcher" class="d-flex justify-content-between align-items-center">
+                                    <div id="rvfs-controllers" class="fontsize-controllers group"></div>
+                                    <a href="javascript:window.print()" class="print"><i class="icon_printer"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Component -->
+        <div include-html="../components/footer.html"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="js/pre-loader.js"></script>
+    <script src="assets/bootstrap/js/popper.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap-select.min.js"></script>
+    <script src="assets/niceselectpicker/jquery.nice-select.min.js"></script>
+    <script src="assets/wow/wow.min.js"></script>
+    <script src="assets/mcustomscrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="assets/font-size/js/rv-jquery-fontsize-2.0.3.min.js"></script>
+    <script src="js/anchor.js"></script>
+    <script src="assets/magnify-pop/jquery.magnific-popup.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
+
+    <!-- Component Include Script -->
+    <script src="js/include-components.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            includeHTML().then(() => {
+                // Header yüklendikten sonra, mevcut kullanıcı varsa bilgileri güncelle
+                const currentUser = firebase.auth().currentUser;
+                if (currentUser) {
+                    window.updateUserProfile(currentUser);
+                }
+                
+                // Dark mode'u başlat
+                if (typeof initDarkMode === 'function') {
+                    initDarkMode();
+                }
+            }).catch(error => {
+                console.error("Component yükleme hatası:", error);
+            });
+        });
+    </script>
+</body>
+
+</html> 
