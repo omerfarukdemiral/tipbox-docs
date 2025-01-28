@@ -4789,6 +4789,64 @@ body.remove .header_tabs_area.tab_fixed .header_tab_items {
   opacity: 0;
   visibility: hidden;
 }
+
+.doc_features_inner {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -15px;
+    padding-top: 20px;
+}
+
+.doc_features_item {
+    padding: 30px;
+    border-radius: 6px;
+    transition: all 0.3s ease-in-out;
+    margin: 15px;
+    flex: 1;
+    min-width: calc(25% - 30px);
+    max-width: calc(25% - 30px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+
+.doc_features_item img {
+    margin-bottom: 20px;
+}
+
+.doc_features_item h4 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    transition: color 0.2s;
+}
+
+.doc_features_item p {
+    margin-bottom: 0;
+    flex-grow: 1;
+}
+
+@media (max-width: 1199px) {
+    .doc_features_item {
+        min-width: calc(33.333% - 30px);
+        max-width: calc(33.333% - 30px);
+    }
+}
+
+@media (max-width: 991px) {
+    .doc_features_item {
+        min-width: calc(50% - 30px);
+        max-width: calc(50% - 30px);
+    }
+}
+
+@media (max-width: 575px) {
+    .doc_features_item {
+        min-width: calc(100% - 30px);
+        max-width: calc(100% - 30px);
+    }
+}
 .video_popup_slider .prev1 {
   left: 25px;
 }
@@ -15274,7 +15332,7 @@ blockquote .author {
 .doc_banner_area {
   background: #3636cd;
   text-align: center;
-  padding: 290px 0 200px;
+  padding: 140px 0 200px;
   position: relative;
 }
 
@@ -15569,7 +15627,7 @@ blockquote .author {
   box-shadow: 0 30px 60px 0 rgba(2, 2, 48, 0.08);
   border-radius: 10px;
   background: var(--bs-white);
-  top: -60px;
+  top: -80px;
   position: relative;
 }
 .doc_features_inner .see_more_item {
@@ -15595,10 +15653,8 @@ blockquote .author {
 }
 
 .doc_features_item {
-  width: 33.3333333333%;
-  float: left;
-  padding: 35px 30px;
-  border-bottom: 1px solid var(--border_on_highlight);
+  width: 25%;
+  padding: 0px 2px  5px 20px;
   border-left: 1px solid var(--border_on_highlight);
 }
 .doc_features_item img {
@@ -15620,7 +15676,7 @@ blockquote .author {
   font-size: 14px;
   color: #425466;
 }
-.doc_features_item:nth-child(1), .doc_features_item:nth-child(4), .doc_features_item:nth-child(7), .doc_features_item:nth-child(10) {
+.doc_features_item:nth-child(1), .doc_features_item:nth-child(5), .doc_features_item:nth-child(9), .doc_features_item:nth-child(13) {
   border-left: 0;
 }
 
@@ -15745,7 +15801,7 @@ blockquote .author {
   position: relative;
 }
 .changelog_area {
-  padding: 200px 0 75px;
+  padding: 0px 0 75px;
   position: relative;
 }
 .doc_community_area .shap_one,
