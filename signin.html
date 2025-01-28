@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+     <!-- Google Fonts -->
+     <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <!-- icon css-->
+    <link rel="stylesheet" href="assets/elagent-icon/style.css">
+    <link rel="stylesheet" href="assets/animation/animate.css">
+    <link rel="stylesheet" href="css/style-main.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <title>Tipbox Docs</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+    <script>
+        // Firebase yapılandırması
+        const firebaseConfig = {
+            apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
+            authDomain: "tipbox-docs.firebaseapp.com",
+            projectId: "tipbox-docs",
+            storageBucket: "tipbox-docs.firebasestorage.app",
+            messagingSenderId: "921740258376",
+            appId: "1:921740258376:web:1ccf200d51d7b4736afc7d",
+            measurementId: "G-6PT22FTSEN"
+        };
+
+        // Firebase'i başlat
+        firebase.initializeApp(firebaseConfig);
+
+        // Auth durumunu kontrol et
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                // Kullanıcı zaten giriş yapmışsa ana sayfaya yönlendir
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Google ile giriş
+        function signInWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    // Google ile giriş başarılı
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    // Hata durumunda
+                    alert('Google ile giriş başarısız: ' + error.message);
+                });
+        }
+    </script>
+</head>
+
+<body data-scroll-animation="true">
+    <div id="preloader">
+        <div id="ctn-preloader" class="ctn-preloader">
+            <div class="round_spinner">
+                <div class="spinner"></div>
+                <div class="text">
+                    <img src="img/spinner_logo.png" alt="">
+                    <h4><span>Tip</span>Docs</h4>
+                </div>
+            </div>
+            <h2 class="head">Did You Know?</h2>
+            <p></p>
+        </div>
+    </div>
+    <div class="body_wrapper">
+        <section class="signup_area bg-dark">
+            <div class="row ml-0 mr-0">
+                <div class="sign_left signin_left">
+                    <h2>We are design changers do what matters.</h2>
+                    <img class="position-absolute top" src="img/signup/top_ornamate.png" alt="top">
+                    <img class="position-absolute bottom" src="img/signup/bottom_ornamate.png" alt="bottom">
+                    <img class="position-absolute middle" src="img/signup/door.png" alt="bottom">
+                    <div class="round"></div>
+                </div>
+                <div class="sign_right signup_right">
+                    <div class="sign_inner signup_inner">
+                        <div class="text-center">
+                            <img class="white_logo main_logo" src="../img/beyaz.svg" alt="logo" style="width: auto; height: 80px; object-fit: contain; -webkit-backface-visibility: hidden; backface-visibility: hidden; image-rendering: -webkit-optimize-contrast;">                
+                            <h3 class="mt-5">TipDocs'a Hoş Geldiniz</h3>
+                            <p>Devam etmek için Google hesabınızla giriş yapın</p>
+                            <a href="#" class="btn-google" onclick="signInWithGoogle()">
+                                <img style="width: auto; height: 15px; margin-right: 10px;" src="img/signup/google.png" alt="">
+                                <span class="btn-text font-weight-bold">Google ile Giriş Yap</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="js/pre-loader.js"> </script>
+    <script src="assets/bootstrap/js/popper.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/parallaxie.js"></script>
+    <script src="js/TweenMax.min.js"></script>
+    <script src="assets/wow/wow.min.js"></script>
+    <script src="../../unpkg.com/ionicons%405.4.0/dist/ionicons.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>

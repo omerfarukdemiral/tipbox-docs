@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/slick/slick.css">
+    <link rel="stylesheet" href="assets/slick/slick-theme.css">
+    <!-- icon css-->
+    <link rel="stylesheet" href="assets/elagent-icon/style.css">
+    <link rel="stylesheet" href="assets/niceselectpicker/nice-select.css">
+    <link rel="stylesheet" href="assets/animation/animate.css">
+    <link rel="stylesheet" href="assets/mcustomscrollbar/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="css/style-main.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <title>Tipbox Docs</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+    <script>
+        // Firebase yapılandırması
+        const firebaseConfig = {
+            apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
+            authDomain: "tipbox-docs.firebaseapp.com",
+            projectId: "tipbox-docs",
+            storageBucket: "tipbox-docs.firebasestorage.app",
+            messagingSenderId: "921740258376",
+            appId: "1:921740258376:web:1ccf200d51d7b4736afc7d",
+            measurementId: "G-6PT22FTSEN"
+        };
+
+        // Firebase'i başlat
+        firebase.initializeApp(firebaseConfig);
+
+        // Kullanıcı bilgilerini güncelleme fonksiyonunu global scope'a taşıyalım
+        window.updateUserProfile = function(user) {
+            if (user) {
+                // Avatar güncelleme
+                const avatarImages = document.querySelectorAll('.user-img, .user-img-sm');
+                const avatarUrl = user.photoURL || 'img/default-avatar.png';
+                avatarImages.forEach(img => {
+                    img.src = avatarUrl;
+                    img.onerror = function() {
+                        this.src = 'img/default-avatar.png';
+                    };
+                });
+
+                // İsim güncelleme
+                const nameElements = document.querySelectorAll('.user-name, .user-name-sm');
+                const displayName = user.displayName || 'Misafir Kullanıcı';
+                nameElements.forEach(el => {
+                    el.textContent = displayName;
+                });
+
+                // Email güncelleme
+                const emailElements = document.querySelectorAll('.user-email, .user-email-sm');
+                const email = user.email || '';
+                emailElements.forEach(el => {
+                    el.textContent = email;
+                });
+            }
+        };
+
+        // Auth state değişikliğini dinle
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (!user) {
+                window.location.href = 'signin.html';
+            } else {
+                console.log('Giriş yapan kullanıcı:', user.displayName);
+                console.log('Email:', user.email);
+                console.log('Profil fotoğrafı:', user.photoURL);
+                
+                // Header yüklendikten sonra kullanıcı bilgilerini güncelle
+                if (document.readyState === 'complete') {
+                    window.updateUserProfile(user);
+                } else {
+                    window.addEventListener('load', function() {
+                        window.updateUserProfile(user);
+                    });
+                }
+            }
+        });
+
+        // Çıkış yapma fonksiyonu
+        function signOut() {
+            firebase.auth().signOut().then(() => {
+                window.location.href = 'signin.html';
+            }).catch((error) => {
+                console.error('Çıkış yapılırken hata oluştu:', error);
+            });
+        }
+    </script>
+    
+    <style>
+                              
+        .recommended_item {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .col-lg-3, .col-6 {
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 991px) {
+            .row {
+                margin: 0 -10px;
+            }
+            .col-lg-3, .col-6 {
+                padding: 0 10px;
+            }
+        }
+
+        /* Changelog Styles */
+        .changelog_info {
+            padding-top: 15px;
+        }
+
+        .changelog_info .version_info {
+            margin-right: 15px;
+            position: relative;
+            height: 100%;
+        }
+
+        .changelog_info .c_version {
+            flex: 1;
+            background: #1d2746;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 400;
+            height: 26px;
+            line-height: 27px;
+            border-radius: 3px;
+            color: #fff;
+            min-width: 50px;
+            max-width: 60px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .changelog_info .changelog_date {
+            display: flex;
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .changelog_info .changelog_date .c_date h6 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+        .changelog_info .changelog_date .c_date p {
+            font-size: 14px;
+            margin-bottom: 0;
+            color: #6b707f;
+        }
+
+        .changelog_info .line {
+            height: 106%;
+            width: 2px;
+            background: #e2e5ee;
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            z-index: -1;
+        }
+
+        .changelog_info:last-child .line {
+            height: 100%;
+        }
+
+        .changelog_info:last-child .changelog_content {
+            padding-bottom: 0;
+        }
+
+        .changelog_content {
+            padding-bottom: 30px;
+        }
+
+        .changelog_content p {
+            margin-bottom: 12px;
+        }
+
+        .changelog_content p span {
+            font-weight: 500;
+            font-size: 12px;
+            padding: 0px 8px;
+            border-radius: 3px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+
+        .changelog_content .download-links {
+            margin-top: 20px;
+        }
+
+        .changelog_content .changelog_btn {
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b707f;
+            background: #f0f2f5;
+            padding: 6px 15px;
+            margin-right: 10px;
+            display: inline-block;
+            border-radius: 3px;
+        }
+
+        .changelog_content .changelog_btn i {
+            margin-right: 6px;
+        }
+
+        .changelog_content .changelog_btn:hover {
+            background: #e1e4e9;
+        }
+    </style>
+</head>
+
+<body data-scroll-animation="true">
+    <div id="preloader">
+        <div id="ctn-preloader" class="ctn-preloader">
+            <div class="round_spinner">
+                <div class="spinner"></div>
+                <div class="text">
+                    <img src="img/spinner_logo.png" alt="">
+                    <h4><span>Tip</span>Docs</h4>
+                </div>
+            </div>
+            <h2 class="head">Did You Know?</h2>
+            <p></p>
+        </div>
+    </div>
+    <div class="body_wrapper">
+        <!-- Header Component -->
+        <div include-html="components/header.html"></div>
+
+        <!-- Main Content -->
+        <section class="doc_banner_area banner_creative1">
+            <ul class="list-unstyled banner_shap_img">
+                <li><img src="img/new/banner_shap1.png" alt=""></li>
+                <li><img src="img/new/banner_shap4.png" alt=""></li>
+                <li><img src="img/new/banner_shap3.png" alt=""></li>
+                <li><img src="img/new/banner_shap2.png" alt=""></li>
+                <li><img data-parallax='{"x": -180, "y": 80, "rotateY":2000}' src="img/new/plus1.png" alt=""></li>
+                <li><img data-parallax='{"x": -50, "y": -160, "rotateZ":200}' src="img/new/plus2.png" alt=""></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <div class="container">
+                <div class="doc_banner_content">
+                    <h2 class="wow fadeInUp">Enrich lives with your tips & tips!</h2>
+                    <p class="wow fadeInUp" data-wow-delay="0.2s">Search here to get answers to your questions</p>
+                    <form action="#" class="header_search_form">
+                        <div class="header_search_form_info">
+                            <div class="form-group">
+                                <div class="input-wrapper">
+                                    <i class="icon_search"></i>
+                                    <input type='search' id="searchbox" autocomplete="off" name="search"
+                                        placeholder="Search the Doc" />
+                                    <div class="header_search_form_panel">
+                                    </div>
+                                    <select class="search-expand-types custom-select" name="post_type"
+                                        id="search_post_type">
+                                        <option value="">All Docs </option>
+                                        <option value="project-blueprint">Project Blueprint</option>
+                                        <option value="project-deck">Project Deck</option>
+                                        <option value="project_blurb">Project Blurb</option>
+                                        <option value="tokeneconomics">Tokeneconomics</option>
+                                        <option value="forum">Forum</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="header_search_keyword">
+                            <span class="header-search-form__keywords-label">Suggested Search:</span>
+                            <ul class="list-unstyled">
+                                <li class="wow fadeInUp" data-wow-delay="0.2s"><a href="#">market</a></li>
+                                <li class="wow fadeInUp" data-wow-delay="0.3s"><a href="#">solutions</a></li>
+                                <li class="wow fadeInUp" data-wow-delay="0.4s"><a href="#">technology</a></li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="doc_features_area">
+            <img class="doc_features_shap" src="img/new/shap_white.png" alt="">
+            <div class="container">
+                <div class="doc_features_inner">
+                    <div class="media doc_features_item wow fadeInUp" data-wow-delay="0.1s" data-wow-duration="0.5s">
+                        <img src="img/new/icon1.png" alt="">
+                        <div class="media-body">
+                            <a href="project-blueprint.html">
+                                <h4>Knowledge Base</h4>
+                            </a>
+                            <p>45 Pages</p>
+                        </div>
+                    </div>
+                    <div class="media doc_features_item wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="0.6s">
+                        <img src="img/new/icon2.png" alt="">
+                        <div class="media-body">
+                            <a href="forums.html">
+                                <h4>Community Forums</h4>
+                            </a>
+                            <p>245 Questions</p>
+                        </div>
+                    </div>
+                    <div class="media doc_features_item wow fadeInUp" data-wow-delay="0.5s" data-wow-duration="0.9s">
+                        <img src="img/new/icon9.png" alt="">
+                        <div class="media-body">
+                            <a href="contact.html">
+                                <h4>Get in Touch</h4>
+                            </a>
+                            <p>7/24 Support</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="recommended_topic_area">
+            <div class="container">
+                <div class="recommended_topic_inner">
+                    <img class="doc_shap_one" src="img/new/shap.png" alt="">
+                    <div class="doc_round one" data-parallax='{"x": -80, "y": -100, "rotateY":0}'></div>
+                    <div class="doc_round two" data-parallax='{"x": -10, "y": 70, "rotateY":0}'></div>
+                    <div class="doc_title text-center">
+                        <h2 class="wow fadeInUp" data-wow-delay="0.2s">Key Elements for Tipbox </h2>
+                        <p class="wow fadeInUp" data-wow-delay="0.4s">Turning vision into action with clear plans, strategic insights and a thriving token economy</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-6">
+                            <div class="recommended_item wow fadeInUp h-100" data-wow-delay="0.2s">
+                                <img src="img/new/smile.png" alt="">
+                                <a href="#">
+                                    <h3>Project Blueprint</h3>
+                                    <p class="wow fadeInUp" data-wow-delay="0.4s">A comprehensive document that defines the key objectives,
+                                         scope, and technical approach for the project.
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <div class="recommended_item wow fadeInUp h-100" data-wow-delay="0.3s">
+                                <img src="img/new/house.png" alt="">
+                                <a href="#">
+                                    <h3>Project Deck</h3>
+                                    <p class="wow fadeInUp" data-wow-delay="0.4s">A presentation that highlights the project's value proposition, 
+                                        progress, and strategic direction to potential stakeholders.
+                                   </p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <div class="recommended_item wow fadeInUp h-100" data-wow-delay="0.4s">
+                                <img src="img/new/doc.png" alt="">
+                                <a href="#">
+                                    <h3>Project Blurb</h3>
+                                    <p class="wow fadeInUp" data-wow-delay="0.4s">A brief description offering an overview of the project,
+                                        its purpose, and its intended outcomes in a concise format.
+                                   </p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <div class="recommended_item wow fadeInUp h-100" data-wow-delay="0.5s">
+                                <img src="img/new/bag.png" alt="">
+                                <a href="#">
+                                    <h3>Tokeneconomics</h3>
+                                </a>
+                                <p class="wow fadeInUp" data-wow-delay="0.4s">The economic model of a token within a blockchain project,
+                                     explaining how tokens are distributed, utilized, and how they incentivize user participation.
+                               </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <section class="changelog_area">
+            <div class="container">
+                <div class="doc_title text-center">
+                    <h2 class="wow fadeInUp" data-wow-delay="0.2s">Changelog for Tipbox</h2>
+                    <p class="wow fadeInUp" data-wow-delay="0.4s">Stay up to date with the latest improvements and updates to Tipbox documentation platform</p>
+                </div>
+                <div class="changelog_inner">
+                    <div class="row changelog_info" id="v1">
+                        <div class="col-lg-3 changelog_date">
+                            <div class="c_date">
+                                <h6>January 15, 2025</h6>
+                                <p>New Year Release</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="version_info">
+                                <div class="c_version">
+                                    2.4
+                                </div>
+                                <div class="line bottom_half"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="changelog_content">
+                                <p><span class="new">New</span>Added AI-powered document suggestions</p>
+                                <p><span class="new">New</span>Introduced Project Blueprint template builder</p>
+                                <p><span class="improve">Improvement</span>Enhanced Tokeneconomics visualization tools</p>
+                                <p><span class="improve">Improvement</span>Updated Project Deck presentation templates</p>
+                                <p><span class="new">New</span>Integrated real-time collaboration features</p>
+                                <p><span class="fixed">Fixed</span>Project Blurb formatting issues</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row changelog_info" id="v2">
+                        <div class="col-lg-3 changelog_date">
+                            <div class="c_date">
+                                <h6>December 5, 2024</h6>
+                                <p>Winter Update</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="version_info">
+                                <div class="c_version">
+                                    2.3
+                                </div>
+                                <div class="line bottom_half"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="changelog_content">
+                                <p><span class="new">New</span>Complete UI/UX overhaul for better user experience</p>
+                                <p><span class="improve">Improvement</span>Enhanced Project Blueprint export options</p>
+                                <p><span class="improve">Improvement</span>Advanced Tokeneconomics calculation tools</p>
+                                <p><span class="update">Update</span>Updated Project Deck analytics dashboard</p>
+                                <p><span class="fixed">Fixed</span>Mobile responsiveness issues in Project Blurb editor</p>
+                                <p><span class="new">New</span>Added dark mode support across all document types</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row changelog_info" id="v3">
+                        <div class="col-lg-3 changelog_date">
+                            <div class="c_date">
+                                <h6>November 20, 2024</h6>
+                                <p>Autumn Release</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="version_info">
+                                <div class="c_version">
+                                    2.2
+                                </div>
+                                <div class="line bottom_half"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="changelog_content">
+                                <p><span class="update">Update</span>Improved Project Blueprint template library</p>
+                                <p><span class="update">Update</span>Enhanced Project Deck presentation tools</p>
+                                <p><span class="new">New</span>Added custom Tokeneconomics chart widgets</p>
+                                <p><span class="improve">Improvement</span>Project Blurb SEO optimization tools</p>
+                                <p><span class="fixed">Fixed</span>Document version control system bugs</p>
+                                <p><span class="update">Update</span>Upgraded collaboration features across all documents</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row changelog_info" id="v4">
+                        <div class="col-lg-3 changelog_date">
+                            <div class="c_date">
+                                <h6>October 30, 2024</h6>
+                                <p>Fall Update</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="version_info">
+                                <div class="c_version">
+                                    2.1
+                                </div>
+                                <div class="line bottom_half"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="changelog_content">
+                                <p><span class="improve">Improvement</span>Enhanced Project Blueprint analytics</p>
+                                <p><span class="new">New</span>Introduced AI-powered content suggestions for Project Deck</p>
+                                <p><span class="improve">Improvement</span>Advanced Tokeneconomics modeling tools</p>
+                                <p><span class="fixed">Fixed</span>Project Blurb template rendering issues</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="doc_subscribe_area">
+            <div class="container">
+                <div class="doc_subscribe_inner">
+                    <img class="one" src="img/new/subscribe_shap.png" alt="">
+                    <img class="two" src="img/new/subscribe_shap_two.png" alt="">
+                    <div class="text wow fadeInLeft" data-wow-delay="0.2s">
+                        <h2>Stay Ahead with <br>Early Access Updates</h2>
+                        <p class="wow fadeInLeft" data-wow-delay="0.3s">Reach out to us with your burning questions and let's shape the future of documentation together!</p>
+                    </div>
+                    <form action="#" class="doc_subscribe_form wow fadeInRight mailchimp" data-wow-delay="0.4s"
+                        method="post">
+                        <div class="form-group">
+                            <div class="input-fill">
+                                <input type="email" name="EMAIL" id="email" class="memail"
+                                    placeholder="Your work email">
+                            </div>
+                            <button type="submit" class="submit_btn">Send</button>
+                            <p class="mchimp-errmessage" style="display: none;"></p>
+                            <p class="mchimp-sucmessage" style="display: none;"></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+       
+        <!-- Footer Component -->
+        <div include-html="components/footer.html"></div>
+    </div>
+
+    <!-- Back to top button -->
+    <a id="back-to-top" title="Back to Top"></a>
+
+    <!-- Optional JavaScript -->
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="assets/bootstrap/js/popper.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/pre-loader.js"></script>
+    <script src="assets/slick/slick.min.js"></script>
+    <script src="js/jquery.parallax-scroll.js"></script>
+    <script src="assets/niceselectpicker/jquery.nice-select.min.js"></script>
+    <script src="assets/wow/wow.min.js"></script>
+    <script src="assets/mcustomscrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="assets/magnify-pop/jquery.magnific-popup.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
+    
+    <!-- Dark mode script önce yüklenmeli -->
+    <script src="js/main.js"></script>
+    <!-- Sonra component include script -->
+    <script src="js/include-components.js"></script>
+    
+    <script>
+        // Include components script'ini güncelleyelim
+        document.addEventListener("DOMContentLoaded", function() {
+            includeHTML().then(() => {
+                // Header yüklendikten sonra, mevcut kullanıcı varsa bilgileri güncelle
+                const currentUser = firebase.auth().currentUser;
+                if (currentUser) {
+                    window.updateUserProfile(currentUser);
+                }
+                
+                // Dark mode'u başlat
+                if (typeof initDarkMode === 'function') {
+                    initDarkMode();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

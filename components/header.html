@@ -1,0 +1,195 @@
+<!-- Header Component -->
+<nav class="navbar navbar-expand-lg menu_one menu_purple sticky-nav">
+    <div class="container">
+        <a class="navbar-brand header_logo" href="index.html">
+            <img class="first_logo sticky_logo" src="../img/logo.png" alt="logo" style="width: auto; height: 40px; object-fit: contain; -webkit-backface-visibility: hidden; backface-visibility: hidden; image-rendering: -webkit-optimize-contrast;">
+            <img class="white_logo main_logo" src="../img/beyaz.svg" alt="logo" style="width: auto; height: 40px; object-fit: contain; -webkit-backface-visibility: hidden; backface-visibility: hidden; image-rendering: -webkit-optimize-contrast;">
+        </a>
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="menu_toggle">
+                <span class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+                <span class="hamburger-cross">
+                    <span></span>
+                    <span></span>
+                </span>
+            </span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav menu ml-auto">
+                <li class="nav-item">
+                    <a href="project-blueprint.html" class="nav-link">Project Blueprint</a>
+                </li>
+                <li class="nav-item">
+                    <a href="project-deck.html" class="nav-link">Project Deck</a>
+                </li>
+                <li class="nav-item">
+                    <a href="project-blurb.html" class="nav-link">Project Blurb</a>
+                </li>
+                <li class="nav-item">
+                    <a href="tokeneconomics.html" class="nav-link">Tokeneconomics</a>
+                </li>
+                <li class="nav-item">
+                    <a href="forums.html" class="nav-link">Forums</a>
+                </li>
+            </ul>
+            <div class="right-nav">
+                <div class="px-2 js-darkmode-btn" title="Toggle dark mode">
+                    <label for="something" class="tab-btn tab-btns">
+                        <ion-icon name="moon"></ion-icon>
+                    </label>
+                    <label for="something" class="tab-btn">
+                        <ion-icon name="sunny"></ion-icon>
+                    </label>
+                    <label class="ball" for="something"></label>
+                    <input type="checkbox" name="something" id="something" class="dark_mode_switcher">
+                </div>
+
+                <!-- Kullanıcı Profil Menüsü -->
+                <div class="user-profile-menu ml-2">
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                            <div class="user-avatar rounded-circle overflow-hidden" style="width: 40px; height: 40px;">
+                                <img src="../img/default-avatar.png" alt="User Avatar" class="w-100 h-100 user-img" style="object-fit: cover;">
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right mt-2" aria-labelledby="userDropdown">
+                            <div class="dropdown-item-text">
+                                <div class="d-flex align-items-center">
+                                    <div class="user-avatar-sm rounded-circle overflow-hidden mr-3" style="width: 32px; height: 32px;">
+                                        <img src="../img/default-avatar.png" alt="User Avatar" class="w-100 h-100 user-img-sm" style="object-fit: cover;">
+                                    </div>
+                                    <div>
+                                        <p class="mb-0 font-weight-bold user-name-sm">Yükleniyor...</p>
+                                        <small class="text-muted user-email-sm">Yükleniyor...</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" onclick="signOut()">
+                                <i class="icon_lock-open_alt mr-2"></i>Çıkış Yap
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<style>
+.user-profile-menu .dropdown-toggle::after {
+    display: none;
+}
+
+.user-profile-menu .user-info {
+    line-height: 1.2;
+}
+
+.user-profile-menu .dropdown-menu {
+    min-width: 200px;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 0.5rem;
+}
+
+.user-profile-menu .dropdown-item {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    color: #6b707f;
+    transition: all 0.2s;
+}
+
+.user-profile-menu .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #4c4cf1;
+}
+
+.user-profile-menu .dropdown-item i {
+    font-size: 1.1rem;
+    vertical-align: middle;
+}
+
+.user-avatar {
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.2s;
+}
+
+.user-avatar:hover {
+    transform: scale(1.05);
+}
+
+.user-name, .user-name-sm {
+    color: #1d2746;
+    font-size: 0.95rem;
+}
+
+.user-email, .user-email-sm {
+    font-size: 0.8rem;
+}
+
+@media (max-width: 767px) {
+    .user-info {
+        display: none !important;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Firebase'in yüklendiğinden emin olalım
+    if (typeof firebase !== 'undefined') {
+        // Kullanıcı bilgilerini güncelleme fonksiyonu
+        function updateUserProfile(user) {
+            if (user) {
+                console.log('Kullanıcı bilgileri güncelleniyor:', user);
+                
+                // Avatar güncelleme
+                const avatarImages = document.querySelectorAll('.user-img, .user-img-sm');
+                const avatarUrl = user.photoURL || 'img/default-avatar.png';
+                avatarImages.forEach(img => {
+                    img.src = avatarUrl;
+                    // Resim yüklenemezse varsayılan avatar'a dön
+                    img.onerror = function() {
+                        this.src = 'img/default-avatar.png';
+                    };
+                });
+
+                // İsim güncelleme
+                const nameElements = document.querySelectorAll('.user-name, .user-name-sm');
+                const displayName = user.displayName || 'Misafir Kullanıcı';
+                nameElements.forEach(el => {
+                    el.textContent = displayName;
+                });
+
+                // Email güncelleme
+                const emailElements = document.querySelectorAll('.user-email, .user-email-sm');
+                const email = user.email || '';
+                emailElements.forEach(el => {
+                    el.textContent = email;
+                });
+
+                console.log('Kullanıcı bilgileri güncellendi');
+            } else {
+                console.log('Kullanıcı oturumu bulunamadı');
+            }
+        }
+
+        // Firebase auth state değişikliğini dinle
+        firebase.auth().onAuthStateChanged(function(user) {
+            console.log('Auth durumu değişti:', user ? 'Kullanıcı var' : 'Kullanıcı yok');
+            updateUserProfile(user);
+        });
+    } else {
+        console.error('Firebase yüklenemedi!');
+    }
+});
+</script> 
