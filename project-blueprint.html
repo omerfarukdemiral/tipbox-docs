@@ -20,15 +20,17 @@
     <link rel="stylesheet" href="css/responsive.css">
     <title>Tipbox Docs</title>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK'ları -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
+    <!-- Firebase Config -->
     <script>
-        // Firebase yapılandırması
         const firebaseConfig = {
             apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
             authDomain: "tipbox-docs.firebaseapp.com",
+            databaseURL: "https://tipbox-docs-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "tipbox-docs",
             storageBucket: "tipbox-docs.firebasestorage.app",
             messagingSenderId: "921740258376",
@@ -699,6 +701,29 @@
                         behavior: 'smooth'
                     });
                 }
+            }
+        });
+    </script>
+
+    <!-- En sonda pageTimer.js -->
+    <script>
+        // Debug için log ekleyelim
+        console.log('Firebase Auth:', firebase.auth());
+        console.log('Firebase Database:', firebase.database());
+    </script>
+    <script src="js/pageTimer.js"></script>
+    <script>
+        // Sayfa yüklendikten sonra event listener ekle
+        document.addEventListener('DOMContentLoaded', function() {
+            const testButton = document.getElementById('testTimerButton');
+            if (testButton) {
+                testButton.addEventListener('click', function() {
+                    if (typeof testPageTimer === 'function') {
+                        testPageTimer();
+                    } else {
+                        console.error('testPageTimer fonksiyonu bulunamadı');
+                    }
+                });
             }
         });
     </script>
