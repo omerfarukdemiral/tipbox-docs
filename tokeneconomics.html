@@ -113,6 +113,9 @@
 
     <!-- Auth and Profile Update Scripts -->
     <script src="js/auth.js"></script>
+
+    <!-- Chart.js CDN - Head kısmına eklenecek -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true" data-offset="70">
@@ -132,7 +135,7 @@
     
     <div class="body_wrapper">
         <!-- Header Component -->
-        <div include-html="../components/header.html"></div>
+        <div include-html="components/header.html"></div>
 
         <!--================Banner Area =================-->
         <section class="doc_banner_area search-banner-light">
@@ -182,122 +185,43 @@
                             <div class="scroll">
                                 <ul class="list-unstyled nav-sidebar">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link" data-content-file="tokeneconomics/token-overview.html">
-                                            <img src="img/side-nav/home.png" alt="">Token Overview
+                                        <a href="#" class="nav-link" data-content-file="tokeneconomics/token-distribution.html">
+                                            <i class="fas fa-chart-pie"></i>Token Dağılımı
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <img src="img/side-nav/layout.png" alt="">Token Distribution
+                                        <a href="#" class="nav-link" data-content-file="tokeneconomics/token-supply-schedule.html">
+                                            <i class="fas fa-chart-line"></i>Token Arzı ve Takvimi
                                         </a>
-                                        <span class="icon"><i class="arrow_carrot-down"></i></span>
-                                        <ul class="list-unstyled dropdown_nav">
-                                            <li><a href="#" data-content-file="tokeneconomics/distribution/allocation.html">Token Allocation</a></li>
-                                            <li><a href="#" data-content-file="tokeneconomics/distribution/vesting.html">Vesting Schedule</a></li>
-                                            <li><a href="#" data-content-file="tokeneconomics/distribution/release.html">Release Mechanism</a></li>
-                                        </ul>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <img src="img/side-nav/briefcase.png" alt="">Token Utility
+                                        <a href="#" class="nav-link" data-content-file="tokeneconomics/token-utility.html">
+                                            <i class="fas fa-chart-bar"></i>Token Kullanım Senaryoları
                                         </a>
-                                        <span class="icon"><i class="arrow_carrot-down"></i></span>
-                                        <ul class="list-unstyled dropdown_nav">
-                                            <li><a href="#" data-content-file="tokeneconomics/utility/platform-usage.html">Platform Usage</a></li>
-                                            <li><a href="#" data-content-file="tokeneconomics/utility/governance.html">Governance</a></li>
-                                            <li><a href="#" data-content-file="tokeneconomics/utility/staking.html">Staking & Rewards</a></li>
-                                        </ul>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <img src="img/side-nav/coding.png" alt="">Token Mechanics
+                                        <a href="#" class="nav-link" data-content-file="tokeneconomics/staking-rewards.html">
+                                            <i class="fas fa-chart-area"></i>Staking ve Ödüller
                                         </a>
-                                        <span class="icon"><i class="arrow_carrot-down"></i></span>
-                                        <ul class="list-unstyled dropdown_nav">
-                                            <li><a href="#" data-content-file="tokeneconomics/mechanics/burning.html">Burning Mechanism</a></li>
-                                            <li><a href="#" data-content-file="tokeneconomics/mechanics/liquidity.html">Liquidity Management</a></li>
-                                            <li><a href="#" data-content-file="tokeneconomics/mechanics/treasury.html">Treasury Operations</a></li>
-                                        </ul>
                                     </li>
                                     <li class="nav-item">
                                         <a href="#" class="nav-link" data-content-file="tokeneconomics/market-dynamics.html">
-                                            <img src="img/side-nav/chat1.png" alt="">Market Dynamics
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link" data-content-file="tokeneconomics/governance-model.html">
-                                            <img src="img/side-nav/users.png" alt="">Governance Model
+                                            <i class="fas fa-chart-candlestick"></i>Piyasa Dinamikleri
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </aside>
                     </div>
-                    <div class="col-lg-7 col-md-8 doc-middle-content">
-                        <article class="documentation_info">
-                            <div class="documentation_body" id="documentation">
+                    <div class="col-lg-9 col-md-8 doc-middle-content">
+                        <article class="documentation_info" id="documentation">
+                            <div class="documentation_body">
                                 <div class="shortcode_title">
-                                    <h1>Token Economics Overview</h1>
-                                    <p>Welcome to the comprehensive guide to TIPBOX token economics and ecosystem dynamics.</p>
-
-                                    <h2>Token Overview</h2>
-                                    <ul>
-                                        <li>Token Specifications</li>
-                                        <li>Supply Metrics</li>
-                                        <li>Token Standards</li>
-                                    </ul>
-
-                                    <h2>Token Distribution</h2>
-                                    <ul>
-                                        <li>Initial Distribution</li>
-                                        <li>Vesting Schedules</li>
-                                        <li>Release Mechanisms</li>
-                                    </ul>
-
-                                    <h2>Token Utility</h2>
-                                    <ul>
-                                        <li>Platform Integration</li>
-                                        <li>Governance Rights</li>
-                                        <li>Staking Benefits</li>
-                                    </ul>
-
-                                    <h2>Token Mechanics</h2>
-                                    <ul>
-                                        <li>Burning Mechanism</li>
-                                        <li>Liquidity Management</li>
-                                        <li>Treasury Operations</li>
-                                    </ul>
-
-                                    <h2>Market Dynamics</h2>
-                                    <ul>
-                                        <li>Supply & Demand</li>
-                                        <li>Price Stability</li>
-                                        <li>Market Making</li>
-                                    </ul>
-
-                                    <h2>Governance Model</h2>
-                                    <ul>
-                                        <li>Voting Mechanism</li>
-                                        <li>Proposal System</li>
-                                        <li>DAO Structure</li>
-                                    </ul>
+                                    <h1>Token Ekonomisi Genel Bakış</h1>
+                                    <p>TIPBOX token ekonomisi ve ekosistem dinamiklerine kapsamlı bir bakış.</p>
                                 </div>
                             </div>
                         </article>
-                    </div>
-                    <div class="col-lg-2 col-md-4 doc_right_mobile_menu">
-                        <div class="open_icon" id="right">
-                            <i class="arrow_carrot-left"></i>
-                            <i class="arrow_carrot-right"></i>
-                        </div>
-                        <div class="doc_rightsidebar scroll">
-                            <div class="pageSideSection">
-                                <div id="font-switcher" class="d-flex justify-content-between align-items-center">
-                                    <div id="rvfs-controllers" class="fontsize-controllers group"></div>
-                                    <a href="javascript:window.print()" class="print"><i class="icon_printer"></i></a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -326,23 +250,477 @@
 
     <!-- Component Include Script -->
     <script src="js/include-components.js"></script>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Include Components
             includeHTML().then(() => {
-                // Header yüklendikten sonra, mevcut kullanıcı varsa bilgileri güncelle
-                const currentUser = firebase.auth().currentUser;
-                if (currentUser) {
-                    window.updateUserProfile(currentUser);
+                // Kullanıcı bilgilerini güncelle
+                if (firebase.auth().currentUser) {
+                    window.updateUserProfile(firebase.auth().currentUser);
                 }
+            });
+
+            // Menü elemanlarına event listener ekle
+            const menuItems = document.querySelectorAll('.nav-sidebar .nav-item a');
+            
+            menuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const contentFile = this.getAttribute('data-content-file');
+                    if (contentFile) {
+                        loadContent(contentFile);
+                    }
+                });
+            });
+
+            // İçerik yükleme fonksiyonu
+            async function loadContent(contentFile) {
+                try {
+                    const response = await fetch(contentFile);
+                    if (!response.ok) throw new Error('Content not found');
+                    const content = await response.text();
+                    
+                    // İçeriği doc-middle-content içine yerleştir
+                    const contentContainer = document.querySelector('.doc-middle-content');
+                    if (contentContainer) {
+                        contentContainer.innerHTML = content;
+
+                        // İçerik yüklendikten sonra grafikleri başlat
+                        initializeCharts();
+                    }
+
+                    // URL'i güncelle (sayfa yenilenmeden)
+                    const newUrl = new URL(window.location.href);
+                    newUrl.hash = contentFile.split('/').pop().replace('.html', '');
+                    window.history.pushState({}, '', newUrl);
+
+                    // Aktif menü öğesini güncelle
+                    updateActiveMenuItem(contentFile);
+                } catch (error) {
+                    console.error('Error loading content:', error);
+                }
+            }
+
+            // Grafikleri başlatma fonksiyonu
+            function initializeCharts() {
+                // Sayfadaki tüm canvas elementlerini bul
+                const canvasElements = document.querySelectorAll('canvas');
                 
-                // Dark mode'u başlat
-                if (typeof initDarkMode === 'function') {
-                    initDarkMode();
+                canvasElements.forEach(canvas => {
+                    // Canvas için yeni bir context oluştur
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Eğer canvas üzerinde zaten bir grafik varsa temizle
+                    if (canvas.chart) {
+                        canvas.chart.destroy();
+                    }
+                    
+                    // Canvas ID'sine göre ilgili grafik kodunu çalıştır
+                    switch (canvas.id) {
+                        case 'tokenDistributionChart':
+                            createTokenDistributionChart(ctx);
+                            break;
+                        case 'tokenSupplyChart':
+                            createTokenSupplyChart(ctx);
+                            break;
+                        case 'tokenUtilityChart':
+                            createTokenUtilityChart(ctx);
+                            break;
+                        case 'stakingRewardsChart':
+                            createStakingRewardsChart(ctx);
+                            break;
+                        case 'circulatingSupplyChart':
+                            createCirculatingSupplyChart(ctx);
+                            break;
+                        case 'holdersChart':
+                            createHoldersChart(ctx);
+                            break;
+                    }
+                });
+            }
+
+           
+            // Sayfa yüklendiğinde URL'de hash varsa ilgili içeriği yükle
+            if (window.location.hash) {
+                const contentFile = window.location.hash.slice(1) + '.html';
+                loadContent('tokeneconomics/' + contentFile);
+            } else {
+                // Varsayılan olarak token dağılımı sayfasını yükle
+                loadContent('tokeneconomics/token-distribution.html');
+            }
+
+        });
+
+        // Grafik oluşturma fonksiyonları
+        function createTokenDistributionChart(ctx) {
+            const colors = {
+                neonGreen: '#d8ff08',
+                purple: '#571fdd',
+                pink: '#e0195b',
+                black: '#181818',
+                white: '#f5f5f5'
+            };
+
+            return new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: [
+                        'Ekip ve Danışmanlar',
+                        'Topluluk ve Ekosistem',
+                        'Özel ve Halka Açık Satış',
+                        'Staking Ödülleri',
+                        'Likidite ve Rezervler'
+                    ],
+                    datasets: [{
+                        data: [20, 30, 25, 15, 10],
+                        backgroundColor: Object.values(colors),
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: { size: 14 }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'TIPBOX Token Dağılımı',
+                            font: { size: 18 },
+                            padding: { top: 10, bottom: 30 }
+                        }
+                    }
                 }
-            }).catch(error => {
-                console.error("Component yükleme hatası:", error);
+            });
+        }
+
+        // Token Arzı ve Dağıtım Takvimi Grafiği
+        function createTokenSupplyChart(ctx) {
+            const colors = {
+                neonGreen: '#d8ff08',
+                purple: '#571fdd',
+                pink: '#e0195b',
+                black: '#181818',
+                white: '#f5f5f5'
+            };
+
+            const labels = ['0', '6', '12', '18', '24', '30', '36', '42', '48'];
+            const data = {
+                teamAdvisors: [0, 0, 0, 5, 10, 15, 20, 20, 20],
+                privateSale: [0, 0, 5, 10, 15, 20, 25, 25, 25],
+                publicSale: [5, 10, 15, 15, 15, 15, 15, 15, 15],
+                community: [0, 5, 10, 15, 20, 25, 28, 30, 30],
+                liquidity: [5, 7, 8, 9, 10, 10, 10, 10, 10]
+            };
+
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Ekip ve Danışmanlar',
+                            data: data.teamAdvisors,
+                            borderColor: colors.neonGreen,
+                            backgroundColor: colors.neonGreen + '20',
+                            fill: true
+                        },
+                        {
+                            label: 'Özel Satış',
+                            data: data.privateSale,
+                            borderColor: colors.purple,
+                            backgroundColor: colors.purple + '20',
+                            fill: true
+                        },
+                        {
+                            label: 'Halka Açık Satış',
+                            data: data.publicSale,
+                            borderColor: colors.pink,
+                            backgroundColor: colors.pink + '20',
+                            fill: true
+                        },
+                        {
+                            label: 'Topluluk',
+                            data: data.community,
+                            borderColor: colors.black,
+                            backgroundColor: colors.black + '20',
+                            fill: true
+                        },
+                        {
+                            label: 'Likidite',
+                            data: data.liquidity,
+                            borderColor: colors.white,
+                            backgroundColor: colors.white + '20',
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Ay'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Token Miktarı (%)'
+                            },
+                            min: 0,
+                            max: 100
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Token Dağıtım Takvimi',
+                            font: { size: 18 }
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Token Kullanım Senaryoları Grafiği
+        function createTokenUtilityChart(ctx) {
+            const colors = {
+                neonGreen: '#d8ff08',
+                purple: '#571fdd',
+                pink: '#e0195b',
+                black: '#181818',
+                white: '#f5f5f5'
+            };
+
+            return new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Platform Ödemeleri', 'Yönetişim', 'Staking & Ödüller', 'Likidite Sağlama', 'Deflasyon Mekanizması'],
+                    datasets: [{
+                        label: 'Token Kullanım Oranı (%)',
+                        data: [40, 20, 25, 10, 5],
+                        backgroundColor: Object.values(colors),
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Kullanım Oranı (%)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'TIPBOX Token Kullanım Senaryoları',
+                            font: { size: 18 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Staking ve Ödül Mekanizması Grafiği
+        function createStakingRewardsChart(ctx) {
+            const colors = {
+                neonGreen: '#d8ff08',
+                purple: '#571fdd',
+                pink: '#e0195b',
+                black: '#181818'
+            };
+
+            return new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Bronze (30 gün)', 'Silver (90 gün)', 'Gold (180 gün)', 'Platinum (365 gün)'],
+                    datasets: [{
+                        label: 'Yıllık Getiri (APY %)',
+                        data: [12, 18, 24, 30],
+                        backgroundColor: Object.values(colors),
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'APY (%)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Staking Seviyeleri ve Yıllık Getiriler',
+                            font: { size: 18 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Dolaşımdaki Arz Grafiği
+        function createCirculatingSupplyChart(ctx) {
+            const colors = {
+                neonGreen: '#d8ff08'
+            };
+
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8'],
+                    datasets: [{
+                        label: 'Dolaşımdaki Arz',
+                        data: [100, 150, 200, 250, 300, 350, 400, 450],
+                        borderColor: colors.neonGreen,
+                        backgroundColor: colors.neonGreen + '20',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Dolaşımdaki Arz Değişimi (Milyon)',
+                            font: { size: 16 }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Token Sahipleri Grafiği
+        function createHoldersChart(ctx) {
+            const colors = {
+                purple: '#571fdd'
+            };
+
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8'],
+                    datasets: [{
+                        label: 'Token Sahipleri',
+                        data: [5000, 8000, 12000, 15000, 18000, 21000, 23000, 25000],
+                        borderColor: colors.purple,
+                        backgroundColor: colors.purple + '20',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Token Sahibi Sayısı Değişimi',
+                            font: { size: 16 }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+    <!-- Side-nav ikonları için Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenu = document.querySelector('.doc_mobile_menu');
+        const content = document.querySelector('.doc-middle-content');
+        const docArea = document.querySelector('.doc_documentation_area');
+        let isBottomReached = false;
+        
+
+        // Throttle fonksiyonu
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+
+        // Scroll event listener'ı throttle ile optimize edilmiş
+        window.addEventListener('scroll', throttle(handleScroll, 100));
+
+        // İçerik değiştiğinde pozisyonu sıfırla
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function() {
+                isBottomReached = false;
+                mobileMenu.style.position = '';
+                mobileMenu.style.top = '';
+                handleScroll();
             });
         });
+
+        // Observer'ı başlat
+        if (content) {
+            observer.observe(content, {
+                childList: true,
+                subtree: true
+            });
+        }
+
+        // Pencere boyutu değiştiğinde pozisyonu güncelle
+        window.addEventListener('resize', throttle(function() {
+            isBottomReached = false;
+            mobileMenu.style.position = '';
+            mobileMenu.style.top = '';
+            handleScroll();
+        }, 100));
+    });
     </script>
 </body>
 
