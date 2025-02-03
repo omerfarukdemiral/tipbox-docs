@@ -1,5 +1,7 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Jura', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
     background-color: #010101 !important;
     color: #fff;
 }
@@ -12,8 +14,10 @@ body {
 .card {
     border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    background-color: #383838;
-    border: 1px solid #404040;
+    background-color: #2b2b2b;
+    border: 1px solid #444;
+    display: flex;
+    flex-direction: column;
 }
 
 .card-header {
@@ -21,6 +25,9 @@ body {
     border-bottom: 1px solid #404040;
     padding: 1rem;
     color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .token-list {
@@ -42,8 +49,9 @@ body {
 }
 
 .token-code {
-    font-family: monospace;
-    font-size: 1.1em;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1rem;
+    font-weight: 500;
     color: #00ff9d;
 }
 
@@ -79,9 +87,11 @@ body {
 
 .chart-container {
     position: relative;
-    margin: auto;
-    height: 300px;
-    padding: 15px;
+    height: 100% !important;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn-primary {
@@ -118,11 +128,674 @@ body {
 }
 
 /* Card içi boşluklar */
+
 .card-body {
     padding: 1.5rem;
+    max-height: 590px;
+    flex: 1;
+    overflow: auto;
 }
 
 /* Grafik alanı */
 canvas {
     margin: 10px 0;
+    flex: 1;
+    max-height: none !important;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    z-index: 1000;
+    font-family: 'Jura', sans-serif;
+}
+
+.sidebar-header {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    margin: -20px -20px 20px -20px;
+}
+
+#sidebar .sidebar-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+#sidebar ul.components {
+    padding: 0;
+}
+
+#sidebar ul li a {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 8px 10px;
+    display: block;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+#sidebar ul li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+#sidebar ul li.active > a {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+#content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+
+.page-content {
+    display: none;
+}
+
+.page-content.active {
+    display: block;
+}
+
+#sidebar ul li a i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.card {
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.table {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    margin-bottom: 0;
+    font-family: 'Jura', sans-serif;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #242424;
+}
+
+.table-striped > tbody > tr:nth-of-type(even) {
+    background-color: #1a1a1a;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.15) !important;
+    color: #00ff9d;
+}
+
+.table thead.table-dark th {
+    background-color: #141414;
+    color: #00ff9d;
+    border-bottom: 2px solid #333;
+}
+
+.btn-primary {
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+#createTokenBtn i {
+    margin-right: 8px;
+}
+
+/* DataTables özelleştirmeleri */
+.dataTables_wrapper {
+    padding: 1rem;
+}
+
+.dataTables_wrapper .row {
+    margin: 0;
+    padding: 0 1rem;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 1rem;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    background-color: #2b2b2b;
+    color: #e0e0e0;
+    border: 1px solid #444;
+    padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    background-color: #2b2b2b;
+    color: #e0e0e0;
+    border: 1px solid #444;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+}
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    padding: 1rem;
+}
+
+/* Tablo stilleri */
+#tokenTable {
+    width: 100% !important;
+    margin: 0 !important;
+    background-color: #2b2b2b !important;
+}
+
+#tokenTable thead th {
+    background-color: #2b2b2b;
+    border-bottom: 1px solid #571fdd;
+    padding: 0.75rem;
+    vertical-align: middle;
+    font-size: 11px;
+    font-weight: 600;
+    color: #d8ff08;
+}
+
+#tokenTable tbody td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    font-size: 11px;
+    font-weight: 400;
+    background-color: #2b2b2b;
+    border-bottom: 1px solid #3b3b3b;
+    color: #d8ff08;
+}
+
+#tokenTable .token-code {
+    font-size: 11px;
+    color: #d8ff08;
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        text-align: left;
+        padding: 0.5rem;
+    }
+}
+
+/* Grafik boyutlandırması */
+#userPageActivityChart {
+    max-height: 100% !important;
+    width: 100% !important;
+}
+
+/* Tablo scroll ayarları */
+.table-responsive {
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+}
+
+/* Responsive düzenlemeler */
+@media (min-width: 992px) {
+    .row {
+        height: calc(100vh - 150px);
+    }
+    
+    .card {
+        margin-bottom: 0;
+    }
+}
+
+/* Token tablosu container */
+.token-table-container {
+    padding: 0;
+    position: relative;
+}
+
+/* DataTables alt bilgi düzeni */
+.table-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: #2b2b2b;
+    border-top: 1px solid #3b3b3b;
+    color: #fff;
+}
+
+/* Tablo footer alanı */
+.table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: #2b2b2b;
+    border-top: 1px solid #3b3b3b;
+    color: #fff;
+}
+
+/* Sayfalama butonları */
+.dataTables_paginate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px;
+}
+
+.dataTables_paginate .paginate_button {
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background: #2b2b2b !important;
+    color: #fff !important;
+    border: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.dataTables_paginate .paginate_button.current {
+    background: #571fdd !important;
+    color: #fff !important;
+}
+
+.dataTables_paginate .paginate_button:hover:not(.current):not(.disabled) {
+    background: #e0195b !important;
+}
+
+.dataTables_paginate .paginate_button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Bilgi metni (sol kısımdaki yazı) */
+.dataTables_info {
+    display: none;
+}
+
+/* Tablo container */
+.dataTables_wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Tablo scroll alanı */
+.dataTables_scroll {
+    flex: 1;
+    overflow: auto;
+}
+
+/* Token oluştur butonu */
+#createTokenBtn {
+    background-color: #2b2b2b;
+    border: 1px solid #571fdd;
+    color: #fff;
+    font-size: 11px;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+}
+
+#createTokenBtn:hover {
+    background-color: #3b3b3b;
+    border-color: #e0195b;
+}
+
+#createTokenBtn i {
+    font-size: 11px;
+}
+
+/* Token gösterim alanı */
+#newTokenDisplay {
+    background-color: #2b2b2b;
+    border: 1px solid #00ff9d;
+    color: #00ff9d;
+}
+
+#newTokenDisplay .token-code {
+    color: #00ff9d;
+    font-weight: 600;
+}
+
+#newTokenDisplay .btn-close {
+    filter: invert(1) brightness(200%);
+    opacity: 0.8;
+}
+
+#newTokenDisplay .btn-close:hover {
+    opacity: 1;
+}
+
+#newTokenDisplay .fa-check-circle {
+    color: #00ff9d;
+}
+
+/* Kopyalama butonu stilleri */
+.copy-token {
+    color: #00ff9d;
+    transition: all 0.3s ease;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.copy-token:hover {
+    background-color: rgba(0, 255, 157, 0.15);
+}
+
+/* Kopyalama başarılı animasyonu */
+.fa-check {
+    color: #00ff9d;
+}
+
+/* Font ayarları */
+h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #f5f5f5;
+}
+
+h5.mb-0 {
+    font-size: 11px;
+    font-weight: 500;
+    color: #f5f5f5;
+}
+
+/* Badge yazı stili */
+.badge {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Token kullanım göstergesi */
+.usage-display {
+    min-width: 150px;
+}
+
+.usage-display .progress {
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: #3b3b3b !important;
+}
+
+.usage-display .progress-bar {
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    transition: width 0.3s ease;
+    background-color: #571fdd !important;
+    color: #d8ff08;
+}
+
+/* Grafik başlıkları ve etiketleri */
+.chart-container .chartjs-size-monitor-shrink text {
+    font-size: 11px !important;
+}
+
+/* Token kullanım grafiği etiketleri */
+#tokenChartPagination {
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+#tokenChartPagination button {
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 15px;
+    background-color: #2b2b2b;
+    border: none;
+    color: #f5f5f5;
+    transition: all 0.3s ease;
+}
+
+#tokenChartPagination button:hover:not(:disabled) {
+    background-color: #571fdd;
+}
+
+#tokenChartPagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#tokenChartPagination span {
+    font-size: 11px;
+    color: #f5f5f5;
+    margin: 0 10px;
+}
+
+/* Progress bar renkleri */
+.progress {
+    background-color: #2b2b2b !important;
+}
+
+.progress-bar {
+    background-color: #571fdd !important;
+}
+
+/* Seçili kullanıcı bilgisi */
+#selectedUserInfo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    margin-top: 8px;
+    color: #d8ff08 !important;
+}
+
+#selectedUserInfo .default-text {
+    color: #fff;
+}
+
+#selectedUserInfo .selected-user-name {
+    color: #d8ff08;
+    font-weight: 600;
+}
+
+#selectedUserInfo i {
+    color: #d8ff08;
+}
+
+/* Grafik etiketleri */
+.chartjs-legend li span {
+    font-size: 11px !important;
+}
+
+#userTimeActivityChart .chartjs-legend-item,
+#userTimeActivityChart .chartjs-legend-item span {
+    font-size: 11px !important;
+}
+
+/* Chart.js legend stilleri */
+#userTimeActivityChart + .chartjs-legend {
+    font-size: 11px;
+}
+
+/* Dashboard grid düzenlemeleri */
+.dashboard-content .card {
+    height: auto; /* Yüksekliği artırdık */
+}
+
+.dashboard-content .card-body.no-scroll {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-content canvas {
+    flex: 1;
+    max-height: none !important; /* Canvas yükseklik sınırını kaldır */
+}
+
+/* Misafir paneli tablo stilleri */
+#tokenTable {
+    width: 100% !important;
+    margin: 0 !important;
+    background-color: #2b2b2b !important;
+}
+
+#tokenTable thead th {
+    background-color: #2b2b2b;
+    border-bottom: 1px solid #571fdd;
+    padding: 0.75rem;
+    vertical-align: middle;
+    font-size: 11px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+#tokenTable tbody td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    font-size: 11px;
+    font-weight: 400;
+    background-color: #2b2b2b;
+    border-bottom: 1px solid #3b3b3b;
+    color: #ffffff;
+}
+
+#tokenTable .token-code {
+    font-size: 11px;
+    color: #ffffff;
+}
+
+/* Token kullanım göstergesi renkleri */
+.usage-display .progress {
+    background-color: #3b3b3b !important;
+}
+
+.usage-display .progress-bar {
+    background-color: #571fdd !important;
+    color: #d8ff08;
+}
+
+/* Tablo alt kısmı */
+.table-bottom {
+    background-color: #2b2b2b;
+    border-top: 1px solid #3b3b3b;
+}
+
+.dataTables_info {
+    color: #d8ff08;
+}
+
+/* Token durumu badge'leri */
+#tokenTable .badge.bg-success {
+    background-color: #571fdd !important;
+    color: #d8ff08;
+}
+
+#tokenTable .badge.bg-danger {
+    background-color: #e0195b !important;
+    color: #d8ff08;
+}
+
+/* Dashboard card header rengi */
+.dashboard-content .card-header {
+    background-color: #2d2d2d;
+    border-bottom: 1px solid #404040;
+}
+
+/* Sayfa süreleri card header stili */
+#userPageActivityCard .card-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Başlıklar */
+.card-header h5.mb-0 {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Token grafiği etiketleri */
+#tokenUsageChart .chartjs-size-monitor-shrink text,
+#tokenUsageChart + canvas text {
+    font-size: 11px !important;
+}
+
+/* Arama kutusu stilleri */
+.search-container {
+    position: relative;
+}
+
+#userSearchInput {
+    background-color: #2b2b2b;
+    border: 1px solid #404040;
+    color: #fff;
+    font-size: 11px;
+    padding: 12px;
+}
+
+#userSearchInput:focus {
+    background-color: #2b2b2b;
+    border-color: #571fdd;
+    box-shadow: 0 0 0 0.2rem rgba(87, 31, 221, 0.25);
+    color: #fff;
+}
+
+#searchResults {
+    background-color: #2b2b2b;
+}
+
+.user-search-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #404040;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user-search-item:hover {
+    background-color: #3b3b3b;
+}
+
+.user-search-item img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.user-search-item .user-info {
+    flex: 1;
+}
+
+.user-search-item .user-email {
+    font-size: 11px;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.user-search-item .user-id {
+    font-size: 11px;
+    color: #d8ff08;
+    font-family: 'Roboto Mono', monospace;
+}
+
+/* Diğer font tanımlamalarını da güncelle */
+#sidebar, 
+.table,
+.card-header h5,
+.btn,
+.badge,
+.dataTables_paginate .paginate_button,
+.dataTables_info,
+#userSearchInput,
+.user-search-item {
+    font-family: 'Jura', sans-serif;
 } 

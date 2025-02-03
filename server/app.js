@@ -293,6 +293,48 @@ app.post('/api/save-time', upload.none(), async (req, res) => {
     }
 });
 
+// Kullanıcı arama endpoint'i
+app.get('/api/auth/search', async (req, res) => {
+    try {
+        const query = req.query.q?.toLowerCase() || '';
+        console.log("Arama sorgusu:", query);
+
+        // Boş sorgu kontrolü
+        if (!query || query.length < 2) {
+            return res.json([]);
+        }
+
+        const listUsersResult = await admin.auth().listUsers(1000); // Maksimum 1000 kullanıcı
+        const users = listUsersResult.users.filter(user => {
+            const email = user.email?.toLowerCase() || '';
+            const uid = user.uid?.toLowerCase() || '';
+            const displayName = user.displayName?.toLowerCase() || '';
+            
+            return email.includes(query) || 
+                   uid.includes(query) || 
+                   displayName.includes(query);
+        });
+
+        console.log(`${users.length} kullanıcı bulundu`);
+
+        const sanitizedUsers = users.map(user => ({
+            uid: user.uid,
+            email: user.email || '',
+            displayName: user.displayName || '',
+            photoURL: user.photoURL || '',
+            provider: user.providerData[0]?.providerId || 'unknown'
+        }));
+
+        res.json(sanitizedUsers);
+    } catch (error) {
+        console.error('Kullanıcı arama hatası:', error);
+        res.status(500).json({ 
+            error: 'Kullanıcılar listelenirken bir hata oluştu',
+            details: error.message 
+        });
+    }
+});
+
 // Son istek zamanlarını temizlemek için (isteğe bağlı)
 setInterval(() => {
     const now = Date.now();

@@ -1,0 +1,206 @@
+/* Temel güvenlik stilleri */
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+
+img, canvas, video, audio {
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.secure-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.secure-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* Güvenlik ihlali durumunda bulanıklaştırma */
+body.security-compromised {
+    filter: blur(10px);
+}
+
+body.security-compromised * {
+    pointer-events: none !important;
+}
+
+/* Watermark stilleri */
+.watermark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.5;
+}
+
+/* Yazdırma engelleme */
+@media print {
+    body {
+        display: none !important;
+    }
+}
+
+/* Geliştirme modu göstergesi */
+body.development-mode::before {
+    content: 'DEV';
+    display: block;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 193, 7, 0.9);
+    color: #1d1e20;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: 'Jura', sans-serif;
+    z-index: 100000;
+    pointer-events: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    animation: pulse 2s infinite;
+}
+
+/* Development mode pulse animasyonu */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Mobil cihazlar için development mode göstergesi */
+@media (max-width: 768px) {
+    body.development-mode::before {
+        top: 5px;
+        right: 5px;
+        padding: 3px 6px;
+        font-size: 8px;
+    }
+}
+
+/* Güvenlik uyarı animasyonları */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+}
+
+/* Metin seçimi engelleme */
+::selection {
+    background: transparent;
+    color: inherit;
+}
+
+::-moz-selection {
+    background: transparent;
+    color: inherit;
+}
+
+/* Sürükle-bırak engelleme */
+[draggable="true"] {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+}
+
+/* Mobil cihazlar için dokunmatik seçim engelleme */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Bulanıklaştırma efekti */
+.secure-container.blurred {
+    filter: blur(10px);
+    transition: filter 0.3s ease;
+}
+
+/* Güvenli içerik stilleri */
+.secure-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Development Mode Badge */
+.dev-mode-badge {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 193, 7, 0.9);
+    color: #1d1e20;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Jura', sans-serif;
+    z-index: 100000;
+    pointer-events: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border: 2px solid rgba(255, 193, 7, 0.3);
+    animation: pulse 2s infinite;
+}
+
+/* Mobil cihazlar için development mode göstergesi */
+@media (max-width: 768px) {
+    .dev-mode-badge {
+        top: 10px;
+        right: 10px;
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+} 

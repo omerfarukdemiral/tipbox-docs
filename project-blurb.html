@@ -5,7 +5,16 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Güvenlik Meta Tag'leri -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+    <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+
+    <!-- Merkezi Yapılandırma -->
+    <script src="js/config.js"></script>
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
@@ -18,14 +27,23 @@
     <link rel="stylesheet" href="assets/mcustomscrollbar/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="css/style-main.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <!-- Güvenlik CSS -->
+    <link rel="stylesheet" href="css/security.css">
     <title>Project Blurb - Tipbox Docs</title>
+
+    <!-- PDF.js Kütüphanesi -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
-    <!-- Firebase Config -->
+    <!-- Güvenlik JS -->
+    <script src="js/security.js"></script>
+
+    <!-- Firebase Config Script -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
@@ -40,14 +58,14 @@
         firebase.initializeApp(firebaseConfig);
 
         // Kullanıcı bilgilerini güncelleme fonksiyonunu global scope'a taşıyalım
-        window.updateUserProfile = function(user) {
+        window.updateUserProfile = function (user) {
             if (user) {
                 // Avatar güncelleme
                 const avatarImages = document.querySelectorAll('.user-img, .user-img-sm');
                 const avatarUrl = user.photoURL || 'img/default-avatar.png';
                 avatarImages.forEach(img => {
                     img.src = avatarUrl;
-                    img.onerror = function() {
+                    img.onerror = function () {
                         this.src = 'img/default-avatar.png';
                     };
                 });
@@ -69,19 +87,19 @@
         };
 
         // Auth state değişikliğini dinle
-        firebase.auth().onAuthStateChanged(function(user) {
+        firebase.auth().onAuthStateChanged(function (user) {
             if (!user) {
                 window.location.href = 'signin.html';
             } else {
                 console.log('Giriş yapan kullanıcı:', user.displayName);
                 console.log('Email:', user.email);
                 console.log('Profil fotoğrafı:', user.photoURL);
-                
+
                 // Header yüklendikten sonra kullanıcı bilgilerini güncelle
                 if (document.readyState === 'complete') {
                     window.updateUserProfile(user);
                 } else {
-                    window.addEventListener('load', function() {
+                    window.addEventListener('load', function () {
                         window.updateUserProfile(user);
                     });
                 }
@@ -102,7 +120,8 @@
     <script src="js/auth.js"></script>
 </head>
 
-<body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true" data-offset="70">
+<body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true"
+    data-offset="70">
     <div id="preloader">
         <div id="ctn-preloader" class="ctn-preloader">
             <div class="round_spinner">
@@ -116,7 +135,7 @@
             <p></p>
         </div>
     </div>
-    
+
     <div class="body_wrapper">
         <!-- Header Component -->
         <div include-html="../components/header.html"></div>
@@ -130,7 +149,13 @@
                             <h2>Project Blurb</h2>
                         </div>
                         <div class="header_search_keyword">
-                            <span class="">A concise overview of the project's core features, benefits, and unique value proposition.</span>
+                            <span class="">A concise overview of the project's core features, benefits, and unique value
+                                proposition.</span>
+                            <div class="scroll-down">
+                                <a href="#sticky_doc" class="scroll-link">
+                                    <i class="arrow_carrot-down"></i>
+                                </a>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -160,95 +185,18 @@
             <div class="overlay_bg"></div>
             <div class="container custom_container">
                 <div class="row">
-                    <div class="col-lg-3 doc_mobile_menu display_none">
-                        <aside class="doc_left_sidebarlist">
-                            <div class="open_icon" id="left">
-                                <i class="arrow_carrot-right"></i>
-                                <i class="arrow_carrot-left"></i>
-                            </div>
-                            <div class="scroll">
-                                <ul class="list-unstyled nav-sidebar">
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link" data-content-file="project-blurb/elevator-pitch.html">
-                                            <img src="img/side-nav/home.png" alt="">Elevator Pitch
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link" data-content-file="project-blurb/key-features.html">
-                                            <img src="img/side-nav/layout.png" alt="">Key Features
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <img src="img/side-nav/briefcase.png" alt="">Value Proposition
-                                        </a>
-                                        <span class="icon"><i class="arrow_carrot-down"></i></span>
-                                        <ul class="list-unstyled dropdown_nav">
-                                            <li><a href="#" data-content-file="project-blurb/value/user-benefits.html">User Benefits</a></li>
-                                            <li><a href="#" data-content-file="project-blurb/value/platform-advantages.html">Platform Advantages</a></li>
-                                            <li><a href="#" data-content-file="project-blurb/value/ecosystem-impact.html">Ecosystem Impact</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <img src="img/side-nav/users.png" alt="">Target Audience
-                                        </a>
-                                        <span class="icon"><i class="arrow_carrot-down"></i></span>
-                                        <ul class="list-unstyled dropdown_nav">
-                                            <li><a href="#" data-content-file="project-blurb/audience/user-personas.html">User Personas</a></li>
-                                            <li><a href="#" data-content-file="project-blurb/audience/market-segments.html">Market Segments</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link" data-content-file="project-blurb/call-to-action.html">
-                                            <img src="img/side-nav/chat1.png" alt="">Call to Action
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </aside>
-                    </div>
-                    <div class="col-lg-7 col-md-8 doc-middle-content">
+
+                    <div class="col-lg-12 col-md-8 doc-middle-content">
                         <article class="documentation_info">
-                            <div class="documentation_body" id="documentation">
+                            <div class="" id="documentation">
                                 <div class="shortcode_title">
-                                    <h1>Project Overview</h1>
-                                    <p>Welcome to the Tipbox Project Blurb - your quick guide to understanding our revolutionary platform.</p>
-
-                                    <h2>Elevator Pitch</h2>
-                                    <ul>
-                                        <li>Core Concept</li>
-                                        <li>Mission Statement</li>
-                                        <li>Vision Overview</li>
-                                    </ul>
-
-                                    <h2>Key Features</h2>
-                                    <ul>
-                                        <li>Platform Highlights</li>
-                                        <li>Unique Capabilities</li>
-                                        <li>Technical Innovation</li>
-                                    </ul>
-
-                                    <h2>Value Proposition</h2>
-                                    <ul>
-                                        <li>User Benefits</li>
-                                        <li>Platform Advantages</li>
-                                        <li>Ecosystem Impact</li>
-                                    </ul>
-
-                                    <h2>Target Audience</h2>
-                                    <ul>
-                                        <li>User Personas</li>
-                                        <li>Market Segments</li>
-                                        <li>Use Cases</li>
-                                    </ul>
-
-                                    <h2>Call to Action</h2>
-                                    <ul>
-                                        <li>Get Started Guide</li>
-                                        <li>Platform Access</li>
-                                        <li>Community Engagement</li>
-                                    </ul>
+                                    <div class="image-container secure-container"
+                                        style="width: 100%; max-width: 1200px; margin: 0 auto; background-color: #1d1e20; border-radius: 12px; padding: 20px; box-shadow: 0 8px 16px rgba(0,0,0,0.2);">
+                                        <img src="./img/blurb.jpg" alt="Project Blurb"
+                                            style="width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 8px;"
+                                            draggable="false" oncontextmenu="return false;" />
+                                        <div class="watermark"></div>
+                                    </div>
                                 </div>
                             </div>
                         </article>
@@ -257,14 +205,6 @@
                         <div class="open_icon" id="right">
                             <i class="arrow_carrot-left"></i>
                             <i class="arrow_carrot-right"></i>
-                        </div>
-                        <div class="doc_rightsidebar scroll">
-                            <div class="pageSideSection">
-                                <div id="font-switcher" class="d-flex justify-content-between align-items-center">
-                                    <div id="rvfs-controllers" class="fontsize-controllers group"></div>
-                                    <a href="javascript:window.print()" class="print"><i class="icon_printer"></i></a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -294,15 +234,16 @@
 
     <!-- Component Include Script -->
     <script src="js/include-components.js"></script>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             includeHTML().then(() => {
                 // Header yüklendikten sonra, mevcut kullanıcı varsa bilgileri güncelle
                 const currentUser = firebase.auth().currentUser;
                 if (currentUser) {
                     window.updateUserProfile(currentUser);
                 }
-                
+
                 // Dark mode'u başlat
                 if (typeof initDarkMode === 'function') {
                     initDarkMode();
@@ -312,7 +253,151 @@
             });
         });
     </script>
+
+    <style>
+        .image-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-down {
+            text-align: center;
+            margin-top: 30px;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-down a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            background: var(--brand_color);
+            color: #fff;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-down a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Tablet için responsive ayarlar */
+        @media (max-width: 991px) {
+            .image-container {
+                max-width: 90%;
+                padding: 15px;
+            }
+        }
+
+        /* Mobil için responsive ayarlar */
+        @media (max-width: 576px) {
+            .image-container {
+                max-width: 95%;
+                padding: 10px;
+            }
+        }
+
+        /* Dark mode uyumu için */
+        body.dark-mode .image-container {
+            background-color: #1d1e20;
+        }
+
+        /* Retina ekranlar için optimizasyon */
+        @media (-webkit-min-device-pixel-ratio: 2),
+        (min-resolution: 192dpi) {
+            .image-container img {
+                image-rendering: -webkit-optimize-contrast;
+            }
+        }
+    </style>
+
+    <script>
+        // Smooth scroll fonksiyonu
+        document.querySelectorAll('.scroll-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Header ve breadcrumb yüksekliklerini hesapla
+                const header = document.querySelector('.mobile_main_menu') || document.querySelector('header');
+                const breadcrumb = document.querySelector('.page_breadcrumb');
+                const isMobile = window.innerWidth <= 768;
+
+                const headerHeight = isMobile ? 60 : 80; // Mobil/desktop header yüksekliği
+                const breadcrumbHeight = breadcrumb ? breadcrumb.offsetHeight : 0;
+                const extraPadding = 30; // Ekstra üst boşluk
+
+                // Toplam offset hesapla
+                const totalOffset = headerHeight + breadcrumbHeight + extraPadding;
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    // Sayfanın en üstünden scroll pozisyonunu hesapla
+                    const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - totalOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Pencere boyutu değiştiğinde container yüksekliğini güncelle
+        function updateContainerHeight() {
+            const container = document.querySelector('.image-container');
+            if (!container) return;
+
+            const isMobile = window.innerWidth <= 768;
+            const headerHeight = isMobile ? 60 : 80;
+            const breadcrumb = document.querySelector('.page_breadcrumb');
+            const breadcrumbHeight = breadcrumb ? breadcrumb.offsetHeight : 0;
+            const extraPadding = isMobile ? 40 : 60;
+
+            container.style.minHeight = `calc(100vh - ${headerHeight}px - ${breadcrumbHeight}px - ${extraPadding}px)`;
+        }
+
+        // Sayfa yüklendiğinde ve pencere boyutu değiştiğinde yüksekliği güncelle
+        window.addEventListener('load', updateContainerHeight);
+        window.addEventListener('resize', updateContainerHeight);
+    </script>
     <script src="js/pageTimer.js"></script>
+
 </body>
 
-</html> 
+</html>

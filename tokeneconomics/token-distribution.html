@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<div class="documentation_info" id="token-distribution">
+    <div class="documentation_body">
+        <div class="shortcode_title">
+            <h1>Token Dağılımı</h1>
+            <p>TIPBOX token dağılımı, projenin sürdürülebilir büyümesini ve adil token ekonomisini destekleyecek şekilde tasarlanmıştır.</p>
+        </div>
+
+        <!-- Token Distribution Chart -->
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="chart-container" style="position: relative; height:400px; width:100%">
+                    <canvas id="tokenDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Token Distribution Details -->
+        <div class="row mt-5">
+            <div class="col-lg-12">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Kategori</th>
+                                <th>Yüzde</th>
+                                <th>Açıklama</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Ekip ve Danışmanlar</td>
+                                <td>20%</td>
+                                <td>Proje ekibi ve danışmanlar için ayrılan tokenler, 24 ay boyunca kademeli olarak serbest bırakılacaktır.</td>
+                            </tr>
+                            <tr>
+                                <td>Topluluk ve Ekosistem</td>
+                                <td>30%</td>
+                                <td>Platform kullanıcıları, içerik üreticileri ve topluluk etkinlikleri için ayrılan pay.</td>
+                            </tr>
+                            <tr>
+                                <td>Özel ve Halka Açık Satış</td>
+                                <td>25%</td>
+                                <td>Erken dönem yatırımcıları ve halka açık token satışı için ayrılan miktar.</td>
+                            </tr>
+                            <tr>
+                                <td>Staking Ödülleri</td>
+                                <td>15%</td>
+                                <td>Stake eden kullanıcılara dağıtılacak ödüller için ayrılan tokenler.</td>
+                            </tr>
+                            <tr>
+                                <td>Likidite ve Rezervler</td>
+                                <td>10%</td>
+                                <td>Piyasa likiditesi ve gelecekteki gelişmeler için ayrılan rezerv.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.table {
+    background: #181818;
+    color: #f5f5f5;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(216, 255, 8, 0.1);
+}
+
+.table th {
+    background-color: #571fdd;
+    color: #f5f5f5;
+    border-bottom: none;
+    font-weight: 600;
+    padding: 15px;
+}
+
+.table td {
+    border-color: rgba(216, 255, 8, 0.1);
+    color: #f5f5f5;
+    padding: 15px;
+}
+
+.table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(216, 255, 8, 0.05);
+}
+
+.table tbody tr td:nth-child(2) {
+    color: #d8ff08;
+    font-weight: 600;
+}
+</style> 

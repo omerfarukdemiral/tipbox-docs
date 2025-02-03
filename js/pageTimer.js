@@ -150,6 +150,7 @@ function addEventListeners() {
                     }
                 }
             } catch (error) {
+                alert('Kayıt hatası:', error)
                 console.error('Kayıt hatası:', error);
                 // Hata durumunda localStorage'a kaydet
                 localStorage.setItem('pendingPageTimer', JSON.stringify({
