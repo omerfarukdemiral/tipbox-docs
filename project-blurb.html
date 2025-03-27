@@ -6,14 +6,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Güvenlik Meta Tag'leri -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    
+
     <!-- Merkezi Yapılandırma -->
     <script src="js/config.js"></script>
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
@@ -37,37 +38,34 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <!-- Güvenlik JS -->
     <script src="js/security.js"></script>
 
     <!-- Firebase Config Script -->
     <script>
-        // Firebase yapılandırması
         const firebaseConfig = {
             apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
             authDomain: "tipbox-docs.firebaseapp.com",
+            databaseURL: "https://tipbox-docs-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "tipbox-docs",
             storageBucket: "tipbox-docs.firebasestorage.app",
             messagingSenderId: "921740258376",
             appId: "1:921740258376:web:1ccf200d51d7b4736afc7d",
             measurementId: "G-6PT22FTSEN"
         };
-
-        // Firebase'i başlat
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        firebase.initializeApp(firebaseConfig);
 
         // Kullanıcı bilgilerini güncelleme fonksiyonunu global scope'a taşıyalım
-        window.updateUserProfile = function(user) {
+        window.updateUserProfile = function (user) {
             if (user) {
                 // Avatar güncelleme
                 const avatarImages = document.querySelectorAll('.user-img, .user-img-sm');
                 const avatarUrl = user.photoURL || 'img/default-avatar.png';
                 avatarImages.forEach(img => {
                     img.src = avatarUrl;
-                    img.onerror = function() {
+                    img.onerror = function () {
                         this.src = 'img/default-avatar.png';
                     };
                 });
@@ -89,19 +87,19 @@
         };
 
         // Auth state değişikliğini dinle
-        firebase.auth().onAuthStateChanged(function(user) {
+        firebase.auth().onAuthStateChanged(function (user) {
             if (!user) {
                 window.location.href = 'signin.html';
             } else {
                 console.log('Giriş yapan kullanıcı:', user.displayName);
                 console.log('Email:', user.email);
                 console.log('Profil fotoğrafı:', user.photoURL);
-                
+
                 // Header yüklendikten sonra kullanıcı bilgilerini güncelle
                 if (document.readyState === 'complete') {
                     window.updateUserProfile(user);
                 } else {
-                    window.addEventListener('load', function() {
+                    window.addEventListener('load', function () {
                         window.updateUserProfile(user);
                     });
                 }
@@ -122,7 +120,8 @@
     <script src="js/auth.js"></script>
 </head>
 
-<body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true" data-offset="70">
+<body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true"
+    data-offset="70">
     <div id="preloader">
         <div id="ctn-preloader" class="ctn-preloader">
             <div class="round_spinner">
@@ -136,7 +135,7 @@
             <p></p>
         </div>
     </div>
-    
+
     <div class="body_wrapper">
         <!-- Header Component -->
         <div include-html="../components/header.html"></div>
@@ -150,7 +149,8 @@
                             <h2>Project Blurb</h2>
                         </div>
                         <div class="header_search_keyword">
-                            <span class="">A concise overview of the project's core features, benefits, and unique value proposition.</span>
+                            <span class="">A concise overview of the project's core features, benefits, and unique value
+                                proposition.</span>
                             <div class="scroll-down">
                                 <a href="#sticky_doc" class="scroll-link">
                                     <i class="arrow_carrot-down"></i>
@@ -190,8 +190,11 @@
                         <article class="documentation_info">
                             <div class="" id="documentation">
                                 <div class="shortcode_title">
-                                    <div class="image-container secure-container" style="width: 100%; max-width: 1200px; margin: 0 auto; background-color: #1d1e20; border-radius: 12px; padding: 20px; box-shadow: 0 8px 16px rgba(0,0,0,0.2);">
-                                        <img src="./img/blurb.jpg" alt="Project Blurb" style="width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 8px;" draggable="false" oncontextmenu="return false;" />
+                                    <div class="image-container secure-container"
+                                        style="width: 100%; max-width: 1200px; margin: 0 auto; background-color: #1d1e20; border-radius: 12px; padding: 20px; box-shadow: 0 8px 16px rgba(0,0,0,0.2);">
+                                        <img src="./img/blurb.jpg" alt="Project Blurb"
+                                            style="width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 8px;"
+                                            draggable="false" oncontextmenu="return false;" />
                                         <div class="watermark"></div>
                                     </div>
                                 </div>
@@ -233,14 +236,14 @@
     <script src="js/include-components.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             includeHTML().then(() => {
                 // Header yüklendikten sonra, mevcut kullanıcı varsa bilgileri güncelle
                 const currentUser = firebase.auth().currentUser;
                 if (currentUser) {
                     window.updateUserProfile(currentUser);
                 }
-                
+
                 // Dark mode'u başlat
                 if (typeof initDarkMode === 'function') {
                     initDarkMode();
@@ -289,16 +292,23 @@
 
         .scroll-down a:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
                 transform: translateY(0);
             }
+
             40% {
                 transform: translateY(-10px);
             }
+
             60% {
                 transform: translateY(-5px);
             }
@@ -326,7 +336,8 @@
         }
 
         /* Retina ekranlar için optimizasyon */
-        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+        @media (-webkit-min-device-pixel-ratio: 2),
+        (min-resolution: 192dpi) {
             .image-container img {
                 image-rendering: -webkit-optimize-contrast;
             }
@@ -338,27 +349,27 @@
         document.querySelectorAll('.scroll-link').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                
+
                 // Header ve breadcrumb yüksekliklerini hesapla
                 const header = document.querySelector('.mobile_main_menu') || document.querySelector('header');
                 const breadcrumb = document.querySelector('.page_breadcrumb');
                 const isMobile = window.innerWidth <= 768;
-                
+
                 const headerHeight = isMobile ? 60 : 80; // Mobil/desktop header yüksekliği
                 const breadcrumbHeight = breadcrumb ? breadcrumb.offsetHeight : 0;
                 const extraPadding = 30; // Ekstra üst boşluk
-                
+
                 // Toplam offset hesapla
                 const totalOffset = headerHeight + breadcrumbHeight + extraPadding;
-                
+
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
-                
+
                 if (targetElement) {
                     // Sayfanın en üstünden scroll pozisyonunu hesapla
                     const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
                     const offsetPosition = elementPosition - totalOffset;
-                    
+
                     window.scrollTo({
                         top: offsetPosition,
                         behavior: 'smooth'
@@ -371,13 +382,13 @@
         function updateContainerHeight() {
             const container = document.querySelector('.image-container');
             if (!container) return;
-            
+
             const isMobile = window.innerWidth <= 768;
             const headerHeight = isMobile ? 60 : 80;
             const breadcrumb = document.querySelector('.page_breadcrumb');
             const breadcrumbHeight = breadcrumb ? breadcrumb.offsetHeight : 0;
             const extraPadding = isMobile ? 40 : 60;
-            
+
             container.style.minHeight = `calc(100vh - ${headerHeight}px - ${breadcrumbHeight}px - ${extraPadding}px)`;
         }
 
@@ -385,8 +396,8 @@
         window.addEventListener('load', updateContainerHeight);
         window.addEventListener('resize', updateContainerHeight);
     </script>
-
+    <script src="js/pageTimer.js"></script>
 
 </body>
 
-</html> 
+</html>

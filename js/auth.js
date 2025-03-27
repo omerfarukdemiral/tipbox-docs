@@ -82,4 +82,4 @@ function resetPassword(email) {
         .catch((error) => {
             console.error('Şifre sıfırlama hatası:', error);
         });
-} 
+}

@@ -32,6 +32,7 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <!-- Güvenlik JS -->
     <script src="js/security.js"></script>
@@ -42,6 +43,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
             authDomain: "tipbox-docs.firebaseapp.com",
+            databaseURL: "https://tipbox-docs-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "tipbox-docs",
             storageBucket: "tipbox-docs.firebasestorage.app",
             messagingSenderId: "921740258376",
@@ -722,6 +724,9 @@
         }, 100));
     });
     </script>
+
+    <!-- En sonda pageTimer.js -->
+    <script src="js/pageTimer.js"></script>
 </body>
 
 </html> 

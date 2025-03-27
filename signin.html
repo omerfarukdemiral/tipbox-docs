@@ -30,6 +30,8 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <!-- Firebase Realtime Database SDK'sını ekle -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <!-- Güvenlik JS -->
     <script src="js/security.js"></script>
@@ -39,6 +41,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
             authDomain: "tipbox-docs.firebaseapp.com",
+            databaseURL: "https://tipbox-docs-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "tipbox-docs",
             storageBucket: "tipbox-docs.firebasestorage.app",
             messagingSenderId: "921740258376",
@@ -49,11 +52,14 @@
         // Firebase'i başlat
         firebase.initializeApp(firebaseConfig);
 
+        // Database referansını global olarak tanımla
+        const database = firebase.database();
+
         // Auth durumunu kontrol et
-        firebase.auth().onAuthStateChanged(function(user) {
+        firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
                 // Kullanıcı zaten giriş yapmışsa ana sayfaya yönlendir
-                window.location.href = 'index.html';
+                window.location.replace('index.html');
             }
         });
 
@@ -71,6 +77,126 @@
                 });
         }
     </script>
+
+    <script>
+        async function signInWithLinkedIn() {
+            try {
+                // Önce mevcut oturumu kapat
+                await firebase.auth().signOut();
+                
+                // Event listener'ı önce ekle
+                const messageHandler = async function (event) {
+                    if (event.origin !== 'http://localhost:3000') return;
+                    
+                    if (event.data.type === 'linkedinAuthSuccess') {
+                        try {
+                            const { firebaseToken, user } = event.data;
+                            // Firebase ile giriş yap
+                            await firebase.auth().signInWithCustomToken(firebaseToken)
+                                .then((userCredential) => {
+                                    console.log('Firebase authentication successful:', userCredential.user);
+                                    // Kullanıcı bilgilerini localStorage'a kaydet
+                                    localStorage.setItem('user', JSON.stringify(user));
+                                    // Ana sayfaya yönlendir
+                                    window.location.replace('index.html');
+                                })
+                                .catch((error) => {
+                                    console.error('Firebase authentication error:', error);
+                                    throw error;
+                                });
+
+                        } catch (error) {
+                            console.error('Login error:', error);
+                            alert('Giriş işlemi sırasında bir hata oluştu: ' + error.message);
+                        } finally {
+                            // Event listener'ı temizle
+                            window.removeEventListener('message', messageHandler);
+                        }
+                    }
+                };
+
+                window.addEventListener('message', messageHandler, false);
+
+                // LinkedIn auth URL'ine benzersiz parametreler ekle
+                const timestamp = Date.now();
+                const randomString = Math.random().toString(36).substring(7);
+                const authWindow = window.open(
+                    `http://localhost:3000/auth/linkedin?nocache=${timestamp}_${randomString}`,
+                    'LinkedIn ile Giriş',
+                    'width=600,height=600,location=yes,resizable=yes,scrollbars=yes'
+                );
+
+                if (!authWindow) {
+                    throw new Error('Popup penceresi açılamadı - popup engelleyici aktif olabilir');
+                }
+            } catch (error) {
+                console.error('LinkedIn ile giriş hatası:', error);
+                alert('LinkedIn ile giriş yapılırken bir hata oluştu: ' + error.message);
+            }
+        }
+    </script>
+
+    <style>
+        /* Modal Stilleri */
+        .modal-content.bg-dark {
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .modal-content.bg-dark input.form-control {
+            height: 50px;
+            border-radius: 8px;
+            background-color: #2a2a2a !important;
+            transition: all 0.3s ease;
+        }
+
+        .modal-content.bg-dark input.form-control:focus {
+            box-shadow: 0 0 0 2px #6B3CC9;
+            border-color: #6B3CC9;
+        }
+
+        .modal-content.bg-dark .btn.custom-btn {
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .modal-content.bg-dark .btn.custom-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(107, 60, 201, 0.4);
+        }
+
+        .modal-content.bg-dark .close {
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .modal-content.bg-dark .close:hover {
+            opacity: 1;
+        }
+
+        .modal-content.bg-dark .form-text {
+            font-size: 12px;
+            color: #a0a0a0 !important;
+        }
+
+        /* Input placeholder stil */
+        .modal-content.bg-dark input::placeholder {
+            color: #666;
+            letter-spacing: 3px;
+        }
+
+        /* Modal animasyonu */
+        .modal.fade .modal-dialog {
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.show .modal-dialog {
+            transform: scale(1);
+        }
+    </style>
 </head>
 
 <body data-scroll-animation="true">
@@ -100,18 +226,74 @@
                 <div class="sign_right signup_right">
                     <div class="sign_inner signup_inner">
                         <div class="text-center">
-                            <img class="white_logo main_logo" src="./img/beyaz.svg" alt="logo" style="width: auto; height: 80px; object-fit: contain; -webkit-backface-visibility: hidden; backface-visibility: hidden; image-rendering: -webkit-optimize-contrast;">                
+                            <img class="white_logo main_logo" src="./img/beyaz.svg" alt="logo"
+                                style="width: auto; height: 80px; object-fit: contain; -webkit-backface-visibility: hidden; backface-visibility: hidden; image-rendering: -webkit-optimize-contrast;">
                             <h3 class="mt-5">Welcome to TipDocs</h3>
                             <p>Please sign in with your Google account to continue</p>
-                            <a href="#" class="btn-google" onclick="signInWithGoogle()">
-                                <img style="width: auto; height: 15px; margin-right: 10px;" src="img/signup/google.png" alt="">
-                                <span class="btn-text font-weight-bold">Sign in with Google</span>
-                            </a>
+                            <div class="d-flex flex-column gap-2">
+                                <a href="#" class="btn-google" onclick="signInWithGoogle()">
+                                    <img style="width: auto; height: 15px; margin-right: 10px;"
+                                        src="img/signup/google.png" alt="">
+                                    <span class="btn-text font-weight-bold">Sign in with Google</span>
+                                </a>
+                                <a href="#" class="btn-google" onclick="signInWithLinkedIn()">
+                                    <img style="width: auto; height: 15px; margin-right: 10px;"
+                                        src="img/signup/linkedin.png" alt="">
+                                    <span class="btn-text font-weight-bold">Sign in with LinkedIn</span>
+                                </a>
+                                <a href="#" class="btn-google" onclick="showGuestLoginModal()">
+                                    <i class="icon_profile" style="margin-right: 10px;"></i>
+                                    <span class="btn-text font-weight-bold">Misafir Girişi</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+    </div>
+
+    <!-- Misafir Giriş Modal -->
+    <div class="modal fade" id="guestLoginModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content bg-dark">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-white">Misafir Girişi</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="text-white mb-2">Davetiye Kodunuz</label>
+                        <div class="input-group">
+                            <input type="text" 
+                                class="form-control bg-dark text-white border-secondary" 
+                                id="inviteCode" 
+                                maxlength="8"
+                                style="letter-spacing: 3px; font-size: 18px; text-align: center;"
+                                placeholder="XXXXXXXX">
+                        </div>
+                        <small class="form-text text-muted mt-2">
+                            Lütfen size verilen 8 karakterli davetiye kodunu giriniz
+                        </small>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" 
+                        class="btn btn-outline-light" 
+                        data-dismiss="modal">
+                        İptal
+                    </button>
+                    <button type="button" 
+                        class="btn btn-primary custom-btn" 
+                        onclick="verifyInviteCode()"
+                        style="background: linear-gradient(90deg, #6B3CC9 0%, #6B3CC9 100%); border: none;">
+                        Giriş Yap
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Optional JavaScript -->
@@ -125,6 +307,62 @@
     <script src="assets/wow/wow.min.js"></script>
     <script src="../../unpkg.com/ionicons%405.4.0/dist/ionicons.js"></script>
     <script src="js/main.js"></script>
+
+    <script>
+        function showGuestLoginModal() {
+            $('#guestLoginModal').modal('show');
+        }
+
+        async function verifyInviteCode() {
+            const code = document.getElementById('inviteCode').value;
+            if (!code || code.length !== 8) {
+                alert('Lütfen 8 karakterli bir kod giriniz.');
+                return;
+            }
+
+            try {
+                const snapshot = await database.ref('invite_codes/' + code).once('value');
+                const codeData = snapshot.val();
+
+                console.log(codeData)
+
+                if (!codeData) {
+                    alert('Geçersiz kod!');
+                    return;
+                }
+
+                if (codeData.used_count >= codeData.max_uses) {
+                    alert('Bu kod maksimum kullanım sayısına ulaşmış!');
+                    return;
+                }
+
+                // Kullanım sayısını artır
+                await database.ref('invite_codes/' + code).update({
+                    used_count: (codeData.used_count || 0) + 1
+                });
+
+                // Custom token oluştur
+                const response = await fetch('http://localhost:3000/auth/guest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ code })
+                });
+
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+
+                // Firebase ile giriş yap
+                await firebase.auth().signInWithCustomToken(data.firebaseToken);
+                $('#guestLoginModal').modal('hide');
+
+            } catch (error) {
+                console.error('Giriş hatası:', error);
+                alert('Giriş yapılırken bir hata oluştu: ' + error.message);
+            }
+        }
+    </script>
 
 </body>
 
