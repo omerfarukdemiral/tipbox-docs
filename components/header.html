@@ -23,21 +23,57 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav menu ml-auto">
-                <li class="nav-item">
-                    <a href="project-blueprint.html" class="nav-link">Project Blueprint</a>
+                <!-- About Us Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button">
+                        About Us <i class="arrow_carrot-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
+                        <li><a class="dropdown-item" href="vision-mission.html">Vision & Mission</a></li>
+                        <li><a class="dropdown-item" href="team.html">Team</a></li>
+                        <li><a class="dropdown-item" href="principles.html">Principles</a></li>
+                    </ul>
                 </li>
+                
+                <!-- Product -->
                 <li class="nav-item">
-                    <a href="project-deck.html" class="nav-link">Project Deck</a>
+                    <a href="product.html" class="nav-link">Product</a>
                 </li>
+                
+                <!-- Market -->
                 <li class="nav-item">
-                    <a href="project-blurb.html" class="nav-link">Project Blurb</a>
+                    <a href="market.html" class="nav-link">Market</a>
                 </li>
+                
+                <!-- Technology -->
                 <li class="nav-item">
-                    <a href="tokeneconomics.html" class="nav-link">Tokeneconomics</a>
+                    <a href="technology.html" class="nav-link">Technology</a>
                 </li>
+                
+                <!-- Finance -->
                 <li class="nav-item">
-                    <a href="forums.html" class="nav-link">Forums</a>
+                    <a href="finance.html" class="nav-link">Finance</a>
                 </li>
+                
+                <!-- Roadmap -->
+                <li class="nav-item">
+                    <a href="roadmap.html" class="nav-link">Roadmap</a>
+                </li>
+                
+                <!-- Docs Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="docsDropdown" role="button">
+                        Docs <i class="arrow_carrot-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="docsDropdown">
+                        <li><a class="dropdown-item" href="project-deck.html">Pitchdeck</a></li>
+                        <li><a class="dropdown-item" href="project-blurb.html">Blurb</a></li>
+                        <li><a class="dropdown-item" href="project-blueprint.html">Blueprint</a></li>
+                        <li><a class="dropdown-item" href="lean-canvas.html">Lean Canvas</a></li>
+                        <li><a class="dropdown-item" href="business-model-canvas.html">Business Model Canvas</a></li>
+                    </ul>
+                </li>
+                
             </ul>
             <div class="right-nav">
                 <div class="px-2 js-darkmode-btn" title="Toggle dark mode">
@@ -134,6 +170,38 @@
 
 .user-email, .user-email-sm {
     font-size: 0.8rem;
+}
+
+/* Dropdown styling */
+.navbar-nav .dropdown-menu {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+.navbar-nav .dropdown-item {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    color: #6b707f;
+    transition: all 0.2s;
+}
+
+.navbar-nav .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #4c4cf1;
+}
+
+/* Hover Dropdown Menu */
+.navbar-nav .dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.navbar-nav .dropdown .nav-link .arrow_carrot-down {
+    font-size: 12px;
+    margin-left: 2px;
+    position: relative;
+    top: -1px;
 }
 
 @media (max-width: 767px) {
