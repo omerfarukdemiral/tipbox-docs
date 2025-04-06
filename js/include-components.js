@@ -15,9 +15,28 @@ function includeHTML() {
                     .then(data => {
                         element.innerHTML = data;
                         element.removeAttribute("include-html");
-                        remaining--;
                         
+                        // İçe aktarılan HTML içindeki script'leri aktif et
+                        const scripts = element.getElementsByTagName('script');
+                        for (let j = 0; j < scripts.length; j++) {
+                            const oldScript = scripts[j];
+                            const newScript = document.createElement('script');
+                            
+                            // Script özelliklerini kopyala
+                            Array.from(oldScript.attributes).forEach(attr => {
+                                newScript.setAttribute(attr.name, attr.value);
+                            });
+                            
+                            // Script içeriğini kopyala
+                            newScript.textContent = oldScript.textContent;
+                            
+                            // Eski script'i yenisiyle değiştir
+                            oldScript.parentNode.replaceChild(newScript, oldScript);
+                        }
+                        
+                        remaining--;
                         if (remaining === 0) {
+                            console.log("Tüm component'lar yüklendi ve script'ler aktif edildi");
                             resolve();
                         }
                     })
