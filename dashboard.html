@@ -163,71 +163,185 @@
             }
         }
     </script>
+    
+    <!-- Kullanıcı Profil Bilgisi Güncelleme Script -->
+    <script>
+        // Kullanıcı profilini güncelleme fonksiyonu
+        window.updateUserProfile = function(user) {
+            // Admin bilgisini dinamik olarak güncelle
+            const adminNameElement = document.querySelector('.admin-name');
+            if (adminNameElement) {
+                adminNameElement.textContent = user.displayName || user.email || 'Admin';
+            }
+            
+            // Kullanıcı avatarını güncelle (eğer varsa)
+            const adminAvatarElement = document.querySelector('.admin-avatar');
+            if (adminAvatarElement && user.photoURL) {
+                adminAvatarElement.src = user.photoURL;
+            }
+            
+            // Diğer sayfa içeriklerini güncellemek için burayı kullanabilirsiniz
+            console.log("Kullanıcı profili güncellendi:", user);
+        };
+    </script>
 </head>
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
-        <nav id="sidebar" class="bg-dark">
+        <nav id="sidebar">
             <div class="sidebar-header">
-                <h3 class="text-white">TipBox Dashboard</h3>
+                <h3>TipBox Dashboard</h3>
             </div>
 
             <ul class="list-unstyled components">
                 <li class="active">
                     <a href="#" data-page="dashboard">
-                        <i class="fas fa-chart-line"></i>
-                        Dashboard
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
                     </a>
                 </li>
                 <li>
                     <a href="#" data-page="user-activities">
                         <i class="fas fa-users"></i>
-                        Kullanıcı Aktiviteleri
+                        <span>Kullanıcı Aktiviteleri</span>
                     </a>
                 </li>
                 <li>
                     <a href="#" data-page="guest-panel">
                         <i class="fas fa-key"></i>
-                        Misafir Paneli
+                        <span>Misafir Paneli</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-page="reports">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Raporlar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-page="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Ayarlar</span>
                     </a>
                 </li>
             </ul>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <img src="../img/default-avatar.png" alt="Admin Avatar" class="admin-avatar">
+                    </div>
+                    <div class="user-details">
+                        <h6 class="admin-name">Admin</h6>
+                        <p class="admin-status">Çevrimiçi</p>
+                    </div>
+                </div>
+            </div>
         </nav>
 
         <!-- Page Content -->
         <div id="content">
             <!-- Dashboard Page -->
             <div id="dashboard-page" class="page-content active">
-                <h2>Dashboard</h2>
+                <h2 class="dashboard-title mb-1">Dashboard</h2>
                 <div class="dashboard-content">
-                    <div class="row">
+                    <div class="row g-3 mt-1">
+                        <!-- Özet Bilgiler -->
+                        <div class="col-md-12">
+                            <div class="row g-3">
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="card stat-card">
+                                        <div class="card-body">
+                                            <div class="stat-icon">
+                                                <i class="fas fa-users"></i>
+                                            </div>
+                                            <div class="stat-info">
+                                                <h5>Toplam Kullanıcı</h5>
+                                                <h3 id="totalUsers">0</h3>
+                                                <p><span class="text-success"><i class="fas fa-arrow-up"></i> 12%</span> son 30 günde</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="card stat-card">
+                                        <div class="card-body">
+                                            <div class="stat-icon">
+                                                <i class="fas fa-key"></i>
+                                            </div>
+                                            <div class="stat-info">
+                                                <h5>Aktif Tokenlar</h5>
+                                                <h3 id="activeTokens">0</h3>
+                                                <p><span class="text-success"><i class="fas fa-arrow-up"></i> 8%</span> son 30 günde</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="card stat-card">
+                                        <div class="card-body">
+                                            <div class="stat-icon">
+                                                <i class="fas fa-eye"></i>
+                                            </div>
+                                            <div class="stat-info">
+                                                <h5>Sayfa Görüntüleme</h5>
+                                                <h3 id="pageViews">0</h3>
+                                                <p><span class="text-success"><i class="fas fa-arrow-up"></i> 15%</span> son 30 günde</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="card stat-card">
+                                        <div class="card-body">
+                                            <div class="stat-icon">
+                                                <i class="fas fa-chart-line"></i>
+                                            </div>
+                                            <div class="stat-info">
+                                                <h5>Oturum Süresi</h5>
+                                                <h3 id="avgSessionTime">0 dk</h3>
+                                                <p><span class="text-success"><i class="fas fa-arrow-up"></i> 6%</span> son 30 günde</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <!-- Sayfa İstatistikleri -->
-                        <div class="col-md-6 mb-4">
-                            <div class="card">
-                                <div class="card-header bg-dark text-white">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header">
                                     <h5 class="mb-0">
                                         <i class="fas fa-chart-pie me-2"></i>
                                         Sayfa Kullanım İstatistikleri
                                     </h5>
                                 </div>
-                                <div class="card-body no-scroll">
-                                    <canvas id="pageUsageChart"></canvas>
+                                <div class="card-body no-scroll position-relative" style="height: 280px;">
+                                    <div class="chart-container" style="height: 250px !important;">
+                                        <canvas id="pageUsageChart"></canvas>
+                                    </div>
+                                    <div class="chart-info text-center position-absolute" style="top: 50%; left: 35%; transform: translate(-50%, -50%); pointer-events: none;">
+                                        <h3 id="totalViewTime" style="font-size: 1.2rem; color: rgba(255, 255, 255, 0.9); margin: 0; font-weight: 600;">--:--:--</h3>
+                                        <p style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.6); margin: 0;">Toplam Görüntülenme</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Token Kullanım İstatistikleri -->
-                        <div class="col-md-6 mb-4">
-                            <div class="card">
-                                <div class="card-header bg-dark text-white">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="mb-0">
                                         <i class="fas fa-chart-bar me-2"></i>
                                         Token Kullanım İstatistikleri
                                     </h5>
                                 </div>
-                                <div class="card-body no-scroll">
-                                    <canvas id="tokenUsageChart"></canvas>
-                                    <div id="tokenChartPagination" class="text-center mt-3"></div>
+                                <div class="card-body no-scroll position-relative" style="height: 280px;">
+                                    <div class="chart-container" style="height: 250px !important;">
+                                        <canvas id="tokenUsageChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -236,46 +350,40 @@
             </div>
 
             <!-- User Activities Page -->
-             
             <div id="user-activities-page" class="page-content">
-                <h2>Kullanıcı Aktiviteleri</h2>
-                <div class="row">
-                    
-                    <div class="col-12 mb-4">
+                <h2 class="dashboard-title mb-1">Kullanıcı Aktiviteleri</h2>
+                <div class="row g-3">
+                    <div class="col-12 mb-3">
                         <div class="card">
-                            <div class="card-header bg-dark text-white">
+                            <div class="card-header">
                                 <h5 class="mb-0">
                                     <i class="fas fa-search me-2"></i>
                                     Kullanıcı Ara
                                 </h5>
                             </div>
+                            
                             <div class="card-body">
                                 <div class="search-container">
-                                    <input type="text" 
-                                           id="userSearchInput" 
-                                           class="form-control" 
-                                           placeholder="Mail adresi veya User ID ile arama yapın...">
-                                    <div id="searchResults" class="mt-3">
-                                       
-                                    </div>
+                                    <input type="text" id="userSearchInput" class="form-control" placeholder="Kullanıcı adı, email veya UID ile ara...">
+                                    <div id="searchResults" class="mt-3"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Alt Grafik Alanları -->
-                    <div class="col-md-6 mb-4">
+                    <div class="col-md-6">
                         <!-- Sayfa Süreleri Doughnut Grafiği -->
                         <div class="card h-100" id="userPageActivityCard">
-                            <div class="card-header bg-dark text-white">
+                            <div class="card-header">
                                 <h5 class="mb-0">
                                     <i class="fas fa-chart-pie me-2"></i>
                                     Sayfa Süreleri
                                 </h5>
                                 <small class="text-muted p-0" id="selectedUserInfo">
                                     <i class="fas fa-info-circle"></i>
-                                    <span class="default-text">Lütfen bir kullanıcı seçin</span>
-                                    <span class="selected-user-name"></span>
+                                    <span class="default-text" style="color: rgba(255, 255, 255, 0.8);">Lütfen bir kullanıcı seçin</span>
+                                    <span class="selected-user-name" style="color: #fff; font-weight: bold; display: none;"></span>
                                 </small>
                             </div>
                             <div class="card-body d-flex flex-column justify-content-center">
@@ -286,10 +394,10 @@
                         </div>
                     </div>
                     
-                    <div class="col-md-6 mb-4">
+                    <div class="col-md-6">
                         <!-- Zaman Bazlı Aktivite Grafiği -->
                         <div class="card h-100">
-                            <div class="card-header bg-dark text-white">
+                            <div class="card-header">
                                 <h5 class="mb-0">
                                     <i class="fas fa-chart-line me-2"></i>
                                     Zaman Bazlı Aktiviteler
@@ -307,20 +415,20 @@
 
             <!-- Guest Panel Page -->
             <div id="guest-panel-page" class="page-content">
-                <h2>Misafir Paneli</h2>
-                <div class="row">
+                <h2 class="dashboard-title mb-1">Misafir Paneli</h2>
+                <div class="row g-3">
                     <!-- Token Listesi - Tam Genişlik -->
-                    <div class="col-12 mb-4">
+                    <div class="col-12">
                         <div class="card">
-                            <div class="card-header bg-dark text-white">
+                            <div class="card-header">
                                 <h5 class="mb-0">
                                     <i class="fas fa-key me-2"></i>
                                     Davetiye Kodları
                                 </h5>
                             </div>
                             <div class="card-body no-scroll">
-                                <table id="tokenTable" class="table table-dark table-hover">
-                                    <thead>
+                                <table id="tokenTable" class="table table-hover" style="border-radius: 8px; overflow: hidden;">
+                                    <thead style="background: rgba(94, 65, 236, 0.2);">
                                         <tr>
                                             <th>#</th>
                                             <th>Token</th>
@@ -352,6 +460,22 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Reports Page -->
+            <div id="reports-page" class="page-content">
+                <h2 class="dashboard-title mb-1">Raporlar</h2>
+                <div class="row g-3">
+                    <!-- Raporların içeriği burada görüntülenecek -->
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settings-page" class="page-content">
+                <h2 class="dashboard-title mb-1">Ayarlar</h2>
+                <div class="row g-3">
+                    <!-- Ayarların içeriği burada görüntülenecek -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -366,5 +490,136 @@
     <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script type="module" src="js/dashboard.js"></script>
+    <style>
+        /* Stat Kartları için ek stiller */
+        .stat-card {
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card .card-body {
+            display: flex;
+            padding: 20px;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #4c4cf1 0%, #6a11cb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .stat-icon i {
+            font-size: 24px;
+            color: #fff;
+        }
+        
+        .stat-info {
+            flex: 1;
+        }
+        
+        .stat-info h5 {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .stat-info h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .stat-info p {
+            font-size: 12px;
+            color: #6c757d;
+            margin: 0;
+        }
+        
+        .stat-info .text-success {
+            color: #10b981 !important;
+        }
+        
+        /* Sidebar footer için stiller */
+        .sidebar-footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .admin-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-details {
+            flex: 1;
+        }
+        
+        .admin-name {
+            color: white;
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .admin-status {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0;
+            font-size: 12px;
+        }
+        
+        /* Mobil için sidebar footer gizleme */
+        @media (max-width: 992px) {
+            .sidebar-footer .user-details {
+                display: none;
+            }
+            
+            .sidebar-footer .user-avatar {
+                margin: 0 auto;
+            }
+            
+            .sidebar-footer {
+                display: flex;
+                justify-content: center;
+                padding: 10px;
+            }
+            
+            li.sidebar-footer {
+                position: absolute;
+                bottom: 70px;
+                width: 100%;
+                border-top: none;
+            }
+        }
+    </style>
 </body>
 </html> 

@@ -144,15 +144,15 @@ function loadTokens() {
             let counter = 1; // Sıra numarası için sayaç
             sortedTokens.forEach(data => {
                 const usageStatus = data.used_count >= data.max_uses ? 
-                    '<span class="badge bg-danger" style="font-family: \'Jura\', sans-serif;">Limit Dolu</span>' : 
-                    '<span class="badge bg-success" style="font-family: \'Jura\', sans-serif;">Aktif</span>';
+                    '<span class="badge" style="background: linear-gradient(135deg, #e44d26 0%, #f16529 100%); font-family: \'Jura\', sans-serif; padding: 5px 10px; border-radius: 10px; font-weight: bold;">Limit Dolu</span>' : 
+                    '<span class="badge" style="background: linear-gradient(135deg, #00c853 0%, #69f0ae 100%); font-family: \'Jura\', sans-serif; padding: 5px 10px; border-radius: 10px; font-weight: bold;">Aktif</span>';
 
                 const usageDisplay = updateTokenUsageDisplay(data);
 
                 tokenTable.row.add([
                     counter, // Sıra numarası
-                    `<code class="token-code" style="font-family: 'Jura', sans-serif;">${data.code}</code>`,
-                    new Date(data.created_at).toLocaleString(),
+                    `<code class="token-code" style="font-family: 'Jura', sans-serif; font-weight: bold; font-size: 14px; background: rgba(94, 65, 236, 0.1); padding: 5px 8px; border-radius: 5px; color: #4c4cf1;">${data.code}</code>`,
+                    `<span style="font-family: 'Jura', sans-serif; font-weight: 500;">${new Date(data.created_at).toLocaleString()}</span>`,
                     usageDisplay,
                     usageStatus
                 ]);
@@ -168,9 +168,12 @@ function loadTokens() {
 // Token kullanım göstergesini güncelle
 function updateTokenUsageDisplay(data) {
     const usageDisplay = `<div class="usage-display">
-        <div class="progress" style="height: 20px; background: rgba(255,255,255,0.1);">
-            <div class="progress-bar bg-success" role="progressbar" 
-                style="width: ${(data.used_count / data.max_uses * 100)}%; font-family: 'Jura', sans-serif;" 
+        <div class="progress" style="height: 24px; background: rgba(94, 65, 236, 0.1); border-radius: 12px; overflow: hidden;">
+            <div class="progress-bar" role="progressbar" 
+                style="width: ${(data.used_count / data.max_uses * 100)}%; 
+                       font-family: 'Jura', sans-serif;
+                       font-weight: bold;
+                       background: linear-gradient(135deg, #4c4cf1 0%, #6a11cb 100%);" 
                 aria-valuenow="${data.used_count}" 
                 aria-valuemin="0" 
                 aria-valuemax="${data.max_uses}">
@@ -366,6 +369,18 @@ function updatePageUsageChart(durations) {
     const ctx = document.getElementById('pageUsageChart').getContext('2d');
     const total = Object.values(durations).reduce((a, b) => a + b, 0);
     
+    // Toplam görüntülenme süresini göster
+    const totalViewTimeElement = document.getElementById('totalViewTime');
+    if (totalViewTimeElement) {
+        // Toplam süreyi daha okunabilir formatta göster (saat:dakika:saniye)
+        const hours = Math.floor(total / 3600000);
+        const minutes = Math.floor((total % 3600000) / 60000);
+        const seconds = Math.floor((total % 60000) / 1000);
+        
+        totalViewTimeElement.textContent = 
+            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+    
     // Sayfa isimlerini daha okunabilir hale getir
     const pageNames = {
         project_blueprint: 'Project Blueprint',
@@ -374,37 +389,72 @@ function updatePageUsageChart(durations) {
         tokeneconomics: 'Tokeneconomics'
     };
 
+    // Daha modern renkler
+    const modernColors = {
+        backgroundColors: [
+            'rgba(94, 65, 236, 0.8)',   // Mor
+            'rgba(252, 66, 123, 0.8)',  // Pembe
+            'rgba(58, 227, 116, 0.8)',  // Yeşil
+            'rgba(254, 185, 6, 0.8)'    // Sarı
+        ],
+        borderColors: [
+            'rgba(94, 65, 236, 1)',
+            'rgba(252, 66, 123, 1)',
+            'rgba(58, 227, 116, 1)',
+            'rgba(254, 185, 6, 1)'
+        ]
+    };
+
     new Chart(ctx, {
         type: 'doughnut',
         data: {
             labels: Object.keys(durations).map(key => pageNames[key]),
             datasets: [{
                 data: Object.values(durations).map(d => ((d / total) * 100).toFixed(1)),
-                backgroundColor: [
-                    'rgba(0, 255, 157, 0.5)',
-                    'rgba(255, 99, 132, 0.5)',
-                    'rgba(255, 206, 86, 0.5)',
-                    'rgba(75, 192, 192, 0.5)'
-                ],
-                borderColor: [
-                    'rgba(0, 255, 157, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)'
-                ],
-                borderWidth: 1
+                backgroundColor: modernColors.backgroundColors,
+                borderColor: modernColors.borderColors,
+                borderWidth: 2,
+                borderRadius: 5,
+                hoverOffset: 15,
+                spacing: 2
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
+            cutout: '55%',
             plugins: {
                 legend: {
                     position: 'right',
                     labels: {
-                        color: '#fff'
+                        color: '#fff',
+                        font: {
+                            family: "'Jura', sans-serif",
+                            size: 12,
+                            weight: 'bold'
+                        },
+                        padding: 10,
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        boxWidth: 8,
+                        boxHeight: 8
                     }
                 },
                 tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleFont: {
+                        family: "'Jura', sans-serif",
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        family: "'Jura', sans-serif",
+                        size: 12
+                    },
+                    padding: 12,
+                    cornerRadius: 8,
+                    caretSize: 6,
+                    displayColors: true,
                     callbacks: {
                         label: function(context) {
                             const label = context.label || '';
@@ -414,6 +464,20 @@ function updatePageUsageChart(durations) {
                         }
                     }
                 }
+            },
+            layout: {
+                padding: {
+                    top: 5,
+                    right: 10,
+                    bottom: 5,
+                    left: 0
+                }
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true,
+                duration: 800,
+                easing: 'easeOutQuart'
             }
         }
     });
@@ -473,134 +537,162 @@ function updateTokenUsageChart() {
         const tokens = snapshot.val();
         if (!tokens) return;
 
-        // Tüm tokenleri diziye çevir ve tarihe göre sırala
+        // Tüm tokenleri diziye çevir ve kullanım sayısına göre sırala
         const tokenArray = Object.entries(tokens).map(([code, data]) => ({
             code,
             ...data
         })).sort((a, b) => b.used_count - a.used_count);
 
-        let currentPage = 0;
-        const tokensPerPage = 10;
-        const totalPages = Math.ceil(tokenArray.length / tokensPerPage);
+        // Sadece en yüksek kullanıma sahip 10 token'ı al
+        const topTokens = tokenArray.slice(0, 10);
 
-        function updateChart(page) {
-            // Sayfa için token verilerini al
-            const startIndex = page * tokensPerPage;
-            const pageTokens = tokenArray.slice(startIndex, startIndex + tokensPerPage);
-
-            // Grafik verilerini hazırla
-            const data = {
-                labels: pageTokens.map(t => t.code),
-                datasets: [
-                    {
-                        label: 'Kullanım Sayısı',
-                        data: pageTokens.map(t => t.used_count),
-                        backgroundColor: 'rgba(0, 255, 157, 0.5)',
-                        borderColor: '#00ff9d',
-                        borderWidth: 1,
-                        barPercentage: 0.6
-                    },
-                    {
-                        label: 'Maximum Limit',
-                        data: pageTokens.map(t => t.max_uses),
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: '#ff6384',
-                        borderWidth: 1,
-                        barPercentage: 0.6
-                    }
-                ]
-            };
-
-            // Grafik konfigürasyonu
-            const config = {
-                type: 'bar',
-                data: data,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            ticks: {
-                                color: '#fff'
-                            }
-                        },
-                        x: {
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            ticks: {
-                                color: '#fff',
-                                maxRotation: 45,
-                                minRotation: 45
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                color: '#fff',
-                                padding: 20,
-                                usePointStyle: true
-                            }
-                        },
-                    }
-                }
-            };
-
-            // Mevcut grafiği temizle
-            const existingChart = Chart.getChart('tokenUsageChart');
-            if (existingChart) {
-                existingChart.destroy();
+        // Modern renkler
+        const colors = {
+            used: {
+                background: 'rgba(94, 65, 236, 0.7)',
+                border: 'rgba(94, 65, 236, 1)'
+            },
+            limit: {
+                background: 'rgba(252, 66, 123, 0.2)',
+                border: 'rgba(252, 66, 123, 1)'
             }
-
-            // Yeni grafiği oluştur
-            const ctx = document.getElementById('tokenUsageChart').getContext('2d');
-            const chart = new Chart(ctx, config);
-
-            // Sayfalama butonlarını güncelle
-            updatePaginationButtons(page, totalPages);
-        }
-
-        // Sayfalama butonlarını oluştur/güncelle
-        function updatePaginationButtons(currentPage, totalPages) {
-            let paginationContainer = document.getElementById('tokenChartPagination');
-            
-            if (!paginationContainer) {
-                paginationContainer = document.createElement('div');
-                paginationContainer.id = 'tokenChartPagination';
-                paginationContainer.className = 'text-center mt-3';
-                document.getElementById('tokenUsageChart').parentNode.appendChild(paginationContainer);
-            }
-
-            paginationContainer.innerHTML = `
-                <button class="btn btn-sm btn-outline-light me-2" 
-                    ${currentPage === 0 ? 'disabled' : ''} 
-                    onclick="window.changePage(${currentPage - 1})">
-                    ◄ Önceki
-                </button>
-                <span class="text-light">Sayfa ${currentPage + 1}/${totalPages}</span>
-                <button class="btn btn-sm btn-outline-light ms-2" 
-                    ${currentPage >= totalPages - 1 ? 'disabled' : ''} 
-                    onclick="window.changePage(${currentPage + 1})">
-                    Sonraki ►
-                </button>
-            `;
-        }
-
-        // Sayfa değiştirme fonksiyonunu global scope'a ekle
-        window.changePage = function(newPage) {
-            currentPage = newPage;
-            updateChart(currentPage);
         };
 
-        // İlk sayfayı göster
-        updateChart(currentPage);
+        // Grafik verilerini hazırla
+        const data = {
+            labels: topTokens.map(t => t.code.substring(0, 8)), // Kısa token gösterimi
+            datasets: [
+                {
+                    label: 'Kullanım Sayısı',
+                    data: topTokens.map(t => Math.max(t.used_count, 0.2)), // Minimum değer olarak 0.2 kullan
+                    backgroundColor: colors.used.background,
+                    borderColor: colors.used.border,
+                    borderWidth: 2,
+                    borderRadius: 4,
+                    borderSkipped: false,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.7
+                },
+                {
+                    label: 'Maximum Limit',
+                    data: topTokens.map(t => t.max_uses),
+                    backgroundColor: colors.limit.background,
+                    borderColor: colors.limit.border,
+                    borderWidth: 2,
+                    borderRadius: 4,
+                    borderSkipped: false,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.7
+                }
+            ]
+        };
+
+        // Grafik konfigürasyonu
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        top: 15,
+                        right: 15,
+                        bottom: 0,
+                        left: 15
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.08)',
+                            lineWidth: 0.5
+                        },
+                        border: {
+                            dash: [2, 4]
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.9)',
+                            font: {
+                                family: "'Jura', sans-serif",
+                                size: 11,
+                                weight: 'bold'
+                            },
+                            padding: 5,
+                            maxTicksLimit: 5
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        border: {
+                            display: false
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.9)',
+                            font: {
+                                family: "'Jura', sans-serif",
+                                size: 9,
+                                weight: 'bold'
+                            },
+                            padding: 5,
+                            maxRotation: 30,
+                            minRotation: 30,
+                            autoSkip: false
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleFont: {
+                            family: "'Jura', sans-serif",
+                            size: 12,
+                            weight: 'bold'
+                        },
+                        bodyFont: {
+                            family: "'Jura', sans-serif",
+                            size: 11
+                        },
+                        padding: 10,
+                        cornerRadius: 6,
+                        displayColors: true,
+                        callbacks: {
+                            title: function(context) {
+                                // Tam token kodunu göster
+                                return topTokens[context[0].dataIndex].code;
+                            },
+                            label: function(context) {
+                                const datasetLabel = context.dataset.label || '';
+                                // Eğer orijinal değer 0.2 (minimum) ise, 0 olarak göster
+                                const value = context.dataset.data[context.dataIndex] <= 0.2 ? 
+                                    0 : context.parsed.y;
+                                return `${datasetLabel}: ${value}`;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Mevcut grafiği temizle
+        const existingChart = Chart.getChart('tokenUsageChart');
+        if (existingChart) {
+            existingChart.destroy();
+        }
+
+        // Yeni grafiği oluştur
+        const ctx = document.getElementById('tokenUsageChart').getContext('2d');
+        const chart = new Chart(ctx, config);
+        
+        // Var olan efsaneyi kaldır
+        const chartContainer = document.querySelector('#tokenUsageChart').parentNode;
+        const existingLegend = chartContainer.querySelector('.chart-legend-container');
+        if (existingLegend) {
+            existingLegend.remove();
+        }
     });
 }
 
@@ -1175,6 +1267,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadPageStats();
                 updateTokenUsageChart();
             }
+            
+            // Sayfanın en üstüne dön
+            window.scrollTo(0, 0);
         });
     });
 
