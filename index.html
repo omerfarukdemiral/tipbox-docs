@@ -43,9 +43,61 @@
     <script src="js/auth.js"></script>
 
     <script>
-        // Kullanıcı bilgilerini güncelleme fonksiyonunu global scope'a taşıyalım
-        window.updateUserProfile = function(user) {
-            console.log("Güncelleme fonksiyonu çağrıldı: " + JSON.stringify(user));
+        // Component'ları yükle ve sonra Firebase kontrolünü yap
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Önce component'ları yükle
+                await includeHTML();
+                
+                // Kullanıcı durumunu kontrol et
+                checkUserAuthentication();
+            } catch (error) {
+                console.error("Component yükleme hatası:", error);
+            }
+        });
+        
+        // Kullanıcı kimlik doğrulamasını kontrol et
+        function checkUserAuthentication() {
+            // Önce doğrudan firebase.auth'u kontrol et
+            if (typeof firebase !== 'undefined' && firebase.auth) {                
+                // Mevcut kullanıcı durumunu kontrol et
+                const currentUser = firebase.auth().currentUser;
+                if (currentUser) {
+                    updateUserInterface(currentUser);
+                }
+                
+                // Auth state değişikliklerini dinle
+                firebase.auth().onAuthStateChanged(function(user) {
+                    if (user) {
+                        updateUserInterface(user);
+                    } else {
+                        console.log("Oturum kapalı");
+                    }
+                });
+            } 
+            // Sonra window.firebaseAuth'u kontrol et
+            else if (window.firebaseAuth) {                
+                // Mevcut kullanıcı durumunu kontrol et
+                const currentUser = window.firebaseAuth.currentUser;
+                if (currentUser) {
+                    updateUserInterface(currentUser);
+                }
+                
+                // Auth state değişikliklerini dinle
+                window.firebaseAuth.onAuthStateChanged(function(user) {
+                    if (user) {
+                        updateUserInterface(user);
+                    } else {
+                        console.log("Oturum kapalı");
+                    }
+                });
+            } else {
+                console.error("Firebase Auth kullanılamıyor! Ana sayfada kullanıcı kontrolü yapılamayacak.");
+            }
+        }
+        
+        // Kullanıcı arayüzünü güncelleme fonksiyonu
+        function updateUserInterface(user) {
             if (user) {
                 // Avatar güncelleme
                 const avatarImages = document.querySelectorAll('.user-img, .user-img-sm');
@@ -71,20 +123,51 @@
                     el.textContent = email;
                 });
                 
-                // Rol bilgisini yazdırma (varsa)
-                if (user.role) {
-                    console.log("Kullanıcı rolü:", user.role);
-                    // Eğer HTML'de rol gösterilecek bir element varsa
-                    const roleElements = document.querySelectorAll('.user-role');
-                    roleElements.forEach(el => {
-                        el.textContent = user.role;
+                // Kullanıcı veritabanı profilini güncelle ve Firestore'dan bilgileri çek
+                if (window.enhanceUserWithFirestoreData && window.updateUserProfile) {
+                    window.enhanceUserWithFirestoreData(user).then(() => {
+                        // Admin panel bağlantısını kontrol et (window.userRole global değişkenine göre)
+                        if (window.userRole === 'admin') {
+                            showAdminPanelLink();
+                        }
                     });
                 }
             }
-        };
-
-        // Auth state değişikliği auth.js dosyasına taşındı
-        // Daha önce tanımlanan çıkış yapma fonksiyonu da auth.js'e taşındı
+        }
+        
+        // Admin panel bağlantısını göster
+        function showAdminPanelLink() {
+            const adminLinks = document.querySelectorAll('.admin-panel-link');
+            adminLinks.forEach(link => {
+                link.style.display = 'block';
+            });
+        }
+        
+        // Global çıkış fonksiyonunu tanımla
+        window.signOutUser = function() {
+            // Önce doğrudan firebase.auth'u kontrol et
+            if (typeof firebase !== 'undefined' && firebase.auth) {
+                firebase.auth().signOut().then(() => {
+                    console.log("Çıkış başarılı (firebase.auth)");
+                    window.location.href = 'signin.html';
+                }).catch((error) => {
+                    console.error('Çıkış yapılırken hata oluştu (firebase.auth):', error);
+                });
+            } 
+            // Sonra window.firebaseAuth'u kontrol et
+            else if (window.firebaseAuth) {
+                window.firebaseAuth.signOut().then(() => {
+                    console.log("Çıkış başarılı (window.firebaseAuth)");
+                    window.location.href = 'signin.html';
+                }).catch((error) => {
+                    console.error('Çıkış yapılırken hata oluştu (window.firebaseAuth):', error);
+                });
+            } else {
+                console.error("Firebase Auth bulunamadı, çıkış yapılamıyor!");
+                // Yine de yönlendir
+                window.location.href = 'signin.html';
+            }
+        }
     </script>
     
     <style>
@@ -452,18 +535,6 @@
     <script src="js/include-components.js"></script>
     <!-- Header Controller script -->
     <script src="js/header-controller.js"></script>
-    
-    <script>
-        // Component'ları yükle ve sonra Firebase kontrolünü yap
-        document.addEventListener('DOMContentLoaded', async function() {
-            console.log("DOM yüklendi, component'lar dahil ediliyor...");
-            try {
-                await includeHTML();                
-            } catch (error) {
-                console.error("Component yükleme hatası:", error);
-            }
-        });
-    </script>
 </body>
 
 </html>

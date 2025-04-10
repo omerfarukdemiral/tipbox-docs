@@ -4,6 +4,7 @@ import {
     linkedinCallback, 
     guestLogin, 
     createToken, 
+    createBulkTokens,
     searchUsers 
 } from '../controllers/auth-controller.js';
 
@@ -16,8 +17,9 @@ router.get('/linkedin/callback', linkedinCallback);
 // Misafir girişi rotası
 router.post('/guest', guestLogin);
 
-// Token oluşturma rotası
+// Token oluşturma rotaları
 router.post('/create-token', createToken);
+router.post('/create-bulk-tokens', createBulkTokens);
 
 // Kullanıcı arama rotası
 router.get('/search', searchUsers);

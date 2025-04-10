@@ -36,7 +36,6 @@ function includeHTML() {
                         
                         remaining--;
                         if (remaining === 0) {
-                            console.log("Tüm component'lar yüklendi ve script'ler aktif edildi");
                             resolve();
                         }
                     })

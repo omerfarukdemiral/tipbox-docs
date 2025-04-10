@@ -110,10 +110,10 @@
                             </div>
                             <div class="dropdown-divider"></div>
                             <!-- Admin Paneli bağlantısı (sadece admin rolüne sahip kullanıcılar için gösterilecek) -->
-                            <a class="dropdown-item admin-panel-link" href="dashboard.html" style="display: none;">
-                                <i class="icon_cog mr-2"></i>Admin Paneli
+                            <a class="dropdown-item admin-panel-link" href="admin-panel.html" style="display: none;">
+                                <i class="icon_shield mr-2"></i>Admin Paneli
                             </a>
-                            <a class="dropdown-item" href="#" onclick="signOut()">
+                            <a class="dropdown-item" href="#" onclick="logout()">
                                 <i class="icon_lock-open_alt mr-2"></i>Çıkış Yap
                             </a>
                         </div>
@@ -214,5 +214,35 @@
     }
 }
 </style>
+
+<script>
+// Çıkış yapma işlemi - tüm sayfalarda çalışacak şekilde
+function logout() {
+    console.log("Çıkış fonksiyonu çağrıldı");
+    
+    // Firebase Auth'u doğrudan kullan
+    if (firebase && firebase.auth) {
+        firebase.auth().signOut().then(() => {
+            console.log("Çıkış başarılı");
+            window.location.href = 'signin.html';
+        }).catch((error) => {
+            console.error('Çıkış yapılırken hata oluştu:', error);
+        });
+    } else if (window.firebaseAuth) {
+        window.firebaseAuth.signOut().then(() => {
+            console.log("Çıkış başarılı (window.firebaseAuth)");
+            window.location.href = 'signin.html';
+        }).catch((error) => {
+            console.error('Çıkış yapılırken hata oluştu (window.firebaseAuth):', error);
+        });
+    } else if (window.signOutUser) {
+        window.signOutUser();
+    } else {
+        console.error("Firebase Auth bulunamadı, çıkış yapılamıyor!");
+        // Yine de yönlendir
+        window.location.href = 'signin.html';
+    }
+}
+</script>
 
 <!-- Script içeriği header-controller.js dosyasına taşındı --> 

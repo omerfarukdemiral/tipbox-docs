@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TipBox - Admin Panel</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/admin-panel.css">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- Auth JS - Firebase yapılandırması ve auth işlemleri için -->
+    <script src="js/auth.js"></script>
+
+    <!-- Admin rol kontrolü -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Firebase auth durumunu kontrol et
+            firebase.auth().onAuthStateChanged(async function(user) {
+                if (!user) {
+                    // Kullanıcı giriş yapmamışsa anasayfaya yönlendir
+                    console.log('Kullanıcı giriş yapmamış, anasayfaya yönlendiriliyor');
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                try {
+                    // Önce window.userRole değişkeni varsa kontrolü yap
+                    if (window.userRole === 'admin') {
+                        // Admin kullanıcı - erişime izin ver
+                        console.log('Admin erişimi onaylandı (window.userRole)');
+                        showAdminPanel(user);
+                        return;
+                    }
+                    
+                    // window.userRole yoksa, enhanceUserWithFirestoreData kullanarak Firestore'dan veriyi çek
+                    if (window.enhanceUserWithFirestoreData) {
+                        await window.enhanceUserWithFirestoreData(user);
+                        
+                        // Şimdi window.userRole ayarlanmış olmalı
+                        if (window.userRole === 'admin') {
+                            console.log('Admin erişimi onaylandı (enhanceUserWithFirestoreData sonrası)');
+                            showAdminPanel(user);
+                            return;
+                        }
+                    }
+                    
+                    // Admin değilse anasayfaya yönlendir
+                    console.log('Kullanıcı admin değil, anasayfaya yönlendiriliyor');
+                    alert('Bu sayfaya erişim yetkiniz bulunmamaktadır.');
+                    window.location.href = 'index.html';
+                    
+                } catch (error) {
+                    console.error('Admin kontrolünde hata:', error);
+                    alert('Bir hata oluştu. Anasayfaya yönlendiriliyorsunuz.');
+                    window.location.href = 'index.html';
+                }
+            });
+        });
+        
+        // Admin paneli içeriğini göster
+        function showAdminPanel(user) {
+            // Admin bilgilerini panelde göster
+            document.getElementById('adminName').textContent = user.displayName || user.email;
+            document.getElementById('adminEmail').textContent = user.email;
+            
+            // Admin paneli içeriğini göster
+            document.querySelector('.content').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>TipBox Admin</h3>
+            </div>
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info">
+                    <p id="adminName">Admin User</p>
+                    <small id="adminEmail">admin@example.com</small>
+                </div>
+            </div>
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="#dashboard" class="nav-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#users" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#projects" class="nav-link">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Projects</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#analytics" class="nav-link">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#settings" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="content-section">
+                <h2>Dashboard</h2>
+                <div class="row dashboard-cards">
+                    <div class="col-md-4">
+                        <div class="card stat-card">
+                            <div class="card-body">
+                                <div class="stat-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h5 class="card-title">Total Users</h5>
+                                    <h2 id="totalUsers">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card stat-card">
+                            <div class="card-body">
+                                <div class="stat-icon">
+                                    <i class="fas fa-project-diagram"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h5 class="card-title">Total Projects</h5>
+                                    <h2 id="totalProjects">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card stat-card">
+                            <div class="card-body">
+                                <div class="stat-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h5 class="card-title">Active Projects</h5>
+                                    <h2 id="activeProjects">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Page Views (Last 7 Days)</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="pageViewsChart" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div id="users" class="content-section" style="display: none;">
+                <h2>User Management</h2>
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5>Recent User Activity</h5>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fas fa-user-plus"></i> Add New User
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Last Login</th>
+                                        <th>Page Views</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userActivityTableBody">
+                                    <!-- User data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Section -->
+            <div id="projects" class="content-section" style="display: none;">
+                <h2>Project Management</h2>
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5>Projects</h5>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus"></i> New Project
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Project Name</th>
+                                        <th>Owner</th>
+                                        <th>Created</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>TipBox Documentation</td>
+                                        <td>Admin</td>
+                                        <td>2023-07-15</td>
+                                        <td><span class="badge badge-success">Active</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>User Guide</td>
+                                        <td>System</td>
+                                        <td>2023-06-22</td>
+                                        <td><span class="badge badge-warning">Draft</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics" class="content-section" style="display: none;">
+                <h2>Analytics</h2>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>User Growth</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="userGrowthChart" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Top Pages</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Page</th>
+                                                <th>Views</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>/index.html</td>
+                                                <td>1,245</td>
+                                            </tr>
+                                            <tr>
+                                                <td>/docs/getting-started.html</td>
+                                                <td>867</td>
+                                            </tr>
+                                            <tr>
+                                                <td>/examples/basic.html</td>
+                                                <td>654</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>User Devices</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="deviceChart" height="220"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings" class="content-section" style="display: none;">
+                <h2>Settings</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>API Settings</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="apiKey" class="form-label">API Key</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="apiKey" value="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" readonly>
+                                        <button class="btn btn-outline-secondary" type="button">Copy</button>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <button id="generateTokenBtn" class="btn btn-primary">Generate New Token</button>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Generated Token</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="tokenDisplay" readonly>
+                                        <button class="btn btn-outline-secondary" id="copyTokenBtn" disabled>Copy</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>System Settings</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="enableNotifications" checked>
+                                    <label class="form-check-label" for="enableNotifications">Email Notifications</label>
+                                </div>
+                                <div class="mb-3 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="enableAnalytics" checked>
+                                    <label class="form-check-label" for="enableAnalytics">Analytics Tracking</label>
+                                </div>
+                                <div class="mb-3 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="enableDebugMode">
+                                    <label class="form-check-label" for="enableDebugMode">Debug Mode</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dataCacheTime" class="form-label">Data Cache Duration (hours)</label>
+                                    <input type="number" class="form-control" id="dataCacheTime" value="24">
+                                </div>
+                                <button class="btn btn-primary">Save Settings</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="js/firebase-config.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/admin-panel.js"></script>
+</body>
+</html> 

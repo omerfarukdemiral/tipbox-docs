@@ -6,7 +6,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https: http://localhost:3000; connect-src 'self' https: http://localhost:3000; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
@@ -30,8 +30,8 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <!-- Firebase Realtime Database SDK'sını ekle -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <!-- Firestore SDK'sını ekle -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <!-- Güvenlik JS -->
     <script src="js/security.js"></script>
@@ -41,7 +41,6 @@
         const firebaseConfig = {
             apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
             authDomain: "tipbox-docs.firebaseapp.com",
-            databaseURL: "https://tipbox-docs-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "tipbox-docs",
             storageBucket: "tipbox-docs.firebasestorage.app",
             messagingSenderId: "921740258376",
@@ -52,8 +51,8 @@
         // Firebase'i başlat
         firebase.initializeApp(firebaseConfig);
 
-        // Database referansını global olarak tanımla
-        const database = firebase.database();
+        // Firestore referansını global olarak tanımla
+        const db = firebase.firestore();
 
         // Auth durumunu kontrol et
         firebase.auth().onAuthStateChanged(function (user) {
@@ -314,34 +313,40 @@
         }
 
         async function verifyInviteCode() {
-            const code = document.getElementById('inviteCode').value;
+            const code = document.getElementById('inviteCode').value.toUpperCase();
             if (!code || code.length !== 8) {
                 alert('Lütfen 8 karakterli bir kod giriniz.');
                 return;
             }
 
             try {
-                const snapshot = await database.ref('invite_codes/' + code).once('value');
-                const codeData = snapshot.val();
-
-                console.log(codeData)
-
-                if (!codeData) {
+                console.log('Token giriş işlemi başlıyor:', code);
+                
+                // Firestore'dan token bilgisini doğrudan ID ile al
+                const tokenDoc = await db.collection('guestTokens').doc(code).get();
+                
+                console.log('Token dokümanı bulundu mu:', tokenDoc.exists);
+                
+                if (!tokenDoc.exists) {
                     alert('Geçersiz kod!');
                     return;
                 }
 
-                if (codeData.used_count >= codeData.max_uses) {
+                const tokenData = tokenDoc.data();
+                console.log('Token verileri:', tokenData);
+
+                if (!tokenData.isActive) {
+                    alert('Bu kod artık aktif değil!');
+                    return;
+                }
+
+                if (tokenData.usageCount >= tokenData.maxUsageCount) {
                     alert('Bu kod maksimum kullanım sayısına ulaşmış!');
                     return;
                 }
 
-                // Kullanım sayısını artır
-                await database.ref('invite_codes/' + code).update({
-                    used_count: (codeData.used_count || 0) + 1
-                });
-
                 // Custom token oluştur
+                console.log('Backend API isteği gönderiliyor...');
                 const response = await fetch('http://localhost:3000/auth/guest', {
                     method: 'POST',
                     headers: {
@@ -350,16 +355,88 @@
                     body: JSON.stringify({ code })
                 });
 
+                console.log('Backend yanıtı alındı, durum:', response.status);
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Sunucu hatası');
+                }
+
                 const data = await response.json();
-                if (data.error) throw new Error(data.error);
+                console.log('Token başarıyla alındı');
+
+                // Kullanım sayısını istemci tarafında da arttır (yedek olarak)
+                try {
+                    console.log('Kullanım sayısı istemci tarafında artırılıyor...');
+                    await db.collection('guestTokens').doc(code).update({
+                        usageCount: firebase.firestore.FieldValue.increment(1),
+                        lastUsedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    console.log('Kullanım sayısı istemci tarafında başarıyla artırıldı');
+                } catch (updateError) {
+                    console.error('Kullanım sayısı artırma hatası:', updateError);
+                    // Hata olsa da devam et
+                }
 
                 // Firebase ile giriş yap
                 await firebase.auth().signInWithCustomToken(data.firebaseToken);
+                console.log('Firebase girişi başarılı');
                 $('#guestLoginModal').modal('hide');
 
             } catch (error) {
                 console.error('Giriş hatası:', error);
                 alert('Giriş yapılırken bir hata oluştu: ' + error.message);
+            }
+        }
+    </script>
+
+    <script>
+        // Yeni token oluştur
+        function generateNewToken() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let token = '';
+            for (let i = 0; i < 8; i++) {
+                token += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            document.getElementById('generatedToken').textContent = token;
+            document.getElementById('saveTokenBtn').disabled = false;
+        }
+
+        // Token'ı kaydet
+        async function saveToken() {
+            try {
+                const token = document.getElementById('generatedToken').textContent;
+                if (token === '--------') return;
+
+                // Token'ı doğrudan document ID olarak kullan
+                const tokenRef = db.collection('guestTokens').doc(token);
+
+                // Önce token'ın var olup olmadığını kontrol et
+                const doc = await tokenRef.get();
+                if (doc.exists) {
+                    alert('Bu token zaten kullanımda! Lütfen yeni bir token oluşturun.');
+                    return;
+                }
+
+                // Token'ı kaydet
+                await tokenRef.set({
+                    token: token,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    createdBy: firebase.auth().currentUser.uid,
+                    usageCount: 0,
+                    maxUsageCount: 20,
+                    isActive: true
+                });
+
+                // Token'ı sıfırla ve grafiği güncelle
+                document.getElementById('generatedToken').textContent = '--------';
+                document.getElementById('saveTokenBtn').disabled = true;
+                
+                alert('Token başarıyla kaydedildi!');
+            } catch (error) {
+                console.error('Token kaydedilirken hata:', error);
+                alert('Token kaydedilirken bir hata oluştu!');
             }
         }
     </script>

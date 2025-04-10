@@ -23,19 +23,13 @@ export const linkedinLogin = (req, res) => {
 
 // LinkedIn callback işleme fonksiyonu
 export const linkedinCallback = (req, res, next) => {
-    console.log('LinkedIn callback alındı');
     passport.authenticate('linkedin', { session: false }, async (err, user) => {
         if (err) {
-            console.error('Authentication error:', err);
             return res.status(500).send('Authentication failed');
         }
         if (!user) {
-            console.error('No user returned');
             return res.status(401).send('Authentication failed');
-        }
-        
-        console.log('Authentication successful, user:', user);
-        
+        }        
         try {
             // Firestore'da kullanıcı kontrolü ve oluşturma
             const firestore = admin.firestore();
@@ -46,8 +40,6 @@ export const linkedinCallback = (req, res, next) => {
             
             if (!userDoc.exists) {
                 // Kullanıcı ilk defa giriş yapıyor, Firestore'a kaydet
-                console.log(`İlk kez giriş yapan kullanıcı için Firestore kaydı oluşturuluyor: ${user.uid}`);
-                
                 await userRef.set({
                     uid: user.uid,
                     email: user.email,
@@ -58,11 +50,8 @@ export const linkedinCallback = (req, res, next) => {
                     createdAt: admin.firestore.FieldValue.serverTimestamp(),
                     lastLoginAt: admin.firestore.FieldValue.serverTimestamp()
                 });
-                
-                console.log(`Kullanıcı Firestore'a kaydedildi: ${user.uid}`);
             } else {
                 // Kullanıcı zaten var, son giriş zamanını güncelle
-                console.log(`Var olan kullanıcı girişi: ${user.uid}`);
                 await userRef.update({
                     lastLoginAt: admin.firestore.FieldValue.serverTimestamp()
                 });
@@ -92,7 +81,6 @@ export const linkedinCallback = (req, res, next) => {
                 </script>
             `);
         } catch (error) {
-            console.error('Firestore işlem hatası:', error);
             return res.status(500).send('İşlem sırasında hata oluştu');
         }
     })(req, res, next);
@@ -102,13 +90,42 @@ export const linkedinCallback = (req, res, next) => {
 export const guestLogin = async (req, res) => {
     try {
         const { code } = req.body;
+        console.log("Giriş için kullanılan token:", code);
         
-        // Kod kontrolü
-        const codeSnapshot = await admin.database().ref('invite_codes/' + code).once('value');
-        const codeData = codeSnapshot.val();
+        // Kod kontrolü - Firestore'dan al
+        const tokenDoc = await admin.firestore().collection('guestTokens').doc(code).get();
+        
+        console.log("Token dokümanı mevcut mu:", tokenDoc.exists);
+        
+        if (!tokenDoc.exists) {
+            console.log("Token bulunamadı:", code);
+            return res.status(400).json({ error: 'Geçersiz kod' });
+        }
+        
+        const tokenData = tokenDoc.data();
+        console.log("Token verileri:", JSON.stringify(tokenData));
+        
+        if (!tokenData.isActive) {
+            console.log("Token aktif değil");
+            return res.status(400).json({ error: 'Bu kod artık aktif değil' });
+        }
+        
+        if (tokenData.usageCount >= tokenData.maxUsageCount) {
+            console.log("Token maksimum kullanım sayısına ulaşmış");
+            return res.status(400).json({ error: 'Bu kod maksimum kullanım sayısına ulaşmış' });
+        }
 
-        if (!codeData || codeData.used_count >= codeData.max_uses) {
-            return res.status(400).json({ error: 'Geçersiz veya kullanılmış kod' });
+        // Kullanım sayısını artır
+        try {
+            console.log("Kullanım sayısı artırılıyor...");
+            await admin.firestore().collection('guestTokens').doc(code).update({
+                usageCount: admin.firestore.FieldValue.increment(1),
+                lastUsedAt: admin.firestore.FieldValue.serverTimestamp()
+            });
+            console.log("Kullanım sayısı başarıyla artırıldı");
+        } catch (updateError) {
+            console.error("Kullanım sayısı artırılırken hata:", updateError);
+            // Hata olsa da devam et, kullanıcının girişini engellemek istemiyoruz
         }
 
         // Custom token oluştur
@@ -118,9 +135,10 @@ export const guestLogin = async (req, res) => {
             inviteCode: code
         });
 
+        console.log("Custom token oluşturuldu");
         res.json({ firebaseToken: customToken });
     } catch (error) {
-        console.error('Guest auth error:', error);
+        console.error("Guest login hatası:", error);
         res.status(500).json({ error: error.message });
     }
 };
@@ -128,18 +146,70 @@ export const guestLogin = async (req, res) => {
 // Token oluşturma endpoint'i
 export const createToken = async (req, res) => {
     try {
-        const code = Math.random().toString(36).substring(2, 8).toUpperCase();
-        const tokenRef = admin.database().ref('invite_codes/' + code);
+        // 8 karakter uzunluğunda bir token oluştur
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let code = '';
+        for (let i = 0; i < 8; i++) {
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
         
-        await tokenRef.set({
-            created_at: new Date().toISOString(),
-            max_uses: 10,
-            used_count: 0
+        // Firestore'a kaydet
+        await admin.firestore().collection('guestTokens').doc(code).set({
+            token: code,
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            createdBy: req.user?.uid || 'system',
+            usageCount: 0,
+            maxUsageCount: 20,
+            isActive: true
         });
 
         res.json({ code: code });
     } catch (error) {
-        console.error('Token oluşturma hatası:', error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Toplu token oluşturma endpoint'i (20 adet)
+export const createBulkTokens = async (req, res) => {
+    try {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const tokensToCreate = 20;
+        const createdTokens = [];
+        const firestore = admin.firestore();
+        const batch = firestore.batch();
+        
+        // 20 adet token oluştur
+        for (let i = 0; i < tokensToCreate; i++) {
+            let code = '';
+            for (let j = 0; j < 8; j++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            // Batch işlemine ekle
+            const docRef = firestore.collection('guestTokens').doc(code);
+            batch.set(docRef, {
+                token: code,
+                createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                createdBy: req.user?.uid || 'system',
+                usageCount: 0,
+                maxUsageCount: 20,
+                isActive: true
+            });
+            
+            createdTokens.push(code);
+        }
+        
+        // Batch işlemini uygula
+        await batch.commit();
+        console.log("20 adet token başarıyla oluşturuldu:", createdTokens);
+        
+        res.json({ 
+            success: true, 
+            message: '20 adet token başarıyla oluşturuldu', 
+            tokens: createdTokens 
+        });
+    } catch (error) {
+        console.error("Toplu token oluşturma hatası:", error);
         res.status(500).json({ error: error.message });
     }
 };
@@ -148,7 +218,6 @@ export const createToken = async (req, res) => {
 export const searchUsers = async (req, res) => {
     try {
         const query = req.query.q?.toLowerCase() || '';
-        console.log("Arama sorgusu:", query);
 
         // Boş sorgu kontrolü
         if (!query || query.length < 2) {
@@ -166,8 +235,6 @@ export const searchUsers = async (req, res) => {
                    displayName.includes(query);
         });
 
-        console.log(`${users.length} kullanıcı bulundu`);
-
         const sanitizedUsers = users.map(user => ({
             uid: user.uid,
             email: user.email || '',
@@ -178,7 +245,6 @@ export const searchUsers = async (req, res) => {
 
         res.json(sanitizedUsers);
     } catch (error) {
-        console.error('Kullanıcı arama hatası:', error);
         res.status(500).json({ 
             error: 'Kullanıcılar listelenirken bir hata oluştu',
             details: error.message 
