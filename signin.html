@@ -89,7 +89,7 @@
                 // Event listener'ı önce ekle
                 const messageHandler = async function (event) {
                     // Backend adresi kontrolünü genişlet (hem dev hem de prod için)
-                    const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:5500', 'https://tipbox-docs-backend.vercel.app', 'https://tipbox-docs-317bc.firebaseapp.com'];
+                    const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:5500', 'https://docs.tipbox.co', 'https://tipbox-docs-backend.vercel.app', 'https://tipbox-docs-317bc.firebaseapp.com'];
                     
                     if (!allowedOrigins.includes(event.origin)) {
                         console.warn('Bilinmeyen kaynaktan mesaj:', event.origin);
