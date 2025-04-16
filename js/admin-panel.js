@@ -609,7 +609,7 @@ async function generateBulkTokens() {
                 const creatorName = currentUser.displayName || currentUser.email;
                 
                 // API isteği gönder
-                const response = await fetch('http://localhost:3000/auth/create-bulk-tokens', {
+                const response = await fetch('https://tipbox-docs-backend.vercel.app/auth/create-bulk-tokens', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https: http://localhost:3000; connect-src 'self' https: http://localhost:3000; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https: connect-src 'self' https: img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
@@ -121,7 +121,7 @@
                 const timestamp = Date.now();
                 const randomString = Math.random().toString(36).substring(7);
                 const authWindow = window.open(
-                    `http://localhost:3000/auth/linkedin?nocache=${timestamp}_${randomString}`,
+                    `https://tipbox-docs-backend.vercel.app/auth/linkedin`,
                     'LinkedIn ile Giriş',
                     'width=600,height=600,location=yes,resizable=yes,scrollbars=yes'
                 );
@@ -341,7 +341,7 @@
 
                 // Custom token oluştur
                 console.log('Backend API isteği gönderiliyor...');
-                const response = await fetch('http://localhost:3000/auth/guest', {
+                const response = await fetch('https://tipbox-docs-backend.vercel.app/auth/guest', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
