@@ -53,13 +53,13 @@ async function checkFirebaseConnection() {
                 // Sabit bir Firebase konfigürasyonu tanımla
                 try {
                     const defaultConfig = {
-                        apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
-                        authDomain: "tipbox-docs.firebaseapp.com",
-                        projectId: "tipbox-docs",
-                        storageBucket: "tipbox-docs.firebasestorage.app",
-                        messagingSenderId: "921740258376",
-                        appId: "1:921740258376:web:1ccf200d51d7b4736afc7d",
-                        measurementId: "G-6PT22FTSEN"
+                        apiKey: "AIzaSyBX9y2CJMG4X5Qos3pLl6YPtUE4LYx-3DU",
+                        authDomain: "tipbox-docs-317bc.firebaseapp.com",
+                        projectId: "tipbox-docs-317bc",
+                        storageBucket: "tipbox-docs-317bc.firebasestorage.app",
+                        messagingSenderId: "967102234588",
+                        appId: "1:967102234588:web:158ec4b46adc6e784ed919",
+                        measurementId: "G-SEMNFLSB42"
                     };
                     firebase.initializeApp(defaultConfig);
                     console.log('✅ Firebase varsayılan yapılandırma ile başlatıldı');

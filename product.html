@@ -5,14 +5,15 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    
+
     <!-- Merkezi Yapılandırma -->
     <script src="js/config.js"></script>
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
@@ -39,27 +40,27 @@
     <script>
         // Firebase yapılandırması
         const firebaseConfig = {
-            apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
-            authDomain: "tipbox-docs.firebaseapp.com",
-            projectId: "tipbox-docs",
-            storageBucket: "tipbox-docs.firebasestorage.app",
-            messagingSenderId: "921740258376",
-            appId: "1:921740258376:web:1ccf200d51d7b4736afc7d",
-            measurementId: "G-6PT22FTSEN"
+            apiKey: "AIzaSyBX9y2CJMG4X5Qos3pLl6YPtUE4LYx-3DU",
+            authDomain: "tipbox-docs-317bc.firebaseapp.com",
+            projectId: "tipbox-docs-317bc",
+            storageBucket: "tipbox-docs-317bc.firebasestorage.app",
+            messagingSenderId: "967102234588",
+            appId: "1:967102234588:web:158ec4b46adc6e784ed919",
+            measurementId: "G-SEMNFLSB42"
         };
 
         // Firebase'i başlat
         firebase.initializeApp(firebaseConfig);
 
         // Kullanıcı bilgilerini güncelleme fonksiyonunu global scope'a taşıyalım
-        window.updateUserProfile = function(user) {
+        window.updateUserProfile = function (user) {
             if (user) {
                 // Avatar güncelleme
                 const avatarImages = document.querySelectorAll('.user-img, .user-img-sm');
                 const avatarUrl = user.photoURL || 'img/default-avatar.png';
                 avatarImages.forEach(img => {
                     img.src = avatarUrl;
-                    img.onerror = function() {
+                    img.onerror = function () {
                         this.src = 'img/default-avatar.png';
                     };
                 });
@@ -81,19 +82,19 @@
         };
 
         // Auth state değişikliğini dinle
-        firebase.auth().onAuthStateChanged(function(user) {
+        firebase.auth().onAuthStateChanged(function (user) {
             if (!user) {
                 window.location.href = 'signin.html';
             } else {
                 console.log('Giriş yapan kullanıcı:', user.displayName);
                 console.log('Email:', user.email);
                 console.log('Profil fotoğrafı:', user.photoURL);
-                
+
                 // Header yüklendikten sonra kullanıcı bilgilerini güncelle
                 if (document.readyState === 'complete') {
                     window.updateUserProfile(user);
                 } else {
-                    window.addEventListener('load', function() {
+                    window.addEventListener('load', function () {
                         window.updateUserProfile(user);
                     });
                 }
@@ -111,7 +112,8 @@
     </script>
 </head>
 
-<body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true" data-offset="70">
+<body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true"
+    data-offset="70">
     <div id="preloader">
         <div id="ctn-preloader" class="ctn-preloader">
             <div class="round_spinner">
@@ -125,7 +127,7 @@
             <p></p>
         </div>
     </div>
-    
+
     <div class="body_wrapper">
         <!-- Header Component -->
         <div include-html="components/header.html"></div>
@@ -139,7 +141,8 @@
                             <h2>Product</h2>
                         </div>
                         <div class="header_search_keyword">
-                            <span class="">Detailed description of our product, features, benefits, and competitive advantages.</span>
+                            <span class="">Detailed description of our product, features, benefits, and competitive
+                                advantages.</span>
                             <div class="scroll-down">
                                 <a href="#sticky_doc" class="scroll-link">
                                     <i class="arrow_carrot-down"></i>
@@ -179,7 +182,8 @@
                             <div class="" id="documentation">
                                 <div class="shortcode_title">
                                     <h1>Our Product</h1>
-                                    <p>Bu sayfa ürünümüz hakkında detaylı bilgi, özellikler ve avantajları içerecektir.</p>
+                                    <p>Bu sayfa ürünümüz hakkında detaylı bilgi, özellikler ve avantajları içerecektir.
+                                    </p>
                                 </div>
                             </div>
                         </article>
@@ -210,4 +214,4 @@
     <script src="js/main.js"></script>
 </body>
 
-</html> 
+</html>

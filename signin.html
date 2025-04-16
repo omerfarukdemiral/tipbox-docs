@@ -6,14 +6,15 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https: http://localhost:3000; connect-src 'self' https: http://localhost:3000; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https: http://localhost:3000; connect-src 'self' https: http://localhost:3000; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    
+
     <!-- Merkezi Yapılandırma -->
     <script src="js/config.js"></script>
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
@@ -39,13 +40,13 @@
     <script>
         // Firebase yapılandırması
         const firebaseConfig = {
-            apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
-            authDomain: "tipbox-docs.firebaseapp.com",
-            projectId: "tipbox-docs",
-            storageBucket: "tipbox-docs.firebasestorage.app",
-            messagingSenderId: "921740258376",
-            appId: "1:921740258376:web:1ccf200d51d7b4736afc7d",
-            measurementId: "G-6PT22FTSEN"
+            apiKey: "AIzaSyBX9y2CJMG4X5Qos3pLl6YPtUE4LYx-3DU",
+            authDomain: "tipbox-docs-317bc.firebaseapp.com",
+            projectId: "tipbox-docs-317bc",
+            storageBucket: "tipbox-docs-317bc.firebasestorage.app",
+            messagingSenderId: "967102234588",
+            appId: "1:967102234588:web:158ec4b46adc6e784ed919",
+            measurementId: "G-SEMNFLSB42"
         };
 
         // Firebase'i başlat
@@ -82,11 +83,11 @@
             try {
                 // Önce mevcut oturumu kapat
                 await firebase.auth().signOut();
-                
+
                 // Event listener'ı önce ekle
                 const messageHandler = async function (event) {
                     if (event.origin !== 'http://localhost:3000') return;
-                    
+
                     if (event.data.type === 'linkedinAuthSuccess') {
                         try {
                             const { firebaseToken, user } = event.data;
@@ -139,7 +140,7 @@
         /* Modal Stilleri */
         .modal-content.bg-dark {
             border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         }
 
         .modal-content.bg-dark input.form-control {
@@ -266,11 +267,8 @@
                     <div class="form-group">
                         <label class="text-white mb-2">Davetiye Kodunuz</label>
                         <div class="input-group">
-                            <input type="text" 
-                                class="form-control bg-dark text-white border-secondary" 
-                                id="inviteCode" 
-                                maxlength="8"
-                                style="letter-spacing: 3px; font-size: 18px; text-align: center;"
+                            <input type="text" class="form-control bg-dark text-white border-secondary" id="inviteCode"
+                                maxlength="8" style="letter-spacing: 3px; font-size: 18px; text-align: center;"
                                 placeholder="XXXXXXXX">
                         </div>
                         <small class="form-text text-muted mt-2">
@@ -279,14 +277,10 @@
                     </div>
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="button" 
-                        class="btn btn-outline-light" 
-                        data-dismiss="modal">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">
                         İptal
                     </button>
-                    <button type="button" 
-                        class="btn btn-primary custom-btn" 
-                        onclick="verifyInviteCode()"
+                    <button type="button" class="btn btn-primary custom-btn" onclick="verifyInviteCode()"
                         style="background: linear-gradient(90deg, #6B3CC9 0%, #6B3CC9 100%); border: none;">
                         Giriş Yap
                     </button>
@@ -321,12 +315,12 @@
 
             try {
                 console.log('Token giriş işlemi başlıyor:', code);
-                
+
                 // Firestore'dan token bilgisini doğrudan ID ile al
                 const tokenDoc = await db.collection('guestTokens').doc(code).get();
-                
+
                 console.log('Token dokümanı bulundu mu:', tokenDoc.exists);
-                
+
                 if (!tokenDoc.exists) {
                     alert('Geçersiz kod!');
                     return;
@@ -356,7 +350,7 @@
                 });
 
                 console.log('Backend yanıtı alındı, durum:', response.status);
-                
+
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(errorData.error || 'Sunucu hatası');

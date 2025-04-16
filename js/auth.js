@@ -2,13 +2,13 @@
 
 // Firebase yapılandırma bilgisi - index.html'den taşındı
 const firebaseConfig = {
-    apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
-    authDomain: "tipbox-docs.firebaseapp.com",
-    projectId: "tipbox-docs",
-    storageBucket: "tipbox-docs.firebasestorage.app",
-    messagingSenderId: "921740258376",
-    appId: "1:921740258376:web:1ccf200d51d7b4736afc7d",
-    measurementId: "G-6PT22FTSEN"
+    apiKey: "AIzaSyBX9y2CJMG4X5Qos3pLl6YPtUE4LYx-3DU",
+    authDomain: "tipbox-docs-317bc.firebaseapp.com",
+    projectId: "tipbox-docs-317bc",
+    storageBucket: "tipbox-docs-317bc.firebasestorage.app",
+    messagingSenderId: "967102234588",
+    appId: "1:967102234588:web:158ec4b46adc6e784ed919",
+    measurementId: "G-SEMNFLSB42"
 };
 
 // Firebase'i başlat (eğer daha önce başlatılmamışsa)
@@ -50,7 +50,7 @@ function getFieldIncrement(value = 1) {
 
 // Firestore'dan kullanıcı bilgilerini getir
 // Global olarak tanımlanmış versiyonu
-window.enhanceUserWithFirestoreData = async function(authUser) {   
+window.enhanceUserWithFirestoreData = async function (authUser) {
     // Firestore modülünü kontrol et ve gerekirse yükle
     const firestoreLoaded = await loadFirestoreIfNeeded();
     if (!firestoreLoaded) {
@@ -62,21 +62,21 @@ window.enhanceUserWithFirestoreData = async function(authUser) {
     try {
         // Firestore referansını al
         const userRef = firestore.collection('users').doc(authUser.uid);
-        
+
         // Firestore'dan kullanıcı dokümanını çek
         const userDoc = await userRef.get();
-        
+
         if (userDoc.exists) {
             // Firestore'dan gelen verileri al
             const firestoreUserData = userDoc.data();
-            
+
             // Tarih alanlarını Date nesnesine dönüştür
             const parsedData = {
                 ...firestoreUserData,
                 createdAt: firestoreUserData.createdAt?.toDate?.() || null,
                 lastLoginAt: firestoreUserData.lastLoginAt?.toDate?.() || null
             };
-            
+
             // Auth ve Firestore verilerini birleştir (Firestore öncelikli)
             const enhancedUser = {
                 ...authUser,                      // Temel auth özellikleri
@@ -89,16 +89,16 @@ window.enhanceUserWithFirestoreData = async function(authUser) {
                 // Rol bilgisi (varsayılan olarak 'user')
                 role: parsedData.role || 'user'
             };
-            
+
             // Kullanıcı bilgilerini window nesnesinde kaydet
             storeUserInWindow(enhancedUser);
-            
+
             // Son giriş tarihini güncelle (background işlem)
             updateLastLogin(enhancedUser.uid).catch(err => console.error('Son giriş tarihi güncellenirken hata:', err));
-            
+
             return enhancedUser;
         } else {
-            
+
             // Yeni kullanıcı profili oluştur
             const newUserData = {
                 uid: authUser.uid,
@@ -109,24 +109,24 @@ window.enhanceUserWithFirestoreData = async function(authUser) {
                 createdAt: getServerTimestamp(),
                 lastLoginAt: getServerTimestamp()
             };
-            
+
             // Kullanıcıyı Firestore'a kaydet
             await userRef.set(newUserData);
-            
+
             // Auth ve yeni Firestore verilerini birleştir
             const enhancedUser = {
                 ...authUser,
                 ...newUserData
             };
-            
+
             // Kullanıcı bilgilerini window nesnesinde kaydet
             storeUserInWindow(enhancedUser);
-            
+
             return enhancedUser;
         }
     } catch (error) {
         // Hata durumunda orijinal auth bilgileri ile devam et
-        storeUserInWindow(authUser); 
+        storeUserInWindow(authUser);
         return authUser;
     }
 };
@@ -134,7 +134,7 @@ window.enhanceUserWithFirestoreData = async function(authUser) {
 // Kullanıcının son giriş tarihini güncelle
 async function updateLastLogin(uid) {
     if (!uid) return Promise.reject('Kullanıcı ID\'si gerekli');
-    
+
     try {
         await loadFirestoreIfNeeded();
         await firestore.collection('users').doc(uid).update({
@@ -149,30 +149,30 @@ async function updateLastLogin(uid) {
 // Kullanıcı bilgilerini window nesnesi üzerinde sakla (global erişim için)
 function storeUserInWindow(user) {
     if (!user) return;
-    
+
     // window.currentUser objesi yoksa oluştur
     if (!window.currentUser) {
         window.currentUser = {};
     }
-    
+
     // Kullanıcı bilgilerini window.currentUser'a kopyala
     Object.assign(window.currentUser, user);
-    
+
     // Özellikle rol bilgisini kolay erişim için ayrıca sakla
     window.userRole = user.role || 'user';
 }
 
 // Kullanıcı oturum durumu değişikliklerini dinle
-auth.onAuthStateChanged(function(user) {
+auth.onAuthStateChanged(function (user) {
     if (user) {
         // Kullanıcı oturum açmışsa
         enhanceUserWithFirestoreData(user).then(enhancedUser => {
             // Kullanıcı arayüzünü güncelle
             updateUserInterface(enhancedUser);
-            
+
             // Kullanıcı giriş olayını tetikle
-            document.dispatchEvent(new CustomEvent('user-login', { 
-                detail: { user: enhancedUser } 
+            document.dispatchEvent(new CustomEvent('user-login', {
+                detail: { user: enhancedUser }
             }));
         }).catch(error => {
             console.error('Kullanıcı bilgileri getirilirken hata:', error);
@@ -184,7 +184,7 @@ auth.onAuthStateChanged(function(user) {
         // Window'daki kullanıcı bilgilerini temizle
         window.currentUser = null;
         window.userRole = null;
-        
+
         // Kullanıcı çıkış olayını tetikle
         document.dispatchEvent(new CustomEvent('user-logout'));
         redirectToSignIn();
@@ -222,7 +222,7 @@ function signInWithGoogle() {
     auth.signInWithPopup(provider)
         .then((result) => {
             // Başarılı giriş
-            
+
             // Kullanıcı profil bilgilerini kaydet/güncelle
             updateUserProfile(result.user);
         })
@@ -263,7 +263,7 @@ function signInWithToken(token) {
 // Token geçerliliğini kontrol et
 async function verifyToken(token) {
     await loadFirestoreIfNeeded();
-    
+
     try {
         // Token koleksiyonunda ara
         const tokenQuery = await firestore.collection('tokens')
@@ -271,25 +271,25 @@ async function verifyToken(token) {
             .where('valid', '==', true)
             .limit(1)
             .get();
-        
+
         if (tokenQuery.empty) {
             return { valid: false };
         }
-        
+
         // Token belgesini al
         const tokenDoc = tokenQuery.docs[0];
         const tokenData = tokenDoc.data();
-        
+
         // Kullanım limitini kontrol et
         if (tokenData.usageLimit && tokenData.usageCount >= tokenData.usageLimit) {
             return { valid: false, reason: 'Kullanım limiti aşıldı' };
         }
-        
+
         // Son kullanma tarihini kontrol et
         if (tokenData.expiresAt && tokenData.expiresAt.toDate() < new Date()) {
             return { valid: false, reason: 'Süresi dolmuş' };
         }
-        
+
         return {
             valid: true,
             id: tokenDoc.id,
@@ -303,15 +303,15 @@ async function verifyToken(token) {
 // Token kullanımını güncelle
 async function updateTokenUsage(tokenId) {
     await loadFirestoreIfNeeded();
-    
+
     try {
         const tokenRef = firestore.collection('tokens').doc(tokenId);
-        
+
         await tokenRef.update({
             usageCount: getFieldIncrement(1),
             lastUsedAt: getServerTimestamp()
         });
-        
+
         return true;
     } catch (error) {
         console.error('Token kullanım bilgisi güncellenirken hata:', error);
@@ -322,7 +322,7 @@ async function updateTokenUsage(tokenId) {
 // Yeni kullanıcı kaydı
 function signUp(email, password, additionalData = {}) {
     auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {            
+        .then((userCredential) => {
             // Kullanıcı profilini oluştur/güncelle
             updateUserProfile(userCredential.user, {
                 ...additionalData,
@@ -349,12 +349,12 @@ function resetPassword(email) {
 // Kullanıcı profilini oluşturur veya günceller
 async function updateUserProfile(user, additionalData = {}) {
     if (!user) return Promise.reject(new Error('Kullanıcı bilgisi eksik'));
-    
+
     await loadFirestoreIfNeeded();
-    
+
     try {
         const userRef = firestore.collection('users').doc(user.uid);
-        
+
         const userData = {
             uid: user.uid,
             email: user.email,
@@ -363,9 +363,9 @@ async function updateUserProfile(user, additionalData = {}) {
             lastLoginAt: getServerTimestamp(),
             ...additionalData
         };
-        
+
         await userRef.set(userData, { merge: true });
-        
+
         // Kullanıcı window nesnesinde varsa, onu da güncelle
         if (window.currentUser && window.currentUser.uid === user.uid) {
             Object.assign(window.currentUser, userData);
@@ -374,7 +374,7 @@ async function updateUserProfile(user, additionalData = {}) {
                 window.userRole = userData.role;
             }
         }
-        
+
         return userData;
     } catch (error) {
         console.error('Kullanıcı profili güncellenirken hata:', error);
@@ -398,24 +398,24 @@ async function checkUserRole(uid, requiredRole = 'admin') {
     if (window.currentUser && window.currentUser.uid === uid && window.userRole) {
         return window.userRole === requiredRole;
     }
-    
+
     // Firestore'dan kontrol et
     await loadFirestoreIfNeeded();
-    
+
     try {
         const userDoc = await firestore.collection('users').doc(uid).get();
-        
+
         if (userDoc.exists) {
             const userData = userDoc.data();
-            
+
             // Rol bilgisini window'a kaydet
             if (window.currentUser && window.currentUser.uid === uid) {
                 window.userRole = userData.role || 'user';
             }
-            
+
             return userData.role === requiredRole;
         }
-        
+
         return false;
     } catch (error) {
         console.error('Kullanıcı rolü kontrol edilirken hata:', error);

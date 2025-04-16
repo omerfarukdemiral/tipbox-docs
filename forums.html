@@ -6,14 +6,15 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    
+
     <!-- Merkezi Yapılandırma -->
     <script src="js/config.js"></script>
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
@@ -40,27 +41,27 @@
     <script>
         // Firebase yapılandırması
         const firebaseConfig = {
-            apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
-            authDomain: "tipbox-docs.firebaseapp.com",
-            projectId: "tipbox-docs",
-            storageBucket: "tipbox-docs.firebasestorage.app",
-            messagingSenderId: "921740258376",
-            appId: "1:921740258376:web:1ccf200d51d7b4736afc7d",
-            measurementId: "G-6PT22FTSEN"
+            apiKey: "AIzaSyBX9y2CJMG4X5Qos3pLl6YPtUE4LYx-3DU",
+            authDomain: "tipbox-docs-317bc.firebaseapp.com",
+            projectId: "tipbox-docs-317bc",
+            storageBucket: "tipbox-docs-317bc.firebasestorage.app",
+            messagingSenderId: "967102234588",
+            appId: "1:967102234588:web:158ec4b46adc6e784ed919",
+            measurementId: "G-SEMNFLSB42"
         };
 
         // Firebase'i başlat
         firebase.initializeApp(firebaseConfig);
 
         // Kullanıcı bilgilerini güncelleme fonksiyonunu global scope'a taşıyalım
-        window.updateUserProfile = function(user) {
+        window.updateUserProfile = function (user) {
             if (user) {
                 // Avatar güncelleme
                 const avatarImages = document.querySelectorAll('.user-img, .user-img-sm');
                 const avatarUrl = user.photoURL || 'img/default-avatar.png';
                 avatarImages.forEach(img => {
                     img.src = avatarUrl;
-                    img.onerror = function() {
+                    img.onerror = function () {
                         this.src = 'img/default-avatar.png';
                     };
                 });
@@ -82,19 +83,19 @@
         };
 
         // Auth state değişikliğini dinle
-        firebase.auth().onAuthStateChanged(function(user) {
+        firebase.auth().onAuthStateChanged(function (user) {
             if (!user) {
                 window.location.href = 'signin.html';
             } else {
                 console.log('Giriş yapan kullanıcı:', user.displayName);
                 console.log('Email:', user.email);
                 console.log('Profil fotoğrafı:', user.photoURL);
-                
+
                 // Header yüklendikten sonra kullanıcı bilgilerini güncelle
                 if (document.readyState === 'complete') {
                     window.updateUserProfile(user);
                 } else {
-                    window.addEventListener('load', function() {
+                    window.addEventListener('load', function () {
                         window.updateUserProfile(user);
                     });
                 }
@@ -145,8 +146,8 @@
                             <span class="">A comprehensive document that defines the key objectives,
                                 scope, and technical approach for the project.</span>
                         </div>
-                    </form>
-                </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>
@@ -216,7 +217,9 @@
                                         <img src="img/home_support/rc1.png" alt="community post">
                                     </div>
                                     <div class="entry-content">
-                                        <a href="forum-topics.html"> <h3 class="post-title"> Announcements </h3> </a>
+                                        <a href="forum-topics.html">
+                                            <h3 class="post-title"> Announcements </h3>
+                                        </a>
                                         <p>This forum is a special forum for general announcements.</p>
                                     </div>
                                 </div>
@@ -228,18 +231,21 @@
                                             <div class="freshness-box">
                                                 <div class="freshness-top">
                                                     <div class="freshness-link">
-                                                        <a href="#" title="Reply To: Main Forum Rules &amp; Policies">2 years, 2 months ago</a>
+                                                        <a href="#" title="Reply To: Main Forum Rules &amp; Policies">2
+                                                            years, 2 months ago</a>
                                                     </div>
                                                 </div>
                                                 <div class="freshness-btm">
                                                     <a href="#" title="View Eh Jewel's profile" class="bbp-author-link">
                                                         <div class="freshness-name">
-                                                            <a href="#" title="View Eh Jewel's profile" class="bbp-author-link">
+                                                            <a href="#" title="View Eh Jewel's profile"
+                                                                class="bbp-author-link">
                                                                 <span class="bbp-author-name">Eh Jewel</span>
                                                             </a>
                                                         </div>
                                                         <span class="bbp-author-avatar">
-                                                            <img alt="Eh Jewel" src="img/home_support/cp5.jpg" class="avatar photo">
+                                                            <img alt="Eh Jewel" src="img/home_support/cp5.jpg"
+                                                                class="avatar photo">
                                                         </span>
                                                     </a>
                                                 </div>
@@ -257,7 +263,9 @@
                                         <img src="img/home_support/rc2.png" alt="community post">
                                     </div>
                                     <div class="entry-content">
-                                        <a href="forum-topics.html"><h3 class="post-title">Technology</h3></a>
+                                        <a href="forum-topics.html">
+                                            <h3 class="post-title">Technology</h3>
+                                        </a>
                                         <p>Latest technology news and updates from our community.</p>
                                     </div>
                                 </div>
@@ -269,18 +277,21 @@
                                             <div class="freshness-box">
                                                 <div class="freshness-top">
                                                     <div class="freshness-link">
-                                                        <a href="#" title="Reply To: Main Forum Rules &amp; Policies">2 years, 2 months ago</a>
+                                                        <a href="#" title="Reply To: Main Forum Rules &amp; Policies">2
+                                                            years, 2 months ago</a>
                                                     </div>
                                                 </div>
                                                 <div class="freshness-btm">
                                                     <a href="#" title="View Eh Jewel's profile" class="bbp-author-link">
                                                         <div class="freshness-name">
-                                                            <a href="#" title="View Eh Jewel's profile" class="bbp-author-link">
+                                                            <a href="#" title="View Eh Jewel's profile"
+                                                                class="bbp-author-link">
                                                                 <span class="bbp-author-name">Eh Jewel</span>
                                                             </a>
                                                         </div>
                                                         <span class="bbp-author-avatar">
-                                                            <img alt="Eh Jewel" src="img/home_support/cp6.jpg" class="avatar photo">
+                                                            <img alt="Eh Jewel" src="img/home_support/cp6.jpg"
+                                                                class="avatar photo">
                                                         </span>
                                                     </a>
                                                 </div>
@@ -298,7 +309,9 @@
                                         <img src="img/home_support/rc8.png" alt="community post">
                                     </div>
                                     <div class="entry-content">
-                                        <a href="forum-topics.html"> <h3 class="post-title"> Social Media</h3> </a>
+                                        <a href="forum-topics.html">
+                                            <h3 class="post-title"> Social Media</h3>
+                                        </a>
                                         <p>Use this forum to share your opinion about social media. </p>
                                     </div>
                                 </div>
@@ -310,18 +323,21 @@
                                             <div class="freshness-box">
                                                 <div class="freshness-top">
                                                     <div class="freshness-link">
-                                                        <a href="#" title="Reply To: Main Forum Rules &amp; Policies">2 years, 2 months ago</a>
+                                                        <a href="#" title="Reply To: Main Forum Rules &amp; Policies">2
+                                                            years, 2 months ago</a>
                                                     </div>
                                                 </div>
                                                 <div class="freshness-btm">
                                                     <a href="#" title="View Eh Jewel's profile" class="bbp-author-link">
                                                         <div class="freshness-name">
-                                                            <a href="#" title="View Eh Jewel's profile" class="bbp-author-link">
+                                                            <a href="#" title="View Eh Jewel's profile"
+                                                                class="bbp-author-link">
                                                                 <span class="bbp-author-name">Kyle Jonson</span>
                                                             </a>
                                                         </div>
                                                         <span class="bbp-author-avatar">
-                                                            <img alt="Eh Jewel" src="img/home_support/cp7.png" class="avatar photo">
+                                                            <img alt="Eh Jewel" src="img/home_support/cp7.png"
+                                                                class="avatar photo">
                                                         </span>
                                                     </a>
                                                 </div>
@@ -339,7 +355,9 @@
                                         <img src="img/home_support/rc3.png" alt="community post">
                                     </div>
                                     <div class="entry-content">
-                                        <a href="forum-topics.html"> <h3 class="post-title"> Tipbox Support </h3> </a>
+                                        <a href="forum-topics.html">
+                                            <h3 class="post-title"> Tipbox Support </h3>
+                                        </a>
                                         <p>Get support for Tipbox knowledge-base and documentation template.</p>
                                     </div>
                                 </div>
@@ -351,18 +369,21 @@
                                             <div class="freshness-box">
                                                 <div class="freshness-top">
                                                     <div class="freshness-link">
-                                                        <a href="#" title="Reply To: Main Forum Rules &amp; Policies">1 years, 2 months ago</a>
+                                                        <a href="#" title="Reply To: Main Forum Rules &amp; Policies">1
+                                                            years, 2 months ago</a>
                                                     </div>
                                                 </div>
                                                 <div class="freshness-btm">
                                                     <a href="#" title="View Eh Jewel's profile" class="bbp-author-link">
                                                         <div class="freshness-name">
-                                                            <a href="#" title="View Eh Jewel's profile" class="bbp-author-link">
+                                                            <a href="#" title="View Eh Jewel's profile"
+                                                                class="bbp-author-link">
                                                                 <span class="bbp-author-name">Giles Posture</span>
                                                             </a>
                                                         </div>
                                                         <span class="bbp-author-avatar">
-                                                            <img alt="Eh Jewel" src="img/home_support/cp10.png" class="avatar photo">
+                                                            <img alt="Eh Jewel" src="img/home_support/cp10.png"
+                                                                class="avatar photo">
                                                         </span>
                                                     </a>
                                                 </div>
@@ -380,7 +401,9 @@
                                         <img src="img/home_support/rc13.png" alt="community post">
                                     </div>
                                     <div class="entry-content">
-                                        <a href="forum-topics.html"> <h3 class="post-title"> Marketplaces </h3> </a>
+                                        <a href="forum-topics.html">
+                                            <h3 class="post-title"> Marketplaces </h3>
+                                        </a>
                                         <p>This forum is a special forum for marketplace support.</p>
                                     </div>
                                 </div>
@@ -392,18 +415,21 @@
                                             <div class="freshness-box">
                                                 <div class="freshness-top">
                                                     <div class="freshness-link">
-                                                        <a href="#" title="Reply To: Main Forum Rules &amp; Policies">1 years, 3 months ago</a>
+                                                        <a href="#" title="Reply To: Main Forum Rules &amp; Policies">1
+                                                            years, 3 months ago</a>
                                                     </div>
                                                 </div>
                                                 <div class="freshness-btm">
                                                     <a href="#" title="View Eh Jewel's profile" class="bbp-author-link">
                                                         <div class="freshness-name">
-                                                            <a href="#" title="View Eh Jewel's profile" class="bbp-author-link">
+                                                            <a href="#" title="View Eh Jewel's profile"
+                                                                class="bbp-author-link">
                                                                 <span class="bbp-author-name">Eh Jewel</span>
                                                             </a>
                                                         </div>
                                                         <span class="bbp-author-avatar">
-                                                            <img alt="Eh Jewel" src="img/home_support/cp5.jpg" class="avatar photo">
+                                                            <img alt="Eh Jewel" src="img/home_support/cp5.jpg"
+                                                                class="avatar photo">
                                                         </span>
                                                     </a>
                                                 </div>
@@ -469,10 +495,10 @@
                 </div>
             </div>
         </section>
-          <!-- Footer Component -->
+        <!-- Footer Component -->
 
         <div class="call-to-action">
-            <div class="overlay-bg"></div>    
+            <div class="overlay-bg"></div>
             <div class="container">
                 <div class="action-content-wrapper">
                     <div class="action-title-wrap title-img">
@@ -512,14 +538,14 @@
 
     <script>
         // Include components script'ini güncelleyelim
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             includeHTML().then(() => {
                 // Header yüklendikten sonra, mevcut kullanıcı varsa bilgileri güncelle
                 const currentUser = firebase.auth().currentUser;
                 if (currentUser) {
                     window.updateUserProfile(currentUser);
                 }
-                
+
                 // Dark mode'u başlat
                 if (typeof initDarkMode === 'function') {
                     initDarkMode();

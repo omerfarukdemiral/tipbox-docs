@@ -5,14 +5,15 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    
+
     <!-- Merkezi Yapılandırma -->
     <script src="js/config.js"></script>
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
@@ -30,7 +31,7 @@
     <!-- jQuery ve Turn.js için gerekli dosyalar -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
-    
+
     <!-- PDF.js için gerekli dosyalar -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
 
@@ -48,28 +49,27 @@
     <script>
         // Firebase yapılandırması
         const firebaseConfig = {
-            apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
-            authDomain: "tipbox-docs.firebaseapp.com",
-            databaseURL: "https://tipbox-docs-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "tipbox-docs",
-            storageBucket: "tipbox-docs.firebasestorage.app",
-            messagingSenderId: "921740258376",
-            appId: "1:921740258376:web:1ccf200d51d7b4736afc7d",
-            measurementId: "G-6PT22FTSEN"
+            apiKey: "AIzaSyBX9y2CJMG4X5Qos3pLl6YPtUE4LYx-3DU",
+            authDomain: "tipbox-docs-317bc.firebaseapp.com",
+            projectId: "tipbox-docs-317bc",
+            storageBucket: "tipbox-docs-317bc.firebasestorage.app",
+            messagingSenderId: "967102234588",
+            appId: "1:967102234588:web:158ec4b46adc6e784ed919",
+            measurementId: "G-SEMNFLSB42"
         };
 
         // Firebase'i başlat
         firebase.initializeApp(firebaseConfig);
 
         // Kullanıcı bilgilerini güncelleme fonksiyonunu global scope'a taşıyalım
-        window.updateUserProfile = function(user) {
+        window.updateUserProfile = function (user) {
             if (user) {
                 // Avatar güncelleme
                 const avatarImages = document.querySelectorAll('.user-img, .user-img-sm');
                 const avatarUrl = user.photoURL || 'img/default-avatar.png';
                 avatarImages.forEach(img => {
                     img.src = avatarUrl;
-                    img.onerror = function() {
+                    img.onerror = function () {
                         this.src = 'img/default-avatar.png';
                     };
                 });
@@ -91,19 +91,19 @@
         };
 
         // Auth state değişikliğini dinle
-        firebase.auth().onAuthStateChanged(function(user) {
+        firebase.auth().onAuthStateChanged(function (user) {
             if (!user) {
                 window.location.href = 'signin.html';
             } else {
                 console.log('Giriş yapan kullanıcı:', user.displayName);
                 console.log('Email:', user.email);
                 console.log('Profil fotoğrafı:', user.photoURL);
-                
+
                 // Header yüklendikten sonra kullanıcı bilgilerini güncelle
                 if (document.readyState === 'complete') {
                     window.updateUserProfile(user);
                 } else {
-                    window.addEventListener('load', function() {
+                    window.addEventListener('load', function () {
                         window.updateUserProfile(user);
                     });
                 }
@@ -130,7 +130,7 @@
             border-radius: 8px;
             transition: all 0.3s ease;
         }
-        
+
         .nav-sidebar .nav-item a.active img {
             filter: brightness(1.2);
         }
@@ -155,14 +155,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
             margin: 0 auto;
         }
 
         #flipbook {
             width: 100%;
             height: 100%;
-            display: none; /* Başlangıçta gizli */
+            display: none;
+            /* Başlangıçta gizli */
         }
 
         #flipbook .page {
@@ -183,7 +184,7 @@
             background: rgba(29, 30, 32, 0.95);
             padding: 10px 20px;
             border-radius: 30px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
@@ -233,7 +234,7 @@
         .spinner {
             width: 50px;
             height: 50px;
-            border: 3px solid rgba(255,255,255,0.3);
+            border: 3px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             border-top-color: var(--brand_color);
             animation: spin 1s ease-in-out infinite;
@@ -241,18 +242,20 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         @media (max-width: 768px) {
             .pdf-container {
                 height: calc(100vh - var(--header-mobile-height) - var(--breadcrumb-height) - 40px);
             }
-            
+
             .pdf-controls {
                 padding: 8px 15px;
             }
-            
+
             .pdf-controls button {
                 padding: 6px 12px;
                 font-size: 12px;
@@ -280,16 +283,23 @@
 
         .scroll-down a:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
                 transform: translateY(0);
             }
+
             40% {
                 transform: translateY(-10px);
             }
+
             60% {
                 transform: translateY(-5px);
             }
@@ -338,14 +348,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
             margin: 0 auto;
         }
 
         #flipbook {
             width: 100%;
             height: 100%;
-            display: none; /* Başlangıçta gizli */
+            display: none;
+            /* Başlangıçta gizli */
         }
 
         #flipbook .page {
@@ -451,7 +462,8 @@
         }
 
         .fullscreen-mode .fullscreen-btn i.fa-expand::before {
-            content: "\f066"; /* fa-compress ikonu */
+            content: "\f066";
+            /* fa-compress ikonu */
         }
 
         /* ESC tuşu göstergesi */
@@ -460,10 +472,10 @@
             position: absolute;
             top: 15px;
             right: 15px;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 14px;
             padding: 8px 15px;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             border-radius: 20px;
             pointer-events: none;
             backdrop-filter: blur(5px);
@@ -506,7 +518,8 @@
     </style>
 </head>
 
-<body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true" data-offset="70">
+<body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true"
+    data-offset="70">
     <div id="preloader">
         <div id="ctn-preloader" class="ctn-preloader">
             <div class="round_spinner">
@@ -538,7 +551,7 @@
                     </button>
                     <a class="navbar-brand header_logo" href="index.html">
                         <img class="sticky_logo main_logo logo_light_version" src="img/logo.png" alt="logo">
-                        <img class="white_logo logo_dark_version" src="img/logo-w.png"alt="logo">
+                        <img class="white_logo logo_dark_version" src="img/logo-w.png" alt="logo">
                     </a>
                 </div>
                 <div class="mobile_menu_right">
@@ -582,30 +595,43 @@
                             <a href="#" class="nav-link">Docs</a>
                             <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
                             <ul class="dropdown-menu">
-                                <li class="nav-item"><a href="doc-content-video.html" class="nav-link">Doc Archives</a></li>
+                                <li class="nav-item"><a href="doc-content-video.html" class="nav-link">Doc Archives</a>
+                                </li>
                                 <li class="nav-item"><a href="doc-main.html" class="nav-link">DocTopics</a></li>
                                 <li class="nav-item dropdown submenu">
                                     <a href="#" class="nav-link">Elements</a>
                                     <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
                                     <ul class="dropdown-menu">
-                                        <li class="nav-item"><a href="doc-element-tab.html" class="nav-link">Tabs</a></li>
-                                        <li class="nav-item"><a href="doc-element-accordion.html" class="nav-link">Accordion</a></li>
-                                        <li class="nav-item"><a href="doc-element-notice.html" class="nav-link">Notices</a></li>
-                                        <li class="nav-item"><a href="doc-content-tables.html" class="nav-link">Tables</a></li>
-                                        <li class="nav-item"><a href="doc-content-tooltip.html" class="nav-link">Tooltips & Direction</a></li>
-                                        <li class="nav-item"><a href="doc-element-hotspots.html" class="nav-link">Image Hotspots</a></li>
-                                        <li class="nav-item"><a href="doc-element-lightbox.html" class="nav-link">Lightbox</a></li>
-                                        <li class="nav-item"><a href="doc-changelog.html" class="nav-link">Changelog</a></li>
+                                        <li class="nav-item"><a href="doc-element-tab.html" class="nav-link">Tabs</a>
+                                        </li>
+                                        <li class="nav-item"><a href="doc-element-accordion.html"
+                                                class="nav-link">Accordion</a></li>
+                                        <li class="nav-item"><a href="doc-element-notice.html"
+                                                class="nav-link">Notices</a></li>
+                                        <li class="nav-item"><a href="doc-content-tables.html"
+                                                class="nav-link">Tables</a></li>
+                                        <li class="nav-item"><a href="doc-content-tooltip.html"
+                                                class="nav-link">Tooltips & Direction</a></li>
+                                        <li class="nav-item"><a href="doc-element-hotspots.html" class="nav-link">Image
+                                                Hotspots</a></li>
+                                        <li class="nav-item"><a href="doc-element-lightbox.html"
+                                                class="nav-link">Lightbox</a></li>
+                                        <li class="nav-item"><a href="doc-changelog.html" class="nav-link">Changelog</a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class="nav-item dropdown submenu">
                                     <a href="#" class="nav-link">Layouts</a>
                                     <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
                                     <ul class="dropdown-menu">
-                                        <li class="nav-item"><a href="doc-element-hotspots.html" class="nav-link">Left Sidebar</a></li>
-                                        <li class="nav-item"><a href="doc-content-video.html" class="nav-link">Full-width</a></li>
-                                        <li class="nav-item"><a href="doc-layout-banner-gradient.html" class="nav-link">Gradient Banner</a></li>
-                                        <li class="nav-item"><a href="doc-layout-banner-empty.html" class="nav-link">Without Banner</a></li>
+                                        <li class="nav-item"><a href="doc-element-hotspots.html" class="nav-link">Left
+                                                Sidebar</a></li>
+                                        <li class="nav-item"><a href="doc-content-video.html"
+                                                class="nav-link">Full-width</a></li>
+                                        <li class="nav-item"><a href="doc-layout-banner-gradient.html"
+                                                class="nav-link">Gradient Banner</a></li>
+                                        <li class="nav-item"><a href="doc-layout-banner-empty.html"
+                                                class="nav-link">Without Banner</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -615,9 +641,9 @@
                             <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
                             <ul class="dropdown-menu">
                                 <li class="nav-item"><a href="onepage.html" class="nav-link">Onepage Doc</a></li>
-                                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-                                    <li class="nav-item"><a href="onepage.html" class="nav-link">Onepage Doc</a></li>
-                                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                                <li class="nav-item"><a href="onepage.html" class="nav-link">Onepage Doc</a></li>
+                                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
                                 <li class="nav-item"><a href="typography.html" class="nav-link">Typography</a></li>
                                 <li class="nav-item"><a href="404-error.html" class="nav-link">404 Error</a></li>
                             </ul>
@@ -637,70 +663,105 @@
                             <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
                             <ul class="dropdown-menu">
                                 <li class="nav-item"><a href="blog-grid.html" class="nav-link">Blog Grid</a></li>
-                                <li class="nav-item"><a href="blog-grid-two.html" class="nav-link">Blog Grid Two</a></li>
+                                <li class="nav-item"><a href="blog-grid-two.html" class="nav-link">Blog Grid Two</a>
+                                </li>
                                 <li class="nav-item"><a href="blog-list.html" class="nav-link">Blog List</a></li>
                                 <li class="nav-item"><a href="blog-single.html" class="nav-link">Blog Details</a></li>
                             </ul>
                         </li>
                     </ul>
-                               <div class="mobile_nav_bottom">
-                    <aside class="doc_left_sidebarlist">
-                        <div class="scroll">
-                            <ul class="list-unstyled nav-sidebar">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link" data-content-file="project-deck/executive-summary.html"><img src="img/side-nav/home.png" alt="">Executive Summary</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link" data-content-file="project-deck/legal-notice.html"><img src="img/side-nav/document.png" alt="">Legal Notice</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link"><img src="img/side-nav/layout.png" alt="">Introduction</a>
-                                    <span class="icon"><i class="arrow_carrot-down"></i></span>
-                                    <ul class="list-unstyled dropdown_nav">
-                                        <li><a href="#" data-content-file="project-deck/introduction/focus-problems.html">Focus Problems</a></li>
-                                        <li><a href="#" data-content-file="project-deck/introduction/compact-solutions.html">Compact Solutions</a></li>
-                                        <li><a href="#" data-content-file="project-deck/introduction/pollen-post-ecosystem.html">The Tipbox Ecosystem</a></li>
-                                        <li><a href="#" data-content-file="project-deck/introduction/platform-highlights.html">Platform Highlights</a></li>
-                                        <li><a href="#" data-content-file="project-deck/introduction/why-Tipbox.html">Why Tipbox?</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link"><img src="img/side-nav/briefcase.png" alt="">Market</a>
-                                    <span class="icon"><i class="arrow_carrot-down"></i></span>
-                                    <ul class="list-unstyled dropdown_nav">
-                                        <li><a href="#" data-content-file="project-deck/market/competition-analysis.html">Competition Analysis and Market Positioning</a></li>
-                                        <li><a href="#" data-content-file="project-deck/market/product-service-focuses.html">Product-Service Focusses in Early Phase</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link"><img src="img/side-nav/coding.png" alt="">Technology</a>
-                                    <span class="icon"><i class="arrow_carrot-down"></i></span>
-                                    <ul class="list-unstyled dropdown_nav">
-                                        <li><a href="#" data-content-file="project-deck/technology/web2-application.html">Web2 Application</a></li>
-                                        <li><a href="#" data-content-file="project-deck/technology/web3-application.html">Web3 Application</a></li>
-                                        <li><a href="#" data-content-file="project-deck/technology/platform-integration.html">Platform Integration</a></li>
-                                        <li><a href="#" data-content-file="project-deck/technology/tipbox-chain.html">TIPBOX Chain</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link"><img src="img/side-nav/chat1.png" alt="">POLLEN Token</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link"><img src="img/side-nav/clock.png" alt="">Tokenomics</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link"><img src="img/side-nav/edit.png" alt="">Roadmap</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link"><img src="img/side-nav/users.png" alt="">Team and Principles</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link"><img src="img/side-nav/united-states.png" alt="">Information Center</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </aside>
-                </div> </nav>
+                    <div class="mobile_nav_bottom">
+                        <aside class="doc_left_sidebarlist">
+                            <div class="scroll">
+                                <ul class="list-unstyled nav-sidebar">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link"
+                                            data-content-file="project-deck/executive-summary.html"><img
+                                                src="img/side-nav/home.png" alt="">Executive Summary</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link"
+                                            data-content-file="project-deck/legal-notice.html"><img
+                                                src="img/side-nav/document.png" alt="">Legal Notice</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link"><img src="img/side-nav/layout.png"
+                                                alt="">Introduction</a>
+                                        <span class="icon"><i class="arrow_carrot-down"></i></span>
+                                        <ul class="list-unstyled dropdown_nav">
+                                            <li><a href="#"
+                                                    data-content-file="project-deck/introduction/focus-problems.html">Focus
+                                                    Problems</a></li>
+                                            <li><a href="#"
+                                                    data-content-file="project-deck/introduction/compact-solutions.html">Compact
+                                                    Solutions</a></li>
+                                            <li><a href="#"
+                                                    data-content-file="project-deck/introduction/pollen-post-ecosystem.html">The
+                                                    Tipbox Ecosystem</a></li>
+                                            <li><a href="#"
+                                                    data-content-file="project-deck/introduction/platform-highlights.html">Platform
+                                                    Highlights</a></li>
+                                            <li><a href="#"
+                                                    data-content-file="project-deck/introduction/why-Tipbox.html">Why
+                                                    Tipbox?</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link"><img src="img/side-nav/briefcase.png"
+                                                alt="">Market</a>
+                                        <span class="icon"><i class="arrow_carrot-down"></i></span>
+                                        <ul class="list-unstyled dropdown_nav">
+                                            <li><a href="#"
+                                                    data-content-file="project-deck/market/competition-analysis.html">Competition
+                                                    Analysis and Market Positioning</a></li>
+                                            <li><a href="#"
+                                                    data-content-file="project-deck/market/product-service-focuses.html">Product-Service
+                                                    Focusses in Early Phase</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link"><img src="img/side-nav/coding.png"
+                                                alt="">Technology</a>
+                                        <span class="icon"><i class="arrow_carrot-down"></i></span>
+                                        <ul class="list-unstyled dropdown_nav">
+                                            <li><a href="#"
+                                                    data-content-file="project-deck/technology/web2-application.html">Web2
+                                                    Application</a></li>
+                                            <li><a href="#"
+                                                    data-content-file="project-deck/technology/web3-application.html">Web3
+                                                    Application</a></li>
+                                            <li><a href="#"
+                                                    data-content-file="project-deck/technology/platform-integration.html">Platform
+                                                    Integration</a></li>
+                                            <li><a href="#"
+                                                    data-content-file="project-deck/technology/tipbox-chain.html">TIPBOX
+                                                    Chain</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link"><img src="img/side-nav/chat1.png" alt="">POLLEN
+                                            Token</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link"><img src="img/side-nav/clock.png"
+                                                alt="">Tokenomics</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link"><img src="img/side-nav/edit.png" alt="">Roadmap</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link"><img src="img/side-nav/users.png" alt="">Team and
+                                            Principles</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link"><img src="img/side-nav/united-states.png"
+                                                alt="">Information Center</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </aside>
+                    </div>
+                </nav>
 
             </div>
         </div>
@@ -714,7 +775,7 @@
                             <h2>Project Deck</h2>
                         </div>
                         <div class="header_search_keyword">
-                            <span class="">A presentation that highlights the project's value proposition, 
+                            <span class="">A presentation that highlights the project's value proposition,
                                 progress, and strategic direction to potential stakeholders.</span>
                             <div class="scroll-down">
                                 <a href="#pdf-section" class="scroll-link">
@@ -750,7 +811,7 @@
             <div class="overlay_bg"></div>
             <div class="container custom_container">
                 <div class="row">
-                  
+
                     <div class="col-lg-12 col-md-12 doc-middle-content">
                         <div class="pdf-container secure-container">
                             <div id="flipbook"></div>
@@ -789,11 +850,11 @@
                                 const container = document.querySelector('.pdf-container');
                                 const containerWidth = container.clientWidth;
                                 const containerHeight = container.clientHeight;
-                                
+
                                 // Sayfa ve container oranlarını hesapla
                                 const pageRatio = viewport.width / viewport.height;
                                 const containerRatio = containerWidth / containerHeight;
-                                
+
                                 // En-boy oranına göre ölçeklendirme faktörünü hesapla
                                 if (pageRatio > containerRatio) {
                                     // Sayfa daha geniş, genişliğe göre ölçekle
@@ -810,26 +871,26 @@
                                 try {
                                     // Yükleme animasyonunu göster
                                     loader.style.display = 'flex';
-                                    
+
                                     pdfDoc = await pdfjsLib.getDocument(url).promise;
                                     document.getElementById('total-pages').textContent = pdfDoc.numPages;
-                                    
+
                                     // Flipbook div'ini temizle
                                     const flipbookElement = document.getElementById('flipbook');
                                     flipbookElement.innerHTML = '';
                                     flipbookElement.style.display = 'none';
-                                    
+
                                     // İlk sayfayı al ve ölçeği hesapla
                                     const firstPage = await pdfDoc.getPage(1);
                                     const viewport = firstPage.getViewport({ scale: 1.0 });
                                     currentScale = calculateScale(viewport);
-                                    
+
                                     // Tüm sayfaları yükle
                                     for (let i = 1; i <= pdfDoc.numPages; i++) {
                                         const page = await pdfDoc.getPage(i);
                                         const canvas = document.createElement('canvas');
                                         const context = canvas.getContext('2d');
-                                        
+
                                         const scaledViewport = page.getViewport({ scale: currentScale });
                                         canvas.height = scaledViewport.height;
                                         canvas.width = scaledViewport.width;
@@ -869,7 +930,7 @@
                                         display: 'single',
                                         elevation: 50,
                                         when: {
-                                            turning: function(event, page, pageObject) {
+                                            turning: function (event, page, pageObject) {
                                                 document.getElementById('current-page').textContent = page;
                                             }
                                         }
@@ -896,9 +957,9 @@
 
                             // Pencere boyutu değiştiğinde yeniden ölçeklendir
                             let resizeTimeout;
-                            $(window).resize(function() {
+                            $(window).resize(function () {
                                 clearTimeout(resizeTimeout);
-                                resizeTimeout = setTimeout(function() {
+                                resizeTimeout = setTimeout(function () {
                                     reloadPDF();
                                 }, 250);
                             });
@@ -908,7 +969,7 @@
                             }
 
                             // Sayfa yüklendiğinde PDF'yi göster
-                            $(document).ready(function() {
+                            $(document).ready(function () {
                                 setTimeout(loadPDF, 1000);
                             });
                         </script>
@@ -957,7 +1018,8 @@
             <div class="modal-content">
                 <div class="shortcode_title">
                     <h2>How can we help?</h2>
-                    <p>A premium WordPress theme with integrated Knowledge Base,<br>providing 24/7 community based support.</p>
+                    <p>A premium WordPress theme with integrated Knowledge Base,<br>providing 24/7 community based
+                        support.</p>
                 </div>
                 <form action="#" class="contact_form">
                     <div class="row">
@@ -1004,14 +1066,14 @@
     <!-- Component Include Script -->
     <script src="js/include-components.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             includeHTML().then(() => {
                 // Header yüklendikten sonra, mevcut kullanıcı varsa bilgileri güncelle
                 const currentUser = firebase.auth().currentUser;
                 if (currentUser) {
                     window.updateUserProfile(currentUser);
                 }
-                
+
                 // Dark mode'u başlat
                 if (typeof initDarkMode === 'function') {
                     initDarkMode();
@@ -1027,27 +1089,27 @@
         document.querySelectorAll('.scroll-link').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                
+
                 // Header ve breadcrumb yüksekliklerini hesapla
                 const header = document.querySelector('.mobile_main_menu') || document.querySelector('header');
                 const breadcrumb = document.querySelector('.page_breadcrumb');
                 const isMobile = window.innerWidth <= 768;
-                
+
                 const headerHeight = isMobile ? 60 : 80; // Mobil/desktop header yüksekliği
                 const breadcrumbHeight = breadcrumb ? breadcrumb.offsetHeight : 0;
                 const extraPadding = 30; // Ekstra üst boşluk
-                
+
                 // Toplam offset hesapla
                 const totalOffset = headerHeight + breadcrumbHeight + extraPadding;
-                
+
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
-                
+
                 if (targetElement) {
                     // Sayfanın en üstünden scroll pozisyonunu hesapla
                     const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
                     const offsetPosition = elementPosition - totalOffset;
-                    
+
                     window.scrollTo({
                         top: offsetPosition,
                         behavior: 'smooth'
@@ -1060,13 +1122,13 @@
         function updateContainerHeight() {
             const container = document.querySelector('.pdf-container');
             if (!container) return;
-            
+
             const isMobile = window.innerWidth <= 768;
             const headerHeight = isMobile ? 60 : 80;
             const breadcrumb = document.querySelector('.page_breadcrumb');
             const breadcrumbHeight = breadcrumb ? breadcrumb.offsetHeight : 0;
             const extraPadding = isMobile ? 40 : 60;
-            
+
             container.style.height = `calc(100vh - ${headerHeight}px - ${breadcrumbHeight}px - ${extraPadding}px)`;
         }
 
@@ -1081,16 +1143,16 @@
             const container = document.querySelector('.pdf-container');
             const flipbookElement = document.getElementById('flipbook');
             const fullscreenBtn = document.querySelector('.fullscreen-btn i');
-            
+
             if (!container.classList.contains('fullscreen-mode')) {
                 // Tam ekrana geç
                 container.classList.add('fullscreen-mode');
                 document.body.style.overflow = 'hidden';
-                
+
                 // Turn.js'yi yeniden başlat
                 const containerWidth = window.innerWidth * 0.98;
                 const containerHeight = window.innerHeight * 0.95;
-                
+
                 if (flipBook) {
                     flipBook.turn('size', containerWidth, containerHeight);
                     flipBook.turn('center');
@@ -1099,11 +1161,11 @@
                 // Normal ekrana dön
                 container.classList.remove('fullscreen-mode');
                 document.body.style.overflow = '';
-                
+
                 // Normal boyutlara dön
                 const normalWidth = container.offsetWidth * 0.85;
                 const normalHeight = container.offsetHeight * 0.85;
-                
+
                 if (flipBook) {
                     flipBook.turn('size', normalWidth, normalHeight);
                     flipBook.turn('center');
@@ -1112,7 +1174,7 @@
         }
 
         // ESC tuşu ile çıkış
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 const container = document.querySelector('.pdf-container');
                 if (container.classList.contains('fullscreen-mode')) {
@@ -1122,12 +1184,12 @@
         });
 
         // Pencere boyutu değiştiğinde tam ekran modunda yeniden boyutlandır
-        window.addEventListener('resize', function() {
+        window.addEventListener('resize', function () {
             const container = document.querySelector('.pdf-container');
             if (container.classList.contains('fullscreen-mode')) {
                 const containerWidth = window.innerWidth * 0.95;
                 const containerHeight = window.innerHeight * 0.9;
-                
+
                 if (flipBook) {
                     flipBook.turn('size', containerWidth, containerHeight);
                     flipBook.turn('center');

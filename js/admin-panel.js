@@ -75,7 +75,7 @@ function showAdminPanel(user) {
         if (adminNameElement && adminEmailElement) {
             adminNameElement.textContent = user.displayName || user.email;
             adminEmailElement.textContent = user.email;
-            
+            console.log("Data" + user);
             // Profil fotoğrafını göster (varsa)
             if (sidebarUserAvatarElement) {
                 if (user.photoURL) {
