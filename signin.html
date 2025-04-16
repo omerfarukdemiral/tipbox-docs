@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https: connect-src 'self' https: img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; connect-src 'self' https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
@@ -81,27 +81,60 @@
     <script>
         async function signInWithLinkedIn() {
             try {
+                console.log('LinkedIn ile giriş başlatılıyor...');
                 // Önce mevcut oturumu kapat
                 await firebase.auth().signOut();
+                console.log('Mevcut oturum kapatıldı, LinkedIn OAuth başlatılıyor');
 
                 // Event listener'ı önce ekle
                 const messageHandler = async function (event) {
-                    if (event.origin !== 'http://localhost:3000') return;
+                    // Backend adresi kontrolünü genişlet (hem dev hem de prod için)
+                    const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:5500', 'https://tipbox-docs-backend.vercel.app', 'https://tipbox-docs-317bc.firebaseapp.com'];
+                    
+                    if (!allowedOrigins.includes(event.origin)) {
+                        console.warn('Bilinmeyen kaynaktan mesaj:', event.origin);
+                        return;
+                    }
 
-                    if (event.data.type === 'linkedinAuthSuccess') {
+                    console.log('Mesaj alındı, origin:', event.origin, 'data:', event.data);
+                    
+                    // Mesaj formatı farklı olabilir, kontrol edelim
+                    const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+                    
+                    // Mesaj tipini kontrol et - hem 'linkedinAuthSuccess' hem de 'auth-success' kontrolü ekledik
+                    if (messageData.type === 'linkedinAuthSuccess' || messageData.type === 'auth-success') {
                         try {
-                            const { firebaseToken, user } = event.data;
+                            console.log('LinkedIn auth başarılı mesajı alındı:', messageData);
+                            
+                            // Tokeni farklı yerde de arayalım
+                            const firebaseToken = messageData.firebaseToken || messageData.token || (messageData.data && messageData.data.firebaseToken);
+                            const user = messageData.user || messageData.userData || (messageData.data && messageData.data.user);
+                            
+                            console.log('Çıkarılan token:', firebaseToken);
+                            console.log('Çıkarılan kullanıcı bilgileri:', user);
+                            
+                            if (!firebaseToken) {
+                                throw new Error('Firebase token bulunamadı - mesaj yapısı:', JSON.stringify(messageData));
+                            }
+                            
                             // Firebase ile giriş yap
+                            console.log('Firebase token alındı, giriş yapılıyor:', firebaseToken);
                             await firebase.auth().signInWithCustomToken(firebaseToken)
                                 .then((userCredential) => {
                                     console.log('Firebase authentication successful:', userCredential.user);
                                     // Kullanıcı bilgilerini localStorage'a kaydet
-                                    localStorage.setItem('user', JSON.stringify(user));
+                                    if (user) {
+                                        localStorage.setItem('user', JSON.stringify(user));
+                                    } else {
+                                        localStorage.setItem('user', JSON.stringify(userCredential.user));
+                                    }
                                     // Ana sayfaya yönlendir
                                     window.location.replace('index.html');
                                 })
                                 .catch((error) => {
-                                    console.error('Firebase authentication error:', error);
+                                    console.error('Firebase authentication error - code:', error.code);
+                                    console.error('Firebase authentication error - message:', error.message);
+                                    alert('Firebase kimlik doğrulama hatası: ' + error.message);
                                     throw error;
                                 });
 
@@ -119,16 +152,30 @@
 
                 // LinkedIn auth URL'ine benzersiz parametreler ekle
                 const timestamp = Date.now();
-                const randomString = Math.random().toString(36).substring(7);
+                const state = Math.random().toString(36).substring(7) + timestamp;
+                
+                // URL'e daha fazla parametre ekleyerek daha güvenli bir bağlantı oluşturalım
                 const authWindow = window.open(
-                    `https://tipbox-docs-backend.vercel.app/auth/linkedin`,
+                    `https://tipbox-docs-backend.vercel.app/auth/linkedin?state=${state}&origin=${window.location.origin}`,
                     'LinkedIn ile Giriş',
-                    'width=600,height=600,location=yes,resizable=yes,scrollbars=yes'
+                    'width=600,height=600,location=yes,resizable=yes,scrollbars=yes,status=yes'
                 );
 
                 if (!authWindow) {
                     throw new Error('Popup penceresi açılamadı - popup engelleyici aktif olabilir');
                 }
+                
+                console.log('LinkedIn auth penceresi açıldı, mesaj bekleniyor...');
+                
+                // 60 saniye sonra kapanmamış popup'ı kapat
+                setTimeout(() => {
+                    if (authWindow && !authWindow.closed) {
+                        console.log('LinkedIn auth penceresi 60 saniye sonra otomatik kapatıldı');
+                        authWindow.close();
+                        alert('LinkedIn giriş işlemi zaman aşımına uğradı. Lütfen tekrar deneyin.');
+                        window.removeEventListener('message', messageHandler);
+                    }
+                }, 60000);
             } catch (error) {
                 console.error('LinkedIn ile giriş hatası:', error);
                 alert('LinkedIn ile giriş yapılırken bir hata oluştu: ' + error.message);
@@ -298,7 +345,7 @@
     <script src="js/parallaxie.js"></script>
     <script src="js/TweenMax.min.js"></script>
     <script src="assets/wow/wow.min.js"></script>
-    <script src="../../unpkg.com/ionicons%405.4.0/dist/ionicons.js"></script>
+    <script src="../../unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <script src="js/main.js"></script>
 
     <script>
