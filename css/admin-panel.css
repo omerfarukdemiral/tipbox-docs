@@ -61,22 +61,52 @@ body {
     border-bottom: 1px solid #eee;
 }
 
+/* Kullanıcı tablosu stilleri */
 .user-avatar {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: #f8f9fa;
     margin-right: 10px;
 }
 
-.user-avatar i {
-    font-size: 2.5rem;
-    color: var(--primary-color);
+.user-avatar img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+.table.table-hover tr:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+    cursor: pointer;
+}
+
+/* Sidebar profil fotoğrafı için özel stiller */
+.sidebar .user-avatar {
+    width: 48px;
+    height: 48px;
+    background-color: rgba(59, 113, 202, 0.1);
+    margin-right: 10px;
+}
+
+.sidebar .user-avatar img {
+    width: 48px;
+    height: 48px;
 }
 
 .user-info p {
     margin: 0;
     font-weight: 600;
+    color: var(--secondary-color);
 }
 
 .user-info small {
     color: var(--secondary-color);
+    font-size: 12px;
 }
 
 .sidebar-nav {
@@ -200,15 +230,15 @@ body {
 
 /* Cards */
 .card {
-    border: none;
-    border-radius: var(--border-radius);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    margin-bottom: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 .card-header {
-    background-color: white;
-    border-bottom: 1px solid #eee;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
     padding: 15px 20px;
 }
 
@@ -216,6 +246,14 @@ body {
     margin: 0;
     font-weight: 600;
     color: #333;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+canvas {
+    max-width: 100%;
 }
 
 /* Tables */
@@ -360,4 +398,38 @@ body {
     .dashboard-cards .col-md-4 {
         margin-bottom: 15px;
     }
+}
+
+#userChartPlaceholder {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 30px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#userChartPlaceholder i {
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+#userChartPlaceholder p {
+    font-size: 16px;
+    color: #6c757d;
+    text-align: center;
+    max-width: 80%;
+}
+
+.form-select {
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 8px;
 } 

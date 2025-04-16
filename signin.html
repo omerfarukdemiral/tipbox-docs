@@ -390,57 +390,6 @@
         }
     </script>
 
-    <script>
-        // Yeni token oluştur
-        function generateNewToken() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let token = '';
-            for (let i = 0; i < 8; i++) {
-                token += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            
-            document.getElementById('generatedToken').textContent = token;
-            document.getElementById('saveTokenBtn').disabled = false;
-        }
-
-        // Token'ı kaydet
-        async function saveToken() {
-            try {
-                const token = document.getElementById('generatedToken').textContent;
-                if (token === '--------') return;
-
-                // Token'ı doğrudan document ID olarak kullan
-                const tokenRef = db.collection('guestTokens').doc(token);
-
-                // Önce token'ın var olup olmadığını kontrol et
-                const doc = await tokenRef.get();
-                if (doc.exists) {
-                    alert('Bu token zaten kullanımda! Lütfen yeni bir token oluşturun.');
-                    return;
-                }
-
-                // Token'ı kaydet
-                await tokenRef.set({
-                    token: token,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    createdBy: firebase.auth().currentUser.uid,
-                    usageCount: 0,
-                    maxUsageCount: 20,
-                    isActive: true
-                });
-
-                // Token'ı sıfırla ve grafiği güncelle
-                document.getElementById('generatedToken').textContent = '--------';
-                document.getElementById('saveTokenBtn').disabled = true;
-                
-                alert('Token başarıyla kaydedildi!');
-            } catch (error) {
-                console.error('Token kaydedilirken hata:', error);
-                alert('Token kaydedilirken bir hata oluştu!');
-            }
-        }
-    </script>
-
 </body>
 
 </html>

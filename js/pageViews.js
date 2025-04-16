@@ -18,17 +18,18 @@ const MIN_DURATION = 10 * 1000;
 
 // İzlenen sayfalar ve insan tarafından okunabilir adları
 const TRACKED_PAGES = {
-    'index.html': 'Ana Sayfa',
-    'tokeneconomics.html': 'Token Ekonomisi',
-    'project-deck.html': 'Proje Deck',
-    'project-blurb.html': 'Proje Özeti',
-    'project-blueprint.html': 'Proje Blueprint'
+    'tokeneconomics.html': 'Tokenekonomics',
+    'project-deck.html': 'Project Deck',
+    'project-blurb.html': 'Project Blurb',
+    'project-blueprint.html': 'Project Blueprint'
 };
 
 console.log('🔍 PageViews.js yüklendi');
 
 // Firebase bağlantısını doğrula
-function checkFirebaseConnection() {
+async function checkFirebaseConnection() {
+    console.log('🔍 Firebase bağlantısı kontrol ediliyor...');
+    
     if (typeof firebase === 'undefined') {
         console.error('❌ Firebase kütüphanesi yüklenemedi!');
         return false;
@@ -39,13 +40,64 @@ function checkFirebaseConnection() {
         const apps = firebase.apps;
         if (!apps || apps.length === 0) {
             console.error('❌ Firebase başlatılmamış!');
-            return false;
+            // Firebase config varsa başlatmayı dene
+            if (window.firebaseConfig) {
+                try {
+                    firebase.initializeApp(window.firebaseConfig);
+                    console.log('✅ Firebase başarıyla başlatıldı');
+                } catch (initError) {
+                    console.error('❌ Firebase başlatma hatası:', initError);
+                    return false;
+                }
+            } else {
+                // Sabit bir Firebase konfigürasyonu tanımla
+                try {
+                    const defaultConfig = {
+                        apiKey: "AIzaSyAKgkPi3-ll2wIvaBxBo4tLKad2ssipPR0",
+                        authDomain: "tipbox-docs.firebaseapp.com",
+                        projectId: "tipbox-docs",
+                        storageBucket: "tipbox-docs.firebasestorage.app",
+                        messagingSenderId: "921740258376",
+                        appId: "1:921740258376:web:1ccf200d51d7b4736afc7d",
+                        measurementId: "G-6PT22FTSEN"
+                    };
+                    firebase.initializeApp(defaultConfig);
+                    console.log('✅ Firebase varsayılan yapılandırma ile başlatıldı');
+                } catch (initError) {
+                    console.error('❌ Firebase varsayılan yapılandırma ile başlatma hatası:', initError);
+                    return false;
+                }
+            }
         }
         
-        // Firestore'a erişimi kontrol et
+        // Firestore'a erişimi kontrol et ve dinamik olarak yükle
         if (!firebase.firestore) {
-            console.error('❌ Firestore modülü kullanılamıyor!');
-            return false;
+            console.log('⚠️ Firestore modülü yüklü değil, dinamik olarak yükleniyor...');
+            
+            try {
+                // Firestore'u dinamik olarak yükle
+                await new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js';
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.head.appendChild(script);
+                });
+                
+                console.log('✅ Firestore modülü başarıyla yüklendi');
+                
+                // Bir saniye bekleyelim
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Yükleme sonrası kontrol
+                if (!firebase.firestore) {
+                    console.error('❌ Firestore modülü yüklendi ancak kullanılamıyor!');
+                    return false;
+                }
+            } catch (loadError) {
+                console.error('❌ Firestore modülü yüklenirken hata:', loadError);
+                return false;
+            }
         }
         
         console.log('✅ Firebase bağlantısı doğrulandı');
@@ -67,16 +119,32 @@ function calculateDuration() {
 }
 
 /**
+ * Benzersiz uuid oluştur
+ * @returns {string} Benzersiz uuid
+ */
+function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0,
+            v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+/**
  * Sayfa görüntüleme takibi için tüm gerekli olayları başlatır
  */
-function initializePageViews() {
+async function initializePageViews() {
     if (isInitialized) return;
     
     console.log('🚀 Sayfa görüntüleme takibi başlatılıyor');
     isInitialized = true;
     
-    // Firebase bağlantısını kontrol et
-    checkFirebaseConnection();
+    // Firebase bağlantısını kontrol et - asenkron çalıştır
+    const firebaseConnected = await checkFirebaseConnection();
+    if (!firebaseConnected) {
+        console.error('❌ Firebase bağlantısı kurulamadı, sayfa görüntüleme takibi yapılamayacak');
+        return;
+    }
     
     // Lokal depolama kontrolü
     checkPendingRecords();
@@ -173,8 +241,10 @@ function handlePageUnload() {
         const backupData = {
             userId: userId,
             pageName: currentPage,
+            pageSlug: pageSlug,
             duration: Math.round(duration / 1000),
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            processID: `${userId}_${pageSlug}_${Date.now()}`
         };
         
         localStorage.setItem('pendingPageView', JSON.stringify(backupData));
@@ -245,10 +315,11 @@ function setupPageUnloadHandler() {
             // Not: beforeunload'da asenkron işlemler tamamlanmayabilir
             // bu yüzden önce localStorage'a kaydediyoruz
             const db = firebase.firestore();
+            const documentId = generateUUID();
+            
             db.collection('pageViews')
-                .doc(pageSlug)  // Boşluk içermeyen URL-dostu format
-                .collection(userId)
-                .add({
+                .doc(documentId)
+                .set({
                     processID: processID,
                     userId: userId,
                     pageName: currentPage,  // Görüntüleme için okunabilir isim
@@ -285,6 +356,11 @@ function checkPendingRecords() {
             console.log(`⏱️ Süre çok kısa (${data.duration}s), kayıt silinecek`);
             localStorage.removeItem('pendingPageView');
             return;
+        }
+        
+        if (!data.processID) {
+            data.processID = `${data.userId}_${data.pageSlug || 'unknown'}_${Date.now()}`;
+            console.log('⚠️ ProcessID bulunamadı, otomatik oluşturuldu:', data.processID);
         }
         
         console.log('🔄 ProcessID kontrolü başlatılıyor:', data.processID);
@@ -326,19 +402,13 @@ async function checkIfRecordExists(data) {
         return false;
     }
     
-    // URL-dostu belge ID'si için pageSlug'ı kullan
-    // Eğer pageSlug yoksa, pageName'i URL-dostu formata dönüştür
-    const docId = data.pageSlug || data.pageName.replace(/\s+/g, '-').toLowerCase();
-    
     try {
-        console.log(`🔍 Firestore'da sorgu yapılıyor: ${docId}/${data.userId}/processID=${data.processID}`);
+        console.log(`🔍 Firestore'da sorgu yapılıyor: pageViews/processID=${data.processID}`);
         
-        // Firestore'da processID'ye göre sorgulama yap
+        // Yeni yapıda, pageViews koleksiyonunda processID'ye göre sorgulama yap
         const db = firebase.firestore();
         const querySnapshot = await db
             .collection('pageViews')
-            .doc(docId)  // Boşluk içermeyen URL-dostu format
-            .collection(data.userId)
             .where('processID', '==', data.processID)
             .limit(1)
             .get();
@@ -367,27 +437,30 @@ function saveRecordToFirestore(data) {
     
     // ProcessID yoksa ekle
     if (!data.processID) {
-        data.processID = `${data.userId}_${data.pageName}_${Date.now()}`;
+        data.processID = `${data.userId}_${data.pageSlug || data.pageName.replace(/\s+/g, '-').toLowerCase()}_${Date.now()}`;
         console.log('⚠️ ProcessID bulunamadı, otomatik oluşturuldu:', data.processID);
     }
     
-    // URL-dostu belge ID'si için pageSlug'ı kullan
-    // Eğer pageSlug yoksa, pageName'i URL-dostu formata dönüştür
-    const docId = data.pageSlug || data.pageName.replace(/\s+/g, '-').toLowerCase();
+    // pageSlug yoksa oluştur
+    if (!data.pageSlug && data.pageName) {
+        data.pageSlug = data.pageName.replace(/\s+/g, '-').toLowerCase();
+    }
     
     try {
-        // Firestore'a kaydet: pageViews/{pageSlug}/{userId}/{docId}
+        // Benzersiz bir belge ID'si oluştur
+        const documentId = generateUUID();
+        
+        // Firestore'a kaydet: pageViews/{uuid}
         const db = firebase.firestore();
-        console.log(`📝 Koleksiyon yolu: pageViews/${docId}/${data.userId}`);
+        console.log(`📝 Koleksiyon yolu: pageViews/${documentId}`);
         
         db.collection('pageViews')
-            .doc(docId)  // Boşluk içermeyen URL-dostu format
-            .collection(data.userId)
-            .add({
+            .doc(documentId)
+            .set({
                 processID: data.processID,
                 userId: data.userId,
-                pageName: data.pageName,  // Görüntüleme için okunabilir isim
-                pageSlug: docId,          // URL-dostu format
+                pageName: data.pageName,
+                pageSlug: data.pageSlug,
                 duration: data.duration,
                 timestamp: firebase.firestore.Timestamp.fromDate(new Date(data.timestamp))
             })
@@ -443,34 +516,36 @@ async function saveToDatabase(duration) {
         const processID = `${userId}_${pageSlug}_${Date.now()}`;
         console.log(`🆔 Yeni processID oluşturuldu: ${processID}`);
         
+        // Benzersiz bir belge ID'si oluştur
+        const documentId = generateUUID();
+        
         // Veri modeli
         const viewData = {
             processID: processID,
             userId: userId,
             pageName: currentPage,  // İnsan tarafından okunabilir isim
-            pageSlug: pageSlug,     // URL-dostu format (belge ID'si için)
+            pageSlug: pageSlug,     // URL-dostu format
             duration: durationInSeconds, // Süre bilgisi zorunlu
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         };
         
         console.log('💾 Firestore\'a kayıt yapılacak veri:', viewData);
         
-        // Firestore'a kaydet: pageViews/{pageSlug}/{userId}/{docId}
+        // Firestore'a kaydet: pageViews/{uuid} koleksiyonuna
         const db = firebase.firestore();
         
-        console.log(`📝 Koleksiyon yolu: pageViews/${pageSlug}/${userId}`);
+        console.log(`📝 Koleksiyon yolu: pageViews/${documentId}`);
         
         const docRef = await db
             .collection('pageViews')
-            .doc(pageSlug)  // Boşluk içermeyen URL-dostu format
-            .collection(userId)
-            .add(viewData);
+            .doc(documentId)
+            .set(viewData);
             
-        console.log(`✅ Sayfa görüntüleme kaydedildi: ${currentPage} (${pageSlug}) - ${userId} - ${durationInSeconds}s, DocID: ${docRef.id}`);
+        console.log(`✅ Sayfa görüntüleme kaydedildi: ${currentPage} (${pageSlug}) - ${userId} - ${durationInSeconds}s, DocID: ${documentId}`);
         
         // Başarılı kayıt işlemi sonrası isteğe bağlı olarak veri doğrulama
         try {
-            const savedDoc = await docRef.get();
+            const savedDoc = await db.collection('pageViews').doc(documentId).get();
             if (savedDoc.exists) {
                 console.log('✅✅ Kayıt doğrulandı, veri mevcut:', savedDoc.data());
             } else {
@@ -551,15 +626,12 @@ function resetTimer() {
 }
 
 // DOM yüklendiğinde sayfa takibini başlat
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function() {
     console.log('🚀 DOM yüklendi');
     
-    // Firebase bağlantısını kontrol et
-    const firebaseAvailable = checkFirebaseConnection();
-    
     // Firebase Auth doğrudan dinle
-    if (firebaseAvailable && firebase.auth) {
-        firebase.auth().onAuthStateChanged(user => {
+    if (firebase && firebase.auth) {
+        firebase.auth().onAuthStateChanged(async user => {
             if (user) {
                 userId = user.uid;
                 console.log('👤 Oturum açmış kullanıcı tespit edildi:', userId);
@@ -579,13 +651,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log(`📄 İzlenen sayfa: ${currentPage} (Belge ID: ${pageSlug})`);
                 
                 // Sayfa görüntülemeyi başlat
-                initializePageViews();
+                await initializePageViews();
             } else {
                 console.log('⚠️ Bu sayfa izlenmiyor:', filename);
             }
         });
     } else {
-        console.error('❌ Firebase Auth kullanılamıyor! Anonim kullanıcı olarak devam edilecek.');
+        console.log('❌ Firebase Auth kullanılamıyor! Anonim kullanıcı olarak devam edilecek.');
         userId = 'anonymous';
         
         // Geçerli sayfa adını belirle
@@ -599,7 +671,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log(`📄 İzlenen sayfa: ${currentPage} (Belge ID: ${pageSlug})`);
             
             // Sayfa görüntülemeyi başlat
-            initializePageViews();
+            await initializePageViews();
         } else {
             console.log('⚠️ Bu sayfa izlenmiyor:', filename);
         }
