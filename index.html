@@ -298,6 +298,59 @@
         .changelog_content .changelog_btn:hover {
             background: #e1e4e9;
         }
+
+        .doc_features_inner .doc_features_item .icon-wrapper {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0;
+        }
+        .doc_features_inner .doc_features_item .text-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 20px 15px;
+            background: #2c303a;
+            border-radius: 5px;
+        }
+        .doc_features_inner .doc_features_item {
+            height: 240px;
+            margin-bottom: 20px;
+            display: flex;
+        }
+        .doc_features_inner .doc_features_item > .text-center > * {
+            flex-shrink: 0;
+        }
+        .doc_features_inner .doc_features_item p {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-top: 10px;
+            text-align: left;
+        }
+        .doc_features_inner .doc_features_item img {
+            height: 48px;
+            object-fit: contain;
+        }
+        .doc_features_inner .doc_features_item h4 {
+            margin-bottom: 5px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0;
+        }
+        .doc_features_inner .doc_features_item a {
+            display: block;
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        .doc_features_area {
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
     </style>
 </head>
 
@@ -374,51 +427,55 @@
         <section class="doc_features_area">
             <img class="doc_features_shap" src="img/new/shap_white.png" alt="">
             <div class="container">
-                <div class="doc_features_inner">
-                    <div class="media doc_features_item wow fadeInUp" data-wow-delay="0.1s" data-wow-duration="0.5s">
-                        <div class="media-body">
-                            <img src="img/new/icon1.png" alt="">
+                <div class="doc_features_inner row">
+                    <div class="col-md-3 doc_features_item wow fadeInUp" data-wow-delay="0.1s" data-wow-duration="0.5s">
+                        <div class="text-center">
+                            <div class="icon-wrapper">
+                                <img src="img/new/icon1.png" alt="" style="width: 48px; height: 48px;">
+                            </div>
                             <a href="project-blueprint.html">
                                 <h4>Project Blueprint</h4>
                             </a>
-                            <p>A comprehensive document that defines the key objectives,
-                                scope, and technical approach for the project.</p>
+                            <p>A comprehensive document that defines the key objectives, scope, and technical approach for the project.</p>
                         </div>
                     </div>
-                    <div class="media doc_features_item wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="0.6s">
-                        <div class="media-body">
-                            <img src="img/new/icon2.png" alt="">
+                    <div class="col-md-3 doc_features_item wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="0.6s">
+                        <div class="text-center">
+                            <div class="icon-wrapper">
+                                <img src="img/new/icon2.png" alt="" style="width: 48px; height: 48px;">
+                            </div>
                             <a href="project-deck.html">
                                 <h4>Project Deck</h4>
                             </a>
-                            <p>A presentation that highlights the project's value proposition,
-                                progress, and strategic direction to potential stakeholders.</p>
+                            <p>A presentation that highlights the project's value proposition, progress, and strategic direction to potential stakeholders.</p>
                         </div>
                     </div>
-                    <div class="media doc_features_item wow fadeInUp" data-wow-delay="0.5s" data-wow-duration="0.9s">
-                        <div class="media-body">
-                            <img src="img/new/icon3.png" alt="">
+                    <div class="col-md-3 doc_features_item wow fadeInUp" data-wow-delay="0.3s" data-wow-duration="0.7s">
+                        <div class="text-center">
+                            <div class="icon-wrapper">
+                                <img src="img/new/icon3.png" alt="" style="width: 48px; height: 48px;">
+                            </div>
                             <a href="project-blurb.html">
                                 <h4>Project Blurb</h4>
                             </a>
-                            <p>A brief description offering an overview of the project,
-                                its purpose, and its intended outcomes in a concise format.</p>
+                            <p>A brief description offering an overview of the project, its purpose, and its intended outcomes in a concise format.</p>
                         </div>
                     </div>
-                    <div class="media doc_features_item wow fadeInUp" data-wow-delay="0.5s" data-wow-duration="0.9s">
-                        <div class="media-body">
-                            <img src="img/new/icon9.png" alt="">
+                    <div class="col-md-3 doc_features_item wow fadeInUp" data-wow-delay="0.4s" data-wow-duration="0.8s">
+                        <div class="text-center">
+                            <div class="icon-wrapper">
+                                <img src="img/new/icon9.png" alt="" style="width: 48px; height: 48px;">
+                            </div>
                             <a href="tokeneconomics.html">
                                 <h4>Tokeneconomics</h4>
                             </a>
-                            <p>The economic model of a token within a blockchain project,
-                                explaining how tokens are distributed, utilized, and how they incentivize user participation.</p>
+                            <p>The economic model explaining how tokens are distributed, utilized, and incentivize participation in a blockchain project.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <section class="changelog_area">
+        <section class="changelog_area" style="padding: 50px 0;">
             <div class="container">
                 <img class="doc_shap_one" src="img/new/shap.png" alt="">
                 <div class="doc_round one" data-parallax='{"x": -80, "y": -100, "rotateY":0}'></div>
@@ -482,7 +539,7 @@
             </div>
         </section>
         
-        <section class="doc_subscribe_area">
+        <section class="doc_subscribe_area" style="padding: 50px 0;">
             <div class="container">
                 <div class="doc_subscribe_inner">
                     <img class="one" src="img/new/subscribe_shap.png" alt="">
