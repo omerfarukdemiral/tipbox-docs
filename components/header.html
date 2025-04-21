@@ -181,7 +181,9 @@
     border: none;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     border-radius: 0.5rem;
-    margin-top: 0.25rem;
+    margin-top: 0; /* Menüyü başlık ile bitişik tutma */
+    padding-top: 10px;
+    display: none; /* Varsayılan olarak gizli */
 }
 
 .navbar-nav .dropdown-item {
@@ -196,16 +198,14 @@
     color: #4c4cf1;
 }
 
-/* Hover Dropdown Menu */
+/* Hover Dropdown Menu - basitleştirilmiş versiyon */
 .navbar-nav .dropdown:hover .dropdown-menu {
-    display: block;
+    display: block; /* Hover üzerindeyken göster */
 }
 
-.navbar-nav .dropdown .nav-link .arrow_carrot-down {
-    font-size: 12px;
-    margin-left: 2px;
+/* Dropdown menünün navbar ile bağlantısı */
+.navbar-nav .dropdown {
     position: relative;
-    top: -1px;
 }
 
 @media (max-width: 767px) {
