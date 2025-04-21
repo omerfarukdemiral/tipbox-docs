@@ -11,6 +11,10 @@ let totalPageViewsPages = 1;
 let allUsers = [];
 let pageViewsChart = null;
 let userPageViewsChart = null;
+let userTimeBasedChart = null;
+let timeChartPage = 0; // Zaman grafiği için sayfa numarası
+let timeChartPageSize = 12; // Sayfa başına gösterilecek veri noktası sayısı
+let filteredTimeData = []; // Seçilen kullanıcının tüm zaman verisi
 
 // Wait for DOM content to be loaded before initializing the admin panel
 document.addEventListener('DOMContentLoaded', function() {    
@@ -30,6 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 initializeNavigation();
                 showAdminPanel(user);
                 loadUsersTable();
+                
+                // Kullanıcı arama işlevini başlat
+                setupUserSearch();
                 return;
             }
             
@@ -42,6 +49,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     initializeAdminPanel();
                     initializeNavigation();
                     loadUsersTable();
+                    
+                    // Kullanıcı arama işlevini başlat
+                    setupUserSearch();
                     
                     // Analytics için olay dinleyicilerini ekle
                     setupAnalyticsEventListeners();
@@ -62,6 +72,186 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Kullanıcı arama işlevini kuran fonksiyon
+function setupUserSearch() {
+    const searchInput = document.getElementById('userSearchInput');
+    if (searchInput) {
+        // Arama alanına keyup event listener ekle (kullanıcı yazmayı bitirdiğinde arama yap)
+        let debounceTimer;
+        searchInput.addEventListener('keyup', function() {
+            // Önceki timer'ı temizle ve yeni bir timer başlat
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const searchTerm = searchInput.value.trim();
+                if (searchTerm.length > 0) {
+                    // Arama terimiyle kullanıcıları ara
+                    searchUsers(searchTerm);
+                } else {
+                    // Arama terimi boşsa tüm kullanıcıları göster
+                    loadUsersTable();
+                }
+            }, 300); // 300ms bekle
+        });
+    }
+}
+
+// Auth/search endpoint'ine istek atarak kullanıcıları arama
+async function searchUsers(searchTerm) {
+    try {
+        // Kullanıcı tablosuna yükleniyor mesajı göster
+        const userTableBody = document.getElementById('userActivityTableBody');
+        if (userTableBody) {
+            userTableBody.innerHTML = '<tr><td colspan="5" class="text-center">Arama yapılıyor...</td></tr>';
+        }
+        
+        // auth/search endpoint'ine istek gönder - query parametresi olarak
+        const response = await fetch(`https://tipbox-docs-backend.vercel.app/auth/search?q=${encodeURIComponent(searchTerm)}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        // Yanıtı JSON olarak parse et
+        const users = await response.json();
+        
+        // Arama sonuçlarını tabloda göster
+        displaySearchResults(users);
+    } catch (error) {
+        console.error('Kullanıcı arama hatası:', error);
+        const userTableBody = document.getElementById('userActivityTableBody');
+        if (userTableBody) {
+            userTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Arama hatası: ${error.message}</td></tr>`;
+        }
+    }
+}
+
+// Arama sonuçlarını tabloda gösterme
+function displaySearchResults(users) {
+    const userTableBody = document.getElementById('userActivityTableBody');
+    
+    if (!userTableBody) {
+        console.error("userActivityTableBody elementi bulunamadı!");
+        return;
+    }
+    
+    // Tabloyu temizle
+    userTableBody.innerHTML = '';
+    
+    if (users.length === 0) {
+        userTableBody.innerHTML = '<tr><td colspan="6" class="text-center">Aramanızla eşleşen kullanıcı bulunamadı.</td></tr>';
+        return;
+    }
+    
+    // Her bir kullanıcı için tablo satırı oluştur
+    users.forEach(user => {
+        // Tarih formatı
+        
+        // Zaman damgalarını işle - _seconds ve _nanoseconds içeren Firestore zaman damgaları için
+        let lastLoginDate, createdAtDate;
+        
+        if (user.lastLoginAt) {
+            if (user.lastLoginAt._seconds) {
+                // _seconds/_nanoseconds formatı için
+                lastLoginDate = new Date(user.lastLoginAt._seconds * 1000);
+            } else if (typeof user.lastLoginAt === 'number') {
+                // Unix timestamp (saniye) formatı için
+                lastLoginDate = new Date(user.lastLoginAt * 1000);
+            } else {
+                // Diğer formatlar
+                try {
+                    lastLoginDate = new Date(user.lastLoginAt);
+                } catch(e) {
+                    console.error("lastLoginAt formatı işlenemedi:", user.lastLoginAt);
+                    lastLoginDate = null;
+                }
+            }
+        }
+        
+        if (user.createdAt) {
+            if (user.createdAt._seconds) {
+                // _seconds/_nanoseconds formatı için
+                createdAtDate = new Date(user.createdAt._seconds * 1000);
+            } else if (typeof user.createdAt === 'number') {
+                // Unix timestamp (saniye) formatı için
+                createdAtDate = new Date(user.createdAt * 1000);
+            } else {
+                // Diğer formatlar
+                try {
+                    createdAtDate = new Date(user.createdAt);
+                } catch(e) {
+                    console.error("createdAt formatı işlenemedi:", user.createdAt);
+                    createdAtDate = null;
+                }
+            }
+        }
+        
+        // Formatlı tarihleri oluştur
+        const lastLogin = lastLoginDate ? lastLoginDate.toLocaleString('tr-TR') : 'Hiç giriş yapmadı';
+        const createdAt = createdAtDate ? createdAtDate.toLocaleString('tr-TR') : 'Bilinmiyor';
+        
+        // Kullanıcı durumu (aktif/pasif)
+        const isActive = user.isActive !== undefined ? user.isActive : true;
+        const statusClass = isActive ? 'success' : 'danger';
+        const statusText = isActive ? 'Aktif' : 'Pasif';
+        
+        // Kullanıcı rolü
+        const role = user.role || 'user';
+        const roleClass = role === 'admin' ? 'danger' : 'primary';
+        const roleText = role === 'admin' ? 'Admin' : 'Kullanıcı';
+        
+        // Profil fotoğrafı veya varsayılan ikon
+        let avatarHtml = '';
+        if (user.photoURL) {
+            // Kullanıcının profil fotoğrafı varsa onu kullan
+            avatarHtml = `<img src="${user.photoURL}" alt="${user.displayName || 'Kullanıcı'}" class="rounded-circle" width="40" height="40">`;
+        } else {
+            // Varsayılan kullanıcı ikonu
+            avatarHtml = `<i class="fas fa-user-circle fa-2x text-secondary"></i>`;
+        }
+        
+        // İşlemler butonu
+        const actionsColumn = `
+            <td class="text-center">
+                <button class="btn btn-sm btn-outline-primary" onclick="openRoleUpdateModal('${user.uid}', '${user.displayName || user.email}', '${role}')">
+                    <i class="fas fa-user-edit"></i>
+                </button>
+            </td>
+        `;
+        
+        // Tablo satırını oluştur
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>
+                <div class="d-flex align-items-center">
+                    <div class="user-avatar me-2">
+                        ${avatarHtml}
+                    </div>
+                    <div>
+                        <span>${user.displayName || 'İsimsiz Kullanıcı'}</span>
+                        <small class="d-block text-muted">${user.email || 'Email yok'}</small>
+                    </div>
+                </div>
+            </td>
+            <td>${lastLogin}</td>
+            <td>${createdAt}</td>
+            <td>
+                <span class="badge bg-${roleClass}">${roleText}</span>
+            </td>
+            <td>
+                <span class="badge bg-${statusClass}">${statusText}</span>
+            </td>
+            ${actionsColumn}
+        `;
+        
+        userTableBody.appendChild(row);
+    });
+}
+
 // Admin panelinin içeriğini göster (HTML'den taşınan fonksiyon)
 function showAdminPanel(user) {
     
@@ -75,7 +265,7 @@ function showAdminPanel(user) {
         if (adminNameElement && adminEmailElement) {
             adminNameElement.textContent = user.displayName || user.email;
             adminEmailElement.textContent = user.email;
-            console.log("Data" + user);
+
             // Profil fotoğrafını göster (varsa)
             if (sidebarUserAvatarElement) {
                 if (user.photoURL) {
@@ -780,7 +970,7 @@ async function loadUsersTable() {
     }
     
     // Yükleniyor mesajı göster
-    userTableBody.innerHTML = '<tr><td colspan="5" class="text-center">Kullanıcılar yükleniyor...</td></tr>';
+    userTableBody.innerHTML = '<tr><td colspan="6" class="text-center">Kullanıcılar yükleniyor...</td></tr>';
     
     // Firestore'dan users koleksiyonunu al
     db.collection('users').orderBy('lastLoginAt', 'desc').get().then(snapshot => {
@@ -788,7 +978,7 @@ async function loadUsersTable() {
         userTableBody.innerHTML = '';
         
         if (snapshot.empty) {
-            userTableBody.innerHTML = '<tr><td colspan="5" class="text-center">Henüz hiç kullanıcı bulunmuyor.</td></tr>';
+            userTableBody.innerHTML = '<tr><td colspan="6" class="text-center">Henüz hiç kullanıcı bulunmuyor.</td></tr>';
             return;
         }
         
@@ -796,7 +986,6 @@ async function loadUsersTable() {
         snapshot.forEach(doc => {
             const user = doc.data();
             const userId = doc.id;
-            
             // Tarih formatı
             const lastLogin = user.lastLoginAt ? new Date(user.lastLoginAt.toDate()).toLocaleString('tr-TR') : 'Hiç giriş yapmadı';
             const createdAt = user.createdAt ? new Date(user.createdAt.toDate()).toLocaleString('tr-TR') : 'Bilinmiyor';
@@ -821,6 +1010,15 @@ async function loadUsersTable() {
                 avatarHtml = `<i class="fas fa-user-circle fa-2x text-secondary"></i>`;
             }
             
+            // İşlemler butonu
+            const actionsColumn = `
+                <td class="text-center">
+                    <button class="btn btn-sm btn-outline-primary" onclick="openRoleUpdateModal('${userId}', '${user.displayName || user.email}', '${role}')">
+                        <i class="fas fa-user-edit"></i>
+                    </button>
+                </td>
+            `;
+            
             // Tablo satırını oluştur
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -843,14 +1041,106 @@ async function loadUsersTable() {
                 <td>
                     <span class="badge bg-${statusClass}">${statusText}</span>
                 </td>
+                ${actionsColumn}
             `;
             
             userTableBody.appendChild(row);
         });
     }).catch(error => {
         console.error("Kullanıcı listesi yüklenirken hata: ", error);
-        userTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Hata: ${error.message}</td></tr>`;
+        userTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Hata: ${error.message}</td></tr>`;
     });
+}
+
+// Rol güncelleme modalını aç
+function openRoleUpdateModal(userId, userName, currentRole) {
+    // Modal içindeki elemanları ayarla
+    document.getElementById('roleUpdateUserName').textContent = userName;
+    document.getElementById('targetUserId').value = userId;
+    
+    // Şu anki rolü seç
+    const roleSelect = document.getElementById('newRoleSelect');
+    for (let i = 0; i < roleSelect.options.length; i++) {
+        if (roleSelect.options[i].value === currentRole) {
+            roleSelect.selectedIndex = i;
+            break;
+        }
+    }
+    
+    // Güncelleme butonunu sıfırla
+    const updateBtn = document.getElementById('updateRoleBtn');
+    updateBtn.disabled = false;
+    updateBtn.innerHTML = 'Güncelle';
+    
+    // Modalı göster
+    const roleModal = new bootstrap.Modal(document.getElementById('roleUpdateModal'));
+    roleModal.show();
+    
+    // Güncelleme butonuna tıklama olayı ekle (önceki dinleyicileri kaldırarak)
+    updateBtn.replaceWith(updateBtn.cloneNode(true)); // Eski dinleyicileri temizle
+    document.getElementById('updateRoleBtn').addEventListener('click', updateUserRole);
+    
+    // Modal kapatıldığında butonun durumunu sıfırla
+    document.getElementById('roleUpdateModal').addEventListener('hidden.bs.modal', function() {
+        const updateBtn = document.getElementById('updateRoleBtn');
+        updateBtn.disabled = false;
+        updateBtn.innerHTML = 'Güncelle';
+    });
+}
+
+// Kullanıcı rolünü güncelle
+async function updateUserRole() {
+    // Güncelleme butonunu devre dışı bırak
+    const updateBtn = document.getElementById('updateRoleBtn');
+    updateBtn.disabled = true;
+    updateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Güncelleniyor...';
+    
+    try {
+        // Form bilgilerini al
+        const targetUid = document.getElementById('targetUserId').value;
+        const newRole = document.getElementById('newRoleSelect').value;
+        
+        // Mevcut kullanıcının ID'sini al
+        const currentUser = firebase.auth().currentUser;
+        const requesterId = currentUser.uid;
+        
+        // API isteği gönder
+        const response = await fetch('https://tipbox-docs-backend.vercel.app/auth/update-role', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                targetUid,
+                newRole,
+                requesterId
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.message || 'Rol güncellenirken bir hata oluştu.');
+        }
+        
+        // Kullanıcı listesini yenile
+        loadUsersTable();
+        
+        // Bildirim göster
+        showToast('Kullanıcı rolü başarıyla güncellendi.', 'success');
+        
+        // Modalı kapat
+        const modal = bootstrap.Modal.getInstance(document.getElementById('roleUpdateModal'));
+        modal.hide();
+        
+    } catch (error) {
+        console.error('Rol güncelleme hatası:', error);
+        showToast(`Hata: ${error.message}`, 'danger');
+    } finally {
+        // İşlem başarılı veya başarısız olsa da butonu eski haline getir
+        updateBtn.disabled = false;
+        updateBtn.innerHTML = 'Güncelle';
+    }
 }
 
 // Users sekmesine tıklandığında kullanıcı tablosunu güncelle
@@ -1114,7 +1404,7 @@ async function generateBulkTokens(count) {
         // Kullanıcı bilgilerini al
         const currentUser = firebase.auth().currentUser;
         const userId = currentUser.uid;
-        const creatorName = currentUser.displayName || currentUser.email;
+        const creatorName = currentUser.displayName || currentUser.email || 'Bilinmeyen Kullanıcı';
         
         // İstenen sayıda token oluştur
         for (let i = 0; i < count; i++) {
@@ -1226,6 +1516,54 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Özel token oluştur butonuna tıklandığında modalı aç
+    const createCustomTokenBtn = document.getElementById('createCustomTokenBtn');
+    if (createCustomTokenBtn) {
+        createCustomTokenBtn.addEventListener('click', function() {
+            const modal = new bootstrap.Modal(document.getElementById('customTokenModal'));
+            // Input alanını temizle
+            const customTokenInput = document.getElementById('customTokenInput');
+            if (customTokenInput) {
+                customTokenInput.value = '';
+            }
+            modal.show();
+        });
+    }
+    
+    // Özel token input alanında kullanıcı yazdıkça büyük harfe çevir
+    const customTokenInput = document.getElementById('customTokenInput');
+    if (customTokenInput) {
+        customTokenInput.addEventListener('input', function(e) {
+            e.target.value = e.target.value.toUpperCase();
+        });
+    }
+    
+    // Özel token oluşturma submit butonuna tıklama olayı
+    const createCustomTokenSubmitBtn = document.getElementById('createCustomTokenSubmitBtn');
+    if (createCustomTokenSubmitBtn) {
+        createCustomTokenSubmitBtn.addEventListener('click', function() {
+            const customTokenInput = document.getElementById('customTokenInput');
+            if (!customTokenInput) return;
+            
+            const token = customTokenInput.value.trim().toUpperCase();
+            
+            // Token doğrulama işlemi
+            if (token.length !== 8 || !(/^[A-Z0-9]{8}$/.test(token))) {
+                showCustomTokenToast('Hata', 'Token 8 karakterli ve sadece harf ve sayılardan oluşmalıdır.', 'danger');
+                return;
+            }
+            
+            // Özel token oluşturma isteği gönder
+            createCustomToken(token);
+            
+            // Modal'ı kapat
+            const modal = bootstrap.Modal.getInstance(document.getElementById('customTokenModal'));
+            if (modal) {
+                modal.hide();
+            }
+        });
+    }
+    
     // Oluştur butonuna tıklandığında token oluştur
     const generateTokensBtn = document.getElementById('generateTokensBtn');
     if (generateTokensBtn) {
@@ -1242,6 +1580,96 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Özel token oluşturma fonksiyonu
+function createCustomToken(token) {
+    // Kullanıcı bilgilerini al
+    const currentUser = firebase.auth().currentUser;
+    const userId = currentUser.uid;
+    const creatorName = currentUser.displayName || currentUser.email || 'Bilinmeyen Kullanıcı';
+    
+    fetch('https://tipbox-docs-backend.vercel.app/auth/custom-token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+            token: token,
+            createdBy: creatorName,
+            userId: userId
+        })
+    })
+    .then(response => {
+        // Önce yanıt durumunu kontrol et
+        if (!response.ok) {
+            throw new Error(`HTTP Hata: ${response.status}`);
+        }
+        
+        // Content-Type'ı kontrol et
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            // Yanıtta JSON içeriği yoksa, JSON parse etmeye çalışma
+            console.warn('API yanıtı JSON içermiyor:', contentType);
+            return { success: false, error: 'Geçersiz sunucu yanıtı formatı' };
+        }
+        
+        // Boş yanıtlar için özel kontrol
+        if (response.status === 204 || response.headers.get('content-length') === '0') {
+            console.warn('API boş yanıt döndürdü');
+            return { success: false, error: 'Sunucu boş yanıt döndürdü' };
+        }
+        
+        // JSON yanıtını parse et
+        return response.json().catch(error => {
+            console.error('JSON parse hatası:', error);
+            throw new Error('Yanıt JSON formatında değil');
+        });
+    })
+    .then(data => {
+        if (data.status === 'success') {
+            // API'dan dönen token değerini kullan (eğer varsa)
+            const tokenToShow = data.token || token;
+            showCustomTokenToast('Başarılı', data.message || `Özel token başarıyla oluşturuldu: ${tokenToShow}`, 'success');
+            // Token listesini yenile
+            loadTokenTable();
+        } else {
+            showCustomTokenToast('Hata', data.message || data.error || 'Token oluşturulurken bir hata oluştu.', 'danger');
+        }
+    })
+    .catch(error => {
+        console.error('Token oluşturma hatası:', error);
+        showCustomTokenToast('Hata', 'Token oluşturulurken bir hata oluştu: ' + error.message, 'danger');
+    });
+}
+
+// Özel token toast mesajını gösterme fonksiyonu
+function showCustomTokenToast(title, message, type) {
+    const toastEl = document.getElementById('customTokenToast');
+    const toastTitle = document.getElementById('customTokenToastTitle');
+    const toastMessage = document.getElementById('customTokenToastMessage');
+    
+    if (!toastEl || !toastTitle || !toastMessage) {
+        console.error('Toast elementleri bulunamadı');
+        return;
+    }
+    
+    toastTitle.textContent = title;
+    toastMessage.textContent = message;
+    
+    // Toast tipine göre renk sınıfını ayarla
+    toastEl.className = 'toast';
+    if (type === 'danger') {
+        toastEl.classList.add('bg-danger', 'text-white');
+    } else if (type === 'success') {
+        toastEl.classList.add('bg-success', 'text-white');
+    } else {
+        toastEl.classList.add('bg-light');
+    }
+    
+    // Bootstrap toast öğesini göster
+    const toast = new bootstrap.Toast(toastEl);
+    toast.show();
+}
+
 // Page Tracking sekmesine tıklandığında verileri yükle
 document.addEventListener('DOMContentLoaded', function() {
     const pageTrackingTabLink = document.querySelector('a[href="#analytics"]');
@@ -1254,68 +1682,59 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Page Tracking ile ilgili fonksiyonlar
 
-// Analytics için olay dinleyicilerini ekle
+// Analitik sayfası olay dinleyicilerini ayarla
 function setupAnalyticsEventListeners() {
-    // Analytics sekmesine tıklandığında page tracking verilerini yükle
-    const analyticsTabLink = document.querySelector('a[href="#analytics"]');
-    if (analyticsTabLink) {
-        analyticsTabLink.addEventListener('click', function() {
-            loadPageTrackingData();
-        });
-    }
-    
-    // Kullanıcı seçimi değiştiğinde kullanıcı bazlı istatistikleri güncelle
-    const userSelect = document.getElementById('userSelect');
-    if (userSelect) {
-        userSelect.addEventListener('change', function() {
-            const selectedUserId = this.value;
-            if (selectedUserId) {
-                // Kullanıcı seçildi, grafiği güncelle ve göster
-                updateUserPageViewsChart(selectedUserId);
-                document.getElementById('userChartContainer').style.display = 'block';
-                document.getElementById('userChartPlaceholder').style.display = 'none';
-            } else {
-                // Kullanıcı seçilmedi, placeholder'ı göster
-                document.getElementById('userChartContainer').style.display = 'none';
-                document.getElementById('userChartPlaceholder').style.display = 'block';
-                // Önceki grafiği temizle
-                if (userPageViewsChart) {
-                    userPageViewsChart.destroy();
-                    userPageViewsChart = null;
-                }
+    // Kullanıcı seçimi değiştiğinde
+    document.getElementById('userSelect').addEventListener('change', function() {
+        const selectedUserId = this.value;
+        
+        if (selectedUserId) {
+            // Kullanıcı seçildiğinde sayfalarını göster
+            updateUserPageViewsChart(selectedUserId);
+            
+            // Zaman grafiği için sayfa numarasını sıfırla
+            timeChartPage = 0;
+            
+            // Kullanıcı bilgisini göster
+            const selectedUserName = this.options[this.selectedIndex].text;
+            document.getElementById('selectedUserInfo').textContent = 'Seçili Kullanıcı: ' + selectedUserName;
+        } else {
+            // Kullanıcı seçilmediğinde grafiği temizle
+            if (userPageViewsChart) {
+                userPageViewsChart.destroy();
+                userPageViewsChart = null;
             }
-        });
-    }
-    
-    // Yenile butonuna tıklandığında verileri yeniden yükle
-    const refreshBtn = document.getElementById('refreshPageViewsBtn');
-    if (refreshBtn) {
-        refreshBtn.addEventListener('click', function() {
-            loadPageTrackingData();
-        });
-    }
-    
-    // Sayfalama butonlarına tıklandığında sayfa değiştir
-    const prevPageBtn = document.getElementById('prevPageViewsPage');
-    const nextPageBtn = document.getElementById('nextPageViewsPage');
-    
-    if (prevPageBtn) {
-        prevPageBtn.addEventListener('click', function() {
-            if (pageViewsPage > 1) {
-                pageViewsPage--;
-                displayPageViewsTableData();
+            if (userTimeBasedChart) {
+                userTimeBasedChart.destroy();
+                userTimeBasedChart = null;
             }
-        });
-    }
+            
+            // Kullanıcı grafiği yerine placeholder göster
+            document.getElementById('userChartContainer').style.display = 'none';
+            document.getElementById('userChartPlaceholder').style.display = 'block';
+            
+            // Kullanıcı bilgisini temizle
+            document.getElementById('selectedUserInfo').textContent = '';
+        }
+    });
     
-    if (nextPageBtn) {
-        nextPageBtn.addEventListener('click', function() {
-            if (pageViewsPage < totalPageViewsPages) {
-                pageViewsPage++;
-                displayPageViewsTableData();
-            }
-        });
-    }
+    // Önceki zaman verileri düğmesi
+    document.getElementById('prevTimeDataBtn').addEventListener('click', function() {
+        if (timeChartPage > 0) {
+            timeChartPage--;
+            updateTimeBasedChart();
+        }
+    });
+    
+    // Sonraki zaman verileri düğmesi
+    document.getElementById('nextTimeDataBtn').addEventListener('click', function() {
+        const maxPages = Math.ceil(filteredTimeData.length / timeChartPageSize);
+        
+        if (timeChartPage < maxPages - 1) {
+            timeChartPage++;
+            updateTimeBasedChart();
+        }
+    });
 }
 
 // Page Tracking verilerini yükle
@@ -1370,6 +1789,15 @@ async function loadPageTrackingData() {
         document.getElementById('userChartContainer').style.display = 'none';
         document.getElementById('userChartPlaceholder').style.display = 'block';
         
+        // Varsa önceki grafikleri temizle
+        if (userPageViewsChart) {
+            userPageViewsChart.destroy();
+            userPageViewsChart = null;
+        }
+        if (userTimeBasedChart) {
+            userTimeBasedChart.destroy();
+            userTimeBasedChart = null;
+        }
     } catch (error) {
         console.error('Sayfa görüntüleme verileri yüklenirken hata:', error);
         document.getElementById('pageViewsTableBody').innerHTML = `<tr><td colspan="4" class="text-center text-danger">Hata: ${error.message}</td></tr>`;
@@ -1553,9 +1981,12 @@ function updatePageViewsCharts() {
 
 // Kullanıcı bazlı sayfa görüntüleme grafiğini güncelle
 function updateUserPageViewsChart(userId) {
-    // Eğer daha önce grafik oluşturulduysa, önce onu temizle
+    // Eğer daha önce grafikler oluşturulduysa, önce onları temizle
     if (userPageViewsChart) {
         userPageViewsChart.destroy();
+    }
+    if (userTimeBasedChart) {
+        userTimeBasedChart.destroy();
     }
     
     // Kullanıcı ID'si boş ise çık
@@ -1578,12 +2009,19 @@ function updateUserPageViewsChart(userId) {
     
     // Eğer veri yoksa mesaj göster ve çık
     if (filteredData.length === 0) {
-        const ctx = document.getElementById('userPageViewsChart').getContext('2d');
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.font = '14px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillStyle = '#999';
-        ctx.fillText('Bu kullanıcı için görüntüleme verisi bulunmuyor', ctx.canvas.width / 2, ctx.canvas.height / 2);
+        const pieCtx = document.getElementById('userPageViewsChart').getContext('2d');
+        pieCtx.clearRect(0, 0, pieCtx.canvas.width, pieCtx.canvas.height);
+        pieCtx.font = '14px Arial';
+        pieCtx.textAlign = 'center';
+        pieCtx.fillStyle = '#999';
+        pieCtx.fillText('Bu kullanıcı için görüntüleme verisi bulunmuyor', pieCtx.canvas.width / 2, pieCtx.canvas.height / 2);
+        
+        const timeCtx = document.getElementById('userTimeBasedChart').getContext('2d');
+        timeCtx.clearRect(0, 0, timeCtx.canvas.width, timeCtx.canvas.height);
+        timeCtx.font = '14px Arial';
+        timeCtx.textAlign = 'center';
+        timeCtx.fillStyle = '#999';
+        timeCtx.fillText('Bu kullanıcı için zaman verisi bulunmuyor', timeCtx.canvas.width / 2, timeCtx.canvas.height / 2);
         
         // Kullanıcı graf konteynerini göster, placeholder'ı gizle
         document.getElementById('userChartContainer').style.display = 'block';
@@ -1591,7 +2029,7 @@ function updateUserPageViewsChart(userId) {
         return;
     }
     
-    // Sayfa adlarına göre süreleri topla
+    // 1. Sayfa Dağılımı Grafiği için verileri hazırla
     const pageViewsStats = {};
     
     // Her bir kaydı işle
@@ -1611,25 +2049,42 @@ function updateUserPageViewsChart(userId) {
         pageViewsStats[pageName].count += 1;
     });
     
-    // Grafik için verileri hazırla
-    const labels = Object.keys(pageViewsStats);
-    const durations = labels.map(page => pageViewsStats[page].totalDuration);
+    // Pie grafik için verileri hazırla
+    const pieLabels = Object.keys(pageViewsStats);
+    const pieDurations = pieLabels.map(page => pageViewsStats[page].totalDuration);
     
     // Renkleri hazırla
-    const colors = generateChartColors(labels.length);
+    const colors = generateChartColors(pieLabels.length);
+    
+    // 2. Zamana Dayalı Görüntüleme Grafiği için verileri hazırla
+    // Verileri zamana göre sıralayalım (en yeniden en eskiye)
+    filteredData.sort((a, b) => b.timestamp - a.timestamp);
+    
+    // Her bir kaydı detaylı tarih/saat bilgisiyle hazırla
+    filteredTimeData = filteredData.map(view => {
+        const date = view.timestamp;
+        const formattedTime = date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+        const formattedDate = date.toLocaleDateString('tr-TR');
+        return {
+            fullTimestamp: date,
+            dateTime: `${formattedDate} ${formattedTime}`,
+            duration: view.duration,
+            pageName: view.pageName
+        };
+    });
     
     // Kullanıcı graf konteynerini göster, placeholder'ı gizle
     document.getElementById('userChartContainer').style.display = 'block';
     document.getElementById('userChartPlaceholder').style.display = 'none';
     
-    // Pasta grafiği oluştur
-    const ctx = document.getElementById('userPageViewsChart').getContext('2d');
-    userPageViewsChart = new Chart(ctx, {
+    // 1. Pie Chart oluştur (Sayfa dağılımı)
+    const pieCtx = document.getElementById('userPageViewsChart').getContext('2d');
+    userPageViewsChart = new Chart(pieCtx, {
         type: 'pie',
         data: {
-            labels: labels,
+            labels: pieLabels,
             datasets: [{
-                data: durations,
+                data: pieDurations,
                 backgroundColor: colors,
                 borderColor: '#fff',
                 borderWidth: 1
@@ -1668,6 +2123,162 @@ function updateUserPageViewsChart(userId) {
                             }
                             
                             return `${label}: ${durationText}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    // 2. Zaman bazlı grafiği güncelle
+    updateTimeBasedChart();
+}
+
+// Zaman bazlı grafiği güncelle (sayfalama dahil)
+function updateTimeBasedChart() {
+    // Önceki grafiği temizle
+    if (userTimeBasedChart) {
+        userTimeBasedChart.destroy();
+    }
+    
+    // Eğer veri yoksa çık
+    if (filteredTimeData.length === 0) {
+        return;
+    }
+    
+    // Mevcut sayfanın verilerini al
+    const startIdx = timeChartPage * timeChartPageSize;
+    const endIdx = Math.min(startIdx + timeChartPageSize, filteredTimeData.length);
+    const pageData = filteredTimeData.slice(startIdx, endIdx);
+    
+    // Navigasyon butonlarını güncelle
+    const prevBtn = document.getElementById('prevTimeDataBtn');
+    const nextBtn = document.getElementById('nextTimeDataBtn');
+    
+    if (prevBtn) {
+        prevBtn.disabled = timeChartPage === 0;
+    }
+    
+    if (nextBtn) {
+        const maxPages = Math.ceil(filteredTimeData.length / timeChartPageSize);
+        nextBtn.disabled = timeChartPage >= maxPages - 1 || maxPages <= 1;
+    }
+    
+    // Görselleştirme için veri hazırla
+    const timeLabels = pageData.map(item => item.dateTime);
+    const durations = pageData.map(item => item.duration);
+    const pageNames = pageData.map(item => item.pageName);
+    
+    // Benzersiz sayfa adlarını al
+    const uniquePages = [...new Set(pageNames)];
+    
+    // Sayfa adlarına göre renk haritası oluştur
+    const pageColors = {};
+    const colors = generateChartColors(uniquePages.length);
+    uniquePages.forEach((page, index) => {
+        pageColors[page] = colors[index];
+    });
+    
+    // Her veri noktası için renk dizisi oluştur
+    const pointBackgroundColors = pageData.map(item => {
+        // Sayfa adına göre renk ata
+        return pageColors[item.pageName];
+    });
+    
+    // Line Chart oluştur
+    const timeCtx = document.getElementById('userTimeBasedChart').getContext('2d');
+    userTimeBasedChart = new Chart(timeCtx, {
+        type: 'line',
+        data: {
+            labels: timeLabels,
+            datasets: [
+                {
+                    label: 'Görüntüleme Süresi (sn)',
+                    data: durations,
+                    borderColor: '#4BC0C0',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: pointBackgroundColors,
+                    pointBorderColor: pointBackgroundColors,
+                    pointHoverBackgroundColor: pointBackgroundColors,
+                    pointHoverBorderColor: pointBackgroundColors,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Tarih ve Saat'
+                    },
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Görüntüleme Süresi (sn)'
+                    },
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(context) {
+                            return context[0].label; // Tarih ve saat
+                        },
+                        afterTitle: function(context) {
+                            const dataIndex = context[0].dataIndex;
+                            return pageNames[dataIndex]; // Sayfa adı
+                        },
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            
+                            if (label) {
+                                label += ': ';
+                            }
+                            
+                            // Süre için özel formatlama
+                            const duration = context.parsed.y;
+                            if (duration >= 3600) {
+                                const hours = Math.floor(duration / 3600);
+                                const minutes = Math.floor((duration % 3600) / 60);
+                                return label + `${hours} saat ${minutes} dakika`;
+                            } else if (duration >= 60) {
+                                const minutes = Math.floor(duration / 60);
+                                const seconds = duration % 60;
+                                return label + `${minutes} dakika ${seconds} saniye`;
+                            } else {
+                                return label + `${duration} saniye`;
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        generateLabels: function(chart) {
+                            // Özel lejant oluştur - sayfa adlarına göre
+                            return uniquePages.map((page, index) => {
+                                return {
+                                    text: page,
+                                    fillStyle: colors[index],
+                                    strokeStyle: colors[index],
+                                    lineWidth: 0,
+                                    hidden: false
+                                };
+                            });
                         }
                     }
                 }

@@ -151,6 +151,7 @@
                                         <th>Kayıt Tarihi</th>
                                         <th>Rol</th>
                                         <th>Durum</th>
+                                        <th>İşlemler</th>
                                     </tr>
                                 </thead>
                                 <tbody id="userActivityTableBody">
@@ -168,9 +169,14 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5>Token Listesi</h5>
-                        <button class="btn btn-primary btn-sm" id="createTokenBtn">
-                            <i class="fas fa-plus"></i> Yeni Token Oluştur
-                        </button>
+                        <div>
+                            <button class="btn btn-primary btn-sm me-2" id="createCustomTokenBtn">
+                                <i class="fas fa-key"></i> Özel Token Oluştur
+                            </button>
+                            <button class="btn btn-primary btn-sm" id="createTokenBtn">
+                                <i class="fas fa-plus"></i> Yeni Token Oluştur
+                            </button>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -239,7 +245,36 @@
                                     </select>
                                 </div>
                                 <div id="userChartContainer" style="display: none;">
-                                    <canvas id="userPageViewsChart" height="300"></canvas>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card mb-3">
+                                                <div class="card-header">
+                                                    <h6>Sayfa Bazlı Görüntülenme Dağılımı</h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <canvas id="userPageViewsChart" height="300"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card mb-3">
+                                                <div class="card-header d-flex justify-content-between align-items-center">
+                                                    <h6>Zamana Bağlı Görüntülenme</h6>
+                                                    <div>
+                                                        <button id="prevTimeDataBtn" class="btn btn-sm btn-outline-secondary me-2">
+                                                            <i class="fas fa-chevron-left"></i> Önceki
+                                                        </button>
+                                                        <button id="nextTimeDataBtn" class="btn btn-sm btn-outline-secondary">
+                                                            Sonraki <i class="fas fa-chevron-right"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <canvas id="userTimeBasedChart" height="300"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div id="userChartPlaceholder" class="text-center py-5 text-muted">
                                     <i class="fas fa-user-clock fa-3x mb-3"></i>
@@ -347,6 +382,46 @@
         </div>
     </div>
 
+    <!-- Özel Token Modal -->
+    <div class="modal fade" id="customTokenModal" tabindex="-1" aria-labelledby="customTokenModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customTokenModalLabel">Özel Token Oluştur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Tipbox Docs platformu için 8 karakterli özel bir token oluşturabilirsiniz.
+                        Token harf ve sayılardan oluşabilir.
+                    </p>
+                    <div class="mb-3">
+                        <label for="customTokenInput" class="form-label">Özel Token:</label>
+                        <input type="text" class="form-control" id="customTokenInput" placeholder="8 karakterli token giriniz" maxlength="8" style="text-transform: uppercase;">
+                        <small class="form-text text-muted">Token 8 karakter uzunluğunda, harf ve sayılardan oluşabilir. Tüm harfler büyük harf olarak kaydedilecektir.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button type="button" class="btn btn-primary" id="createCustomTokenSubmitBtn">Oluştur</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Özel Token Toast -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11; margin-bottom: 100px;">
+        <div id="customTokenToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto" id="customTokenToastTitle">Özel Token</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Kapat"></button>
+            </div>
+            <div class="toast-body" id="customTokenToastMessage">
+                Token oluşturuldu.
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -360,6 +435,8 @@
     
     <!-- Custom JS -->
     <script src="js/admin-panel.js"></script>
+    
+    <!-- NOT: Özel token oluşturma işlemleri artık admin-panel.js dosyasında -->
     
     <!-- Navigation JS -->
     <script>
@@ -411,5 +488,34 @@
             });
         });
     </script>
+    
+    <!-- Rol Güncelleme Modal -->
+    <div class="modal fade" id="roleUpdateModal" tabindex="-1" aria-labelledby="roleUpdateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="roleUpdateModalLabel">Kullanıcı Rolünü Güncelle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong id="roleUpdateUserName"></strong> adlı kullanıcının rolünü değiştirmek üzeresiniz.</p>
+                    <form id="roleUpdateForm">
+                        <div class="mb-3">
+                            <label for="newRoleSelect" class="form-label">Yeni Rol:</label>
+                            <select class="form-select" id="newRoleSelect">
+                                <option value="user">Kullanıcı</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <input type="hidden" id="targetUserId" value="">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button type="button" class="btn btn-primary" id="updateRoleBtn">Güncelle</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html> 
