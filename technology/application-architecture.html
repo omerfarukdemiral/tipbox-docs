@@ -1,0 +1,94 @@
+<article id="application-architecture" class="documentation_info">
+    <div class="documentation_body" id="documentation">
+        <div class="shortcode_title">
+            <h1>Uygulama Mimarisi (Web2 - Web3)</h1>
+            
+            <h3>Mimari Genel Bakış</h3>
+            
+            <p>Tipbox uygulama mimarisi, kullanıcı etkileşiminden veritabanındaki veri depolamasına kadar tüm süreci kapsayan tamamen entegre bir yapıdır. Bu tasarım, Kullanıcı Arayüzü (UI), İş Mantığı ve Veri Yönetimi gibi bileşenler arasındaki sorunsuz koordinasyon sayesinde kullanıcı girdisinin güvenli ve verimli bir şekilde işlenmesini, yönetilmesini ve depolanmasını sağlar.</p>
+            
+            <p>Platforma erişim istekleri, kullanıcı kimlik doğrulama ve yetkilendirmeyi de yöneten API Gateway tarafından işlenir. Başarılı kimlik doğrulamasının ardından, istekler bir Yük Dengeleyici aracılığıyla Frontend bileşenlerine yönlendirilir. Frontend; Kullanıcı Yönetimi, İncelemeler, İstek Listeleri ve Pratik İpuçları gibi her biri belirli kullanıcı işlemlerini yönetmekten sorumlu çeşitli modülleri içerir. Frontend'den gelen veriler daha sonra her biri özel bir işlevi yerine getiren mikroservislere iletilir.</p>
+            
+            <p>Backend'de, bu mikroservisler API Gateway aracılığıyla veritabanı işlemleri gerçekleştirir. Veriler güvenli bir şekilde depolanır ve gerektiğinde alınır. Bu mimari, veri güvenliği ve yönetiminde yüksek standartları korurken Tipbox kullanıcı deneyimini optimize eder. Kullanıcı etkileşimlerinden oluşturulan verilerin işlenmesi ve depolanması, sistemin ölçeklenebilirliğini ve performansını artırır.</p>
+            
+            <p>Tipbox'ın entegre yapısı, kullanıcıların platformla sorunsuz ve güvenli bir şekilde etkileşimde bulunmasını sağlar. Bu yapı içinde, <strong>Web3 Cüzdan Modülü</strong> blok zinciri teknolojisinin faydalarını kullanıcı deneyimine dahil eder. Mobil uygulamayla entegre olan bu modül, NFT işlemleri, token yönetimi ve blok zinciri tabanlı abonelik mekanizmaları dahil olmak üzere platformdaki dijital varlık işlemlerinin güvenli ve şeffaf bir şekilde yürütülmesini kolaylaştırır. Web3 Cüzdan Modülü, API Gateway aracılığıyla gelen isteklere dayalı olarak akıllı sözleşmelerle etkileşime girer ve sonuçları sistemin geri kalanı ile uyumlu olarak işler.</p>
+            
+            <p>Bu mimari, Tipbox'ın hem kullanıcılar hem de iş ortakları için güvenilir, verimli ve esnek bir platform sunmasını sağlar. Web2 ve Web3 bileşenlerinin sorunsuz entegrasyonu sayesinde, kullanıcılar teknik karmaşıklıkla karşılaşmadan merkezi olmayan sistemlerin avantajlarından doğrudan yararlanabilirler.</p>
+            
+            <h2>AI Entegrasyonu ve Modüler Mimari</h2>
+            
+            <p>Platformun <strong>AI Agent</strong>'ı, gelişmiş makine öğrenimi tekniklerini kullanarak kullanıcı tarafından oluşturulan içeriği analiz eden ve kullanıcılar ve ürünler hakkında anlamlı özetler üreten akıllı bir değerlendirici ve özetleyici olarak işlev görür.</p>
+            
+            <p>AI Agent'ın temel bileşeni olan <strong>Tipbox Validator AI</strong>, çeşitli platform modüllerindeki içeriği değerlendirmek için birden fazla ince ayarlı büyük dil modeli kullanır. Bu değerlendirme, her girdinin nüanslı bir şekilde anlaşılmasını sağlamak için belirli kriterlere (örneğin, ilgililik, tutarlılık, duygu ve özgünlük) göre yönlendirilir.</p>
+            
+            <p>Yüksek kaliteli içerikten oluşan kapsamlı bir veri seti üzerinde eğitilen AI Agent, kötü yapılandırılmış girdileri doğru bir şekilde tespit edebilir. Gelişmiş puanlama sistemlerini kullanarak, her içerik parçasının kalitesini değerlendirir ve bunu değerlendirmesine yansıtır. Bu mekanizma, hem platformun güvenilirliğini hem de genel kullanıcı deneyimini artırır.</p>
+            
+            <p>AI Agent'ın bu yetenekleri, Tipbox'ın daha akıllı, daha bilgili ve güvenilir bir platform deneyimi sunmasını sağlar. Modüler mimarisi ve AI entegrasyonu, platformun sürekli gelişmesini ve hem kullanıcılar hem de ortaklar için adaptif ve ölçeklenebilir çözümler sunmasını sağlar.</p>
+            
+            <p>Platformun AI altyapısı, AI Agent içinde tutarlı bir sistem olarak çalışır ve <strong>Summarizer AI</strong> gibi kullanıcılar ve ürünler hakkında etkili ve güvenilir özetler sunan modülleri içerir.</p>
+            
+            <ul>
+                <li>Bu altyapı, ham içeriği temizleyerek ve standardize ederek analize hazırlayan Ön İşleme Modülü ile başlar.</li>
+                <li>Özellik Çıkarma Modülü, girdiden anahtar metinsel özellikleri tanımlar ve çıkarır, daha derin analiz için temel oluşturur.</li>
+                <li>Değerlendirme Modülü, önceden tanımlanmış kriterlere dayalı kapsamlı analizler gerçekleştirir.</li>
+                <li>Puanlama Modülü, her içerik parçasına genel kalitesini ve ilgisini yansıtan ayrıntılı ve bütünsel bir puan atar.</li>
+            </ul>
+            
+            <p>Bu gelişmiş modüllerin entegrasyonu sayesinde, AI Agent yalnızca kullanıcılar için karar verme süreçlerini geliştirmekle kalmaz, aynı zamanda sorunsuz platform operasyonları için sağlam bir temel oluşturur. Bu modüler ve dinamik yaklaşım, kullanıcı deneyimini sürekli olarak iyileştirirken genel performansı, güvenilirliği ve platformun ölçeklenebilirliğini artırır.</p>
+            
+            <h2>Web3 Cüzdan Modülü</h2>
+            
+            <p>Tipbox platformunda, Web3 teknolojileri bağımsız bir uygulama olarak değil, <strong>Web3 Cüzdan Modülü</strong> aracılığıyla mobil Web2 uygulamasına entegre edilmiştir. Bu yaklaşım, kullanıcı deneyimini basitleştirir ve dijital varlık yönetimini Tipbox'ın doğal bir bileşeni olarak dahil eder.</p>
+            
+            <h3>Kullanıcı Deneyimi ve Erişilebilirlik</h3>
+            
+            <p>Tipbox Web3 Cüzdan Modülü, platformun tüm yönlerini kullanıcı ihtiyaçları etrafında optimize etmek, olağanüstü bir kullanıcı deneyimi sunmak için tasarlanmıştır. Sezgisel arayüzü ve erişilebilirlik özellikleri sayesinde, kullanıcılar uygulama ile etkileşime girebilir ve görevleri zahmetsizce tamamlayabilir.</p>
+            
+            <p>Kullanıcı odaklı tasarımıyla modül, her deneyim seviyesindeki bireylerin platforma hızla uyum sağlamasını ve aktif olarak katılmasını sağlar. Kullanıcı geri bildirimlerine dayalı sürekli iyileştirmeler, memnuniyeti ve uzun vadeli katılımı daha da artırır.</p>
+            
+            <h2>Hesap Soyutlama</h2>
+            
+            <p>Geleneksel blok zinciri sistemlerinde, işlemleri özel anahtarlarla imzalama gerekliliği genellikle kullanıcı deneyimini karmaşıklaştırır ve güvenlik risklerini artırır. Tipbox Web3 Cüzdan Modülü, <strong>Hesap Soyutlama</strong> teknolojisini kullanarak bu zorlukları ele alır. Bu yaklaşım, işlemlerin ve hesap yönetiminin karmaşıklığını soyutlar, kullanıcıların teknik bilgiye ihtiyaç duymadan Web3 özellikleriyle etkileşime girmesini sağlar.</p>
+            
+            <p>Hesaplar, esnek ve kullanıcı dostu akıllı sözleşmeler tarafından yönetilir, daha güvenli ve sorunsuz bir deneyim sağlar. Güvenliği ve kullanılabilirliği geliştirmenin yanı sıra, teknoloji ayrıca etkileşimleri kolaylaştıran ve verimliliği artıran sezgisel bir arayüz sunar. Sonuç olarak, Tipbox Web3 uygulaması, Web3 teknolojilerinin benimsenmesini kolaylaştırır, bunları daha geniş bir kitleye erişilebilir hale getirir.</p>
+            
+            <p>Ethereum ağında, Hesap Soyutlama, kullanıcıların ve akıllı sözleşmelerin nasıl etkileşimde bulunduğunu dönüştürmeyi amaçlayan daha esnek bir hesap modeli sunar. Bu, Tipbox'ın Ethereum ekosisteminin kullanılabilirliğini artırarak güvenli ve sorunsuz kullanıcı deneyimleri sunma taahhüdüyle uyumludur.</p>
+            
+            <h4>EIP-4337: Ethereum'da Hesap Soyutlama</h4>
+            
+            <p>Mart 2023'te tanıtılan <strong>EIP-4337</strong>, Hesap Soyutlamayı resmi olarak Ethereum ağına getirdi. Bu yenilik, kullanıcı deneyimini iyileştirir, güvenliği güçlendirir ve Ethereum ekosisteminin daha geniş kitleler tarafından benimsenmesini hızlandırır.</p>
+            
+            <p>Akıllı sözleşme cüzdanlarının kullanımını standartlaştırarak, Hesap Soyutlama kullanıcıların işlemleri daha esnek ve güvenli bir şekilde gerçekleştirmelerini sağlar. Bu, Ethereum üzerinde daha karmaşık ancak kullanıcı dostu uygulamalar geliştirme kapısını açar.</p>
+            
+            <h2>Web3 Cüzdan Modülü Mimarisi</h2>
+            
+            <p>Tipbox Web3 Cüzdan Modülü, blok zinciri işlemlerinin güvenliğini ve şeffaflığını mobil Web2 uygulamasına tamamen entegre edilmiş bir yapı içinde sunar. Bu mimari, dijital varlık yönetimini kullanıcı deneyiminin doğal bir parçası haline getirir, erişilebilirliği artırırken işlem akışlarını basitleştirir.</p>
+            
+            <p>Web3 Cüzdan Modülü, birden fazla bileşen arasında senkronize çalışmayı sağlayan bir sistem üzerine kurulmuştur. Geleneksel cüzdan bağlantı akışlarının aksine, <strong>kullanıcı kimlik doğrulama</strong> işlemi Hesap Soyutlama aracılığıyla ele alınır, kullanıcıları karmaşık Web3 gereksinimlerinden korur. İşlemler arka planda akıllı sözleşmeler aracılığıyla yönetilir, basitleştirilmiş kullanıcı arayüzü adımları aracılığıyla güvenli ve sezgisel bir deneyim sağlar.</p>
+            
+            <p>NFT'ler, token transferleri, kazanım mekanizmaları ve kullanıcı cüzdanları gibi temel varlık yönetimi bileşenleri doğrudan Web3 Cüzdan Modülü içinde yönetilir. Bu mimari, kullanıcıların dijital varlıkları üzerinde tam kontrol sahibi olmalarını sağlarken, gönderme, ticaret yapma ve pazar yeri etkileşimleri gibi işlevler entegre cüzdan bileşenleri aracılığıyla gerçekleştirilir.</p>
+            
+            <p>Ayrıca, abonelik sistemleri, özel rozet yuvaları, kulüp üyelikleri ve AI araçları gibi çeşitli dijital hizmet modülleri de bu modül içine gömülüdür. Bu bileşenler, Tipbox'ın değer önermesini güçlendirir ve kullanıcıların kişiselleştirilmiş, özelleştirilmiş bir etkileşim yaşamasına olanak tanır. Tüm bu süreçler, yüksek düzeyde güvenlik ve şeffaflık sağlayan akıllı sözleşmeler aracılığıyla otomatik olarak yönetilir.</p>
+            
+            <p>Web3 Cüzdan Modülü sayesinde, Tipbox kullanıcıları geleneksel bir Web2 uygulamasının konforundan ödün vermeden blok zinciri altyapısının avantajlarından yararlanabilir. Bu sistem, dijital varlık yönetimini sezgisel hale getirirken platform içi katılımı artırır ve kullanıcılar için sosyal deneyimi geliştirir.</p>
+            
+            <h2>Uygulama Bütünlüğü</h2>
+            
+            <p>Tipbox platformu, <strong>Deneyim Odaklı Sosyal Etkileşim Uygulaması (Web2)</strong> üzerine kurulu merkezi bir yapı sunarken, <strong>Web3 Cüzdan Modülü</strong>'nü entegre ederek dijital varlık yönetimini kullanıcı deneyiminin organik bir parçası haline getirir.</p>
+            
+            <p>Web2 uygulaması, kullanıcı dostu bir arayüz aracılığıyla etkileşim akışını yönetmeye devam ederken, entegre Web3 Cüzdan Modülü, blok zinciri tabanlı işlemleri arka planda güvenli ve şeffaf bir şekilde yönetir.</p>
+            
+            <p>Bu mimari yaklaşım, Tipbox'ın merkezinde yer alan mobil uygulamanın, TIPBOX Ağı üzerindeki <strong>akıllı sözleşmeler ve token ekonomisi</strong> ile mükemmel senkronizasyon içinde çalışmasını sağlar. Satın alma, abonelik ve katılım gibi Web2 eylemleri anında Web3 Cüzdan Modülü'ne iletilir. Tersine, NFT'lerin kilidi açma veya token gönderme gibi Web3'e özgü etkinlikler, Web2 arayüzüne gerçek zamanlı olarak yansıtılır.</p>
+            
+            <p>Tüm veri iletişimleri, <strong>API Gateway</strong> aracılığıyla güvenli ve çift yönlü olarak gerçekleştirilir, yalnızca sorunsuz entegrasyonu değil, aynı zamanda veri gizliliğinin ve bütünlüğünün korunmasını ve merkezi bir işlem geçmişinin oluşturulmasını sağlar.</p>
+            
+            <p>Kullanıcı perspektifinden, tüm etkileşimler karmaşık cüzdan bağlantıları veya teknik ayrıntılarla uğraşmadan doğrudan mobil uygulama aracılığıyla gerçekleştirilebilir. Blok zinciri altyapısının faydaları, geleneksel arayüzün tanıdık ve erişilebilir sınırları içinde sunulur.</p>
+            
+            <p>Bu entegrasyon modeli, token ve NFT'lerin kolay yönetimini sağlarken, aynı zamanda kullanıcıların merkezi olmayan kampanyalara ve ödül mekanizmalarına görünür ve erişilebilir bir şekilde katılımını da kolaylaştırır.</p>
+            
+            <p>Bu birleşik yapı yalnızca <strong>sistem düzeyinde verimliliği</strong> sağlamakla kalmaz, aynı zamanda platform genelinde kullanıcı katılımını artırır, daha uzun ve anlamlı kullanıcı oturumlarını mümkün kılar. <strong>Yüksek ölçeklenebilir mimarisi</strong>, Tipbox'ın büyüyen kullanıcı tabanını barındırmasını ve gelecekteki teknolojik yükseltmelere açık kalmasını sağlar.</p>
+            
+            <p>Bu entegrasyon modeli aracılığıyla, Tipbox hem teknolojik hem de deneyimsel düzeylerde yenilik taahhüdünü gösterir. <strong>Web2'nin kolaylığını</strong> <strong>Web3'ün gücü</strong> ile birleştirerek, bu sistem kullanıcılara tek bir uygulama üzerinden merkezi olmayan finans, dijital rozetler, üyelik sistemleri ve token ekonomileri üzerinde kapsamlı kontrol sağlar.</p>
+        </div>  
+    </div>
+</article> 
