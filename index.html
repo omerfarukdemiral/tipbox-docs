@@ -351,6 +351,88 @@
             padding-top: 40px;
             padding-bottom: 40px;
         }
+
+        /* Accordion Styles */
+        .collaps_tabs {
+            margin: 30px auto;
+            max-width: 970px;
+        }
+
+        .card.doc_accordion {
+            border: 0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: none;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .card.doc_accordion .card-header {
+            padding: 0;
+            border: 0;
+            background: none;
+        }
+
+        .card.doc_accordion .card-header button {
+            padding: 18px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            text-align: left;
+            background: #2c106f;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .card.doc_accordion .card-header button:hover,
+        .card.doc_accordion .card-header button:focus {
+            background: #3a1694;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .card.doc_accordion .card-header button svg:first-of-type {
+            display: none;
+        }
+
+        .card.doc_accordion .card-header button.collapsed svg:first-of-type {
+            display: block;
+        }
+
+        .card.doc_accordion .card-header button.collapsed svg:last-child {
+            display: none;
+        }
+
+        .card.doc_accordion .card-body {
+            padding: 20px 25px;
+            background: #1a1a1a;
+            border-radius: 0 0 8px 8px;
+            line-height: 1.7;
+            color: #bbb;
+            font-size: 16px;
+        }
+
+        .card.doc_accordion .card-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Mobil için accordion düzeni */
+        @media (max-width: 576px) {
+            .card.doc_accordion .card-header button {
+                padding: 15px;
+                font-size: 15px;
+            }
+            
+            .card.doc_accordion .card-body {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 
@@ -387,8 +469,8 @@
             </ul>
             <div class="container">
                 <div class="doc_banner_content">
-                    <h2 class="wow fadeInUp">Enrich lives with your tips & tips!</h2>
-                    <p class="wow fadeInUp" data-wow-delay="0.2s">Search here to get answers to your questions</p>
+                    <h2 class="wow fadeInUp">Enrich Lives with Your Tips & $TIPS</h2>
+                    <p class="wow fadeInUp" data-wow-delay="0.2s" style="font-family: 'Jura', sans-serif !important; font-size: 16px !important; max-width: 100% !important; overflow-wrap: break-word !important; word-wrap: break-word !important; hyphens: auto !important; line-height: 1.6 !important;">Tipbox is a next-generation platform that transforms user experiences into structured, meaningful digital assets—rewarding creators and placing content culture at the core. By combining the engagement power of Web2 with the ownership and incentive infrastructure of Web3, Tipbox builds a sustainable, creator-driven economic model. This panel offers exclusive insights into the platform's architecture, growth strategy, and revenue model.</p>
                     <form action="#" class="header_search_form">
                         <div class="header_search_form_info">
                             <div class="form-group">
@@ -433,10 +515,10 @@
                             <div class="icon-wrapper">
                                 <img src="img/new/icon1.png" alt="" style="width: 48px; height: 48px;">
                             </div>
-                            <a href="project-blueprint.html">
-                                <h4>Project Blueprint</h4>
+                            <a href="project-blurb.html">
+                                <h4>Blurb</h4>
                             </a>
-                            <p>A comprehensive document that defines the key objectives, scope, and technical approach for the project.</p>
+                            <p>A brief overview of Tipbox's core purpose, positioning, and intended impact in a single-page narrative.</p>
                         </div>
                     </div>
                     <div class="col-md-3 doc_features_item wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="0.6s">
@@ -445,9 +527,9 @@
                                 <img src="img/new/icon2.png" alt="" style="width: 48px; height: 48px;">
                             </div>
                             <a href="project-deck.html">
-                                <h4>Project Deck</h4>
+                                <h4>Pitchdeck</h4>
                             </a>
-                            <p>A presentation that highlights the project's value proposition, progress, and strategic direction to potential stakeholders.</p>
+                            <p>A visual presentation outlining Tipbox's value proposition, growth strategy, and investment highlights for stakeholders.</p>
                         </div>
                     </div>
                     <div class="col-md-3 doc_features_item wow fadeInUp" data-wow-delay="0.3s" data-wow-duration="0.7s">
@@ -455,10 +537,10 @@
                             <div class="icon-wrapper">
                                 <img src="img/new/icon3.png" alt="" style="width: 48px; height: 48px;">
                             </div>
-                            <a href="project-blurb.html">
-                                <h4>Project Blurb</h4>
+                            <a href="business-model-canvas.html">
+                                <h4>Business Model Canvas</h4>
                             </a>
-                            <p>A brief description offering an overview of the project, its purpose, and its intended outcomes in a concise format.</p>
+                            <p>A structured snapshot of Tipbox's business logic—including its key partners, resources, channels, and revenue streams.</p>
                         </div>
                     </div>
                     <div class="col-md-3 doc_features_item wow fadeInUp" data-wow-delay="0.4s" data-wow-duration="0.8s">
@@ -469,7 +551,7 @@
                             <a href="tokeneconomics.html">
                                 <h4>Tokeneconomics</h4>
                             </a>
-                            <p>The economic model explaining how tokens are distributed, utilized, and incentivize participation in a blockchain project.</p>
+                            <p>A breakdown of how TIPS tokens are distributed, vested, and used to power participation and incentives across the platform.</p>
                         </div>
                     </div>
                 </div>
@@ -481,61 +563,832 @@
                 <div class="doc_round one" data-parallax='{"x": -80, "y": -100, "rotateY":0}'></div>
                 <div class="doc_round two" data-parallax='{"x": -10, "y": 70, "rotateY":0}'></div>
                 <div class="doc_title text-center">
-                    <h2 class="wow fadeInUp" data-wow-delay="0.2s">Patchnote for Tipbox</h2>
+                    <h2 class="wow fadeInUp" data-wow-delay="0.2s">Patch Notes</h2>
                     <p class="wow fadeInUp" data-wow-delay="0.4s">Stay up to date with the latest improvements and updates to Tipbox documentation platform</p>
                 </div>
                 <div class="changelog_inner">
                     <div class="row changelog_info" id="v1">
                         <div class="col-lg-3 changelog_date">
                             <div class="c_date">
-                                <h6>January 15, 2025</h6>
-                                <p>New Year Release</p>
+                                <h6>December 2024</h6>
+                                <p>Initial Release</p>
                             </div>
                         </div>
                         <div class="col-lg-2">
                             <div class="version_info">
                                 <div class="c_version">
-                                    1.3
+                                    v1.0
                                 </div>
                                 <div class="line bottom_half"></div>
                             </div>
                         </div>
                         <div class="col-lg-7">
                             <div class="changelog_content">
-                                <p><span class="new">New</span>Added AI-powered document suggestions</p>
-                                <p><span class="new">New</span>Introduced Project Blueprint template builder</p>
-                                <p><span class="improve">Improvement</span>Enhanced Tokeneconomics visualization tools</p>
-                                <p><span class="new">New</span>Integrated real-time collaboration features</p>
-                                <p><span class="fixed">Fixed</span>Project Blurb formatting issues</p>
+                                <p><span class="new" style="background-color: #571fdd;">NEW</span>Investor Panel soft launch</p>
+                                <p><span class="new" style="background-color: #571fdd;">NEW</span>Project Blueprint & Tokenomics documents added</p>
+                                <p><span class="fixed" style="background-color: #d8ff08; color: #1a1a1a;">FIXED</span>Initial mobile responsiveness issues resolved</p>
                             </div>
                         </div>
                     </div>
                     <div class="row changelog_info" id="v2">
                         <div class="col-lg-3 changelog_date">
                             <div class="c_date">
-                                <h6>December 5, 2024</h6>
-                                <p>Winter Update</p>
+                                <h6>February 2025</h6>
+                                <p>Winter Release</p>
                             </div>
                         </div>
                         <div class="col-lg-2">
                             <div class="version_info">
                                 <div class="c_version">
-                                    1.2
+                                    v1.1
                                 </div>
                                 <div class="line bottom_half"></div>
                             </div>
                         </div>
                         <div class="col-lg-7">
                             <div class="changelog_content">
-                                <p><span class="new">New</span>Complete UI/UX overhaul for better user experience</p>
-                                <p><span class="improve">Improvement</span>Enhanced Project Blueprint export options</p>
-                                <p><span class="improve">Improvement</span>Advanced Tokeneconomics calculation tools</p>
-                                <p><span class="fixed">Fixed</span>Mobile responsiveness issues in Project Blurb editor</p>
-                                <p><span class="new">New</span>Added dark mode support across all document types</p>
+                                <p><span class="new" style="background-color: #571fdd;">NEW</span>Business Model Canvas integrated</p>
+                                <p><span class="new" style="background-color: #571fdd;">NEW</span>Secure access via private password introduced</p>
+                                <p><span class="improve" style="background-color: #e0195b;">IMPROVEMENT</span>Pitch Deck visual updates</p>
+                                <p><span class="fixed" style="background-color: #d8ff08; color: #1a1a1a;">FIXED</span>Link errors in Blurb section</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row changelog_info" id="v3">
+                        <div class="col-lg-3 changelog_date">
+                            <div class="c_date">
+                                <h6>April 2025</h6>
+                                <p>Spring Update</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="version_info">
+                                <div class="c_version">
+                                    v1.2
+                                </div>
+                                <div class="line bottom_half"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="changelog_content">
+                                <p><span class="new" style="background-color: #571fdd;">NEW</span>AI-based document search & tagging</p>
+                                <p><span class="improve" style="background-color: #e0195b;">IMPROVEMENT</span>Executive Summary rewritten for clarity</p>
+                                <p><span class="fixed" style="background-color: #d8ff08; color: #1a1a1a;">FIXED</span>Minor layout glitches on desktop view</p>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+        
+        <section class="accordion_area" style="padding: 50px 0;">
+            <div class="container">
+                <div class="doc_title text-center">
+                    <h2 class="wow fadeInUp" data-wow-delay="0.2s">Frequently Asked Questions</h2>
+                    <p class="wow fadeInUp" data-wow-delay="0.4s">Find quick answers to common investor questions here, with direct links to full documentation for deeper insights.</p>
+                </div>
+                
+                <!-- Tabbed Layout -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tab-content faq-tab-content">
+                            <ul class="nav nav-tabs" id="faqTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="product-tab" data-toggle="tab" href="#product" role="tab" aria-controls="product" aria-selected="true">Product</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="market-tab" data-toggle="tab" href="#market" role="tab" aria-controls="market" aria-selected="false">Market</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="technology-tab" data-toggle="tab" href="#technology" role="tab" aria-controls="technology" aria-selected="false">Technology</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="finance-tab" data-toggle="tab" href="#finance" role="tab" aria-controls="finance" aria-selected="false">Finance</a>
+                                </li>
+                            </ul>
+                            
+                            <div class="tab-content" id="faqTabContent">
+                                <!-- Product Tab -->
+                                <div class="tab-pane fade show active" id="product" role="tabpanel" aria-labelledby="product-tab">
+                                    <div class="collaps_tabs">
+                                        <div class="collaps_tab_inner" id="accordion-product">
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingOne">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link" data-toggle="collapse"
+                                                                data-target="#collapseOne" aria-expanded="true"
+                                                                aria-controls="collapseOne">
+                                                            Why is Tipbox's product model sustainable from an investment standpoint?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                                     data-parent="#accordion-product">
+                                                    <div class="card-body toggle_body">
+                                                        Its structured content formats and contribution-based rewards generate continuous user engagement and repeatable value creation.
+                                                        <p><a href="product.html">→ More info: [Product]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingTwo">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseTwo" aria-expanded="false"
+                                                                aria-controls="collapseTwo">
+                                                            What specific problem does the product solve in the market?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                                     data-parent="#accordion-product">
+                                                    <div class="card-body toggle_body">
+                                                        It offers a reliable, incentivized alternative to unstructured and unverified user review systems.
+                                                        <p><a href="problem-solution.html">→ More info: [Focus Problem & Solution]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingThree">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseThree" aria-expanded="false"
+                                                                aria-controls="collapseThree">
+                                                            How does Tipbox turn user contributions into tangible value?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                                     data-parent="#accordion-product">
+                                                    <div class="card-body toggle_body">
+                                                        Experiences are transformed into NFTs, TIPS tokens, and social reputation—creating digital assets with intrinsic and marketable value.
+                                                        <p><a href="economy.html">→ More info: [In-App Economy & Rewards]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingFour">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseFour" aria-expanded="false"
+                                                                aria-controls="collapseFour">
+                                                            How does the product enable recurring revenue or participation loops?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
+                                                     data-parent="#accordion-product">
+                                                    <div class="card-body toggle_body">
+                                                        Its contribution → reward → reputation loop incentivizes continuous engagement from users and creators.
+                                                        <p><a href="engagement.html">→ More info: [Engagement Mechanics]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingFive">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseFive" aria-expanded="false"
+                                                                aria-controls="collapseFive">
+                                                            How is the product strategy architected for scalable growth?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseFive" class="collapse" aria-labelledby="headingFive"
+                                                     data-parent="#accordion-product">
+                                                    <div class="card-body toggle_body">
+                                                        A modular design allows adaptation across user types and market segments without reengineering the core system.
+                                                        <p><a href="architecture.html">→ More info: [Platform Architecture]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Market Tab -->
+                                <div class="tab-pane fade" id="market" role="tabpanel" aria-labelledby="market-tab">
+                                    <div class="collaps_tabs">
+                                        <div class="collaps_tab_inner" id="accordion-market">
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingMarket1">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link" data-toggle="collapse"
+                                                                data-target="#collapseMarket1" aria-expanded="true"
+                                                                aria-controls="collapseMarket1">
+                                                            Which market gap does Tipbox directly address?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseMarket1" class="collapse show" aria-labelledby="headingMarket1"
+                                                     data-parent="#accordion-market">
+                                                    <div class="card-body toggle_body">
+                                                        It solves the trust and reliability issue in experience sharing by introducing structured, verifiable and rewarded contributions.
+                                                        <p><a href="market-analysis.html">→ More info: [Market Analysis]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingMarket2">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseMarket2" aria-expanded="false"
+                                                                aria-controls="collapseMarket2">
+                                                            What is the size and potential of Tipbox's target audience?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseMarket2" class="collapse" aria-labelledby="headingMarket2"
+                                                     data-parent="#accordion-market">
+                                                    <div class="card-body toggle_body">
+                                                        It provides a scalable infrastructure for millions of users in focus markets.
+                                                        <p><a href="target-market.html">→ More info: [Target Market & Segmentation]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingMarket3">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseMarket3" aria-expanded="false"
+                                                                aria-controls="collapseMarket3">
+                                                            What makes Tipbox fundamentally different from competitors?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseMarket3" class="collapse" aria-labelledby="headingMarket3"
+                                                     data-parent="#accordion-market">
+                                                    <div class="card-body toggle_body">
+                                                        Its value-ownership model and cultural contribution system redefine participation from passive to invested.
+                                                        <p><a href="competitor-analysis.html">→ More info: [Competitor Analysis]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingMarket4">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseMarket4" aria-expanded="false"
+                                                                aria-controls="collapseMarket4">
+                                                            How does the Go-to-Market strategy accelerate investor returns?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseMarket4" class="collapse" aria-labelledby="headingMarket4"
+                                                     data-parent="#accordion-market">
+                                                    <div class="card-body toggle_body">
+                                                        A phased rollout—creator-first seeding → viral content loops → premium monetization—drives compounding engagement.
+                                                        <p><a href="launch-plan.html">→ More info: [Launch Plan]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingMarket5">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseMarket5" aria-expanded="false"
+                                                                aria-controls="collapseMarket5">
+                                                            What is the international scaling potential?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseMarket5" class="collapse" aria-labelledby="headingMarket5"
+                                                     data-parent="#accordion-market">
+                                                    <div class="card-body toggle_body">
+                                                        Experience formats are culturally flexible, and the Web3 infrastructure enables integration with global decentralized communities.
+                                                        <p><a href="expansion-strategy.html">→ More info: [Expansion Strategy]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Technology Tab -->
+                                <div class="tab-pane fade" id="technology" role="tabpanel" aria-labelledby="technology-tab">
+                                    <div class="collaps_tabs">
+                                        <div class="collaps_tab_inner" id="accordion-technology">
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingTechnology1">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link" data-toggle="collapse"
+                                                                data-target="#collapseTechnology1" aria-expanded="true"
+                                                                aria-controls="collapseTechnology1">
+                                                            How scalable is Tipbox's technological infrastructure?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseTechnology1" class="collapse show" aria-labelledby="headingTechnology1"
+                                                     data-parent="#accordion-technology">
+                                                    <div class="card-body toggle_body">
+                                                        Its Web2–Web3 hybrid architecture enables mass adoption while ensuring decentralized ownership and data integrity.
+                                                        <p><a href="system-architecture.html">→ More info: [System Architecture Overview]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingTechnology2">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseTechnology2" aria-expanded="false"
+                                                                aria-controls="collapseTechnology2">
+                                                            How does the Web3 integration add investment value?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseTechnology2" class="collapse" aria-labelledby="headingTechnology2"
+                                                     data-parent="#accordion-technology">
+                                                    <div class="card-body toggle_body">
+                                                        Tokenization of contributions creates new value layers and monetization opportunities, enhancing overall ROI.
+                                                        <p><a href="token-infrastructure.html">→ More info: [Token Infrastructure & Incentive Layer]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingTechnology3">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseTechnology3" aria-expanded="false"
+                                                                aria-controls="collapseTechnology3">
+                                                            How do AI systems contribute to product efficiency and investor return?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseTechnology3" class="collapse" aria-labelledby="headingTechnology3"
+                                                     data-parent="#accordion-technology">
+                                                    <div class="card-body toggle_body">
+                                                        AI-based validation reduces operational cost and improves content quality, enabling leaner scalability.
+                                                        <p><a href="ai-validation.html">→ More info: [AI Validation & Labeling System]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingTechnology4">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseTechnology4" aria-expanded="false"
+                                                                aria-controls="collapseTechnology4">
+                                                            How is data ownership and security managed?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseTechnology4" class="collapse" aria-labelledby="headingTechnology4"
+                                                     data-parent="#accordion-technology">
+                                                    <div class="card-body toggle_body">
+                                                        User data and contributions are encrypted and stored immutably on-chain, ensuring full transparency and trust.
+                                                        <p><a href="data-governance.html">→ More info: [Data Governance & Privacy]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingTechnology5">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseTechnology5" aria-expanded="false"
+                                                                aria-controls="collapseTechnology5">
+                                                            Is the architecture technically sustainable long-term?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseTechnology5" class="collapse" aria-labelledby="headingTechnology5"
+                                                     data-parent="#accordion-technology">
+                                                    <div class="card-body toggle_body">
+                                                        The platform is built on modular, replaceable components, reducing long-term technical debt and enabling adaptability.
+                                                        <p><a href="scalability-strategy.html">→ More info: [Scalability Strategy]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Finance Tab -->
+                                <div class="tab-pane fade" id="finance" role="tabpanel" aria-labelledby="finance-tab">
+                                    <div class="collaps_tabs">
+                                        <div class="collaps_tab_inner" id="accordion-finance">
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingFinance1">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link" data-toggle="collapse"
+                                                                data-target="#collapseFinance1" aria-expanded="true"
+                                                                aria-controls="collapseFinance1">
+                                                            How will post-investment funds be allocated?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseFinance1" class="collapse show" aria-labelledby="headingFinance1"
+                                                     data-parent="#accordion-finance">
+                                                    <div class="card-body toggle_body">
+                                                        Funds are distributed across product development, creator incentives, marketing, and operational runway.
+                                                        <p><a href="fund-utilization.html">→ More info: [Fund Utilization Plan]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingFinance2">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseFinance2" aria-expanded="false"
+                                                                aria-controls="collapseFinance2">
+                                                            How does the TIPS token model generate investor value?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseFinance2" class="collapse" aria-labelledby="headingFinance2"
+                                                     data-parent="#accordion-finance">
+                                                    <div class="card-body toggle_body">
+                                                        Limited supply, tiered utility, and community staking mechanics turn platform activity into economic return.
+                                                        <p><a href="tokeneconomics.html">→ More info: [Tokeneconomics]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingFinance3">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseFinance3" aria-expanded="false"
+                                                                aria-controls="collapseFinance3">
+                                                            How diversified and scalable is the revenue model?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseFinance3" class="collapse" aria-labelledby="headingFinance3"
+                                                     data-parent="#accordion-finance">
+                                                    <div class="card-body toggle_body">
+                                                        Revenue comes from creator services, NFT sales, premium features, and platform transaction flows.
+                                                        <p><a href="revenue-model.html">→ More info: [Revenue Model Overview]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingFinance4">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseFinance4" aria-expanded="false"
+                                                                aria-controls="collapseFinance4">
+                                                            What is the projected investor return timeline?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseFinance4" class="collapse" aria-labelledby="headingFinance4"
+                                                     data-parent="#accordion-finance">
+                                                    <div class="card-body toggle_body">
+                                                        Based on the phased GTM model, returns are forecasted within 12–18 months depending on token activation and adoption.
+                                                        <p><a href="forecast.html">→ More info: [Break-Even & Forecast]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingFinance5">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseFinance5" aria-expanded="false"
+                                                                aria-controls="collapseFinance5">
+                                                            What are the exit strategies under consideration?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseFinance5" class="collapse" aria-labelledby="headingFinance5"
+                                                     data-parent="#accordion-finance">
+                                                    <div class="card-body toggle_body">
+                                                        Scenarios include token listing, strategic acquisition, or community-led continuation under DAO-like governance.
+                                                        <p><a href="exit-strategy.html">→ More info: [Exit Strategy Document]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CSS için özel stil -->
+                <style>
+                    .faq-tab-content .nav-tabs {
+                        border-bottom: none;
+                        margin-bottom: 30px;
+                        justify-content: center;
+                        position: relative;
+                    }
+                    
+                    .faq-tab-content .nav-tabs::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: auto;
+                        max-width: 600px;
+                        height: 1px;
+                        background-color: #d8ff08;
+                    }
+                    
+                    .faq-tab-content .nav-tabs .nav-item {
+                        margin: 0 10px;
+                    }
+                    
+                    .faq-tab-content .nav-tabs .nav-link {
+                        border: none;
+                        border-bottom: 3px solid transparent;
+                        padding: 12px 20px;
+                        font-size: 18px;
+                        font-weight: 500;
+                        color: #909090;
+                        transition: all 0.3s;
+                        position: relative;
+                        background-color: transparent;
+                    }
+                    
+                    .faq-tab-content .nav-tabs .nav-link.active,
+                    .faq-tab-content .nav-tabs .nav-link:hover {
+                        color: #fff;
+                        border-bottom: 3px solid #d8ff08;
+                        background: transparent;
+                    }
+                    
+                    /* Tablet ve altı ekranlar için tab düzeni */
+                    @media (max-width: 768px) {
+                        .faq-tab-content .nav-tabs {
+                            flex-wrap: wrap;
+                        }
+                        
+                        .faq-tab-content .nav-tabs::after {
+                            width: 90%;
+                            max-width: 90%;
+                        }
+                        
+                        .faq-tab-content .nav-tabs .nav-item {
+                            margin: 5px;
+                            flex: 1 0 40%;
+                        }
+                        
+                        .faq-tab-content .nav-tabs .nav-link {
+                            text-align: center;
+                            padding: 10px;
+                            font-size: 16px;
+                        }
+                    }
+                    
+                    /* Mobil ekranlar için tab düzeni */
+                    @media (max-width: 576px) {
+                        .faq-tab-content .nav-tabs .nav-item {
+                            flex: 1 0 100%;
+                            margin: 3px 0;
+                        }
+                    }
+                    
+                    .tab-content {
+                        margin-top: 25px;
+                    }
+                    
+                    .card-body a {
+                        color: #fff;
+                        text-decoration: none;
+                        font-weight: bold;
+                    }
+                    
+                    .card-body a:hover {
+                        text-decoration: underline;
+                    }
+                </style>
             </div>
         </section>
         
@@ -555,7 +1408,7 @@
                                 <input type="email" name="EMAIL" id="email" class="memail"
                                     placeholder="Your work email">
                             </div>
-                            <button type="submit" class="submit_btn">Send</button>
+                            <button type="submit" class="submit_btn" style="background-color: #d8ff08; color: #1d2746;">Send</button>
                             <p class="mchimp-errmessage" style="display: none;"></p>
                             <p class="mchimp-sucmessage" style="display: none;"></p>
                         </div>
