@@ -152,7 +152,7 @@ body.development-mode::before {
     -khtml-user-drag: none;
     -moz-user-drag: none;
     -o-user-drag: none;
-    user-drag: none;
+    user-select: none;
 }
 
 /* Mobil cihazlar için dokunmatik seçim engelleme */
@@ -203,4 +203,81 @@ body.development-mode::before {
         padding: 6px 12px;
         font-size: 12px;
     }
+}
+
+/* Legal Notice Popup Styles */
+.legal-notice-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  max-width: 380px;
+  background-color: #111111;
+  color: #f0f0f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  padding: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.legal-notice-popup.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.legal-notice-popup h4 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.legal-notice-popup p {
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #e0e0e0;
+  font-family: 'Jura', sans-serif !important;
+}
+
+.legal-notice-popup label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.legal-notice-popup input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.legal-notice-popup button {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  background-color: #d8ff08;
+  color: #111;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.legal-notice-popup button:hover {
+  background-color: #3346e7;
+}
+
+@media (max-width: 480px) {
+  .legal-notice-popup {
+    max-width: 90%;
+    left: 5%;
+    right: 5%;
+  }
 } 

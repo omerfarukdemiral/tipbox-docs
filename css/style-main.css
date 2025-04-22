@@ -19756,7 +19756,7 @@ ul.ordered-list li::before {
 }
 .changelog_info .c_version {
   flex: 1;
-  background: #1d2746;
+  background: #2c106f;
   text-align: center;
   font-size: 14px;
   font-weight: 400;
@@ -24609,12 +24609,12 @@ blockquote .author {
 .doc_round.one {
   width: 260px;
   height: 260px;
-  background: #f9bf44;
+  background: #d8ff08;
   bottom: 120px;
   left: 120px;
 }
 .doc_round.two {
-  background: #5e44ff;
+  background: #571fdd;
   width: 100px;
   height: 100px;
   top: 160px;
@@ -24956,7 +24956,7 @@ blockquote .author {
 
 .doc_subscribe_inner {
   border-radius: 20px;
-  background-color: rgb(76, 76, 241);
+  background-color: #2c106f;
   box-shadow: 0 50px 80px 0 rgba(3, 3, 125, 0.2);
   display: flex;
   flex-wrap: wrap;

@@ -174,10 +174,20 @@ auth.onAuthStateChanged(function (user) {
             document.dispatchEvent(new CustomEvent('user-login', {
                 detail: { user: enhancedUser }
             }));
+            
+            // Yasal uyarı popup'ını kontrol et (eğer loaded ise)
+            if (window.initLegalNotice) {
+                window.initLegalNotice();
+            }
         }).catch(error => {
             console.error('Kullanıcı bilgileri getirilirken hata:', error);
             storeUserInWindow(user); // Hata durumunda basit veriyi window'a kaydet
             updateUserInterface(user); // Hata durumunda orijinal kullanıcı bilgilerini kullan
+            
+            // Yasal uyarı popup'ını kontrol et (eğer loaded ise)
+            if (window.initLegalNotice) {
+                window.initLegalNotice();
+            }
         });
     } else {
         // Kullanıcı oturum açmamışsa
