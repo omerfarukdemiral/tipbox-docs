@@ -1,130 +1,226 @@
 <!-- Header Component -->
-<nav class="navbar navbar-expand-lg menu_one menu_purple sticky-nav">
+<nav class="navbar tipbox-navbar sticky-nav">
     <div class="container">
-        <a class="navbar-brand header_logo" href="index.html">
-            <img class="first_logo sticky_logo" src="../img/logo.png" alt="logo" style="width: auto; height: 40px; object-fit: contain; -webkit-backface-visibility: hidden; backface-visibility: hidden; image-rendering: -webkit-optimize-contrast;">
-            <img class="white_logo main_logo" src="../img/main-logo.png" alt="logo" style="width: auto; height: 40px; object-fit: contain; -webkit-backface-visibility: hidden; backface-visibility: hidden; image-rendering: -webkit-optimize-contrast;">
-        </a>
-        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="menu_toggle">
-                <span class="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </span>
-                <span class="hamburger-cross">
-                    <span></span>
-                    <span></span>
-                </span>
-            </span>
-        </button>
+        <div class="navbar-left d-flex align-items-center">
+            <a class="navbar-brand header_logo" href="index.html">
+                <img class="first_logo sticky_logo" src="../img/logo.png" alt="logo" style="width: auto; height: 40px; object-fit: contain; -webkit-backface-visibility: hidden; backface-visibility: hidden; image-rendering: -webkit-optimize-contrast;">
+                <img class="white_logo main_logo" src="../img/main-logo.png" alt="logo" style="width: auto; height: 40px; object-fit: contain; -webkit-backface-visibility: hidden; backface-visibility: hidden; image-rendering: -webkit-optimize-contrast;">
+            </a>
+        </div>
+        
+        <div class="navbar-right d-flex align-items-center">
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav menu ml-auto">
-                <!-- About Us Dropdown -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button">
-                        About Us <i class="arrow_carrot-down"></i>
+            <!-- Kullanıcı Profil Menüsü -->
+            <div class="user-profile-menu ml-3">
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="user-avatar rounded-circle overflow-hidden" style="width: 40px; height: 40px;">
+                            <img src="../img/default-avatar.png" alt="User Avatar" class="w-100 h-100 user-img" style="object-fit: cover;">
+                        </div>
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
-                        <li><a class="dropdown-item" href="vision-mission.html">Vision & Mission</a></li>
-                        <li><a class="dropdown-item" href="team.html">Team</a></li>
-                        <li><a class="dropdown-item" href="principles.html">Principles</a></li>
-                    </ul>
-                </li>
-                
-                <!-- Product -->
-                <li class="nav-item">
-                    <a href="product.html" class="nav-link">Product</a>
-                </li>
-                
-                <!-- Market -->
-                <li class="nav-item">
-                    <a href="market.html" class="nav-link">Market</a>
-                </li>
-                
-                <!-- Technology -->
-                <li class="nav-item">
-                    <a href="technology.html" class="nav-link">Technology</a>
-                </li>
-                
-                <!-- Finance -->
-                <li class="nav-item">
-                    <a href="finance.html" class="nav-link">Finance</a>
-                </li>
-                
-                <!-- Roadmap -->
-                <li class="nav-item">
-                    <a href="roadmap.html" class="nav-link">Roadmap</a>
-                </li>
-                
-                <!-- Docs Dropdown -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="docsDropdown" role="button">
-                        Docs <i class="arrow_carrot-down"></i>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="docsDropdown">
-                        <li><a class="dropdown-item" href="project-deck.html">Pitchdeck</a></li>
-                        <li><a class="dropdown-item" href="project-blurb.html">Blurb</a></li>
-                        <li><a class="dropdown-item" href="project-blueprint.html">Blueprint</a></li>
-                        <li><a class="dropdown-item" href="lean-canvas.html">Lean Canvas</a></li>
-                        <li><a class="dropdown-item" href="business-model-canvas.html">Business Model Canvas</a></li>
-                    </ul>
-                </li>
-                
-            </ul>
-            <div class="right-nav">
-                <div class="px-2 js-darkmode-btn" title="Toggle dark mode">
-                    <label for="something" class="tab-btn tab-btns">
-                        <ion-icon name="moon"></ion-icon>
-                    </label>
-                    <label for="something" class="tab-btn">
-                        <ion-icon name="sunny"></ion-icon>
-                    </label>
-                    <label class="ball" for="something"></label>
-                    <input type="checkbox" name="something" id="something" class="dark_mode_switcher">
-                </div>
-
-                <!-- Kullanıcı Profil Menüsü -->
-                <div class="user-profile-menu ml-2">
-                    <div class="dropdown">
-                        <a href="#" class="dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-                            <div class="user-avatar rounded-circle overflow-hidden" style="width: 40px; height: 40px;">
-                                <img src="../img/default-avatar.png" alt="User Avatar" class="w-100 h-100 user-img" style="object-fit: cover;">
-                            </div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right mt-2" aria-labelledby="userDropdown">
-                            <div class="dropdown-item-text">
-                                <div class="d-flex align-items-center">
-                                    <div class="user-avatar-sm rounded-circle overflow-hidden mr-3" style="width: 32px; height: 32px;">
-                                        <img src="../img/default-avatar.png" alt="User Avatar" class="w-100 h-100 user-img-sm" style="object-fit: cover;">
-                                    </div>
-                                    <div>
-                                        <p class="mb-0 font-weight-bold user-name-sm">Yükleniyor...</p>
-                                        <small class="text-muted user-email-sm">Yükleniyor...</small>
-                                    </div>
+                    <div class="dropdown-menu dropdown-menu-right mt-2" aria-labelledby="userDropdown">
+                        <div class="dropdown-item-text">
+                            <div class="d-flex align-items-center">
+                                <div class="user-avatar-sm rounded-circle overflow-hidden mr-3" style="width: 32px; height: 32px;">
+                                    <img src="../img/default-avatar.png" alt="User Avatar" class="w-100 h-100 user-img-sm" style="object-fit: cover;">
+                                </div>
+                                <div>
+                                    <p class="mb-0 font-weight-bold user-name-sm">Yükleniyor...</p>
+                                    <small class="text-muted user-email-sm">Yükleniyor...</small>
                                 </div>
                             </div>
-                            <div class="dropdown-divider"></div>
-                            <!-- Admin Paneli bağlantısı (sadece admin rolüne sahip kullanıcılar için gösterilecek) -->
-                            <a class="dropdown-item admin-panel-link" href="admin-panel.html" style="display: none;">
-                                <i class="icon_shield mr-2"></i>Admin Paneli
-                            </a>
-                            <a class="dropdown-item" href="#" onclick="logout()">
-                                <i class="icon_lock-open_alt mr-2"></i>Çıkış Yap
-                            </a>
                         </div>
+                        <div class="dropdown-divider"></div>
+                        <!-- Admin Paneli bağlantısı (sadece admin rolüne sahip kullanıcılar için gösterilecek) -->
+                        <a class="dropdown-item admin-panel-link" href="admin-panel.html" style="display: none;">
+                            <i class="icon_shield mr-2"></i>Admin Paneli
+                        </a>
+                        <a class="dropdown-item" href="#" onclick="logout()">
+                            <i class="icon_lock-open_alt mr-2"></i>Çıkış Yap
+                        </a>
                     </div>
                 </div>
             </div>
+
+            <!-- Sidebar Toggle Button -->
+            <button id="sidebarToggleBtn" class="sidebar-toggle-btn ml-3" type="button" aria-label="Toggle sidebar menu" onclick="toggleSidebarMenu()">
+                <span class="sidebar-toggle-icon sidebar-toggle-icon-light">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
         </div>
     </div>
 </nav>
 
+<!-- Sidebar Menu Overlay -->
+<div class="sidebar-overlay" onclick="toggleSidebarMenu()"></div>
+
+<!-- Sidebar Menu -->
+<div class="sidebar-menu">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <a href="index.html">
+                <img src="../img/main-logo.png" alt="logo" class="sidebar-logo-img">
+            </a>
+        </div>
+        <div class="sidebar-close-btn" onclick="toggleSidebarMenu()">
+            <i class="icon_close"></i>
+        </div>
+    </div>
+    <div class="sidebar-content">
+        <ul class="sidebar-nav">
+            <!-- About -->
+            <li class="sidebar-item">
+                <a href="about.html" class="sidebar-link">
+                    <div class="sidebar-link-content">
+                        <i class="icon_info mr-3"></i>
+                        <span>About</span>
+                    </div>
+                </a>
+            </li>
+            
+            <!-- Product -->
+            <li class="sidebar-item">
+                <a href="product.html" class="sidebar-link">
+                    <div class="sidebar-link-content">
+                        <i class="icon_gift mr-3"></i>
+                        <span>Product</span>
+                    </div>
+                </a>
+            </li>
+            
+            <!-- Market -->
+            <li class="sidebar-item">
+                <a href="market.html" class="sidebar-link">
+                    <div class="sidebar-link-content">
+                        <i class="icon_cart_alt mr-3"></i>
+                        <span>Market</span>
+                    </div>
+                </a>
+            </li>
+            
+            <!-- Go to Market -->
+            <li class="sidebar-item">
+                <a href="go-to-market.html" class="sidebar-link">
+                    <div class="sidebar-link-content">
+                        <i class="icon_datareport mr-3"></i>
+                        <span>Go to Market</span>
+                    </div>
+                </a>
+            </li>
+            
+            <!-- Technology -->
+            <li class="sidebar-item">
+                <a href="technology.html" class="sidebar-link">
+                    <div class="sidebar-link-content">
+                        <i class="icon_tools mr-3"></i>
+                        <span>Technology</span>
+                    </div>
+                </a>
+            </li>
+            
+            <!-- Transparency & Tokenomics -->
+            <li class="sidebar-item">
+                <a href="transparency-tokenomics.html" class="sidebar-link">
+                    <div class="sidebar-link-content">
+                        <i class="icon_currency mr-3"></i>
+                        <span>Transparency & Tokenomics</span>
+                    </div>
+                </a>
+            </li>
+            
+            <!-- Company & Finance -->
+            <li class="sidebar-item">
+                <a href="company-finance.html" class="sidebar-link">
+                    <div class="sidebar-link-content">
+                        <i class="icon_wallet mr-3"></i>
+                        <span>Company & Finance</span>
+                    </div>
+                </a>
+            </li>
+            
+            <!-- Roadmap -->
+            <li class="sidebar-item">
+                <a href="roadmap.html" class="sidebar-link">
+                    <div class="sidebar-link-content">
+                        <i class="icon_map_alt mr-3"></i>
+                        <span>Roadmap</span>
+                    </div>
+                </a>
+            </li>
+            
+            <!-- Docs Dropdown -->
+            <li class="sidebar-item sidebar-dropdown">
+                <a href="#" class="sidebar-link" onclick="toggleDropdown(this)">
+                    <div class="sidebar-link-content">
+                        <i class="icon_document mr-3"></i>
+                        <span>Docs</span>
+                    </div>
+                    <i class="arrow_carrot-down"></i>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li><a href="project-deck.html"><i class="icon_easel mr-2"></i>Pitchdeck</a></li>
+                    <li><a href="project-blurb.html"><i class="icon_document_alt mr-2"></i>Blurb</a></li>
+                    <li><a href="lean-canvas.html"><i class="icon_pencil-edit mr-2"></i>Lean Canvas</a></li>
+                    <li><a href="business-model-canvas.html"><i class="icon_flowchart mr-2"></i>Business Model Canvas</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="sidebar-footer">
+        <p>© 2025 Tipbox. All rights reserved.</p>
+    </div>
+</div>
+
 <style>
+/* Temel Navbar Stilleri */
+.tipbox-navbar {
+    padding: 15px 0;
+    background-color: transparent;
+    transition: all 0.3s ease;
+    width: 100%;
+    z-index: 100;
+}
+
+.navbar-left,
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Sticky Navbar */
+.navbar_fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1d1d1d;
+    box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    animation: fadeInDown 0.5s ease-in-out;
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* User Profile Menu Stilleri */
 .user-profile-menu .dropdown-toggle::after {
     display: none;
 }
@@ -176,41 +272,284 @@
     font-size: 0.8rem;
 }
 
-/* Dropdown styling */
-.navbar-nav .dropdown-menu {
+/* Sidebar Toggle Button Stilleri */
+.sidebar-toggle-btn {
+    width: 40px;
+    height: 40px;
+    background: transparent;
     border: none;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border-radius: 0.5rem;
-    margin-top: 0; /* Menüyü başlık ile bitişik tutma */
-    padding-top: 10px;
-    display: none; /* Varsayılan olarak gizli */
+    position: relative;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border-radius: 4px;
 }
 
-.navbar-nav .dropdown-item {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    color: #6b707f;
-    transition: all 0.2s;
+.sidebar-toggle-btn:focus {
+    outline: none;
 }
 
-.navbar-nav .dropdown-item:hover {
-    background-color: #f8f9fa;
+.sidebar-toggle-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-toggle-icon {
+    width: 22px;
+    height: 18px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar-toggle-icon span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #1d2746;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.sidebar-toggle-icon-light span {
+    background-color: #ffffff;
+}
+
+.body-sidebar-active .sidebar-toggle-icon span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.body-sidebar-active .sidebar-toggle-icon span:nth-child(2) {
+    opacity: 0;
+}
+
+.body-sidebar-active .sidebar-toggle-icon span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Sidebar Menu Stilleri */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+body.body-sidebar-active {
+    overflow: hidden;
+}
+
+body.body-sidebar-active .sidebar-overlay,
+.body-sidebar-active .sidebar-overlay {
+    visibility: visible;
+    opacity: 1;
+}
+
+.sidebar-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 360px;
+    height: 100%;
+    background-color: #111;
+    z-index: 999;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    color: #ffffff;
+}
+
+body.body-sidebar-active .sidebar-menu,
+.body-sidebar-active .sidebar-menu {
+    right: 0 !important; /* !important ekleyerek zorunlu kılıyoruz */
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px 15px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-logo a {
+    display: block;
+}
+
+.sidebar-logo-img {
+    height: 35px;
+    width: auto;
+    max-width: 85%;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+.sidebar-close-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    color: #fff;
+}
+
+.sidebar-close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-close-btn i {
+    font-size: 20px;
+    color: #fff;
+}
+
+.sidebar-content {
+    flex: 1;
+    padding: 0;
+    overflow-y: auto;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-item {
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    color: #ddd;
+    font-size: 0.95rem;
+    font-weight: 400;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.sidebar-link-content {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-link i {
+    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.sidebar-link:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.05);
+    text-decoration: none;
+}
+
+.sidebar-link:hover i {
     color: #4c4cf1;
 }
 
-/* Hover Dropdown Menu - basitleştirilmiş versiyon */
-.navbar-nav .dropdown:hover .dropdown-menu {
-    display: block; /* Hover üzerindeyken göster */
+.sidebar-item.active .sidebar-link {
+    background-color: rgba(76, 76, 241, 0.2);
+    color: #fff;
+    border-left: 3px solid #4c4cf1;
 }
 
-/* Dropdown menünün navbar ile bağlantısı */
-.navbar-nav .dropdown {
-    position: relative;
+.sidebar-item.active .sidebar-link i {
+    color: #4c4cf1;
+}
+
+.sidebar-dropdown.active .sidebar-link i.arrow_carrot-down {
+    transform: rotate(180deg);
+}
+
+.sidebar-submenu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-dropdown.active .sidebar-submenu {
+    max-height: 500px;
+    padding: 5px 0;
+}
+
+.sidebar-submenu li {
+    margin: 2px 0;
+}
+
+.sidebar-submenu a {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px 10px 45px;
+    color: #aaa;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.sidebar-submenu a:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.05);
+    text-decoration: none;
+}
+
+.sidebar-submenu a:hover i {
+    color: #4c4cf1;
+}
+
+.sidebar-submenu a i {
+    margin-right: 8px;
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.sidebar-footer {
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Responsive ayarlamalar için ek stil ekleyelim */
+@media (max-width: 991px) {
+    .sidebar-menu {
+        width: 340px;
+    }
 }
 
 @media (max-width: 767px) {
-    .user-info {
-        display: none !important;
+    .sidebar-menu {
+        width: 100%; /* Mobil görünümde tam genişlik */
     }
 }
 </style>
@@ -243,6 +582,61 @@ function logout() {
         window.location.href = 'signin.html';
     }
 }
-</script>
 
+// Sidebar menüsünü açma/kapama
+function toggleSidebarMenu() {
+    document.body.classList.toggle('body-sidebar-active');
+}
+
+// Sidebar dropdown menülerini açma/kapama
+function toggleDropdown(element) {
+    const parent = element.parentElement;
+    
+    // Diğer açık dropdown'ları kapat
+    const openItems = document.querySelectorAll('.sidebar-dropdown.active');
+    openItems.forEach(item => {
+        if (item !== parent) {
+            item.classList.remove('active');
+        }
+    });
+    
+    // Tıklanan dropdown'ı aç/kapa
+    parent.classList.toggle('active');
+}
+
+// Sayfa yüklendiğinde, aktif sayfayı belirle ve ilgili menü öğesini vurgula
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    // Sidebar menüsündeki tüm bağlantıları kontrol et
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    
+    sidebarLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === currentPage) {
+            link.closest('.sidebar-item').classList.add('active');
+            
+            // Eğer alt menüdeyse, üst dropdown'ı da aç
+            const dropdownParent = link.closest('.sidebar-dropdown');
+            if (dropdownParent) {
+                dropdownParent.classList.add('active');
+            }
+        }
+    });
+    
+    // Alt menüleri de kontrol et
+    const submenuLinks = document.querySelectorAll('.sidebar-submenu a');
+    
+    submenuLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === currentPage) {
+            link.parentElement.classList.add('active');
+            const dropdownParent = link.closest('.sidebar-dropdown');
+            if (dropdownParent) {
+                dropdownParent.classList.add('active');
+            }
+        }
+    });
+});
+</script> 
 <!-- Script içeriği header-controller.js dosyasına taşındı --> 
