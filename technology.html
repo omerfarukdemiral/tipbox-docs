@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="css/responsive.css">
     <!-- Güvenlik CSS -->
     <link rel="stylesheet" href="css/security.css">
+    <!-- İçindekiler (TOC) Özel Stilleri -->
+    <link rel="stylesheet" href="css/custom-toc.css">
     <title>Technology | TipBox Documentation</title>
 
     <!-- Güvenlik JS -->
@@ -40,8 +42,10 @@
     
     <!-- Auth JS - Firebase yapılandırması ve auth işlemleri için -->
     <script src="js/auth.js"></script>
+    <script src="js/pageViews.js"></script>
+    <!-- Firebase bitiş -->
 
-    <script>
+    <script>    
         // Include components script'ini güncelleyelim
         document.addEventListener("DOMContentLoaded", async function() {
             try {
@@ -52,49 +56,16 @@
                 if (typeof initDarkMode === 'function') {
                     initDarkMode();
                 }
-                
-                // İçerik yükleme için fonksiyonu çağır
-                loadTechnologyContent('multi-layered-architecture');
             } catch (error) {
                 console.error("Component yükleme hatası:", error);
             }
         });
-        
-        // Teknoloji içeriğini yüklemek için fonksiyon
-        function loadTechnologyContent(contentFile) {
-            const contentArea = document.getElementById('technology-content-area');
-            if (!contentArea) return;
-            
-            // Aktif menü öğesini güncelle
-            document.querySelectorAll('.nav-sidebar .nav-item a').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('data-content') === contentFile) {
-                    link.classList.add('active');
-                }
-            });
-            
-            // İçeriği yükle
-            fetch(`technology/${contentFile}.html`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(html => {
-                    contentArea.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error("İçerik yükleme hatası:", error);
-                    contentArea.innerHTML = `<div class="alert alert-danger">İçerik yüklenirken bir hata oluştu: ${error.message}</div>`;
-                });
-        }
     </script>
     
     <!-- Header Controller script - kullanıcı arayüzü güncellemeleri için -->
     <script src="js/header-controller.js"></script>
 
-    <!-- Teknoloji sayfası için özel script -->
+    <!-- Technology özel script -->
     <script src="js/technology.js"></script>
 
     <style>
@@ -116,11 +87,6 @@
             padding: 8px 12px;
             display: block;
             margin: 4px 0;
-        }
-        
-        /* İçerik alan için stil */
-        #technology-content-area {
-            min-height: 500px;
         }
     </style>
 </head>
@@ -195,14 +161,70 @@
                 <nav class="mobile_nav_top">
                     <ul class="navbar-nav menu ml-auto">
                         <li class="nav-item dropdown submenu">
-                            <a href="#" class="nav-link">Ana Sayfa</a>
+                            <a href="#" class="nav-link">Home</a>
                         </li>
                         <li class="nav-item dropdown submenu active">
-                            <a href="#" class="nav-link">Dokümanlar</a>
+                            <a href="#" class="nav-link">Docs</a>
                             <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
                             <ul class="dropdown-menu">
-                                <li class="nav-item"><a href="doc-content-video.html" class="nav-link">Doküman Arşivi</a></li>
-                                <li class="nav-item"><a href="doc-main.html" class="nav-link">Doküman Konuları</a></li>
+                                <li class="nav-item"><a href="doc-content-video.html" class="nav-link">Doc Archives</a></li>
+                                <li class="nav-item"><a href="doc-main.html" class="nav-link">DocTopics</a></li>
+                                <li class="nav-item dropdown submenu">
+                                    <a href="#" class="nav-link">Elements</a>
+                                    <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item"><a href="doc-element-tab.html" class="nav-link">Tabs</a></li>
+                                        <li class="nav-item"><a href="doc-element-accordion.html" class="nav-link">Accordion</a></li>
+                                        <li class="nav-item"><a href="doc-element-notice.html" class="nav-link">Notices</a></li>
+                                        <li class="nav-item"><a href="doc-content-tables.html" class="nav-link">Tables</a></li>
+                                        <li class="nav-item"><a href="doc-content-tooltip.html" class="nav-link">Tooltips & Direction</a></li>
+                                        <li class="nav-item"><a href="doc-element-hotspots.html" class="nav-link">Image Hotspots</a></li>
+                                        <li class="nav-item"><a href="doc-element-lightbox.html" class="nav-link">Lightbox</a></li>
+                                        <li class="nav-item"><a href="doc-changelog.html" class="nav-link">Changelog</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown submenu">
+                                    <a href="#" class="nav-link">Layouts</a>
+                                    <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item"><a href="doc-element-hotspots.html" class="nav-link">Left Sidebar</a></li>
+                                        <li class="nav-item"><a href="doc-content-video.html" class="nav-link">Full-width</a></li>
+                                        <li class="nav-item"><a href="doc-layout-banner-gradient.html" class="nav-link">Gradient Banner</a></li>
+                                        <li class="nav-item"><a href="doc-layout-banner-empty.html" class="nav-link">Without Banner</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown submenu">
+                            <a href="#" class="nav-link">Pages</a>
+                            <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a href="onepage.html" class="nav-link">Onepage Doc</a></li>
+                                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                                    <li class="nav-item"><a href="onepage.html" class="nav-link">Onepage Doc</a></li>
+                                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                                <li class="nav-item"><a href="typography.html" class="nav-link">Typography</a></li>
+                                <li class="nav-item"><a href="404-error.html" class="nav-link">404 Error</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown submenu">
+                            <a href="#" class="nav-link">Forum</a>
+                            <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a href="forums.html" class="nav-link">Forums Root</a></li>
+                                <li class="nav-item"><a href="forum-topics.html" class="nav-link">Forum Topics</a></li>
+                                <li class="nav-item"><a href="forum-single.html" class="nav-link">Topic Details</a></li>
+                                <li class="nav-item"><a href="forum-profile.html" class="nav-link">User Profile</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown submenu">
+                            <a class="nav-link" href="#"> Blog </a>
+                            <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a href="blog-grid.html" class="nav-link">Blog Grid</a></li>
+                                <li class="nav-item"><a href="blog-grid-two.html" class="nav-link">Blog Grid Two</a></li>
+                                <li class="nav-item"><a href="blog-list.html" class="nav-link">Blog List</a></li>
+                                <li class="nav-item"><a href="blog-single.html" class="nav-link">Blog Details</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -212,16 +234,16 @@
                         <div class="scroll">
                             <ul class="list-unstyled nav-sidebar">
                                 <li class="nav-item">
-                                    <a href="#" onclick="loadTechnologyContent('multi-layered-architecture')" data-content="multi-layered-architecture" class="nav-link"><img src="img/side-nav/coding.png" alt="">Çok Katmanlı Mimari</a>
+                                    <a href="#" class="nav-link" data-content-file="technology/multi-layered-architecture.html"><img src="img/side-nav/home.png" alt="">Multi-Layered Architecture</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" onclick="loadTechnologyContent('application-architecture')" data-content="application-architecture" class="nav-link"><img src="img/side-nav/coding.png" alt="">Uygulama Mimarisi</a>
+                                    <a href="#" class="nav-link" data-content-file="technology/application-architecture.html"><img src="img/side-nav/document.png" alt="">Application Architecture</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" onclick="loadTechnologyContent('network-infrastructure')" data-content="network-infrastructure" class="nav-link"><img src="img/side-nav/coding.png" alt="">Ağ Altyapısı</a>
+                                    <a href="#" class="nav-link" data-content-file="technology/core-architectural-principles.html"><img src="img/side-nav/chat1.png" alt="">Core Architectural Principles   </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" onclick="loadTechnologyContent('core-architectural-principles')" data-content="core-architectural-principles" class="nav-link"><img src="img/side-nav/coding.png" alt="">Temel Mimari Prensipler</a>
+                                    <a href="#" class="nav-link" data-content-file="technology/network-infrastructure.html"><img src="img/side-nav/chat1.png" alt="">Network Infrastructure</a>
                                 </li>
                             </ul>
                         </div>
@@ -236,10 +258,11 @@
                 <div class="doc_banner_content">
                     <form action="#" class="header_search_form">
                         <div class="header_search_form_info">
-                            <h2>Teknoloji</h2>
+                            <h2>Technology</h2>
                         </div>
                         <div class="header_search_keyword">
-                            <span class="">Proje için ana hedefleri, kapsamı ve teknik yaklaşımı tanımlayan kapsamlı bir doküman.</span>
+                            <span class="">A comprehensive document that defines the key objectives,
+                                scope, and technical approach for the project.</span>
                         </div>
                     </form>
                 </div>
@@ -252,12 +275,12 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Tipbox</a></li>
-                                <li class="breadcrumb-item active"><a href="technology.html">Teknoloji</a></li>
+                                <li class="breadcrumb-item active"><a href="technology.html">Technology</a></li>
                             </ol>
                         </nav>
                     </div>
                     <div class="col-sm-5">
-                        <a href="#" class="date"><i class="icon_clock_alt"></i>15 Ocak 2025 tarihinde güncellendi</a>
+                        <a href="#" class="date"><i class="icon_clock_alt"></i>Updated on January 15, 2025</a>
                     </div>
                 </div>
             </div>
@@ -278,51 +301,72 @@
                             <div class="scroll">
                                 <ul class="list-unstyled nav-sidebar">
                                     <li class="nav-item">
-                                        <a href="#" onclick="loadTechnologyContent('multi-layered-architecture')" data-content="multi-layered-architecture" class="nav-link active"><img src="img/side-nav/coding.png" alt="">Çok Katmanlı Mimari</a>
+                                        <a href="#" class="nav-link" data-content-file="technology/multi-layered-architecture.html"><img src="img/side-nav/home.png" alt="">Multi-Layered Architecture</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" onclick="loadTechnologyContent('application-architecture')" data-content="application-architecture" class="nav-link"><img src="img/side-nav/coding.png" alt="">Uygulama Mimarisi</a>
+                                        <a href="#" class="nav-link" data-content-file="technology/application-architecture.html"><img src="img/side-nav/document.png" alt="">Application Architecture</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" onclick="loadTechnologyContent('network-infrastructure')" data-content="network-infrastructure" class="nav-link"><img src="img/side-nav/coding.png" alt="">Ağ Altyapısı</a>
+                                        <a href="#" class="nav-link" data-content-file="technology/core-architectural-principles.html"><img src="img/side-nav/chat1.png" alt="">Core Architectural Principles   </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" onclick="loadTechnologyContent('core-architectural-principles')" data-content="core-architectural-principles" class="nav-link"><img src="img/side-nav/coding.png" alt="">Temel Mimari Prensipler</a>
+                                        <a href="#" class="nav-link" data-content-file="technology/network-infrastructure.html"><img src="img/side-nav/chat1.png" alt="">Network Infrastructure</a>
                                     </li>
                                 </ul>
                             </div>
                         </aside>
                     </div>
                     <div class="col-lg-7 col-md-8 doc-middle-content">
-                        <div id="technology-content-area">
-                            <!-- İçerik buraya dinamik olarak yüklenecek -->
-                        </div>
+                        <article id="executive-summary" class="documentation_info">
+                            <div class="documentation_body" id="documentation">
+                                <div class="shortcode_title">
+                                    <h1>Executive Summary</h1>
+                                    <p><span>Welcome to the hued, experienced and hard-working world of Tipbox.</span>
+                                    </p>
+                                    <p>Tipbox, which enables users to easily share their various experiences regarding products and services; and which builds a unique social network platform by bringing together the dynamics of the Web2 and Web3 worlds in the most accurate and rational way, is an exciting project that our team has been working on for quite a long time and is determined to bring to life.</p>
+                                    <p>The platform we want to create allows users to share their experiences in an effective, reliable and verified way.  Our Web2-based and AI-powered application, the flagship of our platform, creates the perfect social media environment for users to share their experiences. At the same time, our decentralised application with Web3 technology, which is the new threshold of the future with artificial intelligence, provides a fast and reliable infrastructure for rewarding these experiences globally by providing token rewards with NFT-badges, which are evidence and ownership indicators based on users' success and experiences.</p>
+                                    <p>One of the most important features that makes Tipbox unique for us is that it is designed according to customer experience sections and has a systematic structure that solves the difficulty of accessing information based on experiences, which is the biggest problem of some platforms today, and prevents complexity. With this platform, users can share their experiences about products and services in an effective, reliable and verified way. In short, Tipbox will create a new culture that offers its users the opportunity to achieve intellectual and tangible gains with an experience-driven interaction environment; while it will unlock to an approach that allows brands, entrepreneurs and their service providers in various fields (marketing companies, research and analysis companies, etc.) to create strong communities and improve customer relations and product strategies with verified information and experiences.</p>
+                                    <p>As Tipbox, one of the things that make us strong is the great importance we attach to the current policies of the Web3 ecosystem and our close monitoring mechanism. The most important of these policies for Tipbox is the 'Mass Adoption' policy, which encourages the adoption of blockchain technology by the masses and its use in daily life. We are very excited that Tipbox's experience-driven social media structure allows everyone to easily share their product and service experiences in their daily lives and directly serves this policy.</p>
+                                    <p>Our user interfaces are equipped with many innovative technologies such as Roll-up (Layer2) solutions and significantly eliminate many factors such as wallet private keys, high transaction fees, wallet integrations, etc., which are complex for new users of blockchain-based products and services. In this way, we aim to make a significant contribution to the adoption and increased use of blockchain technology. In addition, within the framework of the 'Women in Blockchain and Crypto' policy, we aim to increase the presence, activity and representation of women in the ecosystem.
+                                    </p>
+                                    <p>In fact, according to the strategic roadmap designed in detail within the framework of the right growth model for the products and services to be offered by Tipbox, some of the consumer electronics, cosmetics, digital products and services sectors in the initial phase of the project will be in an attractive and attractive position in terms of experience sharing environment and rewarding for female users for products and services. As Tipbox grows, the sectors that are subject to platform content will increase; our users' earning by sharing their experiences in various fields will naturally expand our ecosystem by making them more loyal to the platform. In addition, Tipbox's B2B working model will be revealed more clearly after the user base is formed and will have a flexible structure in this regard. This flexibility will allow the platform to quickly adapt to the opportunities and market dynamics that will occur during the growth process.
+                                    </p>
+                                    <p>
+                                        On the other hand, Tipbox is built on integrity, reliability and user satisfaction with a completely transparent, sustainable and manageable token economy, and offers an innovative ecosystem for TIPBOX Token investors. Our structure, which is built on solid foundations and appeals to a wide audience, draws attention with our strategies that aim to create long-term value for both users and investors.
+                                    </p>
+                                    <p>
+                                        Our team, consisting of experts and passionate individuals from software development to marketing, from law to finance, each of whom I am grateful to be a part of this wonderful structure; working like the bees that Tipbox is named after, is working with great dedication to realise the strong vision of the project. The Tipbox team and the community of partners, which will grow day by day, will continue to continuously develop our platform and build an experience-driven social interaction culture by offering innovative solutions. Considering the popularity and growth potential of our target market within such a structure, knowing that Tipbox will gain an important place in this market is a very important and strong motivation point for us.
+                                    </p>
+                                    <p>
+                                        With access to reliable information, a personalized social networking experience and an innovative reward system, we invite you to join us on this exciting journey. Together, we can create a richer, stronger community by sharing our knowledge and experiences. Now is the time to make a difference with our experiences! Welcome back to the Tipbox family that will enable you to enrich lives with your experiences.
+                                    </p>
+
+                                    <p>Regards, 
+                                    </p>
+
+                                    <p class="font-weight-bold">Burakcan Karaman
+                                    </p>
+                                        CEO, Tipbox</p>
+                                    </p>
+                                </div>  
+                            </div>
+                        </article>
                     </div>
                     <div class="col-lg-2 col-md-4 doc_right_mobile_menu">
                         <div class="open_icon" id="right">
                             <i class="arrow_carrot-left"></i>
                             <i class="arrow_carrot-right"></i>
                         </div>
-                        <div class="doc_rightsidebar scroll">
+                        <div class="doc_rightsidebar">
                             <div class="pageSideSection">
-                                <div id="font-switcher" class="d-flex justify-content-between align-items-center">
-                                    <div id="rvfs-controllers" class="fontsize-controllers group"></div>
-                                    <a href="javascript:window.print()" class="print"><i class="icon_printer"></i></a>
-                                </div>
-
                                 <div class="table-of-content">
-                                    <h6><i class="icon_ul"></i> SÜRÜMLER </h6>
-                                    <nav class="list-unstyled doc_menu" id="changelog-nav">
-                                        <a href="#v1" class="nav-link">Sürüm 1.6</a>
-                                        <a class="nav-link submenu" href="#v2">Sürüm 1.5</a>
-                                        <nav class="nav flex-column">
-                                            <a class="nav-link" href="#v2-1">Sürüm 1.5.1</a>
-                                            <a class="nav-link" href="#v2-2">Sürüm 1.5.2</a>
-                                        </nav>
-                                        <a href="#v3" class="nav-link">Sürüm 1.4</a>
-                                        <a href="#v4" class="nav-link">Sürüm 1.3</a>
+                                    <h6><i class="icon_ul"></i> Table of Contents </h6>
+                                    <!-- İçindekiler tablosu JavaScript tarafından otomatik olarak doldurulacak -->
+                                    <nav class="list-unstyled doc_menu" id="toc-nav">
+                                        <!-- Dinamik olarak oluşturulacak içerik -->
                                     </nav>
                                 </div>
+                            
                             </div>
                         </div>
                     </div>
