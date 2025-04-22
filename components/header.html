@@ -72,13 +72,18 @@
     <div class="sidebar-content">
         <ul class="sidebar-nav">
             <!-- About -->
-            <li class="sidebar-item">
-                <a href="about.html" class="sidebar-link">
+            <li class="sidebar-item sidebar-dropdown">
+                <a href="#" class="sidebar-link" onclick="toggleDropdown(this)">
                     <div class="sidebar-link-content">
                         <i class="icon_info mr-3"></i>
                         <span>About</span>
                     </div>
+                    <i class="arrow_carrot-down"></i>
                 </a>
+                <ul class="sidebar-submenu">
+                    <li><a href="about.html"><i class="icon_star_alt mr-2"></i>About Classic</a></li>
+                    <li><a href="about-1.html"><i class="icon_star mr-2"></i>About Modern</a></li>
+                </ul>
             </li>
             
             <!-- Product -->

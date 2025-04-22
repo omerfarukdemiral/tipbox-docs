@@ -1,0 +1,1735 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+    <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+
+    <!-- Merkezi Yapılandırma -->
+    <script src="js/config.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/slick/slick.css">
+    <link rel="stylesheet" href="assets/slick/slick-theme.css">
+    <!-- icon css-->
+    <link rel="stylesheet" href="assets/elagent-icon/style.css">
+    <link rel="stylesheet" href="assets/niceselectpicker/nice-select.css">
+    <link rel="stylesheet" href="assets/animation/animate.css">
+    <link rel="stylesheet" href="assets/mcustomscrollbar/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="css/style-main.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- Güvenlik CSS -->
+    <link rel="stylesheet" href="css/security.css">
+    <title>About Modern - Tipbox Docs</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- Güvenlik JS -->
+    <script src="js/security.js"></script>
+    
+    <!-- Auth JS - Firebase yapılandırması ve auth işlemleri için -->
+    <script src="js/auth.js"></script>
+
+    <script>
+        // Component'ları yükle ve sonra Firebase kontrolünü yap
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Önce component'ları yükle
+                await includeHTML();
+                
+                // Kullanıcı durumunu kontrol et
+                checkUserAuthentication();
+            } catch (error) {
+                console.error("Component yükleme hatası:", error);
+            }
+        });
+        
+        // Kullanıcı kimlik doğrulamasını kontrol et
+        function checkUserAuthentication() {
+            // Önce doğrudan firebase.auth'u kontrol et
+            if (typeof firebase !== 'undefined' && firebase.auth) {                
+                // Mevcut kullanıcı durumunu kontrol et
+                const currentUser = firebase.auth().currentUser;
+                if (currentUser) {
+                    updateUserInterface(currentUser);
+                }
+                
+                // Auth state değişikliklerini dinle
+                firebase.auth().onAuthStateChanged(function(user) {
+                    if (user) {
+                        updateUserInterface(user);
+                    } else {
+                        console.log("Oturum kapalı");
+                        window.location.href = 'signin.html';
+                    }
+                });
+            } else {
+                console.error("Firebase Auth kullanılamıyor! Kullanıcı kontrolü yapılamayacak.");
+            }
+        }
+        
+        // Kullanıcı arayüzünü güncelleme fonksiyonu
+        function updateUserInterface(user) {
+            if (user) {
+                // Avatar güncelleme
+                const avatarImages = document.querySelectorAll('.user-img, .user-img-sm');
+                const avatarUrl = user.photoURL || 'img/default-avatar.png';
+                avatarImages.forEach(img => {
+                    img.src = avatarUrl;
+                    img.onerror = function() {
+                        this.src = 'img/default-avatar.png';
+                    };
+                });
+
+                // İsim güncelleme
+                const nameElements = document.querySelectorAll('.user-name, .user-name-sm');
+                const displayName = user.displayName || 'Misafir Kullanıcı';
+                nameElements.forEach(el => {
+                    el.textContent = displayName;
+                });
+
+                // Email güncelleme
+                const emailElements = document.querySelectorAll('.user-email, .user-email-sm');
+                const email = user.email || '';
+                emailElements.forEach(el => {
+                    el.textContent = email;
+                });
+                
+                // Kullanıcı veritabanı profilini güncelle ve Firestore'dan bilgileri çek
+                if (window.enhanceUserWithFirestoreData && window.updateUserProfile) {
+                    window.enhanceUserWithFirestoreData(user).then(() => {
+                        // Admin panel bağlantısını kontrol et (window.userRole global değişkenine göre)
+                        if (window.userRole === 'admin') {
+                            showAdminPanelLink();
+                        }
+                    });
+                }
+            }
+        }
+        
+        // Admin panel bağlantısını göster
+        function showAdminPanelLink() {
+            const adminLinks = document.querySelectorAll('.admin-panel-link');
+            adminLinks.forEach(link => {
+                link.style.display = 'block';
+            });
+        }
+    </script>
+
+    <!-- Özel Stil Ayarları -->
+    <style>
+        :root {
+            --primary-color: #3051ff;
+            --secondary-color: #f5b111;
+            --dark-bg: #121419;
+            --card-bg: rgba(40, 44, 52, 0.7);
+            --text-light: #ffffff;
+            --text-muted: #9ba0aa;
+            --card-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+        
+        .doc_documentation_area {
+            position: relative;
+            padding: 80px 0;
+            overflow: hidden;
+            z-index: 1;
+            min-height: 600px;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+        }
+        
+        .doc_documentation_area .doc_shap_one {
+            position: absolute;
+            right: 0;
+            top: 0;
+            max-width: 60%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .doc_documentation_area .doc_round {
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .doc_documentation_area .doc_round.one {
+            width: 600px;
+            height: 600px;
+            background: rgba(48, 81, 255, 0.03);
+            left: -200px;
+            top: -200px;
+            filter: blur(50px);
+        }
+        
+        .doc_documentation_area .doc_round.two {
+            width: 800px;
+            height: 800px;
+            background: rgba(245, 177, 17, 0.03);
+            right: -300px;
+            bottom: -300px;
+            filter: blur(80px);
+        }
+
+        /* Ana Başlık Stilleri */
+        .page_banner_content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 70px;
+            position: relative;
+        }
+        
+        .page_banner_content h1 {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-family: "Jura", sans-serif;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        
+        .page_banner_content p {
+            font-size: 16px;
+            line-height: 1.6;
+            font-family: "Inter", sans-serif;
+            font-weight: 300;
+            color: var(--text-muted);
+        }
+        
+        /* İçerik Stilleri */
+        .content_wrapper {
+            padding: 20px 0;
+        }
+        
+        .section-container {
+            margin-bottom: 70px;
+        }
+
+        .section-title {
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-family: "Jura", sans-serif;
+            color: var(--text-light);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 80px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            font-size: 11pt;
+            font-family: "Inter", sans-serif;
+            font-weight: 300;
+            color: var(--text-muted);
+        }
+
+        /* Kart Stilleri */
+        .content-card {
+            background: var(--card-bg);
+            border-radius: var(--card-radius);
+            padding: 35px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            transition: var(--transition);
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid rgba(48, 81, 255, 0.2);
+        }
+        
+        .content-card p {
+            color: var(--text-muted);
+            font-size: 11pt;
+            font-family: "Inter", sans-serif;
+            font-weight: 300;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .content-card p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .content-card p strong {
+            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 500;
+            font-family: "Jura", sans-serif;
+            line-height: 1.5;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* Vizyon & Misyon Kartları */
+        .vision-mission-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .vision-mission-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .vm-card {
+            position: relative;
+            border-radius: var(--card-radius);
+            padding: 40px 30px;
+            overflow: hidden;
+            height: 100%;
+        }
+        
+        .vm-card.vision-card {
+            background: linear-gradient(145deg, rgba(48, 81, 255, 0.1), rgba(48, 81, 255, 0.05));
+            border: 1px solid rgba(48, 81, 255, 0.2);
+        }
+        
+        .vm-card.mission-card {
+            background: linear-gradient(145deg, rgba(245, 177, 17, 0.1), rgba(245, 177, 17, 0.05));
+            border: 1px solid rgba(245, 177, 17, 0.2);
+        }
+        
+        .vm-card .card-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .vm-card.vision-card .card-icon {
+            background: rgba(48, 81, 255, 0.15);
+            color: var(--primary-color);
+        }
+        
+        .vm-card.mission-card .card-icon {
+            background: rgba(245, 177, 17, 0.15);
+            color: var(--secondary-color);
+        }
+        
+        .vm-card .card-icon i {
+            font-size: 36px;
+        }
+        
+        .vm-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            font-family: "Jura", sans-serif;
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+        
+        .vm-card p {
+            font-size: 11pt;
+            font-family: "Inter", sans-serif;
+            font-weight: 300;
+            line-height: 1.8;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+        
+        .vm-card::before {
+            content: "";
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            right: -100px;
+            top: -100px;
+            z-index: 0;
+            opacity: 0.05;
+        }
+        
+        .vm-card.vision-card::before {
+            background: var(--primary-color);
+        }
+        
+        .vm-card.mission-card::before {
+            background: var(--secondary-color);
+        }
+        
+        /* Değerler Listesi */
+        .values-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .value-card {
+            background: var(--card-bg);
+            border-radius: var(--card-radius);
+            padding: 30px;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(145deg, rgba(48, 81, 255, 0.05), rgba(76, 76, 241, 0.02));
+            border: 1px solid rgba(48, 81, 255, 0.2);
+        }
+        
+        .value-card .value-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 30%;
+            background: rgba(48, 81, 255, 0.1);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .value-card .value-icon i {
+            font-size: 28px;
+        }
+        
+        .value-card h4 {
+            font-size: 14px;
+            font-weight: 500;
+            font-family: "Jura", sans-serif;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+        
+        .value-card p {
+            font-size: 11pt;
+            font-family: "Inter", sans-serif;
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+        
+        /* Takım Stilleri */
+        .team-section {
+            padding: 60px 0;
+        }
+        
+        .team-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .team-card {
+            background: var(--card-bg);
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid rgba(48, 81, 255, 0.2);
+        }
+        
+        .team-img {
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .team-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .team-card:hover .team-img img {
+            transform: scale(1.1);
+        }
+        
+        .team-info {
+            padding: 25px 20px;
+            text-align: center;
+        }
+        
+        .team-info h4 {
+            font-size: 14px;
+            font-weight: 500;
+            font-family: "Jura", sans-serif;
+            margin-bottom: 5px;
+            color: var(--text-light);
+        }
+        
+        .team-info p {
+            font-size: 12px;
+            font-family: "Inter", sans-serif;
+            font-weight: 300;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .team-social {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .team-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .team-social a:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        /* Vision ve Mission için inline stillerini de güncelle */
+        .doc_documentation_area h3 {
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            font-family: "Jura", sans-serif !important;
+            color: var(--black_800) !important;
+            margin-bottom: 15px !important;
+        }
+        
+        .doc_documentation_area p {
+            font-family: "Inter", sans-serif !important;
+            font-weight: 300 !important;
+            font-size: 11pt !important;
+        }
+
+        /* 3D Kart Efektleri */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .tilt-card-inner {
+            transform-style: preserve-3d;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .tilt-card-content {
+            position: relative;
+            z-index: 1;
+            transform: translateZ(20px);
+        }
+        
+        .tilt-card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(48, 81, 255, 0.05);
+            transform: translateZ(0);
+            border-radius: var(--card-radius);
+            z-index: 0;
+        }
+        
+        .tilt-card:hover {
+            transform: perspective(1000px) translateY(-5px);
+        }
+        
+        /* Paralaks Efektleri */
+        .parallax-bg {
+            position: absolute;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+            will-change: transform;
+            transition: transform 0.1s ease-out;
+        }
+        
+        .parallax-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(48, 81, 255, 0.2) 0%, rgba(48, 81, 255, 0) 70%);
+            will-change: transform;
+            transition: transform 0.3s ease-out;
+        }
+        
+        .parallax-circle.primary {
+            background: radial-gradient(circle, rgba(48, 81, 255, 0.15) 0%, rgba(48, 81, 255, 0) 70%);
+        }
+        
+        .parallax-circle.secondary {
+            background: radial-gradient(circle, rgba(245, 177, 17, 0.15) 0%, rgba(245, 177, 17, 0) 70%);
+        }
+        
+        /* Daha modern kart görünümü */
+        .glass-card {
+            background: rgba(33, 37, 43, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border-radius: var(--card-radius);
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .glass-card:hover {
+            border-color: rgba(48, 81, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Animasyonlu kenarlık efekti */
+        .border-glow {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .border-glow::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                                        rgba(48, 81, 255, 0) 0%, 
+                                        rgba(48, 81, 255, 0.3) 50%, 
+                                        rgba(48, 81, 255, 0) 100%);
+            z-index: -1;
+            border-radius: calc(var(--card-radius) + 2px);
+            animation: border-glow-animation 6s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .border-glow:hover::before {
+            opacity: 1;
+        }
+        
+        @keyframes border-glow-animation {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 300% 0%;
+            }
+        }
+        
+        /* Dalgalı arka plan animasyonu */
+        .wave-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            border-radius: var(--card-radius);
+        }
+        
+        .wave-bg .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%233051ff' fill-opacity='0.05' d='M0,224L48,218.7C96,213,192,203,288,202.7C384,203,480,213,576,229.3C672,245,768,267,864,266.7C960,267,1056,245,1152,229.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: 100% 100%;
+            animation: wave-animation 20s linear infinite;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .glass-card:hover .wave-bg .wave {
+            opacity: 0.6;
+        }
+        
+        .wave-bg .wave:nth-child(2) {
+            bottom: -25%;
+            animation: wave-animation 18s linear reverse infinite;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23f5b111' fill-opacity='0.05' d='M0,64L48,96C96,128,192,192,288,202.7C384,213,480,171,576,165.3C672,160,768,192,864,176C960,160,1056,96,1152,74.7C1248,53,1344,75,1392,85.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+        }
+        
+        @keyframes wave-animation {
+            0% {
+                background-position-x: 0;
+            }
+            100% {
+                background-position-x: 1000px;
+            }
+        }
+        
+        /* Parıltı efekti */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.6);
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0;
+            animation: sparkle-animation 1.5s ease forwards;
+        }
+        
+        @keyframes sparkle-animation {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.2) rotate(45deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Kesikli arka plan deseni */
+        .pattern-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0.03;
+            background-image: 
+                linear-gradient(45deg, rgba(48, 81, 255, 0.15) 25%, transparent 25%), 
+                linear-gradient(-45deg, rgba(48, 81, 255, 0.15) 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, rgba(48, 81, 255, 0.15) 75%), 
+                linear-gradient(-45deg, transparent 75%, rgba(48, 81, 255, 0.15) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            border-radius: var(--card-radius);
+            z-index: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .glass-card:hover .pattern-bg {
+            opacity: 0.05;
+        }
+        
+        /* Takım üyeleri için gelişmiş kartlar */
+        .team-card-modern {
+            position: relative;
+            overflow: visible;
+            margin-top: 70px;
+            margin-bottom: 30px;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+        
+        .team-avatar-container {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%) translateZ(30px);
+            width: 120px;
+            height: 120px;
+            z-index: 3;
+            transition: all 0.4s ease;
+        }
+        
+        .team-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #21252b;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+        }
+        
+        .team-card-modern:hover .team-avatar-container {
+            transform: translateX(-50%) translateZ(45px) translateY(-5px);
+        }
+        
+        .team-card-modern:hover .team-avatar {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .team-info-modern {
+            position: relative;
+            background: rgba(33, 37, 43, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: var(--card-radius);
+            padding: 70px 25px 30px;
+            margin-top: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateZ(0);
+        }
+        
+        .team-card-modern:hover .team-info-modern {
+            border-color: rgba(48, 81, 255, 0.2);
+            transform: translateZ(5px);
+        }
+        
+        .team-role {
+            position: relative;
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            background: rgba(48, 81, 255, 0.1);
+            color: var(--primary-color);
+            transform: translateZ(15px);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(-50%, -50%);
+            }
+            50% {
+                transform: translate(-50%, -60%);
+            }
+            100% {
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+        }
+
+        .animate-float {
+            animation: icon-float 4s ease-in-out infinite;
+        }
+        
+        @keyframes icon-float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+        
+        /* Her ikon için farklı animasyon zamanlaması ver */
+        .row .col-lg-4:nth-child(1) .animate-float { animation-delay: 0s; }
+        .row .col-lg-4:nth-child(2) .animate-float { animation-delay: 0.5s; }
+        .row .col-lg-4:nth-child(3) .animate-float { animation-delay: 1s; }
+        .row .col-lg-4:nth-child(4) .animate-float { animation-delay: 1.5s; }
+        .row .col-lg-4:nth-child(5) .animate-float { animation-delay: 2s; }
+        .row .col-lg-4:nth-child(6) .animate-float { animation-delay: 2.5s; }
+        .row .col-lg-4:nth-child(7) .animate-float { animation-delay: 3s; }
+        .row .col-lg-4:nth-child(8) .animate-float { animation-delay: 3.5s; }
+        .row .col-lg-4:nth-child(9) .animate-float { animation-delay: 4s; }
+    </style>
+</head>
+
+<body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true"
+    data-offset="70">
+    <div id="preloader">
+        <div id="ctn-preloader" class="ctn-preloader">
+            <div class="round_spinner">
+                <div class="spinner"></div>
+                <div class="text">
+                    <img src="img/spinner_logo.png" alt="">
+                    <h4><span>Tip</span>Docs</h4>
+                </div>
+            </div>
+            <h2 class="head">Did You Know?</h2>
+            <p></p>
+        </div>
+    </div>
+
+    <div class="body_wrapper">
+        <!-- Header Component -->
+        <div include-html="components/header.html" class="sticky-nav"></div>
+
+        <!--================Banner Area =================-->
+        <section class="doc_banner_area search-banner-light" style="position: relative; overflow: hidden;">
+            <!-- Arka plan parçacık animasyonu için -->
+            <div class="particles-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></div>
+            
+            <!-- Arka plan daireleri -->
+            <div class="banner-bg-circle" style="position: absolute; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(48, 81, 255, 0.1) 0%, rgba(48, 81, 255, 0) 70%); top: -200px; right: -200px; z-index: 1;"></div>
+            <div class="banner-bg-circle" style="position: absolute; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(245, 177, 17, 0.1) 0%, rgba(245, 177, 17, 0) 70%); bottom: -150px; left: -150px; z-index: 1;"></div>
+            
+            <div class="container" style="position: relative; z-index: 2;">
+                <div class="doc_banner_content" style="position: relative;">
+                    <h1 class="banner-title wow fadeInUp" data-wow-delay="0.2s" style="font-size: 48px; font-weight: 700; margin-bottom: 20px; font-family: 'Jura', sans-serif; background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; opacity: 0; animation: fadeInUp 1s forwards 0.3s;">About Modern</h1>
+                    
+                    <p class="banner-description wow fadeInUp" data-wow-delay="0.4s" style="font-size: 16px; max-width: 600px; margin: 0 auto 30px; color: var(--text-muted); opacity: 0; animation: fadeInUp 1s forwards 0.6s;">Discover our story, vision, mission, and the team behind Tipbox — where experiences transform into value and content creators become value partners.</p>
+                    
+                    <div class="banner-features wow fadeInUp" data-wow-delay="0.6s" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 40px; opacity: 0; animation: fadeInUp 1s forwards 0.9s;">
+                        <div class="feature-badge" style="background: rgba(48, 81, 255, 0.1); border-radius: 30px; padding: 8px 20px; color: var(--primary-color); font-size: 14px; display: flex; align-items: center;">
+                            <i class="icon_heart_alt" style="margin-right: 8px;"></i>
+                            Our Story
+                        </div>
+                        <div class="feature-badge" style="background: rgba(245, 177, 17, 0.1); border-radius: 30px; padding: 8px 20px; color: var(--secondary-color); font-size: 14px; display: flex; align-items: center;">
+                            <i class="icon_target" style="margin-right: 8px;"></i>
+                            Mission & Vision
+                        </div>
+                        <div class="feature-badge" style="background: rgba(15, 188, 139, 0.1); border-radius: 30px; padding: 8px 20px; color: #0fbc8b; font-size: 14px; display: flex; align-items: center;">
+                            <i class="icon_group" style="margin-right: 8px;"></i>
+                            Our Team
+                        </div>
+                    </div>
+                    
+                    <div class="scroll-down wow fadeInUp" data-wow-delay="0.8s" style="opacity: 0; animation: fadeInUp 1s forwards 1.2s, bounce 2s infinite 2s;">
+                        <a href="#sticky_doc" class="scroll-link">
+                            <div style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; backdrop-filter: blur(5px);">
+                                <i class="arrow_carrot-down" style="color: var(--text-light);"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Animate.css kullanımı için stil -->
+            <style>
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translate3d(0, 30px, 0);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translate3d(0, 0, 0);
+                    }
+                }
+                
+                @keyframes bounce {
+                    0%, 20%, 50%, 80%, 100% {
+                        transform: translateY(0);
+                    }
+                    40% {
+                        transform: translateY(-15px);
+                    }
+                    60% {
+                        transform: translateY(-5px);
+                    }
+                }
+                
+                .banner-title, .banner-description, .banner-features, .scroll-down {
+                    opacity: 0;
+                }
+            </style>
+            
+            <!-- Particle.js için stil ve script -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Arka plan parçacık animasyonu
+                    const particlesContainer = document.querySelector('.particles-container');
+                    
+                    if (particlesContainer) {
+                        // 50 parçacık oluştur
+                        for (let i = 0; i < 50; i++) {
+                            createParticle(particlesContainer);
+                        }
+                    }
+                    
+                    function createParticle(container) {
+                        const particle = document.createElement('div');
+                        
+                        // Rastgele boyut, pozisyon ve gecikme
+                        const size = Math.random() * 6 + 2;
+                        const posX = Math.random() * 100;
+                        const posY = Math.random() * 100;
+                        const delay = Math.random() * 5;
+                        const duration = Math.random() * 20 + 10;
+                        const color = Math.random() > 0.5 ? 'rgba(48, 81, 255, ' : 'rgba(245, 177, 17, ';
+                        const opacity = Math.random() * 0.3 + 0.1;
+                        
+                        // Parçacık stilini ayarla
+                        particle.style.cssText = `
+                            position: absolute;
+                            width: ${size}px;
+                            height: ${size}px;
+                            background: ${color}${opacity});;
+                            border-radius: 50%;
+                            top: ${posY}%;
+                            left: ${posX}%;
+                            animation: float-particle ${duration}s ease-in-out infinite;
+                            animation-delay: ${delay}s;
+                            pointer-events: none;
+                        `;
+                        
+                        container.appendChild(particle);
+                    }
+                    
+                    // Float animasyonu için CSS
+                    const style = document.createElement('style');
+                    style.innerHTML = `
+                        @keyframes float-particle {
+                            0%, 100% {
+                                transform: translateY(0) translateX(0);
+                            }
+                            25% {
+                                transform: translateY(-20px) translateX(10px);
+                            }
+                            50% {
+                                transform: translateY(-10px) translateX(20px);
+                            }
+                            75% {
+                                transform: translateY(-30px) translateX(-10px);
+                            }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                });
+            </script>
+        </section>
+
+        <section class="page_breadcrumb">
+            <div class="container custom_container">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Tipbox</a></li>
+                                <li class="breadcrumb-item active"><a href="about-1.html">About Modern</a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-sm-5">
+                        <a href="#" class="date"><i class="icon_clock_alt"></i>Updated on January 15, 2025</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--================Content Area =================-->
+        <section class="doc_documentation_area" id="sticky_doc">
+            <div class="overlay_bg"></div>
+            <div class="container custom_container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-8 doc-middle-content">
+                        <article class="documentation_info">
+                            <div class="" id="documentation">                                
+                                <!-- About Tipbox Content -->
+                                <div class="section-container">
+                                    <div class="section-title">
+                                        <h2>About Modern</h2>
+                                    </div>
+                                    <div class="glass-card border-glow">
+                                        <div class="wave-bg">
+                                            <div class="wave"></div>
+                                            <div class="wave"></div>
+                                        </div>
+                                        <div class="pattern-bg"></div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-4 d-flex align-items-center justify-content-center">
+                                                <div style="position: relative; width: 220px; height: 220px;" class="mb-4 mb-md-0">
+                                                    <div style="position: absolute; width: 100%; height: 100%; border-radius: 50%; background: rgba(48, 81, 255, 0.03); animation: pulse 3s infinite;"></div>
+                                                    <div style="position: absolute; width: 80%; height: 80%; border-radius: 50%; background: rgba(245, 177, 17, 0.03); top: 10%; left: 10%; animation: pulse 3s infinite 1s;"></div>
+                                                    <img src="img/spinner_logo.png" alt="Tipbox Logo" class="img-fluid" style="position: absolute; width: 60%; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: float 6s ease-in-out infinite;">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <p>Tipbox is a next-generation digital experience network that enables users to share their experiences in structured, meaningful formats and transform them into both social and economic value. Through AI-powered validation systems and blockchain-based reward mechanisms, user contributions become not only visible but also monetizable.</p>
+                                                
+                                                <p>By combining the social dynamics of Web2 with the ownership infrastructure of Web3, Tipbox turns individuals into more than just content creators — they become thought leaders, collectors, and value partners. With experience-slice-based content formats, NFT badge systems, community-driven interaction tools, and a token-based incentive economy, Tipbox builds a multi-layered content ecosystem where digital culture is redefined with sustainability at its core.</p>
+                                                
+                                                <div class="mt-4 d-flex flex-wrap">
+                                                    <div class="badge-pill" style="background: rgba(48, 81, 255, 0.1); color: var(--primary-color); border-radius: 30px; padding: 8px 16px; margin-right: 10px; margin-bottom: 10px; font-size: 12px; display: inline-flex; align-items: center;">
+                                                        <i class="icon_check_alt2" style="margin-right: 5px;"></i>
+                                                        Experience Network
+                                                    </div>
+                                                    <div class="badge-pill" style="background: rgba(245, 177, 17, 0.1); color: var(--secondary-color); border-radius: 30px; padding: 8px 16px; margin-right: 10px; margin-bottom: 10px; font-size: 12px; display: inline-flex; align-items: center;">
+                                                        <i class="icon_check_alt2" style="margin-right: 5px;"></i>
+                                                        Web3 Integration
+                                                    </div>
+                                                    <div class="badge-pill" style="background: rgba(15, 188, 139, 0.1); color: #0fbc8b; border-radius: 30px; padding: 8px 16px; margin-right: 10px; margin-bottom: 10px; font-size: 12px; display: inline-flex; align-items: center;">
+                                                        <i class="icon_check_alt2" style="margin-right: 5px;"></i>
+                                                        NFT Badge System
+                                                    </div>
+                                                    <div class="badge-pill" style="background: rgba(246, 78, 96, 0.1); color: #f64e60; border-radius: 30px; padding: 8px 16px; margin-right: 10px; margin-bottom: 10px; font-size: 12px; display: inline-flex; align-items: center;">
+                                                        <i class="icon_check_alt2" style="margin-right: 5px;"></i>
+                                                        Token Economy
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Vision & Mission -->
+                                <div class="section-container">
+                                    <div class="section-title">
+                                        <h2>Vision & Mission</h2>
+                                    </div>
+                                    
+                                    <!-- Paralaks arka plan şekilleri -->
+                                    <div class="parallax-circle primary" style="width: 300px; height: 300px; top: -100px; right: -150px; opacity: 0.1;" data-speed-x="10" data-speed-y="15"></div>
+                                    <div class="parallax-circle secondary" style="width: 200px; height: 200px; bottom: -50px; left: -100px; opacity: 0.1;" data-speed-x="-15" data-speed-y="-10"></div>
+                                    
+                                    <!-- Vision ve Mission Grid -->
+                                    <div class="vision-mission-grid" style="margin-bottom: 40px;">
+                                        <!-- Vision Card -->
+                                        <div class="tilt-card glass-card border-glow" style="margin-bottom: 30px;">
+                                            <div class="tilt-card-inner">
+                                                <div class="wave-bg">
+                                                    <div class="wave"></div>
+                                                    <div class="wave"></div>
+                                                </div>
+                                                <div class="pattern-bg"></div>
+                                                <div class="tilt-card-content">
+                                                    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                                                        <div style="background: rgba(48, 81, 255, 0.15); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                                                            <i class="icon_lightbulb_alt" style="color: var(--primary-color); font-size: 28px;"></i>
+                                                        </div>
+                                                        <h3 style="font-weight: 500; margin-bottom: 0; border-bottom: 2px solid #3051ff; display: inline-block; padding-bottom: 8px; font-size: 14px; font-family: 'Jura', sans-serif; color: #3051ff;">
+                                                            Vision
+                                                        </h3>
+                                                    </div>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300;">To redefine how value is expressed in the digital world — by building an inclusive culture infrastructure where experiences turn into knowledge, contributions into collectibles, and interactions into economic value.</p>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300;">Tipbox envisions a digital landscape where users are not just consumers, but verified contributors, collection owners, and community drivers. In the long term, it aims to establish a transparent and sustainable content economy fueled by community-driven contributions with real economic rewards.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Mission Card -->
+                                        <div class="tilt-card glass-card border-glow" style="margin-bottom: 30px;">
+                                            <div class="tilt-card-inner">
+                                                <div class="wave-bg">
+                                                    <div class="wave"></div>
+                                                    <div class="wave"></div>
+                                                </div>
+                                                <div class="pattern-bg"></div>
+                                                <div class="tilt-card-content">
+                                                    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                                                        <div style="background: rgba(245, 177, 17, 0.15); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                                                            <i class="icon_target" style="color: var(--secondary-color); font-size: 28px;"></i>
+                                                        </div>
+                                                        <h3 style="font-weight: 500; margin-bottom: 0; border-bottom: 2px solid #f5b111; display: inline-block; padding-bottom: 8px; font-size: 14px; font-family: 'Jura', sans-serif; color: #f5b111;">
+                                                            Mission
+                                                        </h3>
+                                                    </div>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300;">To build a user-centered ecosystem where experiences are shared in structured formats, validated with smart systems, and rewarded through digital assets.</p>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300;">Tipbox brings reliability to experience sharing through AI-supported validation, and rewards content creation with NFT badges and TIPS Tokens. By merging the accessibility of Web2 with the ownership and revenue models of Web3, Tipbox enhances digital engagement across social, intellectual, and economic layers.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Görsel Özellikler -->
+                                    <div class="parallax-bg" style="top: 50%; left: 50%; transform: translate(-50%, -50%);" data-speed-x="20" data-speed-y="20">
+                                        <img src="img/banner_bg.png" alt="" style="opacity: 0.05; width: 500px; height: auto;">
+                                    </div>
+                                </div>
+
+                                <!-- Team Section -->
+                                <div class="section-container" style="margin-top: 50px;">
+                                    <div class="section-title">
+                                        <h2>Team</h2>
+                                        <p style="color: var(--text-muted); max-width: 800px; margin: 0 auto 40px; text-align: center; font-size: 11pt; font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.7;">
+                                            Tipbox is developed by a multidisciplinary team of experts in technology, design, content, and community—united around a shared mission to redefine the experience economy.
+                                            Each member contributes not only through their field expertise but also with a deep belief in the power of content-driven culture.
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="row justify-content-center">
+                                        <!-- Team Member 1 -->
+                                        <div class="col-lg-4 col-md-6 mb-5 px-3">
+                                            <div class="team-card-modern">
+                                                <div class="team-avatar-container">
+                                                    <img src="img/team/mihrac.png" alt="Mihraç CERRAHOĞLU" class="team-avatar">
+                                                </div>
+                                                <div class="team-info-modern">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="wave-bg">
+                                                        <div class="wave"></div>
+                                                    </div>
+                                                    <h3 style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">Mihraç CERRAHOĞLU</h3>
+                                                    <div class="team-role" style="color: #3051ff; background: rgba(48, 81, 255, 0.1);">Chief Executive Officer</div>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
+                                                        Leads Tipbox with a focus on strategic alignment, product vision and cross-functional coordination to ensure long-term impact.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Team Member 2 -->
+                                        <div class="col-lg-4 col-md-6 mb-5 px-3">
+                                            <div class="team-card-modern">
+                                                <div class="team-avatar-container">
+                                                    <img src="img/team/burakcan.png" alt="Burakcan KARAMAN" class="team-avatar">
+                                                </div>
+                                                <div class="team-info-modern">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="wave-bg">
+                                                        <div class="wave"></div>
+                                                    </div>
+                                                    <h3 style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">Burakcan KARAMAN</h3>
+                                                    <div class="team-role" style="color: #f5b111; background: rgba(245, 177, 17, 0.1);">Chief Strategy Officer</div>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
+                                                        Guides the platform's strategic direction by designing sustainable growth models and overseeing high-level decision frameworks.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Team Member 3 -->
+                                        <div class="col-lg-4 col-md-6 mb-5 px-3">
+                                            <div class="team-card-modern">
+                                                <div class="team-avatar-container">
+                                                    <img src="img/team/omerfaruk.png" alt="Ömer Faruk DEMİRAL" class="team-avatar">
+                                                </div>
+                                                <div class="team-info-modern">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="wave-bg">
+                                                        <div class="wave"></div>
+                                                    </div>
+                                                    <h3 style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">Ömer Faruk DEMİRAL</h3>
+                                                    <div class="team-role" style="color: #0fbc8b; background: rgba(15, 188, 139, 0.1);">Development Team</div>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
+                                                        Plays a key role in building and maintaining the technical foundation of Tipbox, contributing to overall product functionality and evolution.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Team Member 4 -->
+                                        <div class="col-lg-4 col-md-6 mb-5 px-3">
+                                            <div class="team-card-modern">
+                                                <div class="team-avatar-container">
+                                                    <img src="img/team/mehmet.png" alt="Mehmet KOÇ" class="team-avatar">
+                                                </div>
+                                                <div class="team-info-modern">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="wave-bg">
+                                                        <div class="wave"></div>
+                                                    </div>
+                                                    <h3 style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">Mehmet KOÇ</h3>
+                                                    <div class="team-role" style="color: #f64e60; background: rgba(246, 78, 96, 0.1);">Development Team</div>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
+                                                        Supports the platform's development with a commitment to system stability, product enhancement and scalable solutions.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Team Member 5 -->
+                                        <div class="col-lg-4 col-md-6 mb-5 px-3">
+                                            <div class="team-card-modern">
+                                                <div class="team-avatar-container">
+                                                    <img src="img/team/furkan.png" alt="Furkan KARABULUT" class="team-avatar">
+                                                </div>
+                                                <div class="team-info-modern">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="wave-bg">
+                                                        <div class="wave"></div>
+                                                    </div>
+                                                    <h3 style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">Furkan KARABULUT</h3>
+                                                    <div class="team-role" style="color: #6f42c1; background: rgba(111, 66, 193, 0.1);">Marketing Team</div>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
+                                                        Shapes how Tipbox communicates its value, builds community trust and creates consistent engagement with target audiences.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Team Member 6 -->
+                                        <div class="col-lg-4 col-md-6 mb-5 px-3">
+                                            <div class="team-card-modern">
+                                                <div class="team-avatar-container">
+                                                    <img src="img/team/aycan.png" alt="Aycan KARAMAN" class="team-avatar">
+                                                </div>
+                                                <div class="team-info-modern">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="wave-bg">
+                                                        <div class="wave"></div>
+                                                    </div>
+                                                    <h3 style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">Aycan KARAMAN</h3>
+                                                    <div class="team-role" style="color: #0abbf5; background: rgba(10, 187, 245, 0.1);">Marketing Team</div>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
+                                                        Focuses on strengthening brand presence, user connection and ecosystem engagement through coordinated marketing efforts.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Team Member 7 (Centered) -->
+                                        <div class="col-lg-4 col-md-6 mb-5 px-3 mx-auto">
+                                            <div class="team-card-modern">
+                                                <div class="team-avatar-container">
+                                                    <img src="img/team/ozan.png" alt="Ozan MUTLUOĞLU" class="team-avatar">
+                                                </div>
+                                                <div class="team-info-modern">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="wave-bg">
+                                                        <div class="wave"></div>
+                                                    </div>
+                                                    <h3 style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">Ozan MUTLUOĞLU</h3>
+                                                    <div class="team-role" style="color: #50cd89; background: rgba(80, 205, 137, 0.1);">Design & Art Team</div>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
+                                                        Crafts the visual language of Tipbox, ensuring that design reflects both user needs and the cultural essence of the platform.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Paralaks arka plan daireleri -->
+                                <div class="parallax-circle primary" style="width: 400px; height: 400px; top: 10%; right: -200px; opacity: 0.08;" data-speed-x="15" data-speed-y="-10"></div>
+                                <div class="parallax-circle secondary" style="width: 300px; height: 300px; bottom: 20%; left: -150px; opacity: 0.08;" data-speed-x="-10" data-speed-y="15"></div>
+
+                                <!-- Principles Section -->
+                                <div class="section-container" style="margin-top: 70px; position: relative;">
+                                    <div class="section-title">
+                                        <h2>Principles</h2>
+                                        <p style="color: var(--text-muted); max-width: 800px; margin: 0 auto 40px; text-align: center; font-size: 11pt; font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.7;">
+                                            Tipbox is not just a platform—it's a cultural space where digital value is being redefined. Every decision we make centers around empowering creators, fostering meaningful digital engagement, and restoring ownership of data to users.
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <!-- İlk satır -->
+                                        <!-- Principle 1 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
+                                                <div class="tilt-card-inner">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="tilt-card-content">
+                                                        <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
+                                                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                                                <div style="background: rgba(48, 81, 255, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icons/instructor_home_feature_1.png" alt="Creator-First Mindset" style="width: 30px; height: 30px; object-fit: contain;" class="animate-float">
+                                                                </div>
+                                                                <h3 style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0;">Creator-First Mindset</h3>
+                                                            </div>
+                                                            <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
+                                                            <p style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">Every product decision prioritizes the needs and potential of content creators.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Principle 2 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
+                                                <div class="tilt-card-inner">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="tilt-card-content">
+                                                        <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
+                                                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                                                <div style="background: rgba(245, 177, 17, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icons/instructor_home_feature_2.png" alt="Transparency & Accountability" style="width: 30px; height: 30px; object-fit: contain;" class="animate-float">
+                                                                </div>
+                                                                <h3 style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0;">Transparency & Accountability</h3>
+                                                            </div>
+                                                            <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
+                                                            <p style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">All token, reward, and revenue-sharing mechanisms are designed to be observable, traceable, and fair.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Principle 3 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
+                                                <div class="tilt-card-inner">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="tilt-card-content">
+                                                        <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
+                                                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                                                <div style="background: rgba(15, 188, 139, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icons/instructor_home_feature_3.png" alt="Structured Contribution" style="width: 30px; height: 30px; object-fit: contain;" class="animate-float">
+                                                                </div>
+                                                                <h3 style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0;">Structured Contribution</h3>
+                                                            </div>
+                                                            <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
+                                                            <p style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">Each experience is organized and rewarded based on its context, intent, and quality.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- İkinci satır -->
+                                        <!-- Principle 4 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
+                                                <div class="tilt-card-inner">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="tilt-card-content">
+                                                        <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
+                                                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                                                <div style="background: rgba(246, 78, 96, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icons/instructor_home_feature_4.png" alt="Growth with the Community" style="width: 30px; height: 30px; object-fit: contain;" class="animate-float">
+                                                                </div>
+                                                                <h3 style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0;">Growth with the Community</h3>
+                                                            </div>
+                                                            <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
+                                                            <p style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">From roadmap decisions to cultural initiatives, we build with collective input, not in isolation.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Principle 5 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
+                                                <div class="tilt-card-inner">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="tilt-card-content">
+                                                        <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
+                                                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                                                <div style="background: rgba(10, 187, 245, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icons/instructor_home_feature_1.png" alt="Balance of Social Impact" style="width: 30px; height: 30px; object-fit: contain;" class="animate-float">
+                                                                </div>
+                                                                <h3 style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0;">Balance of Social Impact & Economic Value</h3>
+                                                            </div>
+                                                            <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
+                                                            <p style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">Every feature is designed to benefit both the individual and the community as a whole.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Principle 6 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
+                                                <div class="tilt-card-inner">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="tilt-card-content">
+                                                        <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
+                                                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                                                <div style="background: rgba(111, 66, 193, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icons/instructor_home_feature_2.png" alt="Trust & Respect" style="width: 30px; height: 30px; object-fit: contain;" class="animate-float">
+                                                                </div>
+                                                                <h3 style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0;">Trust, Respect & Empowerment</h3>
+                                                            </div>
+                                                            <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
+                                                            <p style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">Users are granted ownership, voice, and visible recognition for their expertise and contributions.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Üçüncü satır -->
+                                        <!-- Principle 7 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
+                                                <div class="tilt-card-inner">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="tilt-card-content">
+                                                        <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
+                                                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                                                <div style="background: rgba(80, 205, 137, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icons/instructor_home_feature_3.png" alt="Technological Clarity" style="width: 30px; height: 30px; object-fit: contain;" class="animate-float">
+                                                                </div>
+                                                                <h3 style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0;">Technological Clarity over Complexity</h3>
+                                                            </div>
+                                                            <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
+                                                            <p style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">We adopt technology not for show, but for value creation—favoring clarity over clutter.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Principle 8 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
+                                                <div class="tilt-card-inner">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="tilt-card-content">
+                                                        <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
+                                                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                                                <div style="background: rgba(245, 177, 17, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icons/instructor_home_feature_4.png" alt="Sustainability" style="width: 30px; height: 30px; object-fit: contain;" class="animate-float">
+                                                                </div>
+                                                                <h3 style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0;">Sustainability and Long-Term Focus</h3>
+                                                            </div>
+                                                            <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
+                                                            <p style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">We design systems for durability, not just speed. Our token model and growth strategies reflect this.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Principle 9 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
+                                                <div class="tilt-card-inner">
+                                                    <div class="pattern-bg"></div>
+                                                    <div class="tilt-card-content">
+                                                        <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
+                                                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                                                <div style="background: rgba(48, 81, 255, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icons/instructor_home_feature_1.png" alt="Openness" style="width: 30px; height: 30px; object-fit: contain;" class="animate-float">
+                                                                </div>
+                                                                <h3 style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0;">Openness & Learning Culture</h3>
+                                                            </div>
+                                                            <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
+                                                            <p style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">We learn from data, grow through feedback, and extract value even from failure.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Paralaks arka plan daireleri -->
+                                    <div class="parallax-circle primary" style="width: 350px; height: 350px; top: -100px; right: -150px; opacity: 0.08;" data-speed-x="10" data-speed-y="5"></div>
+                                    <div class="parallax-circle secondary" style="width: 250px; height: 250px; bottom: -100px; left: -100px; opacity: 0.08;" data-speed-x="-5" data-speed-y="10"></div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 3D Şekiller - Görsel Efektler -->
+            <img src="img/doc_shap.png" alt="" class="doc_shap_one">
+            <div class="doc_round one"></div>
+            <div class="doc_round two"></div>
+        </section>
+
+        <!-- Footer Component -->
+        <div include-html="components/footer.html"></div>
+
+        <!-- Back to top button -->
+        <a id="back-to-top" title="Back to Top"></a>
+
+        <!-- End Back to top button -->
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="assets/bootstrap/js/popper.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/pre-loader.js"></script>
+    <script src="assets/slick/slick.min.js"></script>
+    <script src="js/jquery.parallax-scroll.js"></script>
+    <script src="assets/niceselectpicker/jquery.nice-select.min.js"></script>
+    <script src="assets/wow/wow.min.js"></script>
+    <script src="assets/mcustomscrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="assets/magnify-pop/jquery.magnific-popup.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
+    
+    <!-- Dark mode script önce yüklenmeli -->
+    <script src="js/main.js"></script>
+    <!-- Sonra component include script -->
+    <script src="js/include-components.js"></script>
+    <!-- Header Controller script -->
+    <script src="js/header-controller.js"></script>
+    <script src="js/style-docs-update.js"></script>
+    
+    <!-- Principles Animasyon Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 3D Tilt efekti
+            const tiltCards = document.querySelectorAll('.tilt-card');
+            
+            tiltCards.forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = (y - centerY) / 15;
+                    const rotateY = (centerX - x) / 15;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+                    
+                    // İç içeriği tersine hareket ettir
+                    const inner = card.querySelector('.tilt-card-content');
+                    if (inner) {
+                        inner.style.transform = `translateZ(30px)`;
+                    }
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)';
+                    
+                    const inner = card.querySelector('.tilt-card-content');
+                    if (inner) {
+                        inner.style.transform = 'translateZ(20px)';
+                    }
+                });
+            });
+            
+            // Paralaks efekti
+            const section = document.querySelector('.doc_documentation_area');
+            const parallaxElements = document.querySelectorAll('.parallax-bg');
+            
+            window.addEventListener('mousemove', (e) => {
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                const posX = e.clientX;
+                const posY = e.clientY;
+                
+                // Fare pozisyonunu merkeze göre normalize et (-1 ile 1 arasında)
+                const normX = (posX - centerX) / centerX;
+                const normY = (posY - centerY) / centerY;
+                
+                parallaxElements.forEach(el => {
+                    const speedX = el.getAttribute('data-speed-x') || 20;
+                    const speedY = el.getAttribute('data-speed-y') || 20;
+                    
+                    const moveX = normX * speedX;
+                    const moveY = normY * speedY;
+                    
+                    el.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                });
+            });
+            
+            // Parıltı efekti
+            document.querySelectorAll('.glass-card').forEach(card => {
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // Rastgele 2-4 parıltı oluştur
+                    const sparklesCount = Math.floor(Math.random() * 3) + 2;
+                    
+                    for (let i = 0; i < sparklesCount; i++) {
+                        // Parıltı konumlarını belirle (fare etrafında biraz rastgele)
+                        const offsetX = (Math.random() - 0.5) * 40;
+                        const offsetY = (Math.random() - 0.5) * 40;
+                        
+                        const sparkle = document.createElement('div');
+                        sparkle.classList.add('sparkle');
+                        sparkle.style.left = (x + offsetX) + 'px';
+                        sparkle.style.top = (y + offsetY) + 'px';
+                        
+                        // Farklı boyutlar ve gecikmeler ver
+                        const size = Math.floor(Math.random() * 3) + 2;
+                        const delay = Math.random() * 0.5;
+                        
+                        sparkle.style.width = size + 'px';
+                        sparkle.style.height = size + 'px';
+                        sparkle.style.animationDelay = delay + 's';
+                        
+                        this.appendChild(sparkle);
+                        
+                        // Animasyon bittikten sonra kaldır
+                        setTimeout(() => {
+                            sparkle.remove();
+                        }, 1500 + (delay * 1000));
+                    }
+                });
+            });
+            
+            // Takım kartları için 3D efekt
+            document.querySelectorAll('.team-card-modern').forEach(card => {
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = (y - centerY) / 20;
+                    const rotateY = (centerX - x) / 20;
+                    
+                    this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    
+                    // Avatar'ı ters yönde hareket ettir
+                    const avatar = this.querySelector('.team-avatar-container');
+                    if (avatar) {
+                        avatar.style.transform = `translateX(-50%) translateZ(45px) translateY(-5px)`;
+                    }
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+                    
+                    const avatar = this.querySelector('.team-avatar-container');
+                    if (avatar) {
+                        avatar.style.transform = 'translateX(-50%) translateZ(30px)';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html> 

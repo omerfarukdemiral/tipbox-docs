@@ -2427,3 +2427,34 @@
     min-height: 178px;
   }
 }
+
+/* Vision ve Mission kartları için mobil görünüm düzenlemeleri */
+@media (max-width: 767px) {
+  .vision-mission-grid {
+    margin-bottom: 30px;
+  }
+  
+  .row .col-lg-8.col-md-7 .content-card,
+  .row .col-lg-8.col-md-7 .glass-card {
+    margin-bottom: 30px;
+  }
+  
+  .row .col-lg-4.col-md-5 {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .row .col-lg-8.col-md-7 .content-card,
+  .row .col-lg-8.col-md-7 .glass-card {
+    margin-bottom: 40px;
+  }
+  
+  .row .col-lg-4.col-md-5 {
+    margin-bottom: 40px;
+  }
+  
+  .row + .row {
+    margin-top: 15px;
+  }
+}

@@ -16,6 +16,7 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/slick/slick.css">
@@ -29,7 +30,7 @@
     <link rel="stylesheet" href="css/responsive.css">
     <!-- Güvenlik CSS -->
     <link rel="stylesheet" href="css/security.css">
-    <title>About - Tipbox Docs</title>
+    <title>About Classic - Tipbox Docs</title>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -193,9 +194,10 @@
         }
         
         .page_banner_content h1 {
-            font-size: 54px;
+            font-size: 40px;
             font-weight: 700;
             margin-bottom: 20px;
+            font-family: "Jura", sans-serif;
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -203,8 +205,10 @@
         }
         
         .page_banner_content p {
-            font-size: 18px;
+            font-size: 16px;
             line-height: 1.6;
+            font-family: "Inter", sans-serif;
+            font-weight: 300;
             color: var(--text-muted);
         }
         
@@ -223,9 +227,10 @@
         }
         
         .section-title h2 {
-            font-size: 32px;
+            font-size: 20px;
             font-weight: 700;
             margin-bottom: 15px;
+            font-family: "Jura", sans-serif;
             color: var(--text-light);
             position: relative;
             display: inline-block;
@@ -243,7 +248,9 @@
         }
         
         .section-title p {
-            font-size: 16px;
+            font-size: 11pt;
+            font-family: "Inter", sans-serif;
+            font-weight: 300;
             color: var(--text-muted);
         }
 
@@ -267,7 +274,9 @@
         
         .content-card p {
             color: var(--text-muted);
-            font-size: 16px;
+            font-size: 11pt;
+            font-family: "Inter", sans-serif;
+            font-weight: 300;
             line-height: 1.8;
             margin-bottom: 20px;
         }
@@ -278,8 +287,9 @@
         
         .content-card p strong {
             color: var(--text-light);
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: "Jura", sans-serif;
             line-height: 1.5;
             display: block;
             margin-bottom: 10px;
@@ -343,14 +353,17 @@
         }
         
         .vm-card h3 {
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: "Jura", sans-serif;
             margin-bottom: 20px;
             color: var(--text-light);
         }
         
         .vm-card p {
-            font-size: 16px;
+            font-size: 11pt;
+            font-family: "Inter", sans-serif;
+            font-weight: 300;
             line-height: 1.8;
             color: var(--text-muted);
             margin-bottom: 0;
@@ -414,14 +427,17 @@
         }
         
         .value-card h4 {
-            font-size: 22px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: "Jura", sans-serif;
             margin-bottom: 15px;
             color: var(--text-light);
         }
         
         .value-card p {
-            font-size: 15px;
+            font-size: 11pt;
+            font-family: "Inter", sans-serif;
+            font-weight: 300;
             line-height: 1.7;
             color: var(--text-muted);
             margin-bottom: 0;
@@ -477,14 +493,17 @@
         }
         
         .team-info h4 {
-            font-size: 20px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: "Jura", sans-serif;
             margin-bottom: 5px;
             color: var(--text-light);
         }
         
         .team-info p {
-            font-size: 14px;
+            font-size: 12px;
+            font-family: "Inter", sans-serif;
+            font-weight: 300;
             color: var(--primary-color);
             margin-bottom: 15px;
         }
@@ -510,6 +529,21 @@
         .team-social a:hover {
             background: var(--primary-color);
             color: white;
+        }
+        
+        /* Vision ve Mission için inline stillerini de güncelle */
+        .doc_documentation_area h3 {
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            font-family: "Jura", sans-serif !important;
+            color: var(--black_800) !important;
+            margin-bottom: 15px !important;
+        }
+        
+        .doc_documentation_area p {
+            font-family: "Inter", sans-serif !important;
+            font-weight: 300 !important;
+            font-size: 11pt !important;
         }
     </style>
 </head>
@@ -540,7 +574,7 @@
                 <div class="doc_banner_content">
                     <form action="#" class="header_search_form">
                         <div class="header_search_form_info">
-                            <h2>About</h2>
+                            <h2>About Classic</h2>
                         </div>
                         <div class="header_search_keyword">
                             <span class="">Discover our story, vision, mission, and the team behind Tipbox.</span>
@@ -562,7 +596,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Tipbox</a></li>
-                                <li class="breadcrumb-item active"><a href="about.html">About</a></li>
+                                <li class="breadcrumb-item active"><a href="about.html">About Classic</a></li>
                             </ol>
                         </nav>
                     </div>
@@ -578,95 +612,312 @@
             <div class="overlay_bg"></div>
             <div class="container custom_container">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <!-- Ana İçerik -->
-                        <div class="page_banner_content">
-                            <h1>Hakkımızda</h1>
-                            <p>Bizimle ilgili daha fazla bilgi edinin, vizyonumuzu, misyonumuzu ve değerlerimizi keşfedin.</p>
-                        </div>
-
-                        <div class="content_wrapper">
-                            <!-- Vizyon & Misyon Bölümü -->
-                            <div class="section-container">
-                                <div class="section-title">
-                                    <h2>Vizyon & Misyon</h2>
-                                    <p>Gelecek için vizyonumuz ve bu vizyonu gerçekleştirmek için misyonumuz.</p>
+                    <div class="col-lg-12 col-md-8 doc-middle-content">
+                        <article class="documentation_info">
+                            <div class="" id="documentation">                                
+                                <!-- About Tipbox Content -->
+                                <div class="section-container">
+                                    <div class="section-title">
+                                        <h2>About</h2>
+                                    </div>
+                                    <div class="content-card">
+                                        <p>Tipbox is a next-generation digital experience network that enables users to share their experiences in structured, meaningful formats and transform them into both social and economic value. Through AI-powered validation systems and blockchain-based reward mechanisms, user contributions become not only visible but also monetizable.</p>
+                                        
+                                        <p>By combining the social dynamics of Web2 with the ownership infrastructure of Web3, Tipbox turns individuals into more than just content creators — they become thought leaders, collectors, and value partners. With experience-slice-based content formats, NFT badge systems, community-driven interaction tools, and a token-based incentive economy, Tipbox builds a multi-layered content ecosystem where digital culture is redefined with sustainability at its core.</p>
+                                    </div>
                                 </div>
 
-                                <div class="vision-mission-grid">
-                                    <div class="vm-card vision-card">
-                                        <div class="card-icon">
-                                            <i class="icon_genius"></i>
-                                        </div>
-                                        <h3>Vizyonumuz</h3>
-                                        <p>İçerik üreticileri ve takipçileri arasında adil, şeffaf ve sürdürülebilir bir ekosistem oluşturarak, dijital içerik ekonomisini demokratikleştirmek ve herkes için erişilebilir kılmak.</p>
+                                <!-- Vision & Mission -->
+                                <div class="section-container">
+                                    <div class="section-title">
+                                        <h2>Vision & Mission</h2>
                                     </div>
-                                    <div class="vm-card mission-card">
-                                        <div class="card-icon">
-                                            <i class="icon_target"></i>
+                                    
+                                    <!-- Vision Section -->
+                                    <div class="row mb-5">
+                                        <div class="col-lg-8 col-md-7">
+                                            <div class="content-card" style="background: rgba(40, 44, 52, 0.7); border-radius: 15px; padding: 25px; height: 100%;">
+                                                <h3 style="font-weight: 500; margin-bottom: 15px; border-bottom: 2px solid #3051ff; display: inline-block; padding-bottom: 8px; font-size: 14px; font-family: 'Jura', sans-serif; color: #3051ff;">
+                                                    Vision
+                                                </h3>
+                                                <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300;">To redefine how value is expressed in the digital world — by building an inclusive culture infrastructure where experiences turn into knowledge, contributions into collectibles, and interactions into economic value.</p>
+                                                <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300;">Tipbox envisions a digital landscape where users are not just consumers, but verified contributors, collection owners, and community drivers. In the long term, it aims to establish a transparent and sustainable content economy fueled by community-driven contributions with real economic rewards.</p>
+                                            </div>
                                         </div>
-                                        <h3>Misyonumuz</h3>
-                                        <p>İçerik üreticilerinin değerli bilgi ve deneyimlerini paylaşırken adil bir şekilde ödüllendirildiği, tüketicilerin ise yüksek kaliteli içeriğe erişim sağladığı, blok zinciri tabanlı bir bahşiş ekosistemi sunmak.</p>
+                                        <div class="col-lg-4 col-md-5 d-flex align-items-stretch">
+                                            <div style="width: 100%; height: 100%; padding: 0;">
+                                                <img src="img/blog-classic/classic_01.jpg" alt="Tipbox Vision" class="img-fluid" style="border-radius: 15px; width: 100%; height: 100%; object-fit: cover; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Mission Section -->
+                                    <div class="row mb-5" style="margin-top: 30px;">
+                                        <div class="col-lg-4 col-md-5 d-flex align-items-stretch order-md-1 order-2">
+                                            <div style="width: 100%; height: 100%; padding: 0;">
+                                                <img src="img/blog-classic/classic_03.jpg" alt="Tipbox Mission" class="img-fluid" style="border-radius: 15px; width: 100%; height: 100%; object-fit: cover; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-8 col-md-7 order-md-2 order-1">
+                                            <div class="content-card" style="background: rgba(40, 44, 52, 0.7); border-radius: 15px; padding: 25px; height: 100%;">
+                                                <h3 style="font-weight: 500; margin-bottom: 15px; border-bottom: 2px solid #f5b111; display: inline-block; padding-bottom: 8px; font-size: 14px; font-family: 'Jura', sans-serif; color: #f5b111;">
+                                                    Mission
+                                                </h3>
+                                                <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300;">To build a user-centered ecosystem where experiences are shared in structured formats, validated with smart systems, and rewarded through digital assets.</p>
+                                                <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300;">Tipbox brings reliability to experience sharing through AI-supported validation, and rewards content creation with NFT badges and TIPS Tokens. By merging the accessibility of Web2 with the ownership and revenue models of Web3, Tipbox enhances digital engagement across social, intellectual, and economic layers.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Team Section -->
+                                <div class="section-container" style="margin-top: 50px;">
+                                    <div class="section-title">
+                                        <h2>Team</h2>
+                                        <p style="color: var(--text-muted); max-width: 800px; margin: 0 auto 40px; text-align: center; font-size: 11pt; font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.7;">
+                                            Tipbox is developed by a multidisciplinary team of experts in technology, design, content, and community—united around a shared mission to redefine the experience economy.
+                                            Each member contributes not only through their field expertise but also with a deep belief in the power of content-driven culture.
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="row justify-content-center px-3 px-sm-0">
+                                        <!-- Team Member 1 -->
+                                        <div class="col-lg-4 col-md-6 mb-5 px-3">
+                                            <div style="position: relative; text-align: center; margin-top: 60px;">
+                                                <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; position: absolute; top: -60px; left: 50%; transform: translateX(-50%); z-index: 2; border: 2px solid #21252b; box-shadow: 0 8px 15px rgba(0,0,0,0.2);">
+                                                    <img src="img/team/mihrac.png" alt="Team Member" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                                </div>
+                                                <div style="background: rgba(33, 37, 43, 0.8); border-radius: 12px; padding: 70px 25px 30px; min-height: 230px; margin-top: 10px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.15);">
+                                                    <h3 style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">Mihraç CERRAHOĞLU</h3>
+                                                    <p style="color: #3051ff; font-size: 12px; font-family: 'Inter', sans-serif; margin-bottom: 20px; font-weight: 400;">Chief Executive Officer</p>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
+                                                        Leads Tipbox with a focus on strategic alignment, product vision and cross-functional coordination to ensure long-term impact.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Team Member 2 -->
+                                        <div class="col-lg-4 col-md-6 mb-5 px-3">
+                                            <div style="position: relative; text-align: center; margin-top: 60px;">
+                                                <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; position: absolute; top: -60px; left: 50%; transform: translateX(-50%); z-index: 2; border: 2px solid #21252b; box-shadow: 0 8px 15px rgba(0,0,0,0.2);">
+                                                    <img src="img/team/burakcan.png" alt="Team Member" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                                </div>
+                                                <div style="background: rgba(33, 37, 43, 0.8); border-radius: 12px; padding: 70px 25px 30px; min-height: 230px; margin-top: 10px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.15);">
+                                                    <h3 style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">Burakcan KARAMAN</h3>
+                                                    <p style="color: #f5b111; font-size: 12px; font-family: 'Inter', sans-serif; margin-bottom: 20px; font-weight: 400;">Chief Strategy Officer</p>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
+                                                        Guides the platform's strategic direction by designing sustainable growth models and overseeing high-level decision frameworks.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Team Member 3 -->
+                                        <div class="col-lg-4 col-md-6 mb-5 px-3">
+                                            <div style="position: relative; text-align: center; margin-top: 60px;">
+                                                <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; position: absolute; top: -60px; left: 50%; transform: translateX(-50%); z-index: 2; border: 2px solid #21252b; box-shadow: 0 8px 15px rgba(0,0,0,0.2);">
+                                                    <img src="img/team/omerfaruk.png" alt="Team Member" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                                </div>
+                                                <div style="background: rgba(33, 37, 43, 0.8); border-radius: 12px; padding: 70px 25px 30px; min-height: 230px; margin-top: 10px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.15);">
+                                                    <h3 style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">Ömer Faruk DEMİRAL</h3>
+                                                    <p style="color: #0fbc8b; font-size: 12px; font-family: 'Inter', sans-serif; margin-bottom: 20px; font-weight: 400;">Development Team</p>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
+                                                        Plays a key role in building and maintaining the technical foundation of Tipbox, contributing to overall product functionality and evolution.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Team Member 4 -->
+                                        <div class="col-lg-4 col-md-6 mb-5 px-3">
+                                            <div style="position: relative; text-align: center; margin-top: 60px;">
+                                                <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; position: absolute; top: -60px; left: 50%; transform: translateX(-50%); z-index: 2; border: 2px solid #21252b; box-shadow: 0 8px 15px rgba(0,0,0,0.2);">
+                                                    <img src="img/team/mehmet.png" alt="Team Member" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                                </div>
+                                                <div style="background: rgba(33, 37, 43, 0.8); border-radius: 12px; padding: 70px 25px 30px; min-height: 230px; margin-top: 10px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.15);">
+                                                    <h3 style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">Mehmet KOÇ</h3>
+                                                    <p style="color: #f64e60; font-size: 12px; font-family: 'Inter', sans-serif; margin-bottom: 20px; font-weight: 400;">Development Team</p>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
+                                                        Supports the platform's development with a commitment to system stability, product enhancement and scalable solutions.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Team Member 5 -->
+                                        <div class="col-lg-4 col-md-6 mb-5 px-3">
+                                            <div style="position: relative; text-align: center; margin-top: 60px;">
+                                                <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; position: absolute; top: -60px; left: 50%; transform: translateX(-50%); z-index: 2; border: 2px solid #21252b; box-shadow: 0 8px 15px rgba(0,0,0,0.2);">
+                                                    <img src="img/team/furkan.png" alt="Team Member" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                                </div>
+                                                <div style="background: rgba(33, 37, 43, 0.8); border-radius: 12px; padding: 70px 25px 30px; min-height: 230px; margin-top: 10px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.15);">
+                                                    <h3 style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">Furkan KARABULUT</h3>
+                                                    <p style="color: #6f42c1; font-size: 12px; font-family: 'Inter', sans-serif; margin-bottom: 20px; font-weight: 400;">Marketing Team</p>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
+                                                        Shapes how Tipbox communicates its value, builds community trust and creates consistent engagement with target audiences.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Team Member 6 -->
+                                        <div class="col-lg-4 col-md-6 mb-5 px-3">
+                                            <div style="position: relative; text-align: center; margin-top: 60px;">
+                                                <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; position: absolute; top: -60px; left: 50%; transform: translateX(-50%); z-index: 2; border: 2px solid #21252b; box-shadow: 0 8px 15px rgba(0,0,0,0.2);">
+                                                    <img src="img/team/aycan.png" alt="Team Member" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                                </div>
+                                                <div style="background: rgba(33, 37, 43, 0.8); border-radius: 12px; padding: 70px 25px 30px; min-height: 230px; margin-top: 10px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.15);">
+                                                    <h3 style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">Aycan KARAMAN</h3>
+                                                    <p style="color: #0abbf5; font-size: 12px; font-family: 'Inter', sans-serif; margin-bottom: 20px; font-weight: 400;">Marketing Team</p>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
+                                                        Focuses on strengthening brand presence, user connection and ecosystem engagement through coordinated marketing efforts.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Team Member 7 (Centered) -->
+                                        <div class="col-lg-4 col-md-6 mb-5 px-3 mx-auto">
+                                            <div style="position: relative; text-align: center; margin-top: 60px;">
+                                                <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; position: absolute; top: -60px; left: 50%; transform: translateX(-50%); z-index: 2; border: 2px solid #21252b; box-shadow: 0 8px 15px rgba(0,0,0,0.2);">
+                                                    <img src="img/team/ozan.png" alt="Team Member" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                                </div>
+                                                <div style="background: rgba(33, 37, 43, 0.8); border-radius: 12px; padding: 70px 25px 30px; min-height: 230px; margin-top: 10px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.15);">
+                                                    <h3 style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">Ozan MUTLUOĞLU</h3>
+                                                    <p style="color: #50cd89; font-size: 12px; font-family: 'Inter', sans-serif; margin-bottom: 20px; font-weight: 400;">Design & Art Team</p>
+                                                    <p style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
+                                                        Crafts the visual language of Tipbox, ensuring that design reflects both user needs and the cultural essence of the platform.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Principles Section -->
+                                <div class="section-container" style="margin-top: 70px;">
+                                    <div class="section-title">
+                                        <h2>Principles</h2>
+                                        <p style="color: var(--text-muted); max-width: 800px; margin: 0 auto 40px; text-align: center; font-size: 11pt; font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.7;">
+                                            Tipbox is not just a platform—it's a cultural space where digital value is being redefined. Every decision we make centers around empowering creators, fostering meaningful digital engagement, and restoring ownership of data to users.
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="row px-3 px-sm-0">
+                                        <!-- İlk satır -->
+                                        <!-- Principle 1 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="principle-card modern-card">
+                                                <div class="principle-icon-container">
+                                                    <img src="img/icons/instructor_home_feature_1.png" alt="Creator-First Mindset" class="principle-icon rotating-icon">
+                                                </div>
+                                                <h3>Creator-First Mindset</h3>
+                                                <p>Every product decision prioritizes the needs and potential of content creators.</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Principle 2 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="principle-card modern-card">
+                                                <div class="principle-icon-container">
+                                                    <img src="img/icons/instructor_home_feature_2.png" alt="Transparency & Accountability" class="principle-icon rotating-icon">
+                                                </div>
+                                                <h3>Transparency & Accountability</h3>
+                                                <p>All token, reward, and revenue-sharing mechanisms are designed to be observable, traceable, and fair.</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Principle 3 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="principle-card modern-card">
+                                                <div class="principle-icon-container">
+                                                    <img src="img/icons/instructor_home_feature_3.png" alt="Structured Contribution" class="principle-icon rotating-icon">
+                                                </div>
+                                                <h3>Structured Contribution</h3>
+                                                <p>Each experience is organized and rewarded based on its context, intent, and quality.</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- İkinci satır -->
+                                        <!-- Principle 4 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="principle-card modern-card">
+                                                <div class="principle-icon-container">
+                                                    <img src="img/icons/instructor_home_feature_4.png" alt="Growth with the Community" class="principle-icon rotating-icon">
+                                                </div>
+                                                <h3>Growth with the Community</h3>
+                                                <p>From roadmap decisions to cultural initiatives, we build with collective input, not in isolation.</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Principle 5 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="principle-card modern-card">
+                                                <div class="principle-icon-container">
+                                                    <img src="img/icons/instructor_home_feature_1.png" alt="Balance of Social Impact" class="principle-icon rotating-icon">
+                                                </div>
+                                                <h3>Balance of Social Impact & Economic Value</h3>
+                                                <p>Every feature is designed to benefit both the individual and the community as a whole.</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Principle 6 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="principle-card modern-card">
+                                                <div class="principle-icon-container">
+                                                    <img src="img/icons/instructor_home_feature_2.png" alt="Trust & Respect" class="principle-icon rotating-icon">
+                                                </div>
+                                                <h3>Trust, Respect & Empowerment</h3>
+                                                <p>Users are granted ownership, voice, and visible recognition for their expertise and contributions.</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Üçüncü satır -->
+                                        <!-- Principle 7 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="principle-card modern-card">
+                                                <div class="principle-icon-container">
+                                                    <img src="img/icons/instructor_home_feature_3.png" alt="Technological Clarity" class="principle-icon rotating-icon">
+                                                </div>
+                                                <h3>Technological Clarity over Complexity</h3>
+                                                <p>We adopt technology not for show, but for value creation—favoring clarity over clutter.</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Principle 8 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="principle-card modern-card">
+                                                <div class="principle-icon-container">
+                                                    <img src="img/icons/instructor_home_feature_4.png" alt="Sustainability" class="principle-icon rotating-icon">
+                                                </div>
+                                                <h3>Sustainability and Long-Term Focus</h3>
+                                                <p>We design systems for durability, not just speed. Our token model and growth strategies reflect this.</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Principle 9 -->
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="principle-card modern-card">
+                                                <div class="principle-icon-container">
+                                                    <img src="img/icons/instructor_home_feature_1.png" alt="Openness" class="principle-icon rotating-icon">
+                                                </div>
+                                                <h3>Openness & Learning Culture</h3>
+                                                <p>We learn from data, grow through feedback, and extract value even from failure.</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Değerlerimiz Bölümü -->
-                            <div class="section-container">
-                                <div class="section-title">
-                                    <h2>Değerlerimiz</h2>
-                                    <p>Tipbox'ı şekillendiren temel prensipler ve değerler.</p>
-                                </div>
-
-                                <div class="values-list">
-                                    <div class="value-card">
-                                        <div class="value-icon">
-                                            <i class="icon_shield_alt"></i>
-                                        </div>
-                                        <h4>Şeffaflık</h4>
-                                        <p>Tüm eylemlerimizde ve kararlarımızda açık ve dürüst olmayı taahhüt ediyoruz.</p>
-                                    </div>
-                                    <div class="value-card">
-                                        <div class="value-icon">
-                                            <i class="icon_balance"></i>
-                                        </div>
-                                        <h4>Adillik</h4>
-                                        <p>İçerik üreticileri ve tüketicileri için adil bir değer değişimi sağlamak için çalışıyoruz.</p>
-                                    </div>
-                                    <div class="value-card">
-                                        <div class="value-icon">
-                                            <i class="icon_key_alt"></i>
-                                        </div>
-                                        <h4>Güvenlik</h4>
-                                        <p>Kullanıcılarımızın güvenliği ve veri gizliliği bizim önceliğimizdir.</p>
-                                    </div>
-                                    <div class="value-card">
-                                        <div class="value-icon">
-                                            <i class="icon_lightbulb_alt"></i>
-                                        </div>
-                                        <h4>İnovasyon</h4>
-                                        <p>Sürekli olarak sınırları zorluyor ve içerik ekonomisinde yeni çözümler geliştiriyoruz.</p>
-                                    </div>
-                                    <div class="value-card">
-                                        <div class="value-icon">
-                                            <i class="icon_globe-2"></i>
-                                        </div>
-                                        <h4>Topluluk Odaklılık</h4>
-                                        <p>Güçlü bir topluluk oluşturmak ve desteklemek için buradayız.</p>
-                                    </div>
-                                    <div class="value-card">
-                                        <div class="value-icon">
-                                            <i class="icon_cog"></i>
-                                        </div>
-                                        <h4>Sürdürülebilirlik</h4>
-                                        <p>Uzun vadeli başarı ve büyüme için sürdürülebilir bir model geliştirmeye odaklanıyoruz.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </article>
                     </div>
                 </div>
             </div>
+            
+            <!-- 3D Şekiller - Görsel Efektler -->
+            <img src="img/doc_shap.png" alt="" class="doc_shap_one">
+            <div class="doc_round one"></div>
+            <div class="doc_round two"></div>
         </section>
 
         <!-- Footer Component -->
@@ -701,6 +952,247 @@
     <!-- Header Controller script -->
     <script src="js/header-controller.js"></script>
     <script src="js/style-docs-update.js"></script>
+    
+    <!-- Principles Animasyon Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Scroll animasyonu için gözlemci oluştur
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // Eğer eleman görünür alanda ise
+                    if (entry.isIntersecting) {
+                        // Animasyon sınıfını ekle
+                        entry.target.classList.add('animated');
+                        // Gözlemlemeyi durdur
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                rootMargin: '0px',
+                threshold: 0.1 // Elementin %10'u görünür olduğunda tetikle
+            });
+            
+            // Tüm prensip kartlarını seç ve gözlemle
+            document.querySelectorAll('.principle-card').forEach(card => {
+                observer.observe(card);
+            });
+            
+            // Mouse move olayı için
+            document.querySelectorAll('.principle-card').forEach(card => {
+                card.addEventListener('mousemove', function(e) {
+                    const icon = this.querySelector('.rotating-icon');
+                    if (icon) {
+                        // İmlecin kart üzerindeki konumunu hesapla
+                        const rect = this.getBoundingClientRect();
+                        const x = e.clientX - rect.left; 
+                        const y = e.clientY - rect.top;
+                        
+                        // Kart merkezinden uzaklığı hesapla
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        // Merkeze göre -15 ile 15 derece arasında dönme hesapla
+                        const rotateX = -1 * ((y - centerY) / centerY) * 15;
+                        const rotateY = ((x - centerX) / centerX) * 15;
+                        
+                        // İkonu hareket ettir
+                        icon.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    }
+                });
+                
+                // Mouse'u karttan çekince ikonu sıfırla
+                card.addEventListener('mouseleave', function() {
+                    const icon = this.querySelector('.rotating-icon');
+                    if (icon) {
+                        icon.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <style>
+        /* Modern prensip kartları için stilleri */
+        .principle-card.modern-card {
+            background-color: #21252b;
+            border-radius: 10px;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: left;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            min-height: 200px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .principle-card.modern-card {
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+            
+            .team-section .col-md-6 {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
+        
+        .principle-card.modern-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(48, 81, 255, 0.2);
+        }
+        
+        .principle-icon-container {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            perspective: 1000px;
+        }
+        
+        .principle-icon {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+            transition: transform 0.6s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .principle-card.modern-card h3 {
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Jura', sans-serif;
+            color: #ffffff;
+            margin-top: 8px;
+            margin-bottom: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .principle-card.modern-card p {
+            font-size: 10pt;
+            line-height: 1.4;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            color: #9ba0aa;
+            margin-bottom: 0;
+        }
+        
+        /* Scroll animasyonu için */
+        .principle-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .principle-card.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Kartların sıralı animasyonu için gecikme */
+        .principle-card:nth-child(1) { transition-delay: 0.1s; }
+        .principle-card:nth-child(2) { transition-delay: 0.2s; }
+        .principle-card:nth-child(3) { transition-delay: 0.3s; }
+        .principle-card:nth-child(4) { transition-delay: 0.4s; }
+        .principle-card:nth-child(5) { transition-delay: 0.5s; }
+        .principle-card:nth-child(6) { transition-delay: 0.6s; }
+        .principle-card:nth-child(7) { transition-delay: 0.7s; }
+        .principle-card:nth-child(8) { transition-delay: 0.8s; }
+        .principle-card:nth-child(9) { transition-delay: 0.9s; }
+        
+        /* 3D dönme efekti için */
+        @keyframes float-1 {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-8px) rotate(5deg);
+            }
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+        
+        @keyframes float-2 {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            30% {
+                transform: translateY(-10px) rotate(-3deg);
+            }
+            60% {
+                transform: translateY(-4px) rotate(2deg);
+            }
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+        
+        @keyframes float-3 {
+            0% {
+                transform: translateY(0px) rotate(0deg) scale(1);
+            }
+            40% {
+                transform: translateY(-7px) rotate(4deg) scale(1.05);
+            }
+            70% {
+                transform: translateY(-3px) rotate(-2deg) scale(1.02);
+            }
+            100% {
+                transform: translateY(0px) rotate(0deg) scale(1);
+            }
+        }
+        
+        .rotating-icon {
+            transform-style: preserve-3d;
+        }
+
+        /* Her ikon için farklı animasyon gecikmesi ve süresi */
+        .principle-card:nth-child(1) .rotating-icon { 
+            animation: float-1 4.8s ease-in-out infinite;
+            animation-delay: 0s; 
+        }
+        .principle-card:nth-child(2) .rotating-icon { 
+            animation: float-2 6.2s ease infinite;
+            animation-delay: 1.2s; 
+        }
+        .principle-card:nth-child(3) .rotating-icon { 
+            animation: float-3 5.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+            animation-delay: 2.5s; 
+        }
+        .principle-card:nth-child(4) .rotating-icon { 
+            animation: float-1 5.3s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+            animation-delay: 0.7s; 
+        }
+        .principle-card:nth-child(5) .rotating-icon { 
+            animation: float-2 7s ease-in-out infinite;
+            animation-delay: 3.1s; 
+        }
+        .principle-card:nth-child(6) .rotating-icon { 
+            animation: float-3 5.7s ease infinite;
+            animation-delay: 1.8s; 
+        }
+        .principle-card:nth-child(7) .rotating-icon { 
+            animation: float-1 6.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+            animation-delay: 0.3s; 
+        }
+        .principle-card:nth-child(8) .rotating-icon { 
+            animation: float-3 5.9s ease-in-out infinite;
+            animation-delay: 2.2s; 
+        }
+        .principle-card:nth-child(9) .rotating-icon { 
+            animation: float-2 5.1s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+            animation-delay: 3.5s; 
+        }
+    </style>
 </body>
 
 </html> 
