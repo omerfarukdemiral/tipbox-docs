@@ -3,8 +3,8 @@
 # Stil güncellemelerini içeren bir geçici dosya oluştur
 cat > temp-styles.sed << 'EOF'
 # h1 stil güncellemeleri
-s/h1 {[^}]*}/h1 {\n  font-size: 20px;\n  font-weight: 700; \/* Bold *\/\n  font-family: "Jura", sans-serif;\n  color: var(--black_800);\n  line-height: 1.3;\n}/g
-s/\.h1 {[^}]*}/\.h1 {\n  font-size: 20px;\n  font-weight: 700; \/* Bold *\/\n  font-family: "Jura", sans-serif;\n}/g
+s/h1 {[^}]*}/h1 {\n  font-size: 20px;\n  font-weight: 700; \/* Bold *\/\n  font-family: "Jura", sans-serif;\n  color: #d8ff08;\n  line-height: 1.3;\n}/g
+s/\.h1 {[^}]*}/\.h1 {\n  font-size: 20px;\n  font-weight: 700; \/* Bold *\/\n  font-family: "Jura", sans-serif;\n  color: #d8ff08;\n}/g
 
 # h2 stil güncellemeleri
 s/h2 {[^}]*}/h2 {\n  font-size: 16px;\n  font-weight: 600; \/* Semi-Bold *\/\n  font-family: "Jura", sans-serif;\n  color: var(--black_800);\n  line-height: 1.3;\n}/g
