@@ -1,0 +1,116 @@
+/* İçindekiler Tablosu İçin Ek Stiller */
+.table-of-content {
+    max-width: 100%;
+    overflow-x: hidden;
+    background-color: var(--bg_color);
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.table-of-content h6 {
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding-bottom: 10px;
+}
+
+.table-of-content .doc_menu {
+    max-width: 100%;
+    padding-right: 5px;
+    width: 100%;
+}
+
+.table-of-content .nav-link {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    width: calc(100% - 10px);
+    display: block;
+    padding: 6px 0;
+    font-size: 14px;
+    color: var(--p_color);
+    transition: color 0.2s ease;
+    position: relative;
+}
+
+.table-of-content .nav-link:hover {
+    color: var(--brand_color);
+    text-decoration: none;
+}
+
+.table-of-content .nav.flex-column {
+    padding-left: 15px;
+    margin-bottom: 0;
+    max-width: 100%;
+    width: calc(100% - 15px);
+    border-left: 1px solid rgba(0,0,0,0.1);
+    margin-left: 5px;
+}
+
+.table-of-content .nav.flex-column .nav-link {
+    font-size: 13px;
+    padding: 4px 0;
+    position: relative;
+    width: calc(100% - 15px);
+}
+
+.table-of-content .nav.flex-column .nav-link:before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 1px;
+    background: rgba(0,0,0,0.3);
+    left: -10px;
+    top: 50%;
+}
+
+/* Sağ kenar çubuğu stil ayarları */
+.doc_rightsidebar.scroll {
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+    position: sticky;
+    top: 100px;
+    padding-right: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.doc_right_mobile_menu {
+    padding-right: 5px;
+}
+
+.pageSideSection {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Dark mode uyumluluğu için */
+body.body_dark .table-of-content {
+    background-color: var(--bg_color);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+body.body_dark .table-of-content h6 {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+body.body_dark .table-of-content .nav.flex-column {
+    border-left: 1px solid rgba(255,255,255,0.1);
+}
+
+body.body_dark .table-of-content .nav-link {
+    color: #c5c5c5;
+}
+
+body.body_dark .table-of-content .nav-link:hover {
+    color: var(--brand_color);
+}
+
+body.body_dark .table-of-content .nav.flex-column .nav-link:before {
+    background: rgba(255,255,255,0.3);
+} 

@@ -194,7 +194,7 @@
     padding-left: 20px;
   }
   .doc_rightsidebar {
-    padding-left: 30px;
+    padding-left: 0px;
     margin-right: -45px;
   }
   .full-width-doc .doc_rightsidebar {
@@ -1652,6 +1652,7 @@
   .body_fixed .doc_right_mobile_menu {
     position: fixed;
     top: 70px;
+    width: 250px;
   }
   .question_box .signup_form {
     max-width: 450px;
@@ -1783,7 +1784,7 @@
   .error_img .img_one,
   .error_img .img_two,
   .error_img .img_three {
-    max-width: 150px;
+    max-width: 250px;
   }
   .error_img .two {
     margin: 0;
