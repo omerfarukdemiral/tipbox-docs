@@ -216,46 +216,20 @@ function initializeTechnologyPage() {
         });
     });
 
-    let isExecutiveSummaryLoaded = false; // Bayrak değişkeni
-
     // URL'de hash varsa ilgili içeriği yükle
     if (window.location.hash) {
         const contentFile = window.location.hash.slice(1) + '.html';
         loadContent(contentFile);
     } else {
-        // Varsayılan olarak executive-summary'yi yükle
-        isExecutiveSummaryLoaded = true; // Bayrağı ayarla
+        // Varsayılan olarak multi-layered-architecture'ı yükle
         loadContent('technology/multi-layered-architecture.html');
-    }
-
-    // İçerik yüklendikten sonra kaydırma işlemi
-    if (isExecutiveSummaryLoaded) {
-        window.scrollTo(0, 0); // Sayfayı en üste kaydır
-    } else if (window.location.hash) {
-        // Hedef başlığı bul
-        const targetId = window.location.hash.substring(1);
-        const targetElement = document.getElementById(targetId);
-
-        if (targetElement) {
-            // Sabit bir offset yerine, ekranın üst kısmında görünmesini sağla
-            const headerHeight = 100; // Üst menünün tahmini yüksekliği
-            const scrollPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-            
-            // Sayfayı hesaplanan pozisyona kaydır
-            window.scrollTo({
-                top: scrollPosition,
-                behavior: 'smooth'
-            });
-        } else {
-            // Eğer belirli bir başlık bulunamazsa, içeriğin başına git
-            const docContent = document.querySelector('.doc_documentation_area');
-            if (docContent) {
-                const headerHeight = 100; // Üst menünün tahmini yüksekliği
-                window.scrollTo({
-                    top: docContent.offsetTop - headerHeight,
-                    behavior: 'smooth'
-                });
+        
+        // İlgili menü öğesini aktif hale getir
+        setTimeout(() => {
+            const activeItem = document.querySelector('[data-content-file="technology/multi-layered-architecture.html"]');
+            if (activeItem) {
+                activeItem.classList.add('active');
             }
-        }
+        }, 500);
     }
 } 
