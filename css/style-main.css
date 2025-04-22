@@ -6579,7 +6579,7 @@ body.remove .header_tabs_area.tab_fixed .header_tab_items {
   padding-bottom: 30px;
   z-index: 1;
   margin-right: 30px;
-  position: relative;
+  position: relative!important;
   height: 100%;
 }
 .doc_left_sidebarlist:before {
