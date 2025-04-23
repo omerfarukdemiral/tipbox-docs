@@ -404,24 +404,10 @@
                 }
 
                 const data = await response.json();
-                console.log('Token başarıyla alındı');
-
-                // Kullanım sayısını istemci tarafında da arttır (yedek olarak)
-                try {
-                    console.log('Kullanım sayısı istemci tarafında artırılıyor...');
-                    await db.collection('guestTokens').doc(code).update({
-                        usageCount: firebase.firestore.FieldValue.increment(1),
-                        lastUsedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    console.log('Kullanım sayısı istemci tarafında başarıyla artırıldı');
-                } catch (updateError) {
-                    console.error('Kullanım sayısı artırma hatası:', updateError);
-                    // Hata olsa da devam et
-                }
 
                 // Firebase ile giriş yap
                 await firebase.auth().signInWithCustomToken(data.firebaseToken);
-                console.log('Firebase girişi başarılı');
+                localStorage.setItem('user', JSON.stringify(data.user));
                 $('#guestLoginModal').modal('hide');
 
             } catch (error) {

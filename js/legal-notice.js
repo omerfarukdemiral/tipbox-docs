@@ -35,7 +35,9 @@
      */
     function initLegalNotice() {
         // Kullanıcı daha önce kabul ettiyse popup'ı gösterme
-        if (hasUserAcceptedLegalNotice()) {
+        const isAccepted = hasUserAcceptedLegalNotice();
+        console.log(isAccepted);
+        if (isAccepted) {
             return;
         }
         
@@ -56,14 +58,66 @@
      * @returns {boolean} Kabul edildiyse true, aksi halde false
      */
     function hasUserAcceptedLegalNotice() {
-        return localStorage.getItem(LEGAL_NOTICE_ACCEPTED_KEY) === 'true';
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+            try {
+                const userData = JSON.parse(userStr);
+                console.log('Privacy policy değeri:', userData.privacy_policy);
+                return userData.privacy_policy === true;
+            } catch (error) {
+                console.error('User verisi JSON olarak ayrıştırılamadı:', error);
+                return false;
+            }
+        }
+        return false;
     }
     
     /**
      * Kullanıcının yasal uyarıyı kabul ettiğini kaydeder
      */
-    function saveLegalNoticeAcceptance() {
-        localStorage.setItem(LEGAL_NOTICE_ACCEPTED_KEY, 'true');
+    async function saveLegalNoticeAcceptance() {
+        try {
+            // LocalStorage'den kullanıcı bilgilerini al
+            const userStr = localStorage.getItem('user');
+            if (!userStr) {
+                showToast('Kullanıcı bilgisi bulunamadı', 'error');
+                return;
+            }
+            
+            // JSON olarak ayrıştır
+            const userData = JSON.parse(userStr);
+            const uid = userData.uid;
+            
+            if (!uid) {
+                showToast('Kullanıcı ID bilgisi eksik', 'error');
+                return;
+            }
+            
+            // Backend'e privacy-policy kabulü için istek gönder
+            const response = await fetch('https://tipbox-docs-backend.vercel.app/auth/privacy-policy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ uid: uid })
+            });
+            
+            // Response kontrolü
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Sunucu hatası oluştu');
+            }
+            
+            // Başarılı yanıtı işle
+            const data = await response.json();
+            
+            // LocalStorage'deki kullanıcı verisini güncelle
+            userData.privacy_policy = true;
+            localStorage.setItem('user', JSON.stringify(userData));            
+        } catch (error) {
+            console.error('Gizlilik politikası güncellenirken hata:', error);
+            showToast('Gizlilik politikası güncellenirken bir hata oluştu: ' + error.message, 'error');
+        }
     }
     
     /**
@@ -71,6 +125,7 @@
      */
     function closeLegalNoticePopup() {
         const popup = document.querySelector('.legal-notice-popup');
+        
         if (popup) {
             popup.classList.remove('show');
             
@@ -149,13 +204,59 @@
             });
             
             // Buton tıklamasını dinle
-            acceptButton.addEventListener('click', function() {
+            acceptButton.addEventListener('click', async function() {
                 if (checkbox.checked) {
-                    saveLegalNoticeAcceptance();
+                    await saveLegalNoticeAcceptance();
                     closeLegalNoticePopup();
                 }
             });
         }
+    }
+    
+    // Toast mesajı gösterme fonksiyonu
+    function showToast(message, type = 'success') {
+        // Mevcut toast container'ı kontrol et veya oluştur
+        let toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.id = 'toast-container';
+            toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+            toastContainer.style.zIndex = '999999';
+            document.body.appendChild(toastContainer);
+        }
+        
+        // Toast elementini oluştur
+        const toastElement = document.createElement('div');
+        toastElement.className = `toast ${type === 'success' ? 'bg-success' : 'bg-danger'} text-white`;
+        toastElement.setAttribute('role', 'alert');
+        toastElement.setAttribute('aria-live', 'assertive');
+        toastElement.setAttribute('aria-atomic', 'true');
+        
+        // Toast içeriği
+        toastElement.innerHTML = `
+            <div class="toast-header ${type === 'success' ? 'bg-success' : 'bg-danger'} text-white">
+                <strong class="me-auto">Bildirim</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Kapat"></button>
+            </div>
+            <div class="toast-body">
+                ${message}
+            </div>
+        `;
+        
+        // Toast'ı container'a ekle
+        toastContainer.appendChild(toastElement);
+        
+        // Bootstrap Toast nesnesini oluştur ve göster
+        const toast = new bootstrap.Toast(toastElement, {
+            autohide: true,
+            delay: 5000
+        });
+        toast.show();
+        
+        // Toast kapandığında DOM'dan kaldır
+        toastElement.addEventListener('hidden.bs.toast', function () {
+            toastElement.remove();
+        });
     }
     
     // initLegalNotice fonksiyonunu global olarak erişilebilir yap

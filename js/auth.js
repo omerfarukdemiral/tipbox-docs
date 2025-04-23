@@ -408,7 +408,6 @@ async function checkUserRole(uid, requiredRole = 'admin') {
     if (window.currentUser && window.currentUser.uid === uid && window.userRole) {
         return window.userRole === requiredRole;
     }
-
     // Firestore'dan kontrol et
     await loadFirestoreIfNeeded();
 
@@ -417,7 +416,7 @@ async function checkUserRole(uid, requiredRole = 'admin') {
 
         if (userDoc.exists) {
             const userData = userDoc.data();
-
+            console.log("Kullanıcı rolü kontrol ediliyor: " + JSON.stringify(userData.privacy_policy));
             // Rol bilgisini window'a kaydet
             if (window.currentUser && window.currentUser.uid === uid) {
                 window.userRole = userData.role || 'user';
