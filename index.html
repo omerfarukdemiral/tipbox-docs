@@ -171,7 +171,6 @@
     </script>
     
     <style>
-                              
         .recommended_item {
             display: flex;
             flex-direction: column;
@@ -191,6 +190,81 @@
             }
             .col-lg-3, .col-6 {
                 padding: 0 10px;
+            }
+        }
+
+        /* Grid styles for features */
+        .doc_features_inner .doc_features_item {
+            margin-bottom: 30px;
+            height: auto;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 0;
+            background-color: rgba(40, 45, 58, 0.5);
+        }
+        .doc_features_inner .row {
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 20px;
+        }
+        .doc_features_inner .doc_features_item .text-center {
+            padding: 15px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(44, 48, 58, 0.7);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .doc_features_inner .doc_features_item .text-center:hover {
+            background-color: rgba(55, 60, 73, 0.9);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .doc_features_inner .doc_features_item h4 {
+            margin-top: 10px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .doc_features_inner .doc_features_item p {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #c5c5c5;
+            text-align: center;
+            margin-bottom: 0;
+        }
+        .doc_features_inner .doc_features_item .icon-wrapper {
+            flex: 0 0 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            margin-bottom: -30px;
+        }
+        .doc_features_inner .doc_features_item img {
+            height: 48px;
+            object-fit: contain;
+        }
+        .doc_features_inner .doc_features_item a {
+            display: block;
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        .doc_features_area {
+            padding-bottom: 40px;
+        }
+        @media (max-width: 767px) {
+            .doc_features_inner .row {
+                grid-template-columns: 1fr;
+            }
+            .doc_features_inner .doc_features_item {
+                margin-bottom: 15px;
             }
         }
 
@@ -468,59 +542,6 @@
             }
         }
 
-        .doc_features_inner .doc_features_item .icon-wrapper {
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0;
-        }
-        .doc_features_inner .doc_features_item .text-center {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            padding: 20px 15px;
-            background: #2c303a;
-            border-radius: 5px;
-        }
-        .doc_features_inner .doc_features_item {
-            height: 240px;
-            margin-bottom: 20px;
-            display: flex;
-        }
-        .doc_features_inner .doc_features_item > .text-center > * {
-            flex-shrink: 0;
-        }
-        .doc_features_inner .doc_features_item p {
-            font-size: 14px;
-            line-height: 1.4;
-            margin-top: 10px;
-            text-align: left;
-        }
-        .doc_features_inner .doc_features_item img {
-            height: 48px;
-            object-fit: contain;
-        }
-        .doc_features_inner .doc_features_item h4 {
-            margin-bottom: 5px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 0;
-        }
-        .doc_features_inner .doc_features_item a {
-            display: block;
-            text-align: center;
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-        .doc_features_area {
-            padding-top: 40px;
-            padding-bottom: 40px;
-        }
-
         /* Accordion Styles */
         .collaps_tabs {
             margin: 30px auto;
@@ -602,6 +623,133 @@
                 font-size: 14px;
             }
         }
+        
+        /* ... existing styles ... */
+        
+        .more-btn {
+            display: inline-flex;
+            align-items: center;
+            color: #4e73df;
+            font-size: 14px;
+            font-weight: 500;
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .more-btn svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            color: #4e73df;
+        }
+        
+        .more-btn:hover {
+            color: #2e59d9;
+            text-decoration: none;
+        }
+
+        .doc_features_item {
+            margin-bottom: 30px;
+        }
+        
+        .doc_features_item .item-inner {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            background-color: rgba(44, 48, 58, 0.7);
+            border-radius: 5px;
+            padding: 20px;
+            height: 100%;
+            transition: all 0.3s ease;
+            min-height: 100px;
+        }
+        
+        .doc_features_item .item-inner:hover {
+            background-color: rgba(55, 60, 73, 0.9);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .doc_features_item .icon-wrapper {
+            flex: 0 0 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            margin-bottom: -30px;
+        }
+        
+        .doc_features_item .icon-wrapper img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+        
+        .doc_features_item .content-wrapper {
+            flex: 1;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 60px;
+        }
+        
+        .doc_features_item .content-wrapper h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #fff;
+            text-align: left;
+            font-size: 18px;
+        }
+        
+        .doc_features_item .content-wrapper p {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #c5c5c5;
+            margin-bottom: 0;
+            text-align: left;
+        }
+        
+        .doc_features_item .content-wrapper a {
+            text-align: left;
+            display: block;
+        }
+        
+        .more-btn-wrapper {
+            padding: 15px 0;
+            margin-top: 15px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .more-btn {
+            display: inline-flex;
+            align-items: center;
+            color: #3b7dff;
+            font-size: 14px;
+            font-weight: 500;
+            background: transparent;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .more-btn svg {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            color: #3b7dff;
+        }
+        
+        .more-btn:hover {
+            color: #2e59d9;
+            text-decoration: none;
+        }
     </style>
 </head>
 
@@ -679,48 +827,95 @@
             <img class="doc_features_shap" src="img/new/shap_white.png" alt="">
             <div class="container">
                 <div class="doc_features_inner row">
-                    <div class="col-md-3 doc_features_item wow fadeInUp" data-wow-delay="0.1s" data-wow-duration="0.5s">
-                        <div class="text-center">
+                    <!-- İlk satır (3 eleman) -->
+                    <div class="col-lg-4 col-md-4 doc_features_item wow fadeInUp" data-wow-delay="0.1s" data-wow-duration="0.5s">
+                        <div class="item-inner">
                             <div class="icon-wrapper">
                                 <img src="img/new/icon1.png" alt="" style="width: 48px; height: 48px;">
                             </div>
-                            <a href="project-blurb.html">
-                                <h4>Blurb</h4>
-                            </a>
-                            <p>A brief overview of Tipbox's core purpose, positioning, and intended impact in a single-page narrative.</p>
+                            <div class="content-wrapper">
+                                <a href="project-blurb.html">
+                                    <h4>Blurb</h4>
+                                </a>
+                                <p>5 Post</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3 doc_features_item wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="0.6s">
-                        <div class="text-center">
+                    <div class="col-lg-4 col-md-4 doc_features_item wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="0.6s">
+                        <div class="item-inner">
                             <div class="icon-wrapper">
                                 <img src="img/new/icon2.png" alt="" style="width: 48px; height: 48px;">
                             </div>
-                            <a href="project-deck.html">
-                                <h4>Pitchdeck</h4>
-                            </a>
-                            <p>A visual presentation outlining Tipbox's value proposition, growth strategy, and investment highlights for stakeholders.</p>
+                            <div class="content-wrapper">
+                                <a href="project-deck.html">
+                                    <h4>Pitchdeck</h4>
+                                </a>
+                                <p>5 Post</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3 doc_features_item wow fadeInUp" data-wow-delay="0.3s" data-wow-duration="0.7s">
-                        <div class="text-center">
+                    <div class="col-lg-4 col-md-4 doc_features_item wow fadeInUp" data-wow-delay="0.3s" data-wow-duration="0.7s">
+                        <div class="item-inner">
                             <div class="icon-wrapper">
                                 <img src="img/new/icon3.png" alt="" style="width: 48px; height: 48px;">
                             </div>
-                            <a href="business-model-canvas.html">
-                                <h4>Business Model Canvas</h4>
-                            </a>
-                            <p>A structured snapshot of Tipbox's business logic—including its key partners, resources, channels, and revenue streams.</p>
+                            <div class="content-wrapper">
+                                <a href="business-model-canvas.html">
+                                    <h4>Business Model Canvas</h4>
+                                </a>
+                                <p>5 Post</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3 doc_features_item wow fadeInUp" data-wow-delay="0.4s" data-wow-duration="0.8s">
-                        <div class="text-center">
+                    
+                    <!-- İkinci satır (3 eleman) -->
+                    <div class="col-lg-4 col-md-4 doc_features_item wow fadeInUp" data-wow-delay="0.4s" data-wow-duration="0.8s">
+                        <div class="item-inner">
                             <div class="icon-wrapper">
                                 <img src="img/new/icon9.png" alt="" style="width: 48px; height: 48px;">
                             </div>
-                            <a href="tokeneconomics.html">
-                                <h4>Tokeneconomics</h4>
+                            <div class="content-wrapper">
+                                <a href="tokeneconomics.html">
+                                    <h4>Tokeneconomics</h4>
+                                </a>
+                                <p>5 Post</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 doc_features_item wow fadeInUp" data-wow-delay="0.5s" data-wow-duration="0.9s">
+                        <div class="item-inner">
+                            <div class="icon-wrapper">
+                                <img src="img/new/icon5.png" alt="" style="width: 48px; height: 48px;">
+                            </div>
+                            <div class="content-wrapper">
+                                <a href="user-feedback.html">
+                                    <h4>User Feedback</h4>
+                                </a>
+                                <p>5 Post</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 doc_features_item wow fadeInUp" data-wow-delay="0.6s" data-wow-duration="1.0s">
+                        <div class="item-inner">
+                            <div class="icon-wrapper">
+                                <img src="img/new/icon4.png" alt="" style="width: 48px; height: 48px;">
+                            </div>
+                            <div class="content-wrapper">
+                                <a href="product-support.html">
+                                    <h4>Product Support</h4>
+                                </a>
+                                <p>5 Post</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.7s" data-wow-duration="1.1s">
+                        <div class="more-btn-wrapper">
+                            <a href="#" class="more-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                                More Communities
                             </a>
-                            <p>A breakdown of how TIPS tokens are distributed, vested, and used to power participation and incentives across the platform.</p>
                         </div>
                     </div>
                 </div>
