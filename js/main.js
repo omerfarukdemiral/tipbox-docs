@@ -271,19 +271,42 @@
     });
     
     // Mobil menü içindeki linklere tıklandığında menüyü kapat
-    $(".doc_mobile_menu .nav-sidebar a").on("click", function(e) {
-      // Eğer dropdown menü değilse kapat
-      if (!$(this).parent().hasClass("dropdown_nav") && !$(this).hasClass("dropdown-toggle")) {
-        $(".doc_documentation_area,#left").removeClass("overlay");
-        $(".doc_mobile_menu").animate(
-          {
-            left: "-345px",
-          },
-          300
-        );
-        switchs = true;
+    // Menüyü kapatma işlemini sadece mobil görünümde çalıştırmak için bir fonksiyon oluşturalım
+    function closeMobileMenuOnClick() {
+      var isMobile = window.matchMedia("(max-width: 768px)").matches;
+      console.log("Mobil cihaz mı? " + isMobile + " (Ekran genişliği: " + window.innerWidth + "px)");
+      
+      if (isMobile) {
+        $(".doc_mobile_menu .nav-sidebar a").on("click", function(e) {
+          // Eğer dropdown menü değilse kapat
+          if (!$(this).parent().hasClass("dropdown_nav") && !$(this).hasClass("dropdown-toggle")) {
+            console.log("Mobil menü kapatılıyor...");
+            $(".doc_documentation_area,#left").removeClass("overlay");
+            $(".doc_mobile_menu").animate(
+              {
+                left: "-345px",
+              },
+              300
+            );
+            switchs = true;
+          }
+        });
+      } else {
+        console.log("Masaüstü modunda, mobil menü kapatma olayları eklenmedi");
       }
+    }
+    
+    // Pencere boyutu değiştiğinde yeniden kontrol etmek için
+    $(window).on('resize', function() {
+      console.log("Pencere boyutu değişti, mobil menü olayları yeniden ayarlanıyor...");
+      // Önce eski event listener'ları kaldır
+      $(".doc_mobile_menu .nav-sidebar a").off("click");
+      // Sonra yeniden kontrol et ve gerekirse ekle
+      closeMobileMenuOnClick();
     });
+    
+    // Sayfa yüklendiğinde ilk kontrol
+    closeMobileMenuOnClick();
   }
 
   if ($(".mobile_menu").length > 0) {
@@ -1213,14 +1236,19 @@
         $(".sidebar-menu").removeClass("active");
         $(".sidebar-overlay").removeClass("active");
         
-        // Doc mobile menu için de kapat
-        $(".doc_documentation_area,#left").removeClass("overlay");
-        $(".doc_mobile_menu").animate(
-          {
-            left: "-345px",
-          },
-          300
-        );
+        // Doc mobile menu için de kapat - SADECE MOBİL CİHAZLARDA
+        var isMobile = window.matchMedia("(max-width: 768px)").matches;
+        console.log("Sidebar menü linkine tıklandı. Mobil cihaz mı? " + isMobile);
+        
+        if (isMobile) {
+          $(".doc_documentation_area,#left").removeClass("overlay");
+          $(".doc_mobile_menu").animate(
+            {
+              left: "-345px",
+            },
+            300
+          );
+        }
       }
     });
   }
