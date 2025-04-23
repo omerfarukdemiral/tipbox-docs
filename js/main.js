@@ -1157,4 +1157,35 @@
     }
   }
 
+  /*--------------- Sidebar Menu Mobil uyumluluk düzeltmesi --------*/
+  function initSidebarMenuMobile() {
+    $("#sidebarToggleBtn").on("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $("body").toggleClass("sidebar-menu-open");
+      $(".sidebar-menu").toggleClass("active");
+      $(".sidebar-overlay").toggleClass("active");
+    });
+
+    $(".sidebar-overlay, .sidebar-close-btn").on("click", function(e) {
+      e.preventDefault();
+      $("body").removeClass("sidebar-menu-open");
+      $(".sidebar-menu").removeClass("active");
+      $(".sidebar-overlay").removeClass("active");
+    });
+
+    // Dropdown Toggle
+    $(".sidebar-dropdown > a").on("click", function(e) {
+      e.preventDefault();
+      $(this).parent().toggleClass("active");
+      $(this).next(".sidebar-submenu").slideToggle(300);
+      $(this).parent().siblings().removeClass("active").find(".sidebar-submenu").slideUp(300);
+    });
+  }
+
+  // DOM yüklendiğinde çalıştır
+  $(document).ready(function(){
+    initSidebarMenuMobile();
+  });
+
 })(jQuery);
