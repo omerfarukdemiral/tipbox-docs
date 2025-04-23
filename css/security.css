@@ -66,19 +66,19 @@ body.development-mode::before {
     content: 'DEV';
     display: block;
     position: fixed;
-    top: 10px;
-    right: 10px;
+    bottom: 5px;
+    left: 5px;
     background: rgba(255, 193, 7, 0.9);
     color: #1d1e20;
-    padding: 4px 8px;
+    padding: 2px 2px;
     border-radius: 4px;
-    font-size: 10px;
+    font-size: 6px;
     font-weight: 600;
     font-family: 'Jura', sans-serif;
     z-index: 100000;
     pointer-events: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(3px);
     -webkit-backdrop-filter: blur(5px);
     letter-spacing: 0.5px;
     text-transform: uppercase;
@@ -105,8 +105,8 @@ body.development-mode::before {
 /* Mobil cihazlar için development mode göstergesi */
 @media (max-width: 768px) {
     body.development-mode::before {
-        top: 5px;
-        right: 5px;
+        bottom: 0px;
+        left: 5px;
         padding: 3px 6px;
         font-size: 8px;
     }
@@ -176,7 +176,7 @@ body.development-mode::before {
 .dev-mode-badge {
     position: fixed;
     top: 20px;
-    right: 20px;
+    left: 20px;
     background: rgba(255, 193, 7, 0.9);
     color: #1d1e20;
     padding: 8px 15px;
@@ -199,7 +199,7 @@ body.development-mode::before {
 @media (max-width: 768px) {
     .dev-mode-badge {
         top: 10px;
-        right: 10px;
+        left: 10px;
         padding: 6px 12px;
         font-size: 12px;
     }

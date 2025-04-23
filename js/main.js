@@ -57,37 +57,26 @@
 
   // Global window objesi için toggleSidebarMenu fonksiyonunu oluşturalım
   window.toggleSidebarMenu = function() {
-    console.log('Toggle sidebar çağrıldı (global fonksiyon)');
-    $('body').toggleClass('body-sidebar-active');
-    console.log('Body sınıfları:', $('body').attr('class'));
+    // Eğer sidebar-controller.js'den gelen toggleSidebar fonksiyonu varsa onu kullan
+    if (typeof window.toggleSidebar === 'function') {
+      window.toggleSidebar();
+    } else {
+      // Yoksa jQuery ile body sınıfını toggle et
+      $('body').toggleClass('body-sidebar-active');
+    }
   }
 
-  // Sidebar Menu İşlevselliği
+  // Jquery ile sadece gerekli element seçiciler 
   function initSidebarMenu() {
-    console.log('Sidebar menüsü başlatılıyor...');
-    
-    // jQuery ile elementlere erişim (daha güvenilir)
-    // ID seçicisini de kullanıyoruz (daha kesin sonuç için)
-    const $sidebarToggleBtn = $('#sidebarToggleBtn, .sidebar-toggle-btn').first();
+    const $sidebarToggleBtn = $('#sidebarToggleBtn');
     const $sidebarCloseBtn = $('.sidebar-close-btn');
     const $sidebarOverlay = $('.sidebar-overlay');
-    const $body = $('body');
     
-    // Eski toggleSidebar fonksiyonu yerine window.toggleSidebarMenu kullanabiliriz
-    // Event listeners
+    // Event listener'ları ekle
     if ($sidebarToggleBtn.length) {
-      console.log('Sidebar toggle butonu bulundu - jQuery');
       $sidebarToggleBtn.on('click', function(e) {
         e.preventDefault();
         window.toggleSidebarMenu();
-      });
-    } else {
-      console.log('Sidebar toggle butonu bulunamadı! - jQuery');
-      console.log('Sayfadaki tüm butonlar:', $('button').length);
-      // Elle DOM'dan butonları bulalım
-      console.log('DOM üzerinde arama yapılıyor...');
-      $('button').each(function() {
-        console.log('Buton: ', $(this).attr('class'));
       });
     }
     
@@ -120,26 +109,16 @@
   }
 
   $(document).ready(function() {
-    // Sidebar menüsü başlatma zamanlayıcısı - 
-    // Sayfa tamamen yüklendikten sonra başlatmak için timeout kullanımı
-    console.log('Document ready, sidebar menu başlatılacak...');
-    
-    // Önce sayfa tamamen yüklensin
-    setTimeout(function() {
-      initSidebarMenu();
-    }, 500);
+    // Sidebar menüsünü başlat
+    initSidebarMenu();
     
     // Dark Mode işlevselliğini başlat
     initDarkMode();
-    
-    // Existing document ready code
-    $(window).scroll(function () {
-      if ($(document).scrollTop() > 500) {
-        $("body").addClass("test");
-      } else {
-        $("body").removeClass("test");
-      }
-    });
+  });
+
+  $(window).on("load", function () {
+    // Document is fully loaded, initialize sidebar again to make sure it works
+    initSidebarMenu();
   });
 
   function navbarFixedTwo() {
@@ -238,18 +217,6 @@
         900
       );
     event.preventDefault();
-  });
-
-  $(window).on("load", function () {
-    console.log('Window load event - Sidebar menüsü kontrol ediliyor...');
-    initSidebarMenu();
-    
-    if ($(".scroll").length) {
-      $(".scroll").mCustomScrollbar({
-        mouseWheelPixels: 50,
-        scrollInertia: 0,
-      });
-    }
   });
 
   /*--------------- doc_documentation_area Switcher js--------*/

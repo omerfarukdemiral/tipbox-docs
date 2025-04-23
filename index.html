@@ -299,6 +299,175 @@
             background: #e1e4e9;
         }
 
+        /* Mobil görünüm için Patch Notes düzenlemeleri */
+        @media (max-width: 991px) {
+            .changelog_area {
+                position: relative;
+                z-index: 10;
+            }
+            
+            .changelog_inner {
+                position: relative;
+                z-index: 15;
+            }
+            
+            .changelog_info {
+                flex-direction: column;
+            }
+            
+            .changelog_info .changelog_date {
+                flex-direction: row;
+                text-align: left;
+                margin-bottom: 15px;
+                display: inline-flex;
+                align-items: center;
+            }
+            
+            .changelog_info .version_info {
+                margin-right: 0;
+                margin-bottom: 15px;
+                display: inline-flex;
+                align-items: center;
+            }
+            
+            .changelog_info .c_version {
+                margin: 0;
+                margin-right: 15px;
+            }
+            
+            .changelog_info .line {
+                display: none;
+            }
+            
+            .changelog_content {
+                padding-left: 0;
+                margin-top: 10px;
+                border-top: 1px solid rgba(255,255,255,0.1);
+                padding-top: 15px;
+                background-color: rgba(28, 30, 35, 0.9);
+                border-radius: 8px;
+                padding: 15px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+                position: relative;
+                z-index: 5;
+            }
+            
+            .changelog_content p {
+                text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+                color: #f5f5f5;
+                font-weight: 400;
+                margin-bottom: 8px;
+            }
+            
+            .changelog_content p span {
+                font-weight: 600;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+                text-shadow: none;
+            }
+            
+            .changelog_content p span.new {
+                background-color: #571fdd !important;
+            }
+            
+            .changelog_content p span.fixed {
+                background-color: #d8ff08 !important;
+                color: #1a1a1a !important;
+            }
+            
+            .changelog_content p span.improve {
+                background-color: #e0195b !important;
+            }
+            
+            .changelog_info .c_date h6 {
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+            }
+            
+            .changelog_info .c_date p {
+                text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+            }
+            
+            .col-lg-2, .col-lg-3, .col-lg-7 {
+                padding-left: 15px;
+                text-align: left;
+                width: 100%;
+                max-width: 100%;
+                flex: 0 0 100%;
+                margin-bottom: 10px;
+            }
+            
+            .changelog_inner .row.changelog_info {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0 15px;
+                margin-bottom: 30px;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                padding-bottom: 20px;
+                position: relative;
+                z-index: 4;
+            }
+            
+            .changelog_inner .row.changelog_info:last-child {
+                border-bottom: none;
+            }
+            
+            .changelog_info .c_date {
+                margin-left: 0;
+            }
+            
+            /* Bu sınıflar mobilde yan yana düzenlenecek */
+            .changelog_info .col-lg-3,
+            .changelog_info .col-lg-2 {
+                display: inline-block;
+                width: auto;
+                vertical-align: middle;
+            }
+            
+            /* Arka plan şekil ve parallax elementleri */
+            .doc_shap_one, .doc_round {
+                z-index: 1;
+            }
+        }
+        
+        /* Mobil için daha küçük ekranlar */
+        @media (max-width: 576px) {
+            .changelog_info {
+                margin-bottom: 20px;
+            }
+            
+            .changelog_info .c_date h6 {
+                font-size: 18px;
+            }
+            
+            .changelog_content p span {
+                display: inline-block;
+                margin-bottom: 5px;
+                margin-right: 5px;
+                font-size: 10px;
+                padding: 2px 8px;
+                border-radius: 4px;
+            }
+            
+            .changelog_content p {
+                padding-left: 0;
+                text-align: left;
+                line-height: 1.5;
+                color: #ffffff;
+                font-size: 15px;
+            }
+            
+            .changelog_inner .row.changelog_info {
+                padding: 0 10px;
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+            }
+            
+            .changelog_content {
+                background-color: rgba(25, 27, 32, 0.98);
+                padding: 12px;
+            }
+        }
+
         .doc_features_inner .doc_features_item .icon-wrapper {
             height: 60px;
             display: flex;
@@ -571,7 +740,7 @@
                         <div class="col-lg-3 changelog_date">
                             <div class="c_date">
                                 <h6>December 2024</h6>
-                                <p>Initial Release</p>
+                                <p style="color: #efefef;">Initial Release</p>
                             </div>
                         </div>
                         <div class="col-lg-2">
@@ -594,7 +763,7 @@
                         <div class="col-lg-3 changelog_date">
                             <div class="c_date">
                                 <h6>February 2025</h6>
-                                <p>Winter Release</p>
+                                <p style="color: #efefef;">Winter Release</p>
                             </div>
                         </div>
                         <div class="col-lg-2">
@@ -618,7 +787,7 @@
                         <div class="col-lg-3 changelog_date">
                             <div class="c_date">
                                 <h6>April 2025</h6>
-                                <p>Spring Update</p>
+                                <p style="color:#efefef">Spring Update</p>
                             </div>
                         </div>
                         <div class="col-lg-2">

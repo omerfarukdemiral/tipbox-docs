@@ -4183,7 +4183,7 @@ body.remove .header_tabs_area.tab_fixed .header_tab_items {
   position: relative !important;
 }
 
-> .art-fullscreen-web + .col-lg-5 {
+ .art-fullscreen-web + .col-lg-5 {
   flex: 0 0 100%;
   max-width: 100%;
 }
@@ -12972,7 +12972,7 @@ body.remove .header_tabs_area.tab_fixed .header_tab_items {
   position: relative !important;
 }
 
-> .art-fullscreen-web + .col-lg-5 {
+.art-fullscreen-web + .col-lg-5 {
   flex: 0 0 100%;
   max-width: 100%;
 }
@@ -19756,14 +19756,14 @@ ul.ordered-list li::before {
 }
 .changelog_info .c_version {
   flex: 1;
-  background: #2c106f;
+  background: #efefef;
   text-align: center;
   font-size: 14px;
   font-weight: 400;
   height: 26px;
   line-height: 27px;
   border-radius: 3px;
-  color: #fff;
+  color: #111111;
   min-width: 50px;
   max-width: 60px;
   display: block;
