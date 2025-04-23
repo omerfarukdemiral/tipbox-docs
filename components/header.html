@@ -497,25 +497,23 @@ body.body-sidebar-active .sidebar-menu,
     margin: 0;
     max-height: 0;
     overflow: hidden;
-    transition: all 0.3s ease;
-    background-color: rgba(0, 0, 0, 0.2);
+    transition: max-height 0.3s ease-in-out;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .sidebar-dropdown.active .sidebar-submenu {
-    max-height: 500px;
-    padding: 5px 0;
+    max-height: 500px; /* Daha büyük bir değer kullanıldı */
 }
 
 .sidebar-submenu li {
-    margin: 2px 0;
+    position: relative;
 }
 
 .sidebar-submenu a {
-    display: flex;
-    align-items: center;
-    padding: 10px 20px 10px 45px;
-    color: #aaa;
+    display: block;
+    padding: 12px 15px 12px 45px;
     font-size: 0.85rem;
+    color: #ddd;
     text-decoration: none;
     transition: all 0.3s ease;
 }
@@ -523,20 +521,20 @@ body.body-sidebar-active .sidebar-menu,
 .sidebar-submenu a:hover {
     color: #fff;
     background-color: rgba(255, 255, 255, 0.05);
-    text-decoration: none;
+}
+
+.sidebar-submenu a i {
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
 }
 
 .sidebar-submenu a:hover i {
     color: #4c4cf1;
 }
 
-.sidebar-submenu a i {
-    margin-right: 8px;
-    font-size: 1rem;
-    width: 20px;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.5);
-    transition: all 0.3s ease;
+.sidebar-submenu li.active a {
+    color: #fff;
+    font-weight: 500;
 }
 
 .sidebar-footer {
@@ -691,6 +689,10 @@ document.addEventListener('DOMContentLoaded', function() {
             visibility: visible !important;
             opacity: 1 !important;
         }
+        .sidebar-dropdown.active .sidebar-submenu {
+            max-height: 500px !important;
+            overflow: visible !important;
+        }
     `;
     document.head.appendChild(style);
     
@@ -708,6 +710,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const dropdownParent = link.closest('.sidebar-dropdown');
             if (dropdownParent) {
                 dropdownParent.classList.add('active');
+                // Submenu max-height değerini ayarla
+                const submenu = dropdownParent.querySelector('.sidebar-submenu');
+                if (submenu) {
+                    submenu.style.maxHeight = submenu.scrollHeight + 'px';
+                }
             }
         }
     });
@@ -722,6 +729,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const dropdownParent = link.closest('.sidebar-dropdown');
             if (dropdownParent) {
                 dropdownParent.classList.add('active');
+                // Submenu max-height değerini ayarla
+                const submenu = dropdownParent.querySelector('.sidebar-submenu');
+                if (submenu) {
+                    submenu.style.maxHeight = submenu.scrollHeight + 'px';
+                }
             }
         }
     });

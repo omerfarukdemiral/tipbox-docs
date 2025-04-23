@@ -2468,3 +2468,16 @@
     margin-top: 15px;
   }
 }
+
+/* Sidebar alt menü görünürlüğü düzeltmesi */
+.sidebar-dropdown.active .sidebar-submenu {
+  display: block !important;
+  max-height: 500px !important;
+  overflow: visible !important;
+}
+
+/* Sidebar menü görünürlüğü düzeltmesi */
+.body-sidebar-active .sidebar-menu {
+  display: flex !important;
+  overflow-y: auto !important;
+}

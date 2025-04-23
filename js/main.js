@@ -99,11 +99,47 @@
     $('.sidebar-dropdown').each(function() {
       const $dropdown = $(this);
       const $dropdownLink = $dropdown.find('.sidebar-link');
+      const $submenu = $dropdown.find('.sidebar-submenu');
       
       if ($dropdownLink.length) {
         $dropdownLink.on('click', function(e) {
           e.preventDefault();
           $dropdown.toggleClass('active');
+          
+          // Alt menü görünürlüğünü ayarla
+          if ($dropdown.hasClass('active')) {
+            // Menü aktifse görünür yap
+            $submenu.css('display', 'block');
+            // Yüksekliği ayarla (animasyon için)
+            setTimeout(function() {
+              $submenu.css('max-height', $submenu[0].scrollHeight + 'px');
+            }, 10);
+          } else {
+            // Menü aktif değilse gizle
+            $submenu.css('max-height', '0');
+            // Animasyon tamamlandıktan sonra display:none yap
+            setTimeout(function() {
+              if (!$dropdown.hasClass('active')) {
+                $submenu.css('display', 'none');
+              }
+            }, 300);
+          }
+          
+          // Diğer açık menüleri kapat
+          $('.sidebar-dropdown').not($dropdown).each(function() {
+            const $otherDropdown = $(this);
+            const $otherSubmenu = $otherDropdown.find('.sidebar-submenu');
+            
+            $otherDropdown.removeClass('active');
+            $otherSubmenu.css('max-height', '0');
+            
+            // Animasyon tamamlandıktan sonra display:none yap
+            setTimeout(function() {
+              if (!$otherDropdown.hasClass('active')) {
+                $otherSubmenu.css('display', 'none');
+              }
+            }, 300);
+          });
         });
       }
     });

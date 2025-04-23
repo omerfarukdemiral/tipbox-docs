@@ -1,24 +1,25 @@
 <!doctype html>
 <html lang="en">
 
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-
+    
     <!-- Merkezi Yapılandırma -->
     <script src="js/config.js"></script>
-
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="assets/slick/slick.css">
+    <link rel="stylesheet" href="assets/slick/slick-theme.css">
     <!-- icon css-->
     <link rel="stylesheet" href="assets/elagent-icon/style.css">
     <link rel="stylesheet" href="assets/niceselectpicker/nice-select.css">
@@ -28,74 +29,900 @@
     <link rel="stylesheet" href="css/responsive.css">
     <!-- Güvenlik CSS -->
     <link rel="stylesheet" href="css/security.css">
-    <!-- İçindekiler (TOC) Özel Stilleri -->
-    <link rel="stylesheet" href="css/custom-toc.css">
-    <!-- iPad-Mini Düzeltmeleri -->
-    <link rel="stylesheet" href="css/ipad-fixes.css">
-    <title>Technology | TipBox Documentation</title>
+    <title>Tipbox Docs</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <!-- Güvenlik JS -->
     <script src="js/security.js"></script>
-
-    <!-- Firebase başlangıç -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-
+    
     <!-- Auth JS - Firebase yapılandırması ve auth işlemleri için -->
     <script src="js/auth.js"></script>
-    <script src="js/pageViews.js"></script>
-    <!-- Firebase bitiş -->
 
     <script>
-        // Include components script'ini güncelleyelim
-        document.addEventListener("DOMContentLoaded", async function () {
+        // Component'ları yükle ve sonra Firebase kontrolünü yap
+        document.addEventListener('DOMContentLoaded', async function() {
             try {
                 // Önce component'ları yükle
                 await includeHTML();
-
-                // Dark mode'u başlat
-                if (typeof initDarkMode === 'function') {
-                    initDarkMode();
-                }
+                
+                // Kullanıcı durumunu kontrol et
+                checkUserAuthentication();
             } catch (error) {
                 console.error("Component yükleme hatası:", error);
             }
         });
+        
+        // Kullanıcı kimlik doğrulamasını kontrol et
+        function checkUserAuthentication() {
+            // Önce doğrudan firebase.auth'u kontrol et
+            if (typeof firebase !== 'undefined' && firebase.auth) {                
+                // Mevcut kullanıcı durumunu kontrol et
+                const currentUser = firebase.auth().currentUser;
+                if (currentUser) {
+                    updateUserInterface(currentUser);
+                }
+                
+                // Auth state değişikliklerini dinle
+                firebase.auth().onAuthStateChanged(function(user) {
+                    if (user) {
+                        updateUserInterface(user);
+                    } else {
+                        console.log("Oturum kapalı");
+                    }
+                });
+            } 
+            // Sonra window.firebaseAuth'u kontrol et
+            else if (window.firebaseAuth) {                
+                // Mevcut kullanıcı durumunu kontrol et
+                const currentUser = window.firebaseAuth.currentUser;
+                if (currentUser) {
+                    updateUserInterface(currentUser);
+                }
+                
+                // Auth state değişikliklerini dinle
+                window.firebaseAuth.onAuthStateChanged(function(user) {
+                    if (user) {
+                        updateUserInterface(user);
+                    } else {
+                        console.log("Oturum kapalı");
+                    }
+                });
+            } else {
+                console.error("Firebase Auth kullanılamıyor! Ana sayfada kullanıcı kontrolü yapılamayacak.");
+            }
+        }
+        
+        // Kullanıcı arayüzünü güncelleme fonksiyonu
+        function updateUserInterface(user) {
+            if (user) {
+                // Avatar güncelleme
+                const avatarImages = document.querySelectorAll('.user-img, .user-img-sm');
+                const avatarUrl = user.photoURL || 'img/default-avatar.png';
+                avatarImages.forEach(img => {
+                    img.src = avatarUrl;
+                    img.onerror = function() {
+                        this.src = 'img/default-avatar.png';
+                    };
+                });
+
+                // İsim güncelleme
+                const nameElements = document.querySelectorAll('.user-name, .user-name-sm');
+                const displayName = user.displayName || 'Misafir Kullanıcı';
+                nameElements.forEach(el => {
+                    el.textContent = displayName;
+                });
+
+                // Email güncelleme
+                const emailElements = document.querySelectorAll('.user-email, .user-email-sm');
+                const email = user.email || '';
+                emailElements.forEach(el => {
+                    el.textContent = email;
+                });
+                
+                // Kullanıcı veritabanı profilini güncelle ve Firestore'dan bilgileri çek
+                if (window.enhanceUserWithFirestoreData && window.updateUserProfile) {
+                    window.enhanceUserWithFirestoreData(user).then(() => {
+                        // Admin panel bağlantısını kontrol et (window.userRole global değişkenine göre)
+                        if (window.userRole === 'admin') {
+                            showAdminPanelLink();
+                        }
+                    });
+                }
+            }
+        }
+        
+        // Admin panel bağlantısını göster
+        function showAdminPanelLink() {
+            const adminLinks = document.querySelectorAll('.admin-panel-link');
+            adminLinks.forEach(link => {
+                link.style.display = 'block';
+            });
+        }
+        
+        // Global çıkış fonksiyonunu tanımla
+        window.signOutUser = function() {
+            // Önce doğrudan firebase.auth'u kontrol et
+            if (typeof firebase !== 'undefined' && firebase.auth) {
+                firebase.auth().signOut().then(() => {
+                    console.log("Çıkış başarılı (firebase.auth)");
+                    window.location.href = 'signin.html';
+                }).catch((error) => {
+                    console.error('Çıkış yapılırken hata oluştu (firebase.auth):', error);
+                });
+            } 
+            // Sonra window.firebaseAuth'u kontrol et
+            else if (window.firebaseAuth) {
+                window.firebaseAuth.signOut().then(() => {
+                    console.log("Çıkış başarılı (window.firebaseAuth)");
+                    window.location.href = 'signin.html';
+                }).catch((error) => {
+                    console.error('Çıkış yapılırken hata oluştu (window.firebaseAuth):', error);
+                });
+            } else {
+                console.error("Firebase Auth bulunamadı, çıkış yapılamıyor!");
+                // Yine de yönlendir
+                window.location.href = 'signin.html';
+            }
+        }
     </script>
-
-    <!-- Header Controller script - kullanıcı arayüzü güncellemeleri için -->
-    <script src="js/header-controller.js"></script>
-
-    <!-- Technology özel script -->
-    <script src="js/technology.js"></script>
-
+    
     <style>
-        /* Aktif menü öğesi için stil */
-        .nav-sidebar .nav-item a.active {
-            background: rgba(82, 146, 248, 0.1);
+        .recommended_item {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 20px;
             border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .col-lg-3, .col-6 {
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 991px) {
+            .row {
+                margin: 0 -10px;
+            }
+            .col-lg-3, .col-6 {
+                padding: 0 10px;
+            }
+        }
+
+        /* Grid styles for features */
+        .doc_features_inner .doc_features_item {
+            margin-bottom: 30px;
+            height: auto;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 0;
+            background-color: rgba(40, 45, 58, 0.5);
+        }
+        .doc_features_inner .row {
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 20px;
+        }
+        .doc_features_inner .doc_features_item .text-center {
+            padding: 15px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(44, 48, 58, 0.7);
+            border-radius: 5px;
             transition: all 0.3s ease;
         }
-
-        .nav-sidebar .nav-item a.active img {
-            filter: brightness(1.2);
+        .doc_features_inner .doc_features_item .text-center:hover {
+            background-color: rgba(55, 60, 73, 0.9);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .doc_features_inner .doc_features_item h4 {
+            margin-top: 10px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .doc_features_inner .doc_features_item p {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #c5c5c5;
+            text-align: center;
+            margin-bottom: 0;
+        }
+        .doc_features_inner .doc_features_item .icon-wrapper {
+            flex: 0 0 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            margin-bottom: -30px;
+        }
+        .doc_features_inner .doc_features_item img {
+            height: 48px;
+            object-fit: contain;
+        }
+        .doc_features_inner .doc_features_item a {
+            display: block;
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        .doc_features_area {
+            padding-bottom: 40px;
+        }
+        @media (max-width: 767px) {
+            .doc_features_inner .row {
+                grid-template-columns: 1fr;
+            }
+            .doc_features_inner .doc_features_item {
+                margin-bottom: 15px;
+            }
         }
 
-        /* Alt menü öğeleri için stil */
-        .nav-sidebar .dropdown_nav a.active {
-            background: rgba(82, 146, 248, 0.1);
-            border-radius: 8px;
-            padding: 8px 12px;
+        /* Changelog Styles */
+        .changelog_info {
+            padding-top: 15px;
+        }
+
+        .changelog_info .version_info {
+            margin-right: 15px;
+            position: relative;
+            height: 100%;
+        }
+
+        .changelog_info .c_version {
+            flex: 1;
+            background: #1d2746;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 400;
+            height: 26px;
+            line-height: 27px;
+            border-radius: 3px;
+            color: #fff;
+            min-width: 50px;
+            max-width: 60px;
             display: block;
-            margin: 4px 0;
+            margin: 0 auto;
+        }
+
+        .changelog_info .changelog_date {
+            display: flex;
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .changelog_info .changelog_date .c_date h6 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+        .changelog_info .changelog_date .c_date p {
+            font-size: 14px;
+            margin-bottom: 0;
+            color: #6b707f;
+        }
+
+        .changelog_info .line {
+            height: 106%;
+            width: 2px;
+            background: #e2e5ee;
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            z-index: -1;
+        }
+
+        .changelog_info:last-child .line {
+            height: 100%;
+        }
+
+        .changelog_info:last-child .changelog_content {
+            padding-bottom: 0;
+        }
+
+        .changelog_content {
+            padding-bottom: 30px;
+        }
+
+        .changelog_content p {
+            margin-bottom: 12px;
+        }
+
+        .changelog_content p span {
+            font-weight: 500;
+            font-size: 12px;
+            padding: 0px 8px;
+            border-radius: 3px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+
+        .changelog_content .download-links {
+            margin-top: 20px;
+        }
+
+        .changelog_content .changelog_btn {
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b707f;
+            background: #f0f2f5;
+            padding: 6px 15px;
+            margin-right: 10px;
+            display: inline-block;
+            border-radius: 3px;
+        }
+
+        .changelog_content .changelog_btn i {
+            margin-right: 6px;
+        }
+
+        .changelog_content .changelog_btn:hover {
+            background: #e1e4e9;
+        }
+
+        /* Mobil görünüm için Patch Notes düzenlemeleri */
+        @media (max-width: 991px) {
+            .changelog_area {
+                position: relative;
+                z-index: 10;
+            }
+            
+            .changelog_inner {
+                position: relative;
+                z-index: 15;
+            }
+            
+            .changelog_info {
+                flex-direction: column;
+            }
+            
+            .changelog_info .changelog_date {
+                flex-direction: row;
+                text-align: left;
+                margin-bottom: 15px;
+                display: inline-flex;
+                align-items: center;
+            }
+            
+            .changelog_info .version_info {
+                margin-right: 0;
+                margin-bottom: 15px;
+                display: inline-flex;
+                align-items: center;
+            }
+            
+            .changelog_info .c_version {
+                margin: 0;
+                margin-right: 15px;
+            }
+            
+            .changelog_info .line {
+                display: none;
+            }
+            
+            .changelog_content {
+                padding-left: 0;
+                margin-top: 10px;
+                border-top: 1px solid rgba(255,255,255,0.1);
+                padding-top: 15px;
+                background-color: rgba(28, 30, 35, 0.9);
+                border-radius: 8px;
+                padding: 15px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+                position: relative;
+                z-index: 5;
+            }
+            
+            .changelog_content p {
+                text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+                color: #f5f5f5;
+                font-weight: 400;
+                margin-bottom: 8px;
+            }
+            
+            .changelog_content p span {
+                font-weight: 600;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+                text-shadow: none;
+            }
+            
+            .changelog_content p span.new {
+                background-color: #571fdd !important;
+            }
+            
+            .changelog_content p span.fixed {
+                background-color: #d8ff08 !important;
+                color: #1a1a1a !important;
+            }
+            
+            .changelog_content p span.improve {
+                background-color: #e0195b !important;
+            }
+            
+            .changelog_info .c_date h6 {
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+            }
+            
+            .changelog_info .c_date p {
+                text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+            }
+            
+            .col-lg-2, .col-lg-3, .col-lg-7 {
+                padding-left: 15px;
+                text-align: left;
+                width: 100%;
+                max-width: 100%;
+                flex: 0 0 100%;
+                margin-bottom: 10px;
+            }
+            
+            .changelog_inner .row.changelog_info {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0 15px;
+                margin-bottom: 30px;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                padding-bottom: 20px;
+                position: relative;
+                z-index: 4;
+            }
+            
+            .changelog_inner .row.changelog_info:last-child {
+                border-bottom: none;
+            }
+            
+            .changelog_info .c_date {
+                margin-left: 0;
+            }
+            
+            /* Bu sınıflar mobilde yan yana düzenlenecek */
+            .changelog_info .col-lg-3,
+            .changelog_info .col-lg-2 {
+                display: inline-block;
+                width: auto;
+                vertical-align: middle;
+            }
+            
+            /* Arka plan şekil ve parallax elementleri */
+            .doc_shap_one, .doc_round {
+                z-index: 1;
+            }
+        }
+        
+        /* Mobil için daha küçük ekranlar */
+        @media (max-width: 576px) {
+            .changelog_info {
+                margin-bottom: 20px;
+            }
+            
+            .changelog_info .c_date h6 {
+                font-size: 18px;
+            }
+            
+            .changelog_content p span {
+                display: inline-block;
+                margin-bottom: 5px;
+                margin-right: 5px;
+                font-size: 10px;
+                padding: 2px 8px;
+                border-radius: 4px;
+            }
+            
+            .changelog_content p {
+                padding-left: 0;
+                text-align: left;
+                line-height: 1.5;
+                color: #ffffff;
+                font-size: 15px;
+            }
+            
+            .changelog_inner .row.changelog_info {
+                padding: 0 10px;
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+            }
+            
+            .changelog_content {
+                background-color: rgba(25, 27, 32, 0.98);
+                padding: 12px;
+            }
+        }
+
+        /* Accordion Styles */
+        .collaps_tabs {
+            margin: 30px auto;
+            max-width: 970px;
+        }
+
+        .card.doc_accordion {
+            border: 0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: none;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .card.doc_accordion .card-header {
+            padding: 0;
+            border: 0;
+            background: none;
+        }
+
+        .card.doc_accordion .card-header button {
+            padding: 18px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            text-align: left;
+            background: #2c106f;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .card.doc_accordion .card-header button:hover,
+        .card.doc_accordion .card-header button:focus {
+            background: #3a1694;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .card.doc_accordion .card-header button svg:first-of-type {
+            display: none;
+        }
+
+        .card.doc_accordion .card-header button.collapsed svg:first-of-type {
+            display: block;
+        }
+
+        .card.doc_accordion .card-header button.collapsed svg:last-child {
+            display: none;
+        }
+
+        .card.doc_accordion .card-body {
+            padding: 20px 25px;
+            background: #1a1a1a;
+            border-radius: 0 0 8px 8px;
+            line-height: 1.7;
+            color: #bbb;
+            font-size: 16px;
+        }
+
+        .card.doc_accordion .card-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Mobil için accordion düzeni */
+        @media (max-width: 576px) {
+            .card.doc_accordion .card-header button {
+                padding: 15px;
+                font-size: 15px;
+            }
+            
+            .card.doc_accordion .card-body {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+        
+        /* ... existing styles ... */
+        
+        .more-btn {
+            display: inline-flex;
+            align-items: center;
+            color: #4e73df;
+            font-size: 14px;
+            font-weight: 500;
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .more-btn svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            color: #4e73df;
+        }
+        
+        .more-btn:hover {
+            color: #2e59d9;
+            text-decoration: none;
+        }
+
+        .doc_features_item {
+            margin-bottom: 30px;
+        }
+        
+        .doc_features_item .item-inner {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            background-color: rgba(44, 48, 58, 0.7);
+            border-radius: 5px;
+            padding: 20px;
+            height: 100%;
+            transition: all 0.3s ease;
+            min-height: 100px;
+        }
+        
+        .doc_features_item .item-inner:hover {
+            background-color: rgba(55, 60, 73, 0.9);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .doc_features_item .icon-wrapper {
+            flex: 0 0 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            margin-bottom: -30px;
+        }
+        
+        .doc_features_item .icon-wrapper img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+        
+        .doc_features_item .content-wrapper {
+            flex: 1;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 60px;
+        }
+        
+        .doc_features_item .content-wrapper h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #fff;
+            text-align: left;
+            font-size: 18px;
+        }
+        
+        .doc_features_item .content-wrapper p {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #c5c5c5;
+            margin-bottom: 0;
+            text-align: left;
+        }
+        
+        .doc_features_item .content-wrapper a {
+            text-align: left;
+            display: block;
+        }
+        
+        .more-btn-wrapper {
+            padding: 15px 0;
+            margin-top: 15px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .more-btn {
+            display: inline-flex;
+            align-items: center;
+            color: #3b7dff;
+            font-size: 14px;
+            font-weight: 500;
+            background: transparent;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .more-btn svg {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            color: #3b7dff;
+        }
+        
+        .more-btn:hover {
+            color: #2e59d9;
+            text-decoration: none;
+        }
+
+        /* Mobil Menü Stilleri */
+        .sidebar-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background: #1d2746;
+            z-index: 9999;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-menu.active {
+            right: 0;
+        }
+        
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-logo-img {
+            height: 30px;
+        }
+        
+        .sidebar-close-btn {
+            font-size: 20px;
+            color: #fff;
+            cursor: pointer;
+        }
+        
+        .sidebar-content {
+            padding: 15px 0;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-nav .sidebar-link {
+            display: block;
+            padding: 12px 15px;
+            color: #bcc2d3;
+            font-size: 15px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+        
+        .sidebar-nav .sidebar-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .sidebar-nav .sidebar-dropdown.active > a {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .sidebar-link-content {
+            display: flex;
+            align-items: center;
+        }
+        
+        .sidebar-submenu {
+            padding-left: 0;
+            list-style: none;
+            display: none;
+            background: rgba(0, 0, 0, 0.15);
+        }
+        
+        .sidebar-submenu li a {
+            display: block;
+            padding: 10px 25px;
+            color: #bcc2d3;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .sidebar-submenu li a:hover {
+            color: #fff;
+        }
+        
+        .sidebar-footer {
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #bcc2d3;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        body.sidebar-menu-open {
+            overflow: hidden;
+        }
+        
+        .sidebar-toggle-btn {
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+        
+        .sidebar-toggle-icon {
+            display: inline-block;
+            width: 22px;
+            height: 17px;
+            position: relative;
+        }
+        
+        .sidebar-toggle-icon span {
+            display: block;
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background: #fff;
+            border-radius: 2px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+        
+        .sidebar-toggle-icon span:nth-child(1) {
+            top: 0px;
+        }
+        
+        .sidebar-toggle-icon span:nth-child(2) {
+            top: 7px;
+        }
+        
+        .sidebar-toggle-icon span:nth-child(3) {
+            top: 14px;
+        }
+        
+        .sidebar-toggle-icon-light span {
+            background: #fff;
+        }
+        
+        .navbar_fixed .sidebar-toggle-icon-light span {
+            background: #1d2746;
         }
     </style>
 </head>
 
-<body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true"
-    data-offset="70">
+<body data-scroll-animation="true">
     <div id="preloader">
         <div id="ctn-preloader" class="ctn-preloader">
             <div class="round_spinner">
@@ -113,186 +940,1016 @@
         <!-- Header Component -->
         <div include-html="components/header.html" class="sticky-nav"></div>
 
-
-        <!--================Forum Breadcrumb Area =================-->
-        <section class="doc_banner_area search-banner-light">
+        <!-- Main Content -->
+        <section class="doc_banner_area banner_creative1">
+            <ul class="list-unstyled banner_shap_img">
+                <li><img src="img/new/banner_shap1.png" alt=""></li>
+                <li><img src="img/new/banner_shap4.png" alt=""></li>
+                <li><img src="img/new/banner_shap3.png" alt=""></li>
+                <li><img src="img/new/banner_shap2.png" alt=""></li>
+                <li><img data-parallax='{"x": -180, "y": 80, "rotateY":2000}' src="img/new/plus1.png" alt=""></li>
+                <li><img data-parallax='{"x": -50, "y": -160, "rotateZ":200}' src="img/new/plus2.png" alt=""></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
             <div class="container">
                 <div class="doc_banner_content">
+                    <h2 class="wow fadeInUp">Enrich Lives with Your Tips & $TIPS</h2>
+                    <p class="wow fadeInUp" data-wow-delay="0.2s" style="font-family: 'Jura', sans-serif !important; font-size: 16px !important; max-width: 100% !important; overflow-wrap: break-word !important; word-wrap: break-word !important; hyphens: auto !important; line-height: 1.6 !important;">Tipbox is a next-generation platform that transforms user experiences into structured, meaningful digital assets—rewarding creators and placing content culture at the core. By combining the engagement power of Web2 with the ownership and incentive infrastructure of Web3, Tipbox builds a sustainable, creator-driven economic model. This panel offers exclusive insights into the platform's architecture, growth strategy, and revenue model.</p>
                     <form action="#" class="header_search_form">
                         <div class="header_search_form_info">
-                            <h2>Technology</h2>
+                            <div class="form-group">
+                                <div class="input-wrapper">
+                                    <i class="icon_search"></i>
+                                    <input type='search' id="searchbox" autocomplete="off" name="search"
+                                        placeholder="Search the Doc" />
+                                    <div class="header_search_form_panel">
+                                    </div>
+                                    <select class="search-expand-types custom-select" name="post_type"
+                                        id="search_post_type">
+                                        <option value="">All Docs </option>
+                                        <option value="project-blueprint">Project Blueprint</option>
+                                        <option value="project-deck">Project Deck</option>
+                                        <option value="project_blurb">Project Blurb</option>
+                                        <option value="tokeneconomics">Tokeneconomics</option>
+                                        <option value="forum">Forum</option>
+                                    </select>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="header_search_keyword">
-                            <span class="">A comprehensive document that defines the key objectives,
-                                scope, and technical approach for the project.</span>
+                            <span class="header-search-form__keywords-label">Suggested Search:</span>
+                            <ul class="list-unstyled">
+                                <li class="wow fadeInUp" data-wow-delay="0.2s"><a href="#">market</a></li>
+                                <li class="wow fadeInUp" data-wow-delay="0.3s"><a href="#">solutions</a></li>
+                                <li class="wow fadeInUp" data-wow-delay="0.4s"><a href="#">technology</a></li>
+                            </ul>
                         </div>
                     </form>
                 </div>
             </div>
         </section>
-        <section class="page_breadcrumb">
-            <div class="container custom_container">
-                <div class="row">
-                    <div class="col-sm-7">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Tipbox</a></li>
-                                <li class="breadcrumb-item active"><a href="technology.html">Technology</a></li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <div class="col-sm-5">
-                        <a href="#" class="date"><i class="icon_clock_alt"></i>Updated on January 15, 2025</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!--================End Forum Breadcrumb Area =================-->
-    
-        <!--================Topic Area =================-->
-        <section class="doc_documentation_area" id="sticky_doc">
-            <div class="overlay_bg"></div>
-            <div class="container custom_container">
-                <div class="row">
-                    <div class="col-lg-3 doc_mobile_menu">
-                        <aside class="doc_left_sidebarlist">
-                            <div class="open_icon" id="left">
-                                <i class="arrow_carrot-right"></i>
-                                <i class="arrow_carrot-left"></i>
-                            </div>
-                            <div class="scroll">
-                                <ul class="list-unstyled nav-sidebar">
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link active"
-                                            data-content-file="technology/multi-layered-architecture.html"><img
-                                                src="img/side-nav/home.png" alt="">Multi-Layered Architecture</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="technology/application-architecture.html"><img
-                                                src="img/side-nav/document.png" alt="">Application Architecture</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="technology/core-architectural-principles.html"><img
-                                                src="img/side-nav/chat1.png" alt="">Core Architectural Principles </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="technology/network-infrastructure.html"><img
-                                                src="img/side-nav/chat1.png" alt="">Network Infrastructure</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </aside>
-                    </div>
-                    <div class="col-lg-7 doc-middle-content">
-                        <article id="multi-layered-architecture" class="documentation_info">
-                            <div class="documentation_body" id="documentation">
-                                <div class="shortcode_title">
-                                    <h1 id="multi-layered-architecture-overview">Multi-Layered Architecture</h1>
 
-                                    <p>Tipbox is built on a robust three-layered architecture that ensures security,
-                                        efficiency, and a seamless user experience. Each layer—X-Client, P-Core, and
-                                        P-Data—fulfills a specific function while working cohesively with the others.
-                                    </p>
-
-                                    <h2 id="x-client-layer">X-Client</h2>
-
-                                    <p>The X-Client layer serves as the user interface and interaction point, connecting
-                                        users to Tipbox's frontend services. This layer encompasses both mobile (iOS,
-                                        Android) and web applications, providing a consistent experience across all
-                                        platforms.</p>
-
-                                    <p>X-Client not only delivers an intuitive interface but also manages essential
-                                        interactions between users and the Tipbox ecosystem, including content sharing
-                                        (text, images, audio, video), participation in discussions, and social
-                                        engagement.</p>
-
-                                    <p>Real-time communication is facilitated through a dedicated infrastructure,
-                                        allowing instantaneous updates and exchanges of information. To ensure a
-                                        responsive experience, the layer incorporates sophisticated caching mechanisms
-                                        and optimized data transfer processes.</p>
-
-                                    <h2 id="p-core-layer">P-Core</h2>
-
-                                    <p>The P-Core layer functions as Tipbox's central processing unit. It manages all
-                                        the backend operations and serves as an intermediary between the X-Client and
-                                        P-Data layers.</p>
-
-                                    <p>This layer houses the business logic of Tipbox, including content management,
-                                        user interactions, gamification rules, and reward mechanics. P-Core processes
-                                        data based on predefined rules and logic, ensuring users receive appropriate
-                                        rewards and badges for their intellectual contributions.</p>
-
-                                    <p>Security is a key function of P-Core, which employs multiple layers of
-                                        verification for user authentication, authorization checks for content access,
-                                        and data validation to prevent system compromise. The layer also features a
-                                        robust permission system with clear roles and privileges, safeguarding user data
-                                        and platform integrity.</p>
-
-                                    <p>Advanced analytics and monitoring capabilities are integrated into P-Core,
-                                        providing insights into platform usage, user interactions, and content
-                                        engagement.</p>
-
-                                    <h2 id="p-data-layer">P-Data</h2>
-
-                                    <p>The P-Data layer is responsible for secure data storage and management, including
-                                        user profiles, shared content, interaction histories, reward records, and
-                                        platform configurations.</p>
-
-                                    <p>This layer utilizes a hybrid data storage approach, combining traditional
-                                        database systems for structured data with specialized storage for multimedia
-                                        content. A tiered database architecture optimizes accessibility and performance
-                                        based on data types and usage patterns.</p>
-
-                                    <p>To ensure maximum security and compliance with data protection regulations,
-                                        P-Data encrypts sensitive information using industry-standard protocols. The
-                                        layer also maintains comprehensive data backup and recovery mechanisms to
-                                        protect against data loss.</p>
-
-                                    <p>Scalability is a core design principle of P-Data, allowing seamless accommodation
-                                        of growing user bases and content volumes without compromising performance or
-                                        reliability.</p>
-
-                                    <h2 id="integration-experience">Integration for a Seamless Experience</h2>
-
-                                    <p>These three layers work in concert to deliver Tipbox's promise of a secure,
-                                        efficient platform that rewards intellectual contributions. Standardized APIs
-                                        and communication protocols ensure smooth data flow between layers, while
-                                        comprehensive monitoring and logging systems maintain operational integrity.</p>
-
-                                    <p>This multi-layered architecture provides the flexibility to introduce new
-                                        features and functionalities in response to evolving user needs and market
-                                        trends, ensuring Tipbox's continued relevance and value in the digital
-                                        ecosystem.</p>
+        <section class="doc_features_area">
+            <img class="doc_features_shap" src="img/new/shap_white.png" alt="">
+            <div class="container">
+                <div class="doc_features_inner row">
+                    <!-- İlk satır (3 eleman) -->
+                    <div class="col-lg-4 col-md-4 doc_features_item wow fadeInUp" data-wow-delay="0.1s" data-wow-duration="0.5s">
+                        <a href="product.html" style="text-decoration: none; color: inherit; display: block;">
+                            <div class="item-inner">
+                                <div class="icon-wrapper">
+                                    <img src="img/new/icon1.png" alt="" style="width: 48px; height: 48px;">
+                                </div>
+                                <div class="content-wrapper">
+                                    <h4>Product</h4>
+                                    <p>Explore how Tipbox works, how it delivers value, and what defines the user experience.</p>
                                 </div>
                             </div>
-                        </article>
+                        </a>
                     </div>
-                    <div class="col-lg-2 doc_right_mobile_menu">
-                        <div class="open_icon" id="right">
-                            <i class="arrow_carrot-left"></i>
-                            <i class="arrow_carrot-right"></i>
-                        </div>
-                        <div class="doc_rightsidebar">
-                            <div class="pageSideSection">
-                                <div class="table-of-content">
-                                    <h6><i class="icon_ul"></i> Table of Contents </h6>
-                                    <!-- İçindekiler tablosu JavaScript tarafından otomatik olarak doldurulacak -->
-                                    <nav class="list-unstyled doc_menu" id="toc-nav">
-                                        <!-- Dinamik olarak oluşturulacak içerik -->
-                                    </nav>
+                    <div class="col-lg-4 col-md-4 doc_features_item wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="0.6s">
+                        <a href="market.html" style="text-decoration: none; color: inherit; display: block;">
+                            <div class="item-inner">
+                                <div class="icon-wrapper">
+                                    <img src="img/new/icon2.png" alt="" style="width: 48px; height: 48px;">
                                 </div>
-
+                                <div class="content-wrapper">
+                                    <h4>Market</h4>
+                                    <p>Gain insights into the target audience, market size, and positioning strategy.</p>
+                                </div>
                             </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-4 doc_features_item wow fadeInUp" data-wow-delay="0.3s" data-wow-duration="0.7s">
+                        <a href="go-to-market.html" style="text-decoration: none; color: inherit; display: block;">
+                            <div class="item-inner">
+                                <div class="icon-wrapper">
+                                    <img src="img/new/icon3.png" alt="" style="width: 48px; height: 48px;">
+                                </div>
+                                <div class="content-wrapper">
+                                    <h4>Go to Market</h4>
+                                    <p>Understand the phased growth plan, user acquisition strategy, and content-driven dynamics.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- İkinci satır (3 eleman) -->
+                    <div class="col-lg-4 col-md-4 doc_features_item wow fadeInUp" data-wow-delay="0.4s" data-wow-duration="0.8s">
+                        <a href="technology.html" style="text-decoration: none; color: inherit; display: block;">
+                            <div class="item-inner">
+                                <div class="icon-wrapper">
+                                    <img src="img/new/icon9.png" alt="" style="width: 48px; height: 48px;">
+                                </div>
+                                <div class="content-wrapper">
+                                    <h4>Technology</h4>
+                                    <p>Dive into the platform architecture, AI components, and the Web2–Web3 transition layer.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-4 doc_features_item wow fadeInUp" data-wow-delay="0.5s" data-wow-duration="0.9s">
+                        <a href="transparency-tokenomics.html" style="text-decoration: none; color: inherit; display: block;">
+                            <div class="item-inner">
+                                <div class="icon-wrapper">
+                                    <img src="img/new/icon5.png" alt="" style="width: 48px; height: 48px;">
+                                </div>
+                                <div class="content-wrapper">
+                                    <h4>Transparency & Tokenomics</h4>
+                                    <p>Review the TIPS token model, allocation mechanics, and the platform's transparency principles.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-4 doc_features_item wow fadeInUp" data-wow-delay="0.6s" data-wow-duration="1.0s">
+                        <a href="company-finance.html" style="text-decoration: none; color: inherit; display: block;">
+                            <div class="item-inner">
+                                <div class="icon-wrapper">
+                                    <img src="img/new/icon4.png" alt="" style="width: 48px; height: 48px;">
+                                </div>
+                                <div class="content-wrapper">
+                                    <h4>Company & Finance</h4>
+                                    <p>Learn about the investment roadmap, revenue streams, and exit strategy framework.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.7s" data-wow-duration="1.1s">
+                        <div class="more-btn-wrapper">
+                            <h3 id="viewMoreBtn" style="font-family: 'Jura', sans-serif; font-size: 14px; cursor: pointer; color: #4e73df; display: inline-flex; align-items: center; margin: 0;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down" style="margin-right: 8px;">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                                View More
+                            </h3>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!--================End Topic Area =================-->
-
+        <section class="changelog_area" style="padding: 50px 0;">
+            <div class="container">
+                <img class="doc_shap_one" src="img/new/shap.png" alt="">
+                <div class="doc_round one" data-parallax='{"x": -80, "y": -100, "rotateY":0}'></div>
+                <div class="doc_round two" data-parallax='{"x": -10, "y": 70, "rotateY":0}'></div>
+                <div class="doc_title text-center">
+                    <h2 class="wow fadeInUp" data-wow-delay="0.2s">Patch Notes</h2>
+                    <p class="wow fadeInUp" data-wow-delay="0.4s">Stay up to date with the latest improvements and updates to Tipbox documentation platform</p>
+                </div>
+                <div class="changelog_inner">
+                    <div class="row changelog_info" id="v1">
+                        <div class="col-lg-3 changelog_date">
+                            <div class="c_date">
+                                <h6>December 2024</h6>
+                                <p style="color: #efefef;">Initial Release</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="version_info">
+                                <div class="c_version">
+                                    v1.0
+                                </div>
+                                <div class="line bottom_half"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="changelog_content">
+                                <p><span class="new" style="background-color: #571fdd;">NEW</span>Investor Panel soft launch</p>
+                                <p><span class="new" style="background-color: #571fdd;">NEW</span>Project Blueprint & Tokenomics documents added</p>
+                                <p><span class="fixed" style="background-color: #d8ff08; color: #1a1a1a;">FIXED</span>Initial mobile responsiveness issues resolved</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row changelog_info" id="v2">
+                        <div class="col-lg-3 changelog_date">
+                            <div class="c_date">
+                                <h6>February 2025</h6>
+                                <p style="color: #efefef;">Winter Release</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="version_info">
+                                <div class="c_version">
+                                    v1.1
+                                </div>
+                                <div class="line bottom_half"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="changelog_content">
+                                <p><span class="new" style="background-color: #571fdd;">NEW</span>Business Model Canvas integrated</p>
+                                <p><span class="new" style="background-color: #571fdd;">NEW</span>Secure access via private password introduced</p>
+                                <p><span class="improve" style="background-color: #e0195b;">IMPROVEMENT</span>Pitch Deck visual updates</p>
+                                <p><span class="fixed" style="background-color: #d8ff08; color: #1a1a1a;">FIXED</span>Link errors in Blurb section</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row changelog_info" id="v3">
+                        <div class="col-lg-3 changelog_date">
+                            <div class="c_date">
+                                <h6>April 2025</h6>
+                                <p style="color:#efefef">Spring Update</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="version_info">
+                                <div class="c_version">
+                                    v1.2
+                                </div>
+                                <div class="line bottom_half"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="changelog_content">
+                                <p><span class="new" style="background-color: #571fdd;">NEW</span>AI-based document search & tagging</p>
+                                <p><span class="improve" style="background-color: #e0195b;">IMPROVEMENT</span>Executive Summary rewritten for clarity</p>
+                                <p><span class="fixed" style="background-color: #d8ff08; color: #1a1a1a;">FIXED</span>Minor layout glitches on desktop view</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="accordion_area" style="padding: 50px 0;">
+            <div class="container">
+                <div class="doc_title text-center">
+                    <h2 class="wow fadeInUp" data-wow-delay="0.2s">Frequently Asked Questions</h2>
+                    <p class="wow fadeInUp" data-wow-delay="0.4s">Find quick answers to common investor questions here, with direct links to full documentation for deeper insights.</p>
+                </div>
+                
+                <!-- Tabbed Layout -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tab-content faq-tab-content">
+                            <ul class="nav nav-tabs" id="faqTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="product-tab" data-toggle="tab" href="#product" role="tab" aria-controls="product" aria-selected="true">Product</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="market-tab" data-toggle="tab" href="#market" role="tab" aria-controls="market" aria-selected="false">Market</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="technology-tab" data-toggle="tab" href="#technology" role="tab" aria-controls="technology" aria-selected="false">Technology</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="finance-tab" data-toggle="tab" href="#finance" role="tab" aria-controls="finance" aria-selected="false">Finance</a>
+                                </li>
+                            </ul>
+                            
+                            <div class="tab-content" id="faqTabContent">
+                                <!-- Product Tab -->
+                                <div class="tab-pane fade show active" id="product" role="tabpanel" aria-labelledby="product-tab">
+                                    <div class="collaps_tabs">
+                                        <div class="collaps_tab_inner" id="accordion-product">
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingOne">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link" data-toggle="collapse"
+                                                                data-target="#collapseOne" aria-expanded="true"
+                                                                aria-controls="collapseOne">
+                                                            Why is Tipbox's product model sustainable from an investment standpoint?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                                     data-parent="#accordion-product">
+                                                    <div class="card-body toggle_body">
+                                                        Its structured content formats and contribution-based rewards generate continuous user engagement and repeatable value creation.
+                                                        <p><a href="product.html">→ More info: [Product]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingTwo">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseTwo" aria-expanded="false"
+                                                                aria-controls="collapseTwo">
+                                                            What specific problem does the product solve in the market?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                                     data-parent="#accordion-product">
+                                                    <div class="card-body toggle_body">
+                                                        It offers a reliable, incentivized alternative to unstructured and unverified user review systems.
+                                                        <p><a href="problem-solution.html">→ More info: [Focus Problem & Solution]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingThree">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseThree" aria-expanded="false"
+                                                                aria-controls="collapseThree">
+                                                            How does Tipbox turn user contributions into tangible value?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                                     data-parent="#accordion-product">
+                                                    <div class="card-body toggle_body">
+                                                        Experiences are transformed into NFTs, TIPS tokens, and social reputation—creating digital assets with intrinsic and marketable value.
+                                                        <p><a href="economy.html">→ More info: [In-App Economy & Rewards]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingFour">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseFour" aria-expanded="false"
+                                                                aria-controls="collapseFour">
+                                                            How does the product enable recurring revenue or participation loops?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
+                                                     data-parent="#accordion-product">
+                                                    <div class="card-body toggle_body">
+                                                        Its contribution → reward → reputation loop incentivizes continuous engagement from users and creators.
+                                                        <p><a href="engagement.html">→ More info: [Engagement Mechanics]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingFive">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseFive" aria-expanded="false"
+                                                                aria-controls="collapseFive">
+                                                            How is the product strategy architected for scalable growth?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseFive" class="collapse" aria-labelledby="headingFive"
+                                                     data-parent="#accordion-product">
+                                                    <div class="card-body toggle_body">
+                                                        A modular design allows adaptation across user types and market segments without reengineering the core system.
+                                                        <p><a href="architecture.html">→ More info: [Platform Architecture]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Market Tab -->
+                                <div class="tab-pane fade" id="market" role="tabpanel" aria-labelledby="market-tab">
+                                    <div class="collaps_tabs">
+                                        <div class="collaps_tab_inner" id="accordion-market">
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingMarket1">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link" data-toggle="collapse"
+                                                                data-target="#collapseMarket1" aria-expanded="true"
+                                                                aria-controls="collapseMarket1">
+                                                            Which market gap does Tipbox directly address?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseMarket1" class="collapse show" aria-labelledby="headingMarket1"
+                                                     data-parent="#accordion-market">
+                                                    <div class="card-body toggle_body">
+                                                        It solves the trust and reliability issue in experience sharing by introducing structured, verifiable and rewarded contributions.
+                                                        <p><a href="market-analysis.html">→ More info: [Market Analysis]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingMarket2">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseMarket2" aria-expanded="false"
+                                                                aria-controls="collapseMarket2">
+                                                            What is the size and potential of Tipbox's target audience?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseMarket2" class="collapse" aria-labelledby="headingMarket2"
+                                                     data-parent="#accordion-market">
+                                                    <div class="card-body toggle_body">
+                                                        It provides a scalable infrastructure for millions of users in focus markets.
+                                                        <p><a href="target-market.html">→ More info: [Target Market & Segmentation]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingMarket3">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseMarket3" aria-expanded="false"
+                                                                aria-controls="collapseMarket3">
+                                                            What makes Tipbox fundamentally different from competitors?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseMarket3" class="collapse" aria-labelledby="headingMarket3"
+                                                     data-parent="#accordion-market">
+                                                    <div class="card-body toggle_body">
+                                                        Its value-ownership model and cultural contribution system redefine participation from passive to invested.
+                                                        <p><a href="competitor-analysis.html">→ More info: [Competitor Analysis]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingMarket4">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseMarket4" aria-expanded="false"
+                                                                aria-controls="collapseMarket4">
+                                                            How does the Go-to-Market strategy accelerate investor returns?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseMarket4" class="collapse" aria-labelledby="headingMarket4"
+                                                     data-parent="#accordion-market">
+                                                    <div class="card-body toggle_body">
+                                                        A phased rollout—creator-first seeding → viral content loops → premium monetization—drives compounding engagement.
+                                                        <p><a href="launch-plan.html">→ More info: [Launch Plan]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingMarket5">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseMarket5" aria-expanded="false"
+                                                                aria-controls="collapseMarket5">
+                                                            What is the international scaling potential?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseMarket5" class="collapse" aria-labelledby="headingMarket5"
+                                                     data-parent="#accordion-market">
+                                                    <div class="card-body toggle_body">
+                                                        Experience formats are culturally flexible, and the Web3 infrastructure enables integration with global decentralized communities.
+                                                        <p><a href="expansion-strategy.html">→ More info: [Expansion Strategy]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Technology Tab -->
+                                <div class="tab-pane fade" id="technology" role="tabpanel" aria-labelledby="technology-tab">
+                                    <div class="collaps_tabs">
+                                        <div class="collaps_tab_inner" id="accordion-technology">
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingTechnology1">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link" data-toggle="collapse"
+                                                                data-target="#collapseTechnology1" aria-expanded="true"
+                                                                aria-controls="collapseTechnology1">
+                                                            How scalable is Tipbox's technological infrastructure?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseTechnology1" class="collapse show" aria-labelledby="headingTechnology1"
+                                                     data-parent="#accordion-technology">
+                                                    <div class="card-body toggle_body">
+                                                        Its Web2–Web3 hybrid architecture enables mass adoption while ensuring decentralized ownership and data integrity.
+                                                        <p><a href="system-architecture.html">→ More info: [System Architecture Overview]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingTechnology2">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseTechnology2" aria-expanded="false"
+                                                                aria-controls="collapseTechnology2">
+                                                            How does the Web3 integration add investment value?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseTechnology2" class="collapse" aria-labelledby="headingTechnology2"
+                                                     data-parent="#accordion-technology">
+                                                    <div class="card-body toggle_body">
+                                                        Tokenization of contributions creates new value layers and monetization opportunities, enhancing overall ROI.
+                                                        <p><a href="token-infrastructure.html">→ More info: [Token Infrastructure & Incentive Layer]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingTechnology3">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseTechnology3" aria-expanded="false"
+                                                                aria-controls="collapseTechnology3">
+                                                            How do AI systems contribute to product efficiency and investor return?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseTechnology3" class="collapse" aria-labelledby="headingTechnology3"
+                                                     data-parent="#accordion-technology">
+                                                    <div class="card-body toggle_body">
+                                                        AI-based validation reduces operational cost and improves content quality, enabling leaner scalability.
+                                                        <p><a href="ai-validation.html">→ More info: [AI Validation & Labeling System]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingTechnology4">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseTechnology4" aria-expanded="false"
+                                                                aria-controls="collapseTechnology4">
+                                                            How is data ownership and security managed?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseTechnology4" class="collapse" aria-labelledby="headingTechnology4"
+                                                     data-parent="#accordion-technology">
+                                                    <div class="card-body toggle_body">
+                                                        User data and contributions are encrypted and stored immutably on-chain, ensuring full transparency and trust.
+                                                        <p><a href="data-governance.html">→ More info: [Data Governance & Privacy]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingTechnology5">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseTechnology5" aria-expanded="false"
+                                                                aria-controls="collapseTechnology5">
+                                                            Is the architecture technically sustainable long-term?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseTechnology5" class="collapse" aria-labelledby="headingTechnology5"
+                                                     data-parent="#accordion-technology">
+                                                    <div class="card-body toggle_body">
+                                                        The platform is built on modular, replaceable components, reducing long-term technical debt and enabling adaptability.
+                                                        <p><a href="scalability-strategy.html">→ More info: [Scalability Strategy]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Finance Tab -->
+                                <div class="tab-pane fade" id="finance" role="tabpanel" aria-labelledby="finance-tab">
+                                    <div class="collaps_tabs">
+                                        <div class="collaps_tab_inner" id="accordion-finance">
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingFinance1">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link" data-toggle="collapse"
+                                                                data-target="#collapseFinance1" aria-expanded="true"
+                                                                aria-controls="collapseFinance1">
+                                                            How will post-investment funds be allocated?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseFinance1" class="collapse show" aria-labelledby="headingFinance1"
+                                                     data-parent="#accordion-finance">
+                                                    <div class="card-body toggle_body">
+                                                        Funds are distributed across product development, creator incentives, marketing, and operational runway.
+                                                        <p><a href="fund-utilization.html">→ More info: [Fund Utilization Plan]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingFinance2">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseFinance2" aria-expanded="false"
+                                                                aria-controls="collapseFinance2">
+                                                            How does the TIPS token model generate investor value?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseFinance2" class="collapse" aria-labelledby="headingFinance2"
+                                                     data-parent="#accordion-finance">
+                                                    <div class="card-body toggle_body">
+                                                        Limited supply, tiered utility, and community staking mechanics turn platform activity into economic return.
+                                                        <p><a href="tokeneconomics.html">→ More info: [Tokeneconomics]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingFinance3">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseFinance3" aria-expanded="false"
+                                                                aria-controls="collapseFinance3">
+                                                            How diversified and scalable is the revenue model?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseFinance3" class="collapse" aria-labelledby="headingFinance3"
+                                                     data-parent="#accordion-finance">
+                                                    <div class="card-body toggle_body">
+                                                        Revenue comes from creator services, NFT sales, premium features, and platform transaction flows.
+                                                        <p><a href="revenue-model.html">→ More info: [Revenue Model Overview]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingFinance4">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseFinance4" aria-expanded="false"
+                                                                aria-controls="collapseFinance4">
+                                                            What is the projected investor return timeline?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseFinance4" class="collapse" aria-labelledby="headingFinance4"
+                                                     data-parent="#accordion-finance">
+                                                    <div class="card-body toggle_body">
+                                                        Based on the phased GTM model, returns are forecasted within 12–18 months depending on token activation and adoption.
+                                                        <p><a href="forecast.html">→ More info: [Break-Even & Forecast]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card doc_accordion">
+                                                <div class="card-header" id="headingFinance5">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                                data-target="#collapseFinance5" aria-expanded="false"
+                                                                aria-controls="collapseFinance5">
+                                                            What are the exit strategies under consideration?
+                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                      stroke="#6b707f" stroke-width="2" stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13 1.38812H1" stroke="#6b707f" stroke-width="2"
+                                                                      stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseFinance5" class="collapse" aria-labelledby="headingFinance5"
+                                                     data-parent="#accordion-finance">
+                                                    <div class="card-body toggle_body">
+                                                        Scenarios include token listing, strategic acquisition, or community-led continuation under DAO-like governance.
+                                                        <p><a href="exit-strategy.html">→ More info: [Exit Strategy Document]</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CSS için özel stil -->
+                <style>
+                    .faq-tab-content .nav-tabs {
+                        border-bottom: none;
+                        margin-bottom: 30px;
+                        justify-content: center;
+                        position: relative;
+                    }
+                    
+                    .faq-tab-content .nav-tabs::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: auto;
+                        max-width: 600px;
+                        height: 1px;
+                        background-color: #d8ff08;
+                    }
+                    
+                    .faq-tab-content .nav-tabs .nav-item {
+                        margin: 0 10px;
+                    }
+                    
+                    .faq-tab-content .nav-tabs .nav-link {
+                        border: none;
+                        border-bottom: 3px solid transparent;
+                        padding: 12px 20px;
+                        font-size: 18px;
+                        font-weight: 500;
+                        color: #909090;
+                        transition: all 0.3s;
+                        position: relative;
+                        background-color: transparent;
+                    }
+                    
+                    .faq-tab-content .nav-tabs .nav-link.active,
+                    .faq-tab-content .nav-tabs .nav-link:hover {
+                        color: #fff;
+                        border-bottom: 3px solid #d8ff08;
+                        background: transparent;
+                    }
+                    
+                    /* Tablet ve altı ekranlar için tab düzeni */
+                    @media (max-width: 768px) {
+                        .faq-tab-content .nav-tabs {
+                            flex-wrap: wrap;
+                        }
+                        
+                        .faq-tab-content .nav-tabs::after {
+                            width: 90%;
+                            max-width: 90%;
+                        }
+                        
+                        .faq-tab-content .nav-tabs .nav-item {
+                            margin: 5px;
+                            flex: 1 0 40%;
+                        }
+                        
+                        .faq-tab-content .nav-tabs .nav-link {
+                            text-align: center;
+                            padding: 10px;
+                            font-size: 16px;
+                        }
+                    }
+                    
+                    /* Mobil ekranlar için tab düzeni */
+                    @media (max-width: 576px) {
+                        .faq-tab-content .nav-tabs .nav-item {
+                            flex: 1 0 100%;
+                            margin: 3px 0;
+                        }
+                    }
+                    
+                    .tab-content {
+                        margin-top: 25px;
+                    }
+                    
+                    .card-body a {
+                        color: #fff;
+                        text-decoration: none;
+                        font-weight: bold;
+                    }
+                    
+                    .card-body a:hover {
+                        text-decoration: underline;
+                    }
+                </style>
+            </div>
+        </section>
+        
+        <section class="doc_subscribe_area" style="padding: 50px 0;">
+            <div class="container">
+                <div class="doc_subscribe_inner">
+                    <img class="one" src="img/new/subscribe_shap.png" alt="">
+                    <img class="two" src="img/new/subscribe_shap_two.png" alt="">
+                    <div class="text wow fadeInLeft" data-wow-delay="0.2s">
+                        <h2>Stay Ahead with <br>Early Access Updates</h2>
+                        <p class="wow fadeInLeft" data-wow-delay="0.3s">Reach out to us with your burning questions and let's shape the future of documentation together!</p>
+                    </div>
+                    <form action="#" class="doc_subscribe_form wow fadeInRight mailchimp" data-wow-delay="0.4s"
+                        method="post">
+                        <div class="form-group">
+                            <div class="input-fill">
+                                <input type="email" name="EMAIL" id="email" class="memail"
+                                    placeholder="Your work email">
+                            </div>
+                            <button type="submit" class="submit_btn" style="background-color: #d8ff08; color: #1d2746;">Send</button>
+                            <p class="mchimp-errmessage" style="display: none;"></p>
+                            <p class="mchimp-sucmessage" style="display: none;"></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+       
         <!-- Footer Component -->
         <div include-html="components/footer.html"></div>
     </div>
@@ -302,27 +1959,168 @@
 
     <!-- Optional JavaScript -->
     <script src="js/jquery-3.5.1.min.js"></script>
-    <script src="js/pre-loader.js"></script>
     <script src="assets/bootstrap/js/popper.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap-select.min.js"></script>
+    <script src="js/pre-loader.js"></script>
+    <script src="assets/slick/slick.min.js"></script>
+    <script src="js/jquery.parallax-scroll.js"></script>
     <script src="assets/niceselectpicker/jquery.nice-select.min.js"></script>
     <script src="assets/wow/wow.min.js"></script>
     <script src="assets/mcustomscrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="assets/font-size/js/rv-jquery-fontsize-2.0.3.min.js"></script>
-    <script src="js/anchor.js"></script>
     <script src="assets/magnify-pop/jquery.magnific-popup.min.js"></script>
+    <script src="js/plugins.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
-    <script src="js/plugins.js"></script>
-
+    
     <!-- Dark mode script önce yüklenmeli -->
     <script src="js/main.js"></script>
     <!-- Sonra component include script -->
     <script src="js/include-components.js"></script>
+    <!-- Header Controller script -->
+    <script src="js/header-controller.js"></script>
     <script src="js/style-docs-update.js"></script>
+
     <!-- Yasal Uyarı Popup'ı JS -->
     <script src="js/legal-notice.js"></script>
+    
+    <!-- Mobil Menü JS -->
+    <script>
+        $(document).ready(function() {
+            // View More butonuna tıklandığında sidebar menüsünü aç
+            $("#viewMoreBtn").on("click", function(e) {
+                e.preventDefault();
+                // Önce tüm sınıfları temizleyelim
+                $("body").removeClass("sidebar-menu-open body-sidebar-active");
+                $(".sidebar-menu").removeClass("active");
+                $(".sidebar-overlay").removeClass("active");
+                
+                // Sonra yeniden ekleyelim (setTimeout ile işlem sırasını garanti edelim)
+                setTimeout(function() {
+                    $("body").addClass("sidebar-menu-open body-sidebar-active");
+                    $(".sidebar-menu").addClass("active");
+                    $(".sidebar-overlay").addClass("active");
+                    
+                    // Overlay stilini manuel olarak ayarlayalım
+                    $(".sidebar-overlay").css({
+                        "visibility": "visible",
+                        "opacity": "1"
+                    });
+                    
+                    // Sidebar menüsünün scroll özelliğini aktifleştir
+                    $(".sidebar-menu").css({
+                        "overflow-y": "auto"
+                    });
+                    
+                    // Modal açıldığında body scroll'unu koruyalım
+                    $("body").css({
+                        "overflow": "auto",
+                        "position": "static"
+                    });
+                }, 10);
+            });
+            
+            // Sidebar Toggle Button
+            $("#sidebarToggleBtn").on("click", function() {
+                if ($("body").hasClass("sidebar-menu-open")) {
+                    // Kapatma işlemi
+                    $("body").removeClass("sidebar-menu-open body-sidebar-active");
+                    $(".sidebar-menu").removeClass("active");
+                    $(".sidebar-overlay").removeClass("active");
+                    
+                    // Overlay stilini manuel olarak ayarlayalım
+                    $(".sidebar-overlay").css({
+                        "visibility": "hidden",
+                        "opacity": "0"
+                    });
+                    
+                    // Body scroll'unu normale döndür
+                    $("body").css({
+                        "overflow": "auto",
+                        "position": "static"
+                    });
+                } else {
+                    // Açma işlemi
+                    $("body").addClass("sidebar-menu-open body-sidebar-active");
+                    $(".sidebar-menu").addClass("active");
+                    $(".sidebar-overlay").addClass("active");
+                    
+                    // Overlay stilini manuel olarak ayarlayalım
+                    $(".sidebar-overlay").css({
+                        "visibility": "visible", 
+                        "opacity": "1"
+                    });
+                    
+                    // Sidebar menüsünün scroll özelliğini aktifleştir
+                    $(".sidebar-menu").css({
+                        "overflow-y": "auto"
+                    });
+                    
+                    // Modal açıldığında body scroll'unu koruyalım
+                    $("body").css({
+                        "overflow": "auto",
+                        "position": "static"
+                    });
+                }
+            });
+            
+            // Sidebar Overlay & Close Button
+            $(".sidebar-overlay, .sidebar-close-btn").on("click", function() {
+                $("body").removeClass("sidebar-menu-open body-sidebar-active");
+                $(".sidebar-menu").removeClass("active");
+                $(".sidebar-overlay").removeClass("active");
+                
+                // Overlay stilini manuel olarak ayarlayalım
+                $(".sidebar-overlay").css({
+                    "visibility": "hidden",
+                    "opacity": "0"
+                });
+                
+                // Body scroll'unu normale döndür
+                $("body").css({
+                    "overflow": "auto",
+                    "position": "static"
+                });
+            });
+            
+            // Dropdown Menus
+            $(".sidebar-dropdown > a").on("click", function(e) {
+                e.preventDefault();
+                $(this).parent().toggleClass("active");
+                
+                // Max-height değerini hesaplayalım
+                const submenu = $(this).next(".sidebar-submenu");
+                if (submenu.length) {
+                    if ($(this).parent().hasClass("active")) {
+                        submenu.css("max-height", submenu[0].scrollHeight + "px");
+                    } else {
+                        submenu.css("max-height", "0");
+                    }
+                }
+                
+                // Diğer açık menüleri kapat
+                $(this).parent().siblings().removeClass("active").find(".sidebar-submenu").css("max-height", "0");
+            });
+            
+            // Sayfa yüklendiğinde stil düzeltmeleri
+            $(window).on("load", function() {
+                // CSS ekleme
+                const style = $("<style>")
+                .text(`
+                    body.body-sidebar-active {
+                        overflow: auto !important;
+                        position: static !important;
+                    }
+                    .sidebar-menu {
+                        overflow-y: auto !important;
+                    }
+                    .sidebar-dropdown.active .sidebar-submenu {
+                        max-height: 500px !important;
+                    }
+                `);
+                $("head").append(style);
+            });
+        });
+    </script>
 </body>
 
 </html>
