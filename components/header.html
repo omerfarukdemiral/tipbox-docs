@@ -43,7 +43,7 @@
             </div>
 
             <!-- Sidebar Toggle Button -->
-            <button id="sidebarToggleBtn" class="sidebar-toggle-btn ml-3" type="button" aria-label="Toggle sidebar menu" onclick="toggleSidebarMenu()">
+            <button id="sidebarToggleBtn" class="sidebar-toggle-btn ml-3" type="button" aria-label="Toggle sidebar menu">
                 <span class="sidebar-toggle-icon sidebar-toggle-icon-light">
                     <span></span>
                     <span></span>
@@ -55,7 +55,7 @@
 </nav>
 
 <!-- Sidebar Menu Overlay -->
-<div class="sidebar-overlay" onclick="toggleSidebarMenu()"></div>
+<div class="sidebar-overlay"></div>
 
 <!-- Sidebar Menu -->
 <div class="sidebar-menu">
@@ -65,7 +65,7 @@
                 <img src="../img/main-logo.png" alt="logo" class="sidebar-logo-img">
             </a>
         </div>
-        <div class="sidebar-close-btn" onclick="toggleSidebarMenu()">
+        <div class="sidebar-close-btn">
             <i class="icon_close"></i>
         </div>
     </div>
@@ -73,7 +73,7 @@
         <ul class="sidebar-nav">
             <!-- About -->
             <li class="sidebar-item sidebar-dropdown">
-                <a href="#" class="sidebar-link" onclick="toggleDropdown(this)">
+                <a href="#" class="sidebar-link">
                     <div class="sidebar-link-content">
                         <i class="icon_info mr-3"></i>
                         <span>About</span>
@@ -158,7 +158,7 @@
             
             <!-- Docs Dropdown -->
             <li class="sidebar-item sidebar-dropdown">
-                <a href="#" class="sidebar-link" onclick="toggleDropdown(this)">
+                <a href="#" class="sidebar-link">
                     <div class="sidebar-link-content">
                         <i class="icon_document mr-3"></i>
                         <span>Docs</span>
@@ -373,11 +373,13 @@ body.body-sidebar-active .sidebar-overlay,
     display: flex;
     flex-direction: column;
     color: #ffffff;
+    transform: translate3d(0, 0, 0); /* Hardware acceleration için */
 }
 
 body.body-sidebar-active .sidebar-menu,
 .body-sidebar-active .sidebar-menu {
     right: 0 !important; /* !important ekleyerek zorunlu kılıyoruz */
+    transform: translate3d(0, 0, 0); /* Hardware acceleration için */
 }
 
 .sidebar-header {
@@ -590,27 +592,104 @@ function logout() {
 
 // Sidebar menüsünü açma/kapama
 function toggleSidebarMenu() {
+    console.log("toggleSidebarMenu fonksiyonu çağrıldı");
+    
+    // Body class'ını değiştirelim ve konsola yazdıralım
     document.body.classList.toggle('body-sidebar-active');
+    console.log("Body class durumu:", document.body.classList.contains('body-sidebar-active'));
+    
+    // Sidebar menüsünün stilini doğrudan değiştirelim
+    const sidebarMenu = document.querySelector('.sidebar-menu');
+    if (sidebarMenu) {
+        console.log("Sidebar menüsü bulundu");
+        if (document.body.classList.contains('body-sidebar-active')) {
+            sidebarMenu.style.right = '0';
+            sidebarMenu.style.transform = 'translate3d(0, 0, 0)';
+            console.log("Sidebar menüsü açıldı");
+        } else {
+            sidebarMenu.style.right = '-100%';
+            console.log("Sidebar menüsü kapandı");
+        }
+    } else {
+        console.error("Sidebar menüsü bulunamadı!");
+    }
+    
+    // Overlay'i de kontrol edelim
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (overlay) {
+        if (document.body.classList.contains('body-sidebar-active')) {
+            overlay.style.visibility = 'visible';
+            overlay.style.opacity = '1';
+        } else {
+            overlay.style.visibility = 'hidden';
+            overlay.style.opacity = '0';
+        }
+    }
 }
 
 // Sidebar dropdown menülerini açma/kapama
 function toggleDropdown(element) {
+    console.log("toggleDropdown fonksiyonu çağrıldı", element);
+    
+    if (!element) {
+        console.error("toggleDropdown: Element bulunamadı!");
+        return;
+    }
+    
     const parent = element.parentElement;
+    console.log("Dropdown parent:", parent);
+    
+    if (!parent || !parent.classList.contains('sidebar-dropdown')) {
+        console.error("toggleDropdown: Parent element bulunamadı veya sidebar-dropdown sınıfı yok!");
+        return;
+    }
     
     // Diğer açık dropdown'ları kapat
     const openItems = document.querySelectorAll('.sidebar-dropdown.active');
+    console.log("Açık dropdown sayısı:", openItems.length);
+    
     openItems.forEach(item => {
         if (item !== parent) {
             item.classList.remove('active');
+            console.log("Diğer dropdown kapatıldı:", item);
         }
     });
     
     // Tıklanan dropdown'ı aç/kapa
     parent.classList.toggle('active');
+    console.log("Dropdown durumu değiştirildi, active sınıfı:", parent.classList.contains('active'));
+    
+    // Submenu'nun max-height değerini manuel olarak ayarlayalım
+    const submenu = parent.querySelector('.sidebar-submenu');
+    if (submenu) {
+        if (parent.classList.contains('active')) {
+            const submenuHeight = submenu.scrollHeight + 'px';
+            submenu.style.maxHeight = submenuHeight;
+            console.log("Submenu max-height ayarlandı:", submenuHeight);
+        } else {
+            submenu.style.maxHeight = '0';
+            console.log("Submenu kapatıldı");
+        }
+    }
 }
 
-// Sayfa yüklendiğinde, aktif sayfayı belirle ve ilgili menü öğesini vurgula
+// Sayfa yüklendiğinde çalışacak kod
 document.addEventListener('DOMContentLoaded', function() {
+    // İlk olarak, CSS stilini doğrudan ekleyelim
+    const style = document.createElement('style');
+    style.textContent = `
+        .body-sidebar-active .sidebar-menu {
+            right: 0 !important;
+            transform: translate3d(0, 0, 0) !important;
+            visibility: visible !important;
+        }
+        .body-sidebar-active .sidebar-overlay {
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+    `;
+    document.head.appendChild(style);
+    
     const currentPage = window.location.pathname.split('/').pop();
     
     // Sidebar menüsündeki tüm bağlantıları kontrol et
@@ -641,6 +720,41 @@ document.addEventListener('DOMContentLoaded', function() {
                 dropdownParent.classList.add('active');
             }
         }
+    });
+
+    // Toggle butonuna event listener ile de bağlayalım
+    const toggleBtn = document.getElementById('sidebarToggleBtn');
+    if (toggleBtn) {
+        console.log("Sidebar toggle butonu bulundu:", toggleBtn);
+        toggleBtn.addEventListener('click', function(e) {
+            console.log("Toggle butonuna tıklandı (event listener)");
+            toggleSidebarMenu();
+        });
+    } else {
+        console.error("Sidebar toggle butonu bulunamadı!");
+    }
+
+    // Overlay ve kapatma butonuna da event listener ekleyelim
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (overlay) {
+        overlay.addEventListener('click', toggleSidebarMenu);
+    }
+
+    const closeBtn = document.querySelector('.sidebar-close-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', toggleSidebarMenu);
+    }
+
+    // Dropdown menüleri için event listener ekleyelim
+    const dropdownLinks = document.querySelectorAll('.sidebar-dropdown > .sidebar-link');
+    console.log("Dropdown bağlantıları:", dropdownLinks.length);
+    
+    dropdownLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log("Dropdown bağlantısına tıklandı");
+            toggleDropdown(this);
+        });
     });
 });
 </script> 

@@ -59,9 +59,10 @@
   window.toggleSidebarMenu = function() {
     // Eğer sidebar-controller.js'den gelen toggleSidebar fonksiyonu varsa onu kullan
     if (typeof window.toggleSidebar === 'function') {
+      console.log("toggleSidebar fonksiyonu var");
       window.toggleSidebar();
     } else {
-      // Yoksa jQuery ile body sınıfını toggle et
+      console.log("toggleSidebar fonksiyonu yok");
       $('body').toggleClass('body-sidebar-active');
     }
   }
