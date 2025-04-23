@@ -6648,7 +6648,7 @@ body.body_dark .table-of-content .nav-link:hover {
   left: 0;
   height: 100%;
   width: 100%;
-  background: #1d2746;
+  background: #111;
   opacity: 0;
   z-index: 1;
   visibility: hidden;
@@ -6679,7 +6679,7 @@ body.body_dark .table-of-content .nav-link:hover {
   }
 }
 .doc_documentation_area.overlay .overlay_bg {
-  opacity: 0.5;
+  opacity: 0.9;
   visibility: visible;
 }
 
@@ -7322,7 +7322,7 @@ body.body_dark .table-of-content .nav-link:hover {
 .open_icon {
   width: 40px;
   height: 40px;
-  background: #e8eeff;
+  background: #d8ff08;
   line-height: 40px;
   font-size: 32px;
   text-align: center;
@@ -15410,7 +15410,7 @@ body.body_dark .table-of-content .nav-link:hover {
   left: 0;
   height: 100%;
   width: 100%;
-  background: #1d2746;
+  background: #111;
   opacity: 0;
   z-index: 1;
   visibility: hidden;
@@ -16084,7 +16084,7 @@ body.body_dark .table-of-content .nav-link:hover {
 .open_icon {
   width: 40px;
   height: 40px;
-  background: #e8eeff;
+  background: #d8ff08;
   line-height: 40px;
   font-size: 32px;
   text-align: center;
@@ -16097,6 +16097,7 @@ body.body_dark .table-of-content .nav-link:hover {
 }
 .open_icon i {
   display: inline-block;
+  color: #111;
 }
 .open_icon i + i {
   display: none;

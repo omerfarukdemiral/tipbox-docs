@@ -262,7 +262,22 @@
         $(".doc_documentation_area,#left").removeClass("overlay");
         $(".doc_mobile_menu").animate(
           {
-            left: "-245px",
+            left: "-345px",
+          },
+          300
+        );
+        switchs = true;
+      }
+    });
+    
+    // Mobil menü içindeki linklere tıklandığında menüyü kapat
+    $(".doc_mobile_menu .nav-sidebar a").on("click", function(e) {
+      // Eğer dropdown menü değilse kapat
+      if (!$(this).parent().hasClass("dropdown_nav") && !$(this).hasClass("dropdown-toggle")) {
+        $(".doc_documentation_area,#left").removeClass("overlay");
+        $(".doc_mobile_menu").animate(
+          {
+            left: "-345px",
           },
           300
         );
@@ -276,6 +291,14 @@
     $(".mobile_btn").on("click", function (e) {
       if (switchs) {
         $(".mobile_menu").addClass("open");
+      }
+    });
+    
+    // Mobil menü linkleri için kapatma davranışı
+    $(".mobile_menu .doc_left_sidebarlist a").on("click", function() {
+      // Dropdown menü linki değilse kapat
+      if (!$(this).parent().hasClass("dropdown_nav") && !$(this).hasClass("dropdown-toggle")) {
+        $(".mobile_menu").removeClass("open");
       }
     });
   }
@@ -1180,6 +1203,25 @@
       $(this).parent().toggleClass("active");
       $(this).next(".sidebar-submenu").slideToggle(300);
       $(this).parent().siblings().removeClass("active").find(".sidebar-submenu").slideUp(300);
+    });
+    
+    // Sidebar içindeki herhangi bir linke tıklandığında sidebar'ı kapat
+    $(".doc_left_sidebarlist a").on("click", function() {
+      // Eğer dropdown menü linki ise ve dropdown açma/kapama fonksiyonu değilse kapat
+      if (!$(this).parent().hasClass("sidebar-dropdown") && !$(this).hasClass("has-dropdown")) {
+        $("body").removeClass("sidebar-menu-open");
+        $(".sidebar-menu").removeClass("active");
+        $(".sidebar-overlay").removeClass("active");
+        
+        // Doc mobile menu için de kapat
+        $(".doc_documentation_area,#left").removeClass("overlay");
+        $(".doc_mobile_menu").animate(
+          {
+            left: "-345px",
+          },
+          300
+        );
+      }
     });
   }
 

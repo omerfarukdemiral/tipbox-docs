@@ -1030,9 +1030,9 @@
   }
   .doc_mobile_menu.col-lg-3,
   .doc_documentation_full_area .doc_mobile_menu {
-    max-width: 260px;
+    max-width: 360px;
     width: 100%;
-    left: -245px;
+    left: -345px;
     position: absolute;
   }
   .doc_documentation_area.body_fixed .doc_left_sidebarlist {
@@ -1120,7 +1120,7 @@
     display: block;
     right: -40px;
     left: auto;
-    top: 0;
+    top: 15px;
   }
   .doc_documentation_area {
     position: relative;
@@ -1542,6 +1542,9 @@
   }
   .forum_footer_area {
     padding-bottom: 80px;
+  }
+  .doc-middle-content {
+    padding-top: 5px !important;
   }
   .data_table_area .col-sm-12 {
     flex: 0 0 50%;

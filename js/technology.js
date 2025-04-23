@@ -216,7 +216,7 @@ function initializeTechnologyPage() {
         });
     });
 
-    // URL'de hash varsa ilgili içeriği yükle
+    /* URL'de hash varsa ilgili içeriği yükle
     if (window.location.hash) {
         const contentFile = window.location.hash.slice(1) + '.html';
         loadContent(contentFile);
@@ -231,5 +231,5 @@ function initializeTechnologyPage() {
                 activeItem.classList.add('active');
             }
         }, 500);
-    }
+    }*/
 } 
