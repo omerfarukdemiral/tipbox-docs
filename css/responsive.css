@@ -1116,12 +1116,6 @@
     max-height: 400px;
     overflow-y: scroll;
   }
-  .doc_mobile_menu .open_icon {
-    display: block;
-    right: -40px;
-    left: auto;
-    top: 15px;
-  }
   .doc_documentation_area {
     position: relative;
     overflow: hidden;
@@ -1514,13 +1508,20 @@
     display: none;
   }
   .body_dark .side_menu, .body_dark .doc_left_sidebarlist:before {
-    background: #1c1b1b!important;
+    background: transparent!important;
   }
 }
 
 @media (max-height: 768px) {
   .signup_area_height {
     min-height: 760px;
+  }
+
+  .doc_mobile_menu .open_icon {
+    display: block;
+    right: -40px;
+    left: auto;
+    top: 15px;
   }
 }
 

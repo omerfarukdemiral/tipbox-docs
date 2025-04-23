@@ -115,11 +115,22 @@
     
     // Dark Mode işlevselliğini başlat
     initDarkMode();
+    
+    // Responsive Layout Handler'ı çağır
+    responsiveLayoutHandler();
   });
 
   $(window).on("load", function () {
     // Document is fully loaded, initialize sidebar again to make sure it works
     initSidebarMenu();
+    
+    // Responsive Layout Handler'ı çağır
+    responsiveLayoutHandler();
+  });
+
+  $(window).resize(function() {
+    // Pencere yeniden boyutlandırıldığında responsiveLayoutHandler fonksiyonunu çağır
+    responsiveLayoutHandler();
   });
 
   function navbarFixedTwo() {
@@ -193,6 +204,23 @@
   }
 
   bodyFixed();
+
+  /*  Responsive Layout Handler - width değerine göre sınıfları değiştirecek */
+  function responsiveLayoutHandler() {
+    var windowWidth = $(window).width();
+    
+    if (windowWidth < 1250) {
+      // Ekran genişliği 1250px'den küçükse
+      $(".doc_mobile_menu").removeClass("col-md-3").removeClass("col-lg-3").addClass("col-lg-4").addClass("col-md-4");
+      $(".doc-middle-content").removeClass("col-lg-7").removeClass("col-md-7").addClass("col-lg-8").addClass("col-md-8");
+      $(".doc_right_mobile_menu").css("display", "none");
+    } else {
+      // Ekran genişliği 1250px'den büyükse
+      $(".doc_mobile_menu").removeClass("col-lg-4").removeClass("col-md-4").addClass("col-lg-3").addClass("col-md-3");
+      $(".doc-middle-content").removeClass("col-lg-8").removeClass("col-md-8").addClass("col-lg-7").addClass("col-md-7");
+      $(".doc_right_mobile_menu").css("display", "block");
+    }
+  }
 
   /*  Menu Click js  */
   function Menu_js() {
