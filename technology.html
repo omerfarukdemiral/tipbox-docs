@@ -5,14 +5,15 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    
+
     <!-- Merkezi Yapılandırma -->
     <script src="js/config.js"></script>
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
@@ -39,19 +40,19 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-    
+
     <!-- Auth JS - Firebase yapılandırması ve auth işlemleri için -->
     <script src="js/auth.js"></script>
     <script src="js/pageViews.js"></script>
     <!-- Firebase bitiş -->
 
-    <script>    
+    <script>
         // Include components script'ini güncelleyelim
-        document.addEventListener("DOMContentLoaded", async function() {
+        document.addEventListener("DOMContentLoaded", async function () {
             try {
                 // Önce component'ları yükle
                 await includeHTML();
-                
+
                 // Dark mode'u başlat
                 if (typeof initDarkMode === 'function') {
                     initDarkMode();
@@ -61,7 +62,7 @@
             }
         });
     </script>
-    
+
     <!-- Header Controller script - kullanıcı arayüzü güncellemeleri için -->
     <script src="js/header-controller.js"></script>
 
@@ -75,7 +76,7 @@
             border-radius: 8px;
             transition: all 0.3s ease;
         }
-        
+
         .nav-sidebar .nav-item a.active img {
             filter: brightness(1.2);
         }
@@ -91,7 +92,8 @@
     </style>
 </head>
 
-<body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true" data-offset="70">
+<body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true"
+    data-offset="70">
     <div id="preloader">
         <div id="ctn-preloader" class="ctn-preloader">
             <div class="round_spinner">
@@ -144,7 +146,7 @@
             </div>
         </section>
         <!--================End Forum Breadcrumb Area =================-->
-
+    
         <!--================Topic Area =================-->
         <section class="doc_documentation_area" id="sticky_doc">
             <div class="overlay_bg"></div>
@@ -159,16 +161,24 @@
                             <div class="scroll">
                                 <ul class="list-unstyled nav-sidebar">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link active" data-content-file="technology/multi-layered-architecture.html"><img src="img/side-nav/home.png" alt="">Multi-Layered Architecture</a>
+                                        <a href="#" class="nav-link active"
+                                            data-content-file="technology/multi-layered-architecture.html"><img
+                                                src="img/side-nav/home.png" alt="">Multi-Layered Architecture</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link" data-content-file="technology/application-architecture.html"><img src="img/side-nav/document.png" alt="">Application Architecture</a>
+                                        <a href="#" class="nav-link"
+                                            data-content-file="technology/application-architecture.html"><img
+                                                src="img/side-nav/document.png" alt="">Application Architecture</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link" data-content-file="technology/core-architectural-principles.html"><img src="img/side-nav/chat1.png" alt="">Core Architectural Principles   </a>
+                                        <a href="#" class="nav-link"
+                                            data-content-file="technology/core-architectural-principles.html"><img
+                                                src="img/side-nav/chat1.png" alt="">Core Architectural Principles </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link" data-content-file="technology/network-infrastructure.html"><img src="img/side-nav/chat1.png" alt="">Network Infrastructure</a>
+                                        <a href="#" class="nav-link"
+                                            data-content-file="technology/network-infrastructure.html"><img
+                                                src="img/side-nav/chat1.png" alt="">Network Infrastructure</a>
                                     </li>
                                 </ul>
                             </div>
@@ -179,45 +189,84 @@
                             <div class="documentation_body" id="documentation">
                                 <div class="shortcode_title">
                                     <h1 id="multi-layered-architecture-overview">Multi-Layered Architecture</h1>
-                                    
-                                    <p>Tipbox is built on a robust three-layered architecture that ensures security, efficiency, and a seamless user experience. Each layer—X-Client, P-Core, and P-Data—fulfills a specific function while working cohesively with the others.</p>
-                                    
+
+                                    <p>Tipbox is built on a robust three-layered architecture that ensures security,
+                                        efficiency, and a seamless user experience. Each layer—X-Client, P-Core, and
+                                        P-Data—fulfills a specific function while working cohesively with the others.
+                                    </p>
+
                                     <h2 id="x-client-layer">X-Client</h2>
-                                    
-                                    <p>The X-Client layer serves as the user interface and interaction point, connecting users to Tipbox's frontend services. This layer encompasses both mobile (iOS, Android) and web applications, providing a consistent experience across all platforms.</p>
-                                    
-                                    <p>X-Client not only delivers an intuitive interface but also manages essential interactions between users and the Tipbox ecosystem, including content sharing (text, images, audio, video), participation in discussions, and social engagement.</p>
-                                    
-                                    <p>Real-time communication is facilitated through a dedicated infrastructure, allowing instantaneous updates and exchanges of information. To ensure a responsive experience, the layer incorporates sophisticated caching mechanisms and optimized data transfer processes.</p>
-                                    
+
+                                    <p>The X-Client layer serves as the user interface and interaction point, connecting
+                                        users to Tipbox's frontend services. This layer encompasses both mobile (iOS,
+                                        Android) and web applications, providing a consistent experience across all
+                                        platforms.</p>
+
+                                    <p>X-Client not only delivers an intuitive interface but also manages essential
+                                        interactions between users and the Tipbox ecosystem, including content sharing
+                                        (text, images, audio, video), participation in discussions, and social
+                                        engagement.</p>
+
+                                    <p>Real-time communication is facilitated through a dedicated infrastructure,
+                                        allowing instantaneous updates and exchanges of information. To ensure a
+                                        responsive experience, the layer incorporates sophisticated caching mechanisms
+                                        and optimized data transfer processes.</p>
+
                                     <h2 id="p-core-layer">P-Core</h2>
-                                    
-                                    <p>The P-Core layer functions as Tipbox's central processing unit. It manages all the backend operations and serves as an intermediary between the X-Client and P-Data layers.</p>
-                                    
-                                    <p>This layer houses the business logic of Tipbox, including content management, user interactions, gamification rules, and reward mechanics. P-Core processes data based on predefined rules and logic, ensuring users receive appropriate rewards and badges for their intellectual contributions.</p>
-                                    
-                                    <p>Security is a key function of P-Core, which employs multiple layers of verification for user authentication, authorization checks for content access, and data validation to prevent system compromise. The layer also features a robust permission system with clear roles and privileges, safeguarding user data and platform integrity.</p>
-                                    
-                                    <p>Advanced analytics and monitoring capabilities are integrated into P-Core, providing insights into platform usage, user interactions, and content engagement.</p>
-                                    
+
+                                    <p>The P-Core layer functions as Tipbox's central processing unit. It manages all
+                                        the backend operations and serves as an intermediary between the X-Client and
+                                        P-Data layers.</p>
+
+                                    <p>This layer houses the business logic of Tipbox, including content management,
+                                        user interactions, gamification rules, and reward mechanics. P-Core processes
+                                        data based on predefined rules and logic, ensuring users receive appropriate
+                                        rewards and badges for their intellectual contributions.</p>
+
+                                    <p>Security is a key function of P-Core, which employs multiple layers of
+                                        verification for user authentication, authorization checks for content access,
+                                        and data validation to prevent system compromise. The layer also features a
+                                        robust permission system with clear roles and privileges, safeguarding user data
+                                        and platform integrity.</p>
+
+                                    <p>Advanced analytics and monitoring capabilities are integrated into P-Core,
+                                        providing insights into platform usage, user interactions, and content
+                                        engagement.</p>
+
                                     <h2 id="p-data-layer">P-Data</h2>
-                                    
-                                    <p>The P-Data layer is responsible for secure data storage and management, including user profiles, shared content, interaction histories, reward records, and platform configurations.</p>
-                                    
-                                    <p>This layer utilizes a hybrid data storage approach, combining traditional database systems for structured data with specialized storage for multimedia content. A tiered database architecture optimizes accessibility and performance based on data types and usage patterns.</p>
-                                    
-                                    <p>To ensure maximum security and compliance with data protection regulations, P-Data encrypts sensitive information using industry-standard protocols. The layer also maintains comprehensive data backup and recovery mechanisms to protect against data loss.</p>
-                                    
-                                    <p>Scalability is a core design principle of P-Data, allowing seamless accommodation of growing user bases and content volumes without compromising performance or reliability.</p>
-                                    
+
+                                    <p>The P-Data layer is responsible for secure data storage and management, including
+                                        user profiles, shared content, interaction histories, reward records, and
+                                        platform configurations.</p>
+
+                                    <p>This layer utilizes a hybrid data storage approach, combining traditional
+                                        database systems for structured data with specialized storage for multimedia
+                                        content. A tiered database architecture optimizes accessibility and performance
+                                        based on data types and usage patterns.</p>
+
+                                    <p>To ensure maximum security and compliance with data protection regulations,
+                                        P-Data encrypts sensitive information using industry-standard protocols. The
+                                        layer also maintains comprehensive data backup and recovery mechanisms to
+                                        protect against data loss.</p>
+
+                                    <p>Scalability is a core design principle of P-Data, allowing seamless accommodation
+                                        of growing user bases and content volumes without compromising performance or
+                                        reliability.</p>
+
                                     <h2 id="integration-experience">Integration for a Seamless Experience</h2>
-                                    
-                                    <p>These three layers work in concert to deliver Tipbox's promise of a secure, efficient platform that rewards intellectual contributions. Standardized APIs and communication protocols ensure smooth data flow between layers, while comprehensive monitoring and logging systems maintain operational integrity.</p>
-                                    
-                                    <p>This multi-layered architecture provides the flexibility to introduce new features and functionalities in response to evolving user needs and market trends, ensuring Tipbox's continued relevance and value in the digital ecosystem.</p>
-                                </div>  
+
+                                    <p>These three layers work in concert to deliver Tipbox's promise of a secure,
+                                        efficient platform that rewards intellectual contributions. Standardized APIs
+                                        and communication protocols ensure smooth data flow between layers, while
+                                        comprehensive monitoring and logging systems maintain operational integrity.</p>
+
+                                    <p>This multi-layered architecture provides the flexibility to introduce new
+                                        features and functionalities in response to evolving user needs and market
+                                        trends, ensuring Tipbox's continued relevance and value in the digital
+                                        ecosystem.</p>
+                                </div>
                             </div>
-                        </article> 
+                        </article>
                     </div>
                     <div class="col-lg-2 col-md-4 doc_right_mobile_menu">
                         <div class="open_icon" id="right">
@@ -233,7 +282,7 @@
                                         <!-- Dinamik olarak oluşturulacak içerik -->
                                     </nav>
                                 </div>
-                            
+
                             </div>
                         </div>
                     </div>
@@ -264,7 +313,7 @@
     <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
     <script src="js/plugins.js"></script>
-    
+
     <!-- Dark mode script önce yüklenmeli -->
     <script src="js/main.js"></script>
     <!-- Sonra component include script -->

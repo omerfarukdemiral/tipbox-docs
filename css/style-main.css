@@ -6634,12 +6634,12 @@ body.body_dark .table-of-content .nav-link:hover {
 /*---------------------------------------------------- */
 /*----------------------------------------------------*/
 .doc_documentation_area {
-  padding-bottom: 110px;
+  padding-bottom: 0px;
   z-index: 0;
 }
 @media (min-width: 1400px) {
   .doc_documentation_area {
-    min-height: 1000px;
+    min-height: 0px;
   }
 }
 .doc_documentation_area .overlay_bg {
@@ -6654,10 +6654,12 @@ body.body_dark .table-of-content .nav-link:hover {
   visibility: hidden;
   transition: all 0.4s linear;
 }
-.doc_documentation_area.body_fixed .doc_left_sidebarlist {
-  position: fixed;
-  top: 0;
-  width: 270px;
+@media screen and (min-width: 768px) {
+  .doc_documentation_area.body_fixed .doc_left_sidebarlist {
+    position: fixed;
+    top: 0;
+    width: 270px;
+  }
 }
 @media (min-width: 1500px) {
   .doc_documentation_area.body_fixed .doc_left_sidebarlist {
@@ -15395,15 +15397,6 @@ body.body_dark .table-of-content .nav-link:hover {
 }
 /*---------------------------------------------------- */
 /*----------------------------------------------------*/
-.doc_documentation_area {
-  padding-bottom: 110px;
-  z-index: 0;
-}
-@media (min-width: 1400px) {
-  .doc_documentation_area {
-    min-height: 1000px;
-  }
-}
 .doc_documentation_area .overlay_bg {
   position: absolute;
   top: 0;
@@ -26141,7 +26134,7 @@ body.body_dark img.logo-light {
   background: #2c303a;
 }
 .body_dark .side_menu, .body_dark .doc_left_sidebarlist:before {
-  background: #1c1b1b;
+  background: transparent!important;
 }
 .body_dark .doc_rightsidebar .doc_switch input[type=checkbox], .body_dark .topic_item_tabs .topic_list_item,
 .body_dark .comment_box .post_comment .comment_author .media-body,
@@ -26235,4 +26228,16 @@ body.body_dark img.logo-light {
 
 /*# sourceMappingURL=style-main.css.map */
 
+.doc_left_sidebarlist .scroll {
+  padding: 15px;
+}
+
+/* === Responsive Style Fix === */
+@media (max-width: 767px) {
+    .doc_documentation_area.body_fixed .doc_left_sidebarlist {
+        position: static !important;
+        top: auto !important;
+        width: 100% !important;
+    }
+}
 

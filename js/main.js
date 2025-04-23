@@ -176,7 +176,7 @@
   function bodyFixed() {
     var windowWidth = $(window).width();
     if ($("#sticky_doc").length) {
-      if (windowWidth > 576) {
+      if (windowWidth > 1250) {
         var tops = $("#sticky_doc");
         var leftOffset = tops.offset().top;
 

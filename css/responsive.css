@@ -1513,6 +1513,9 @@
   .breadcrumb_area_three .four {
     display: none;
   }
+  .body_dark .side_menu, .body_dark .doc_left_sidebarlist:before {
+    background: #1c1b1b!important;
+  }
 }
 
 @media (max-height: 768px) {
@@ -1947,6 +1950,9 @@
 @media (max-width: 576px) {
   .forum-post-top .author-avatar img {
     max-width: 40px;
+  }
+  .desktop-menu {
+    display: none;
   }
   .mobile_main_menu .nav_btn,
   .action-button-container {
