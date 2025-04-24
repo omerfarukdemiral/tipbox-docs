@@ -1,0 +1,41 @@
+/* Font Awesome CDN'in eklenmesi */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+/* Font Awesome ikonlarını göstermeyi iyileştiren kodlar */
+.fas {
+  font-family: 'Font Awesome 5 Free' !important;
+  font-weight: 900 !important;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+}
+
+/* Chevron ikonları için özel kodlar */
+.fa-chevron-right:before {
+  content: "\f054" !important;
+}
+
+.fa-chevron-left:before {
+  content: "\f053" !important;
+}
+
+.fa-chevron-down:before {
+  content: "\f078" !important;
+}
+
+/* Değiştirilmiş ikonları daha net göstermek için boyut ayarları */
+.nav-link-content .fas,
+.fixed-menu-toggle .fas,
+.open_icon .fas,
+.scroll-down .fas {
+  width: 16px !important;
+  height: 16px !important;
+  text-align: center;
+  font-size: 14px !important;
+  display: inline-block !important;
+  vertical-align: middle;
+} 

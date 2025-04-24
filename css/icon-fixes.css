@@ -1,0 +1,39 @@
+/* Font Awesome ikonları için gerekli stillemeler */
+.fas.fa-chevron-right,
+.fas.fa-chevron-left,
+.fas.fa-chevron-down {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  font-size: 14px;
+  color: inherit;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.nav-link-content i.fas.fa-chevron-right {
+  margin-left: 5px;
+}
+
+.fixed-menu-toggle i.fas.fa-chevron-right {
+  font-size: 16px;
+}
+
+.side-nav-panel .nav-link-content i {
+  color: #697386;
+}
+
+.side-nav-panel .nav-link.active .nav-link-content i,
+.side-nav-panel .nav-link:hover .nav-link-content i {
+  color: var(--brand_color);
+}
+
+/* Sidebarlist ve menü ikonlarına gerekli stillemeler */
+.doc_left_sidebarlist .nav-link-content i {
+  color: #697386;
+}
+
+.doc_left_sidebarlist .nav-link.active .nav-link-content i,
+.doc_left_sidebarlist .nav-link:hover .nav-link-content i {
+  color: var(--brand_color);
+} 
