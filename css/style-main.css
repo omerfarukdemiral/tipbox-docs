@@ -6658,7 +6658,6 @@ body.body_dark .table-of-content .nav-link:hover {
   .doc_documentation_area.body_fixed .doc_left_sidebarlist {
     position: fixed;
     top: 0;
-    width: 270px;
   }
 }
 @media (min-width: 1500px) {
@@ -15406,7 +15405,6 @@ body.body_dark .table-of-content .nav-link:hover {
 .doc_documentation_area.body_fixed .doc_left_sidebarlist {
   position: fixed;
   top: 0;
-  width: 270px;
 }
 @media (min-width: 1500px) {
   .doc_documentation_area.body_fixed .doc_left_sidebarlist {

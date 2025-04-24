@@ -205,7 +205,7 @@
     max-width: 23%;
   }
   .doc-middle-content {
-    padding-right: 0;
+    padding-right: 15px;
   }
   .link {
     padding-left: 25px;
@@ -550,9 +550,6 @@
   }
   .blog_grid_post .grid_post_content {
     padding: 25px 25px 35px;
-  }
-  .doc_documentation_area.body_fixed .doc_left_sidebarlist {
-    width: 210px;
   }
   .doc_rightsidebar {
     width: 200px;
@@ -1038,6 +1035,10 @@
   .doc_documentation_area.body_fixed .doc_left_sidebarlist {
     width: 230px;
   }
+  .doc_documentation_area .doc_left_sidebarlist {
+    width: 230px;
+  }
+
   .navbar .container {
     padding-left: 15px;
     padding-right: 15px;

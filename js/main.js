@@ -244,7 +244,11 @@
   /*  Responsive Layout Handler - width değerine göre sınıfları değiştirecek */
   function responsiveLayoutHandler() {
     var windowWidth = $(window).width();
-    
+    if(windowWidth < 567){
+      $(".doc_mobile_menu").css("display", "none");
+    } else {
+      $(".doc_mobile_menu").css("display", "block");
+    }
     if (windowWidth < 1250) {
       // Ekran genişliği 1250px'den küçükse
       $(".doc_mobile_menu").removeClass("col-md-3").removeClass("col-lg-3").addClass("col-lg-4").addClass("col-md-4");

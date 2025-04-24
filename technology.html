@@ -68,6 +68,134 @@
 
     <!-- Technology özel script -->
     <script src="js/technology.js"></script>
+    
+    <style>
+        .fixed-menu-toggle {
+            position: fixed;
+            top: 74px;
+            left: 0;
+            z-index: 990; /* Header'ın z-index'inden düşük olması gerekir */
+            background: #121318;
+            width: 40px;
+            height: 40px;
+            border-radius: 0 4px 4px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .fixed-menu-toggle.visible {
+            opacity: 1;
+            visibility: visible;
+            top: 74px; /* Header yüksekliği */
+        }
+        
+        /* 567px üzerindeki ekranlarda gizle */
+        @media (min-width: 568px) {
+            .fixed-menu-toggle {
+                display: none !important;
+            }
+        }
+        
+        .navbar_fixed + div .fixed-menu-toggle.visible {
+            top: 74px; /* Sabit header yüksekliği */
+        }
+        
+        .fixed-menu-toggle i {
+            color: #fff;
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+        
+        .fixed-menu-toggle:hover, 
+        .fixed-menu-toggle:active, 
+        .fixed-menu-toggle:focus {
+            background: #121318; /* Aynı renk kalır */
+        }
+        
+        .fixed-menu-toggle.open {
+            left: 240px; /* Menü genişliği (280px) - 40px */
+            border-radius: 4px 0 0 4px; /* Köşe yuvarlaklığı tersine çevrilir */
+        }
+        
+        .fixed-menu-toggle.open i {
+            transform: rotate(180deg); /* Ok simgesi ters yöne döner */
+        }
+        
+        .side-nav-panel {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: #fff;
+            z-index: 989; /* Toggle butonundan düşük, header'dan düşük */
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            overflow-y: auto;
+            padding: 20px 0;
+            padding-top: 70px; /* Header yüksekliği kadar boşluk */
+        }
+        
+        .side-nav-panel.open {
+            left: 0;
+        }
+        
+        .side-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 988; /* Panelin arkasında, headerın altında */
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .side-nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .side-nav-panel .nav-content {
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .side-nav-panel .nav-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .body_dark .side-nav-panel {
+            background: #121318;
+            color: #fff;
+        }
+        
+        .body_dark .side-nav-panel .nav-title {
+            border-bottom-color: #2c2e35;
+        }
+        
+        /* Aktif menü öğesi için stil */
+        .side-nav-panel .nav-item .nav-link.active {
+            color: #10b3d6;
+            font-weight: 600;
+        }
+        
+        /* Menü öğelerine hover efekti */
+        .side-nav-panel .nav-item .nav-link:hover {
+            background: rgba(16, 179, 214, 0.05);
+        }
+    </style>
 </head>
 
 <body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true"
@@ -89,6 +217,54 @@
         <!-- Header Component -->
         <div include-html="components/header.html" class="sticky-nav"></div>
 
+        <!-- Sabit menü açma düğmesi -->
+        <div class="fixed-menu-toggle">
+            <i class="arrow_right"></i>
+        </div>
+        
+        <!-- Yan menü paneli -->
+        <div class="side-nav-panel">
+            <div class="nav-content">
+                <h3 class="nav-title">Hızlı Erişim Menüsü</h3>
+                <ul class="list-unstyled nav-sidebar">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-content-file="technology/multi-layered-architecture.html">
+                            <div class="nav-link-content">
+                                <span>Multi-Layered Architecture</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="technology/application-architecture.html">
+                            <div class="nav-link-content">
+                                <span>Application Architecture</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="technology/core-architectural-principles.html">
+                            <div class="nav-link-content">
+                                <span>Core Architectural Principles</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="technology/network-infrastructure.html">
+                            <div class="nav-link-content">
+                                <span>Network Infrastructure</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Yan menü arka plan overlay -->
+        <div class="side-nav-overlay"></div>
 
         <!--================Forum Breadcrumb Area =================-->
         <section class="doc_banner_area search-banner-light">
@@ -132,10 +308,6 @@
                 <div class="row">
                     <div class="col-lg-3 doc_mobile_menu">
                         <aside class="doc_left_sidebarlist">
-                            <div class="open_icon" id="left">
-                                <i class="arrow_carrot-right"></i>
-                                <i class="arrow_carrot-left"></i>
-                            </div>
                             <div class="scroll">
                                 <ul class="list-unstyled nav-sidebar">
                                     <li class="nav-item">
@@ -311,6 +483,118 @@
     <script src="js/style-docs-update.js"></script>
     <!-- Yasal Uyarı Popup'ı JS -->
     <script src="js/legal-notice.js"></script>
+    
+    <script>
+        // Scroll ile menü açma düğmesinin kontrolü
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.fixed-menu-toggle');
+            const breadcrumbSection = document.querySelector('.page_breadcrumb');
+            const sideNavPanel = document.querySelector('.side-nav-panel');
+            const sideNavOverlay = document.querySelector('.side-nav-overlay');
+            const header = document.querySelector('.sticky-nav');
+            let menuOpen = false;
+            
+            // Header yüksekliğini alma - sabit 74px kullan
+            function getHeaderHeight() {
+                return 74; // Sabit header yüksekliği
+            }
+            
+            // Pozisyonları güncelleme
+            function updatePositions() {
+                const headerHeight = getHeaderHeight();
+                // Menü toggle butonunun pozisyonunu güncelleme
+                if (menuToggle.classList.contains('visible')) {
+                    menuToggle.style.top = headerHeight + 'px';
+                }
+                
+                // Yan menü padding-top değerini güncelleme
+                sideNavPanel.style.paddingTop = headerHeight + 'px';
+            }
+            
+            // Mobil kontrolü
+            function isMobile() {
+                return window.innerWidth < 568;
+            }
+            
+            function checkScrollPosition() {
+                // Sadece mobil görünümde kontrolü yap
+                if (breadcrumbSection && isMobile()) {
+                    const breadcrumbPosition = breadcrumbSection.getBoundingClientRect().top;
+                    
+                    // Breadcrumb'ın üstüne gelindiğinde veya geçildiğinde
+                    if (breadcrumbPosition <= getHeaderHeight()) {
+                        menuToggle.classList.add('visible');
+                        updatePositions();
+                    } else {
+                        menuToggle.classList.remove('visible');
+                    }
+                } else if (!isMobile()) {
+                    // Mobil değilse gizle
+                    menuToggle.classList.remove('visible');
+                }
+            }
+            
+            // Sayfa yüklendiğinde pozisyonu kontrol et
+            checkScrollPosition();
+            
+            // Scroll olayında pozisyonu kontrol et
+            window.addEventListener('scroll', function() {
+                checkScrollPosition();
+            });
+            
+            // Ekran boyutu değiştiğinde pozisyonu kontrol et
+            window.addEventListener('resize', function() {
+                checkScrollPosition();
+            });
+            
+            // Menü açma/kapama düğmesine tıklama olayı
+            menuToggle.addEventListener('click', function() {
+                if (!menuOpen) {
+                    // Menüyü aç
+                    sideNavPanel.classList.add('open');
+                    sideNavOverlay.classList.add('active');
+                    menuToggle.classList.add('open');
+                    document.body.style.overflow = 'hidden'; // Sayfa scrollunu engelle
+                    menuOpen = true;
+                } else {
+                    // Menüyü kapat
+                    closeMenu();
+                }
+            });
+            
+            // Menüyü kapatma işlevi
+            function closeMenu() {
+                sideNavPanel.classList.remove('open');
+                sideNavOverlay.classList.remove('active');
+                menuToggle.classList.remove('open');
+                document.body.style.overflow = ''; // Sayfa scrollunu geri aç
+                menuOpen = false;
+            }
+            
+            // Overlay'e tıklama olayı
+            sideNavOverlay.addEventListener('click', closeMenu);
+            
+            // Yan menüdeki linklere tıklama olayı
+            const sideNavLinks = document.querySelectorAll('.side-nav-panel .nav-item a');
+            sideNavLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Eğer aynı sayfada içerik yükleme fonksiyonu varsa
+                    const contentFile = this.getAttribute('data-content-file');
+                    if (contentFile && typeof loadContent === 'function') {
+                        e.preventDefault();
+                        
+                        // Önce tüm linklerden active sınıfını kaldır
+                        sideNavLinks.forEach(l => l.classList.remove('active'));
+                        // Tıklanan linke active sınıfını ekle
+                        this.classList.add('active');
+                        
+                        loadContent(contentFile);
+                        closeMenu();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
