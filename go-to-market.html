@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="css/responsive.css">
     <!-- Güvenlik CSS -->
     <link rel="stylesheet" href="css/security.css">
+    <!-- Mobil Menü CSS -->
+    <link rel="stylesheet" href="css/mobile-menu.css">
     <title>Go to Market - Tipbox Docs</title>
 
     <!-- Firebase SDK -->
@@ -39,6 +41,9 @@
     
     <!-- Auth JS - Firebase yapılandırması ve auth işlemleri için -->
     <script src="js/auth.js"></script>
+    
+    <!-- Mobil Menü JS -->
+    <script src="js/mobile-menu.js"></script>
 
     <script>
         // Component'ları yükle ve sonra Firebase kontrolünü yap
@@ -146,6 +151,55 @@
     <div class="body_wrapper">
         <!-- Header Component -->
         <div include-html="components/header.html" class="sticky-nav"></div>
+
+        <!-- Sabit menü açma düğmesi -->
+        <div class="fixed-menu-toggle">
+            <i class="arrow_right"></i>
+        </div>
+        
+        <!-- Yan menü paneli -->
+        <div class="side-nav-panel">
+            <div class="nav-content">
+                <h3 class="nav-title">Hızlı Erişim Menüsü</h3>
+                <ul class="list-unstyled nav-sidebar">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-content-file="go-to-market/gtm-overview.html">
+                            <div class="nav-link-content">
+                                <span>Genel Bakış</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="go-to-market/market-strategy.html">
+                            <div class="nav-link-content">
+                                <span>Pazar Stratejisi</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="go-to-market/target-audience.html">
+                            <div class="nav-link-content">
+                                <span>Hedef Kitle</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="go-to-market/growth-plans.html">
+                            <div class="nav-link-content">
+                                <span>Büyüme Planları</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Yan menü arka plan overlay -->
+        <div class="side-nav-overlay"></div>
 
         <!--================Banner Area =================-->
         <section class="doc_banner_area search-banner-light">

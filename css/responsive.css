@@ -551,6 +551,9 @@
   .blog_grid_post .grid_post_content {
     padding: 25px 25px 35px;
   }
+  .doc_documentation_area.body_fixed .doc_left_sidebarlist {
+    width: 290px;
+  }
   .doc_rightsidebar {
     width: 200px;
   }

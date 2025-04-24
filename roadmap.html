@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="css/responsive.css">
     <!-- Güvenlik CSS -->
     <link rel="stylesheet" href="css/security.css">
+    <!-- Mobil Menü CSS -->
+    <link rel="stylesheet" href="css/mobile-menu.css">
     <title>Finance | TipBox Documentation</title>
 
     <!-- Güvenlik JS -->
@@ -40,6 +42,9 @@
     
     <!-- Auth JS - Firebase yapılandırması ve auth işlemleri için -->
     <script src="js/auth.js"></script>
+    
+    <!-- Mobil Menü JS -->
+    <script src="js/mobile-menu.js"></script>
 
     <script>
         // Include components script'ini güncelleyelim
@@ -82,6 +87,63 @@
     <div class="body_wrapper">
         <!-- Header Component -->
         <div include-html="components/header.html" class="sticky-nav"></div>
+
+        <!-- Sabit menü açma düğmesi -->
+        <div class="fixed-menu-toggle">
+            <i class="arrow_right"></i>
+        </div>
+        
+        <!-- Yan menü paneli -->
+        <div class="side-nav-panel">
+            <div class="nav-content">
+                <h3 class="nav-title">Hızlı Erişim Menüsü</h3>
+                <ul class="list-unstyled nav-sidebar">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-content-file="roadmap/executive-summary.html">
+                            <div class="nav-link-content">
+                                <span>Executive Summary</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="roadmap/market-overview.html">
+                            <div class="nav-link-content">
+                                <span>Market Overview</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="roadmap/development-phases.html">
+                            <div class="nav-link-content">
+                                <span>Development Phases</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="roadmap/milestone-planning.html">
+                            <div class="nav-link-content">
+                                <span>Milestone Planning</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="roadmap/future-plans.html">
+                            <div class="nav-link-content">
+                                <span>Future Plans</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Yan menü arka plan overlay -->
+        <div class="side-nav-overlay"></div>
 
         <div class="mobile_main_menu dark_menu sticky-nav ">
             <div class="container">

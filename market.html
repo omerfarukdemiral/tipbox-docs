@@ -30,6 +30,8 @@
     <link rel="stylesheet" href="css/security.css">
     <!-- İçindekiler (TOC) Özel Stilleri -->
     <link rel="stylesheet" href="css/custom-toc.css">
+    <!-- Mobil Menü CSS -->
+    <link rel="stylesheet" href="css/mobile-menu.css">
     <title>Market | TipBox Documentation</title>
 
     <!-- Güvenlik JS -->
@@ -68,6 +70,9 @@
 
     <!-- Market özel script -->
     <script src="js/market.js"></script>
+    
+    <!-- Mobil Menü JS -->
+    <script src="js/mobile-menu.js"></script>
 </head>
 
 <body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true"
@@ -89,6 +94,70 @@
         <!-- Header Component -->
         <div include-html="components/header.html" class="sticky-nav"></div>
 
+        <!-- Sabit menü açma düğmesi -->
+        <div class="fixed-menu-toggle">
+            <i class="arrow_right"></i>
+        </div>
+        
+        <!-- Yan menü paneli -->
+        <div class="side-nav-panel">
+            <div class="nav-content">
+                <h3 class="nav-title">Hızlı Erişim Menüsü</h3>
+                <ul class="list-unstyled nav-sidebar">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-content-file="market/market-overview.html">
+                            <div class="nav-link-content">
+                                <span>Market Overview</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="market/target-market-segmentation.html">
+                            <div class="nav-link-content">
+                                <span>Target Market Segmentation</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="market/market-positioning.html">
+                            <div class="nav-link-content">
+                                <span>Market Positioning</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="market/global-local-trends.html">
+                            <div class="nav-link-content">
+                                <span>Global & Local Trends</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="market/user-journey-map.html">
+                            <div class="nav-link-content">
+                                <span>User Journey Map</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="market/risk-assesments-pestelc.html">
+                            <div class="nav-link-content">
+                                <span>Risk Assessments (PESTELC)</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Yan menü arka plan overlay -->
+        <div class="side-nav-overlay"></div>
 
         <!--================Forum Breadcrumb Area =================-->
         <section class="doc_banner_area search-banner-light">
@@ -131,10 +200,6 @@
                 <div class="row">
                     <div class="col-lg-3 doc_mobile_menu">
                         <aside class="doc_left_sidebarlist">
-                            <div class="open_icon" id="left">
-                                <i class="arrow_carrot-right"></i>
-                                <i class="arrow_carrot-left"></i>
-                            </div>
                             <div class="scroll">
                                 <ul class="list-unstyled nav-sidebar">
                                     <li class="nav-item">

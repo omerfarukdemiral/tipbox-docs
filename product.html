@@ -30,6 +30,8 @@
     <link rel="stylesheet" href="css/security.css">
     <!-- İçindekiler (TOC) Özel Stilleri -->
     <link rel="stylesheet" href="css/custom-toc.css">
+    <!-- Mobil Menü CSS -->
+    <link rel="stylesheet" href="css/mobile-menu.css">
     <title>Ürün | TipBox Dokümantasyon</title>
 
     <!-- Güvenlik JS -->
@@ -67,6 +69,9 @@
 
     <!-- Product özel script -->
     <script src="js/product.js"></script>
+    
+    <!-- Mobil Menü JS -->
+    <script src="js/mobile-menu.js"></script>
 </head>
 
 <body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true"
@@ -88,6 +93,86 @@
         <!-- Header Component -->
         <div include-html="components/header.html" class="sticky-nav"></div>
 
+        <!-- Sabit menü açma düğmesi -->
+        <div class="fixed-menu-toggle">
+            <i class="arrow_right"></i>
+        </div>
+        
+        <!-- Yan menü paneli -->
+        <div class="side-nav-panel">
+            <div class="nav-content">
+                <h3 class="nav-title">Hızlı Erişim Menüsü</h3>
+                <ul class="list-unstyled nav-sidebar">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-content-file="product/overview.html">
+                            <div class="nav-link-content">
+                                <span>Genel Bakış</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="product/focus-problems.html">
+                            <div class="nav-link-content">
+                                <span>Odaklanılan Problemler</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="product/compact-solutions.html">
+                            <div class="nav-link-content">
+                                <span>Kompakt Çözümler</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="product/platform-concept-and-highlighted-features.html">
+                            <div class="nav-link-content">
+                                <span>Platform Konsepti ve Öne Çıkan Özellikler</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="product/users-and-ecosystem.html">
+                            <div class="nav-link-content">
+                                <span>Kullanıcılar ve Ekosistem</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="product/on-platform-economy.html">
+                            <div class="nav-link-content">
+                                <span>Platform Üzerindeki Ekonomi</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="product/revenue-sharing-incentive-and-reward-mechanisms.html">
+                            <div class="nav-link-content">
+                                <span>Gelir Paylaşımı, Teşvik ve Ödül Mekanizmaları</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="product/tips.html">
+                            <div class="nav-link-content">
+                                <span>İpuçları</span>
+                                <i class="arrow_right"></i>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Yan menü arka plan overlay -->
+        <div class="side-nav-overlay"></div>
 
         <!--================Forum Breadcrumb Area =================-->
         <section class="doc_banner_area search-banner-light">
@@ -130,10 +215,7 @@
                 <div class="row">
                     <div class="col-lg-3 doc_mobile_menu">
                         <aside class="doc_left_sidebarlist">
-                            <div class="open_icon" id="left">
-                                <i class="arrow_carrot-right"></i>
-                                <i class="arrow_carrot-left"></i>
-                            </div>
+                           
                             <div class="scroll">
                                 <ul class="list-unstyled nav-sidebar">
                                     <li class="nav-item">
