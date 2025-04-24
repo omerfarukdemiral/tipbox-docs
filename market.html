@@ -68,28 +68,6 @@
 
     <!-- Market özel script -->
     <script src="js/market.js"></script>
-
-    <style>
-        /* Aktif menü öğesi için stil */
-        .nav-sidebar .nav-item a.active {
-            background: rgba(82, 146, 248, 0.1);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-sidebar .nav-item a.active img {
-            filter: brightness(1.2);
-        }
-
-        /* Alt menü öğeleri için stil */
-        .nav-sidebar .dropdown_nav a.active {
-            background: rgba(82, 146, 248, 0.1);
-            border-radius: 8px;
-            padding: 8px 12px;
-            display: block;
-            margin: 4px 0;
-        }
-    </style>
 </head>
 
 <body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true"
@@ -160,34 +138,52 @@
                             <div class="scroll">
                                 <ul class="list-unstyled nav-sidebar">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link active"
-                                            data-content-file="market/market-overview.html"><img
-                                                src="img/side-nav/home.png" alt="">Market Overview</a>
+                                        <a href="#" class="nav-link active" data-content-file="market/market-overview.html">
+                                            <div class="nav-link-content">
+                                                <span>Market Overview</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="market/target-market-segmentation.html"><img
-                                                src="img/side-nav/document.png" alt="">Target Market Segmentation</a>
+                                        <a href="#" class="nav-link" data-content-file="market/target-market-segmentation.html">
+                                            <div class="nav-link-content">
+                                                <span>Target Market Segmentation</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="market/market-positioning.html"><img
-                                                src="img/side-nav/chat1.png" alt="">Market Positioning</a>
+                                        <a href="#" class="nav-link" data-content-file="market/market-positioning.html">
+                                            <div class="nav-link-content">
+                                                <span>Market Positioning</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="market/global-local-trends.html"><img
-                                                src="img/side-nav/chart.png" alt="">Global & Local Trends</a>
+                                        <a href="#" class="nav-link" data-content-file="market/global-local-trends.html">
+                                            <div class="nav-link-content">
+                                                <span>Global & Local Trends</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="market/user-journey-map.html"><img
-                                                src="img/side-nav/users.png" alt="">User Journey Map</a>
+                                        <a href="#" class="nav-link" data-content-file="market/user-journey-map.html">
+                                            <div class="nav-link-content">
+                                                <span>User Journey Map</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="market/risk-assesments-pestelc.html"><img
-                                                src="img/side-nav/analytics.png" alt="">Risk Assessments (PESTELC)</a>
+                                        <a href="#" class="nav-link" data-content-file="market/risk-assesments-pestelc.html">
+                                            <div class="nav-link-content">
+                                                <span>Risk Assessments (PESTELC)</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>

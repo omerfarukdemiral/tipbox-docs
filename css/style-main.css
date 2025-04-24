@@ -6729,12 +6729,6 @@ body.body_dark .table-of-content .nav-link:hover {
 .nav-sidebar {
   margin-bottom: 0;
 }
-.nav-sidebar .nav-item {
-  margin-bottom: 20px;
-  padding-right: 35px;
-  position: relative;
-  cursor: pointer;
-}
 .nav-sidebar .nav-item .nav-link {
   padding: 0;
   display: flex;
@@ -15483,7 +15477,6 @@ body.body_dark .table-of-content .nav-link:hover {
   margin-bottom: 0;
 }
 .nav-sidebar .nav-item {
-  margin-bottom: 20px;
   padding-right: 35px;
   position: relative;
   cursor: pointer;
@@ -26155,8 +26148,17 @@ body.body_dark img.logo-light {
 .body_dark .nav-sidebar .nav-item .nav-link {
   color: #c7c9d3;
 }
-.body_dark .nav-sidebar .nav-item .nav-link.active, .body_dark .nav-sidebar .nav-item .nav-link:hover {
-  color: var(--brand_color);
+.body_dark .nav-sidebar .nav-item .nav-link:hover {
+  color: #d8ff08!important;
+  background-color: #202122;
+  border-radius: 8px;
+}
+.body_dark .nav-sidebar .nav-item .nav-link.active{
+  color: #d8ff08!important;
+}
+
+.body_dark .nav-sidebar .nav-item .nav-link {
+  padding: 7px 10px;
 }
 .body_dark .nav-sidebar .nav-item .dropdown_nav li a {
   color: #bbb;
@@ -26232,6 +26234,64 @@ body.body_dark img.logo-light {
   padding: 15px;
 }
 
+/* Aktif menü öğesi için stil */
+.nav-sidebar .nav-item a.active {
+  /*background-color: #202122;*/
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.nav-sidebar .nav-item a.active img {
+  filter: brightness(1.2);
+}
+
+/* Menü ok ikonları için özel stil */
+.nav-link-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  padding-right: 30px;
+}
+
+.nav-link-content span {
+  flex: 1;
+}
+
+.nav-link-content i {
+  font-size: 16px;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  position: absolute;
+  right: 0;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.nav-link:hover i {
+  opacity: 1;
+  transform: translateX(3px);
+  color: #d8ff08 !important; /* Yeşil/sarı renk tonunda aktif menü rengi */
+}
+
+.nav-link.active i {
+  opacity: 1;
+  transform: none;
+  color: #d8ff08 !important; /* Yeşil/sarı renk tonunda aktif menü rengi */
+} 
+
+.nav-item .nav-link {
+  display: block;
+  width: 100%;
+  padding: 12px 15px;
+  transition: all 0.3s ease;
+}
+
+.nav-link.active {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+} 
+
 /* === Responsive Style Fix === */
 @media (max-width: 767px) {
     .doc_documentation_area.body_fixed .doc_left_sidebarlist {
@@ -26240,4 +26300,3 @@ body.body_dark img.logo-light {
         width: 100% !important;
     }
 }
-

@@ -44,7 +44,6 @@
     <!-- Auth JS - Firebase yapılandırması ve auth işlemleri için -->
     <script src="js/auth.js"></script>
     <script src="js/pageViews.js"></script>
-    <!-- Firebase bitiş -->
 
     <script>
         // Include components script'ini güncelleyelim
@@ -68,28 +67,6 @@
 
     <!-- Product özel script -->
     <script src="js/product.js"></script>
-
-    <style>
-        /* Aktif menü öğesi için stil */
-        .nav-sidebar .nav-item a.active {
-            background: rgba(82, 146, 248, 0.1);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-sidebar .nav-item a.active img {
-            filter: brightness(1.2);
-        }
-
-        /* Alt menü öğeleri için stil */
-        .nav-sidebar .dropdown_nav a.active {
-            background: rgba(82, 146, 248, 0.1);
-            border-radius: 8px;
-            padding: 8px 12px;
-            display: block;
-            margin: 4px 0;
-        }
-    </style>
 </head>
 
 <body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true"
@@ -160,44 +137,68 @@
                             <div class="scroll">
                                 <ul class="list-unstyled nav-sidebar">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link active"
-                                            data-content-file="product/overview.html"><img
-                                                src="img/side-nav/home.png" alt="">Genel Bakış</a>
+                                        <a href="#" class="nav-link active" data-content-file="product/overview.html">
+                                            <div class="nav-link-content">
+                                                <span>Genel Bakış</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="product/focus-problems.html"><img
-                                                src="img/side-nav/document.png" alt="">Odaklanılan Problemler</a>
+                                        <a href="#" class="nav-link" data-content-file="product/focus-problems.html">
+                                            <div class="nav-link-content">
+                                                <span>Odaklanılan Problemler</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="product/compact-solutions.html"><img
-                                                src="img/side-nav/chat1.png" alt="">Kompakt Çözümler</a>
+                                        <a href="#" class="nav-link" data-content-file="product/compact-solutions.html">
+                                            <div class="nav-link-content">
+                                                <span>Kompakt Çözümler</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="product/platform-concept-and-highlighted-features.html"><img
-                                                src="img/side-nav/chat1.png" alt="">Platform Konsepti ve Öne Çıkan Özellikler</a>
+                                        <a href="#" class="nav-link" data-content-file="product/platform-concept-and-highlighted-features.html">
+                                            <div class="nav-link-content">
+                                                <span>Platform Konsepti ve Öne Çıkan Özellikler</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="product/users-and-ecosystem.html"><img
-                                                src="img/side-nav/chat1.png" alt="">Kullanıcılar ve Ekosistem</a>
+                                        <a href="#" class="nav-link" data-content-file="product/users-and-ecosystem.html">
+                                            <div class="nav-link-content">
+                                                <span>Kullanıcılar ve Ekosistem</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="product/on-platform-economy.html"><img
-                                                src="img/side-nav/chat1.png" alt="">Platform Üzerindeki Ekonomi</a>
+                                        <a href="#" class="nav-link" data-content-file="product/on-platform-economy.html">
+                                            <div class="nav-link-content">
+                                                <span>Platform Üzerindeki Ekonomi</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="product/revenue-sharing-incentive-and-reward-mechanisms.html"><img
-                                                src="img/side-nav/chat1.png" alt="">Gelir Paylaşımı, Teşvik ve Ödül Mekanizmaları</a>
+                                        <a href="#" class="nav-link" data-content-file="product/revenue-sharing-incentive-and-reward-mechanisms.html">
+                                            <div class="nav-link-content">
+                                                <span>Gelir Paylaşımı, Teşvik ve Ödül Mekanizmaları</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="product/tips.html"><img
-                                                src="img/side-nav/chat1.png" alt="">İpuçları</a>
+                                        <a href="#" class="nav-link" data-content-file="product/tips.html">
+                                            <div class="nav-link-content">
+                                                <span>İpuçları</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>

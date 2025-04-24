@@ -68,28 +68,6 @@
 
     <!-- Technology özel script -->
     <script src="js/technology.js"></script>
-
-    <style>
-        /* Aktif menü öğesi için stil */
-        .nav-sidebar .nav-item a.active {
-            background: rgba(82, 146, 248, 0.1);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-sidebar .nav-item a.active img {
-            filter: brightness(1.2);
-        }
-
-        /* Alt menü öğeleri için stil */
-        .nav-sidebar .dropdown_nav a.active {
-            background: rgba(82, 146, 248, 0.1);
-            border-radius: 8px;
-            padding: 8px 12px;
-            display: block;
-            margin: 4px 0;
-        }
-    </style>
 </head>
 
 <body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true"
@@ -161,24 +139,36 @@
                             <div class="scroll">
                                 <ul class="list-unstyled nav-sidebar">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link active"
-                                            data-content-file="technology/multi-layered-architecture.html"><img
-                                                src="img/side-nav/home.png" alt="">Multi-Layered Architecture</a>
+                                        <a href="#" class="nav-link active" data-content-file="technology/multi-layered-architecture.html">
+                                            <div class="nav-link-content">
+                                                <span>Multi-Layered Architecture</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="technology/application-architecture.html"><img
-                                                src="img/side-nav/document.png" alt="">Application Architecture</a>
+                                        <a href="#" class="nav-link" data-content-file="technology/application-architecture.html">
+                                            <div class="nav-link-content">
+                                                <span>Application Architecture</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="technology/core-architectural-principles.html"><img
-                                                src="img/side-nav/chat1.png" alt="">Core Architectural Principles </a>
+                                        <a href="#" class="nav-link" data-content-file="technology/core-architectural-principles.html">
+                                            <div class="nav-link-content">
+                                                <span>Core Architectural Principles</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="technology/network-infrastructure.html"><img
-                                                src="img/side-nav/chat1.png" alt="">Network Infrastructure</a>
+                                        <a href="#" class="nav-link" data-content-file="technology/network-infrastructure.html">
+                                            <div class="nav-link-content">
+                                                <span>Network Infrastructure</span>
+                                                <i class="arrow_right"></i>
+                                            </div>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>

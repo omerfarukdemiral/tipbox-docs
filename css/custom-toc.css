@@ -108,7 +108,7 @@ body.body_dark .table-of-content .nav-link {
 }
 
 body.body_dark .table-of-content .nav-link:hover {
-    color: var(--brand_color);
+    color: #d8ff08;
 }
 
 body.body_dark .table-of-content .nav.flex-column .nav-link:before {
