@@ -1,4 +1,4 @@
-// Project Blueprint sayfası için işlevsellik
+// Market sayfası için işlevsellik
 
 // Menü elemanlarına tıklandığında içeriği değiştiren fonksiyon
 async function loadContent(contentFile) {
@@ -11,6 +11,9 @@ async function loadContent(contentFile) {
         const contentContainer = document.querySelector('.doc-middle-content');
         if (contentContainer) {
             contentContainer.innerHTML = content;
+            
+            // İçerik yüklendikten sonra içindekiler tablosunu oluştur
+            generateTableOfContents();
         }
 
         // URL'i güncelle (sayfa yenilenmeden)
@@ -20,15 +23,30 @@ async function loadContent(contentFile) {
 
         // URL'de hash varsa ilgili içeriğe kaydır
         if (window.location.hash) {
-            // Sayfayı içeriğin başladığı yere kaydır (Search Banner'ın altı)
-            const docContent = document.querySelector('.doc_documentation_area');
-            if (docContent) {
-                const offset = 20; // Biraz boşluk bırakmak için
-                const topPosition = docContent.offsetTop - offset;
+            // Hedef başlığı bul
+            const targetId = window.location.hash.substring(1);
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                // Sabit bir offset yerine, ekranın üst kısmında görünmesini sağla
+                const headerHeight = 100; // Üst menünün tahmini yüksekliği
+                const scrollPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                
+                // Sayfayı hesaplanan pozisyona kaydır
                 window.scrollTo({
-                    top: topPosition,
+                    top: scrollPosition,
                     behavior: 'smooth'
                 });
+            } else {
+                // Eğer belirli bir başlık bulunamazsa, içeriğin başına git
+                const docContent = document.querySelector('.doc_documentation_area');
+                if (docContent) {
+                    const headerHeight = 100; // Üst menünün tahmini yüksekliği
+                    window.scrollTo({
+                        top: docContent.offsetTop - headerHeight,
+                        behavior: 'smooth'
+                    });
+                }
             }
         }
 
@@ -36,6 +54,149 @@ async function loadContent(contentFile) {
         updateActiveMenuItem(contentFile);
     } catch (error) {
         console.error('Error loading content:', error);
+    }
+}
+
+// İçindekiler tablosunu otomatik olarak oluşturan fonksiyon
+function generateTableOfContents() {
+    // İçeriği içeren ana elementi seç
+    const contentContainer = document.querySelector('.doc-middle-content article .documentation_body');
+    if (!contentContainer) {
+        console.log("İçerik konteyneri bulunamadı, alternatif konteyner aranıyor...");
+        // Alternatif olarak sadece article içeriğini kontrol et
+        const articleContainer = document.querySelector('.doc-middle-content article');
+        if (!articleContainer) {
+            console.log("Hiçbir içerik konteyneri bulunamadı.");
+            return;
+        }
+        // Alternatif konteyneri kullan
+        processHeadings(articleContainer);
+    } else {
+        // Ana konteyneri kullan
+        processHeadings(contentContainer);
+    }
+    
+    // Başlıkları işleyip içindekiler tablosunu oluşturan yardımcı fonksiyon
+    function processHeadings(container) {
+        // Tüm başlıkları seç (h1, h2, h3, h4)
+        const headings = container.querySelectorAll('h1, h2, h3, h4');
+        if (headings.length === 0) {
+            console.log("İçerik içinde başlık bulunamadı.");
+            return;
+        }
+        
+        console.log("Bulunan başlık sayısı:", headings.length);
+        
+        // İçindekiler tablosu için konteyner
+        const tocContainer = document.querySelector('.table-of-content');
+        if (!tocContainer) {
+            console.log("İçindekiler tablosu konteyneri bulunamadı.");
+            return;
+        }
+        
+        // İçindekiler tablosunu temizle ve başlığı ekle
+        tocContainer.innerHTML = '<h6><i class="icon_ul"></i> Table of Contents </h6>';
+        
+        // İçindekiler listesini oluştur
+        const navElement = document.createElement('nav');
+        navElement.className = 'list-unstyled doc_menu';
+        navElement.id = 'toc-nav';
+        
+        // Hierarşik yapı için alt menüleri tutacak öğeler
+        let currentLevel = 1;
+        let currentNav = navElement;
+        let navStack = [navElement];
+        
+        // Her başlık için bir link oluştur
+        headings.forEach((heading, index) => {
+            // Başlığa benzersiz bir ID ata (eğer yoksa)
+            if (!heading.id) {
+                // Başlık metninden güvenli bir ID oluştur
+                const safeId = heading.textContent
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/(^-|-$)/g, '');
+                heading.id = safeId || `heading-${index}`;
+                console.log("Yeni ID oluşturuldu:", heading.id);
+            } else {
+                console.log("Mevcut ID kullanıldı:", heading.id);
+            }
+            
+            // Başlık seviyesini belirle (h1=1, h2=2, vb.)
+            const level = parseInt(heading.tagName.substring(1));
+            
+            // Uzun başlık metinlerini kırpma
+            const headingText = heading.textContent;
+            const maxLength = 40; // Maksimum uzunluk
+            const displayText = headingText.length > maxLength
+                ? headingText.substring(0, maxLength) + '...'
+                : headingText;
+            
+            // Link öğesini oluştur
+            const link = document.createElement('a');
+            link.href = `#${heading.id}`;
+            link.className = 'nav-link';
+            link.textContent = displayText;
+            
+            // Title özelliği ile tam metni tooltip olarak göster
+            link.title = headingText;
+            
+            // Hierarşik yapıyı oluştur
+            if (level > currentLevel) {
+                // Alt seviye - yeni bir alt menü oluştur
+                const subNav = document.createElement('nav');
+                subNav.className = 'nav flex-column';
+                currentNav.appendChild(subNav);
+                navStack.push(subNav);
+                currentNav = subNav;
+            } else if (level < currentLevel) {
+                // Üst seviye - üst menüye dön
+                for (let i = 0; i < (currentLevel - level); i++) {
+                    if (navStack.length > 1) { // Ana nav'ı çıkarma
+                        navStack.pop();
+                    }
+                }
+                currentNav = navStack[navStack.length - 1];
+            }
+            
+            // Linki mevcut navegasyona ekle
+            currentNav.appendChild(link);
+            currentLevel = level;
+        });
+        
+        // Oluşturulan nav elementi içindekiler tablosuna ekle
+        tocContainer.appendChild(navElement);
+        
+        // İçindekiler tablosundaki linklere tıklandığında ilgili başlığa kay
+        const tocLinks = tocContainer.querySelectorAll('a');
+        tocLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    // Sabit bir offset yerine, ekranın üst kısmında görünmesini sağla
+                    // Ekran yüksekliğinin %15'i kadar aşağıda olsun
+                    const headerHeight = 100; // Üst menünün tahmini yüksekliği
+                    const scrollPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    // Sayfayı hesaplanan pozisyona kaydır
+                    window.scrollTo({
+                        top: scrollPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // URL'i güncelle (sayfa yenilenmeden)
+                    const newUrl = new URL(window.location.href);
+                    const baseHash = newUrl.hash.split('#')[1]?.split('-')[0];
+                    newUrl.hash = baseHash ? `${baseHash}-${targetId}` : targetId;
+                    window.history.pushState({}, '', newUrl);
+                }
+            });
+        });
+        
+        console.log("İçindekiler tablosu oluşturuldu.");
     }
 }
 
@@ -64,13 +225,17 @@ function updateActiveMenuItem(contentFile) {
 
 // Sayfa yüklendiğinde çalışacak kod
 document.addEventListener('DOMContentLoaded', function() {
+    // Önce varsayılan içerik için içindekiler tablosunu oluştur
+    generateTableOfContents();
+    
     // Menü elemanları yüklenmemiş olabilir, bu nedenle biraz bekleyelim
     setTimeout(() => {
-        initializeProjectBlueprintPage();
+        initializeMarketPage();
     }, 1000); // 1 saniye bekle
 });
 
-function initializeProjectBlueprintPage() {
+// Varsayılan olarak "market-overview.html" içeriğini yükle 
+async function initializeMarketPage() {
     // Tüm menü elemanlarını seç
     const menuItems = document.querySelectorAll('.nav-sidebar .nav-item a');
     
@@ -84,31 +249,13 @@ function initializeProjectBlueprintPage() {
         });
     });
 
-    let isExecutiveSummaryLoaded = false; // Bayrak değişkeni
-
-    // URL'de hash varsa ilgili içeriği yükle
-    if (window.location.hash) {
-        const contentFile = window.location.hash.slice(1) + '.html';
-        loadContent(contentFile);
-    } else {
-        // Varsayılan olarak executive-summary'yi yükle
-        isExecutiveSummaryLoaded = true; // Bayrağı ayarla
-        loadContent('project-blueprint/executive-summary.html');
-    }
-
-    // İçerik yüklendikten sonra kaydırma işlemi
-    if (isExecutiveSummaryLoaded) {
-        window.scrollTo(0, 0); // Sayfayı en üste kaydır
-    } else if (window.location.hash) {
-        // Sayfayı içeriğin başladığı yere kaydır (Search Banner'ın altı)
-        const docContent = document.querySelector('.doc_documentation_area');
-        if (docContent) {
-            const offset = 20; // Biraz boşluk bırakmak için
-            const topPosition = docContent.offsetTop - offset;
-            window.scrollTo({
-                top: topPosition,
-                behavior: 'smooth'
-            });
-        }
+    // Varsayılan olarak ilk içeriği yükle (market-overview.html)
+    const firstContentFile = "market/market-overview.html";
+    await loadContent(firstContentFile);
+    
+    // Varsayılan olarak ilk menü öğesini aktif hale getir
+    const firstMenuItem = document.querySelector('.nav-sidebar .nav-item a');
+    if (firstMenuItem) {
+        firstMenuItem.classList.add('active');
     }
 } 
