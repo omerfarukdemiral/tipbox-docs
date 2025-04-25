@@ -1,0 +1,18 @@
+<IfModule mod_headers.c>
+    Header set Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+</IfModule>
+
+# Ayrıca HTML dosyaları için MIME türüne göre önbelleğe almayı engelle
+<FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+</FilesMatch>
+
+# Dosya değiştirilmemiş olsa bile sunucunun her zaman yanıt vermesini sağla
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+FileETag None 
