@@ -841,26 +841,6 @@
             align-items: center;
         }
         
-        .sidebar-submenu {
-            padding-left: 0;
-            list-style: none;
-            display: none;
-            background: rgba(0, 0, 0, 0.15);
-        }
-        
-        .sidebar-submenu li a {
-            display: block;
-            padding: 10px 25px;
-            color: #bcc2d3;
-            font-size: 14px;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-        
-        .sidebar-submenu li a:hover {
-            color: #fff;
-        }
-        
         .sidebar-footer {
             padding: 15px;
             text-align: center;
@@ -2080,44 +2060,6 @@
                     "overflow": "auto",
                     "position": "static"
                 });
-            });
-            
-            // Dropdown Menus
-            $(".sidebar-dropdown > a").on("click", function(e) {
-                e.preventDefault();
-                $(this).parent().toggleClass("active");
-                
-                // Max-height değerini hesaplayalım
-                const submenu = $(this).next(".sidebar-submenu");
-                if (submenu.length) {
-                    if ($(this).parent().hasClass("active")) {
-                        submenu.css("max-height", submenu[0].scrollHeight + "px");
-                    } else {
-                        submenu.css("max-height", "0");
-                    }
-                }
-                
-                // Diğer açık menüleri kapat
-                $(this).parent().siblings().removeClass("active").find(".sidebar-submenu").css("max-height", "0");
-            });
-            
-            // Sayfa yüklendiğinde stil düzeltmeleri
-            $(window).on("load", function() {
-                // CSS ekleme
-                const style = $("<style>")
-                .text(`
-                    body.body-sidebar-active {
-                        overflow: auto !important;
-                        position: static !important;
-                    }
-                    .sidebar-menu {
-                        overflow-y: auto !important;
-                    }
-                    .sidebar-dropdown.active .sidebar-submenu {
-                        max-height: 500px !important;
-                    }
-                `);
-                $("head").append(style);
             });
         });
     </script>

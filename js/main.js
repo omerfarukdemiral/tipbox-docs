@@ -55,14 +55,12 @@
     });
   }
 
-  // Global window objesi için toggleSidebarMenu fonksiyonunu oluşturalım
-  window.toggleSidebarMenu = function() {
+  
+  function toggleSidebarMenu() {
     // Eğer sidebar-controller.js'den gelen toggleSidebar fonksiyonu varsa onu kullan
     if (typeof window.toggleSidebar === 'function') {
-      console.log("toggleSidebar fonksiyonu var");
       window.toggleSidebar();
     } else {
-      console.log("toggleSidebar fonksiyonu yok");
       $('body').toggleClass('body-sidebar-active');
     }
   }
@@ -77,21 +75,21 @@
     if ($sidebarToggleBtn.length) {
       $sidebarToggleBtn.on('click', function(e) {
         e.preventDefault();
-        window.toggleSidebarMenu();
+        toggleSidebarMenu();
       });
     }
     
     if ($sidebarCloseBtn.length) {
       $sidebarCloseBtn.on('click', function(e) {
         e.preventDefault();
-        window.toggleSidebarMenu();
+        toggleSidebarMenu();
       });
     }
     
     if ($sidebarOverlay.length) {
       $sidebarOverlay.on('click', function(e) {
         e.preventDefault();
-        window.toggleSidebarMenu();
+        toggleSidebarMenu();
       });
     }
     

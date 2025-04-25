@@ -3,6 +3,7 @@
  * This script handles the mobile side menu functionality
  */
 document.addEventListener('DOMContentLoaded', function() {
+    // Gerekli elementleri seçelim
     const menuToggle = document.querySelector('.fixed-menu-toggle');
     const breadcrumbSection = document.querySelector('.page_breadcrumb');
     const sideNavPanel = document.querySelector('.side-nav-panel');
@@ -52,6 +53,35 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Menüyü açma fonksiyonu
+    function openMenu() {
+        if (sideNavPanel) sideNavPanel.classList.add('open');
+        if (sideNavOverlay) sideNavOverlay.classList.add('active');
+        if (menuToggle) menuToggle.classList.add('open');
+        document.body.style.overflow = 'hidden'; // Sayfa scrollunu engelle
+        menuOpen = true;
+    }
+    
+    // Menüyü kapatma işlevi
+    function closeMenu() {
+        if (sideNavPanel) sideNavPanel.classList.remove('open');
+        if (sideNavOverlay) sideNavOverlay.classList.remove('active');
+        if (menuToggle) menuToggle.classList.remove('open');
+        document.body.style.overflow = ''; // Sayfa scrollunu geri aç
+        menuOpen = false;
+    }
+    
+    // Menü toggle fonksiyonu
+    function toggleMenu(e) {
+        if (e) e.preventDefault();
+        
+        if (!menuOpen) {
+            openMenu();
+        } else {
+            closeMenu();
+        }
+    }
+    
     // Sayfa yüklendiğinde pozisyonu kontrol et
     if (menuToggle) {
         checkScrollPosition();
@@ -66,53 +96,42 @@ document.addEventListener('DOMContentLoaded', function() {
             checkScrollPosition();
         });
         
-        // Menü açma/kapama düğmesine tıklama olayı
-        menuToggle.addEventListener('click', function() {
-            if (!menuOpen) {
-                // Menüyü aç
-                if (sideNavPanel) sideNavPanel.classList.add('open');
-                if (sideNavOverlay) sideNavOverlay.classList.add('active');
-                menuToggle.classList.add('open');
-                document.body.style.overflow = 'hidden'; // Sayfa scrollunu engelle
-                menuOpen = true;
-            } else {
-                // Menüyü kapat
-                closeMenu();
-            }
-        });
-    }
-    
-    // Menüyü kapatma işlevi
-    function closeMenu() {
-        if (sideNavPanel) sideNavPanel.classList.remove('open');
-        if (sideNavOverlay) sideNavOverlay.classList.remove('active');
-        if (menuToggle) menuToggle.classList.remove('open');
-        document.body.style.overflow = ''; // Sayfa scrollunu geri aç
-        menuOpen = false;
+        // Önce varsa eski event listener'ı temizle
+        menuToggle.removeEventListener('click', toggleMenu);
+        
+        // Menü açma/kapama düğmesine tıklama olayı ekle
+        menuToggle.addEventListener('click', toggleMenu);
     }
     
     // Overlay'e tıklama olayı
     if (sideNavOverlay) {
+        sideNavOverlay.removeEventListener('click', closeMenu);
         sideNavOverlay.addEventListener('click', closeMenu);
+    }
+    
+    // Link tıklama olayı handler fonksiyonu
+    function handleLinkClick(e) {
+        // Eğer aynı sayfada içerik yükleme fonksiyonu varsa
+        const contentFile = this.getAttribute('data-content-file');
+        if (contentFile && typeof loadContent === 'function') {
+            e.preventDefault();
+            
+            // Önce tüm linklerden active sınıfını kaldır
+            document.querySelectorAll('.side-nav-panel .nav-item a').forEach(l => l.classList.remove('active'));
+            // Tıklanan linke active sınıfını ekle
+            this.classList.add('active');
+            
+            loadContent(contentFile);
+            closeMenu();
+        }
     }
     
     // Yan menüdeki linklere tıklama olayı
     const sideNavLinks = document.querySelectorAll('.side-nav-panel .nav-item a');
     sideNavLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Eğer aynı sayfada içerik yükleme fonksiyonu varsa
-            const contentFile = this.getAttribute('data-content-file');
-            if (contentFile && typeof loadContent === 'function') {
-                e.preventDefault();
-                
-                // Önce tüm linklerden active sınıfını kaldır
-                sideNavLinks.forEach(l => l.classList.remove('active'));
-                // Tıklanan linke active sınıfını ekle
-                this.classList.add('active');
-                
-                loadContent(contentFile);
-                closeMenu();
-            }
-        });
+        // Önce varsa eski event listener'ı temizle
+        link.removeEventListener('click', handleLinkClick);
+        // Yeni event listener ekle
+        link.addEventListener('click', handleLinkClick);
     });
 }); 

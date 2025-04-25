@@ -554,6 +554,9 @@ body.body-sidebar-active .sidebar-menu,
 }
 </style>
 
+<!-- Main.js dosyasını import et, bu sayede header.html'deki script main.js'deki fonksiyonları kullanabilir -->
+<script src="../js/main.js"></script>
+
 <script>
 // Çıkış yapma işlemi - tüm sayfalarda çalışacak şekilde
 function logout() {
@@ -587,44 +590,7 @@ function logout() {
     }
 }
 
-// Sidebar menüsünü açma/kapama
-function toggleSidebarMenu() {
-    console.log("toggleSidebarMenu fonksiyonu çağrıldı");
-    
-    // Body class'ını değiştirelim ve konsola yazdıralım
-    document.body.classList.toggle('body-sidebar-active');
-    console.log("Body class durumu:", document.body.classList.contains('body-sidebar-active'));
-    
-    // Sidebar menüsünün stilini doğrudan değiştirelim
-    const sidebarMenu = document.querySelector('.sidebar-menu');
-    if (sidebarMenu) {
-        console.log("Sidebar menüsü bulundu");
-        if (document.body.classList.contains('body-sidebar-active')) {
-            sidebarMenu.style.right = '0';
-            sidebarMenu.style.transform = 'translate3d(0, 0, 0)';
-            console.log("Sidebar menüsü açıldı");
-        } else {
-            sidebarMenu.style.right = '-100%';
-            console.log("Sidebar menüsü kapandı");
-        }
-    } else {
-        console.error("Sidebar menüsü bulunamadı!");
-    }
-    
-    // Overlay'i de kontrol edelim
-    const overlay = document.querySelector('.sidebar-overlay');
-    if (overlay) {
-        if (document.body.classList.contains('body-sidebar-active')) {
-            overlay.style.visibility = 'visible';
-            overlay.style.opacity = '1';
-        } else {
-            overlay.style.visibility = 'hidden';
-            overlay.style.opacity = '0';
-        }
-    }
-}
-
-// Sidebar dropdown menülerini açma/kapama
+// Dropdown menüleri için event listener ekleyelim
 function toggleDropdown(element) {
     console.log("toggleDropdown fonksiyonu çağrıldı", element);
     
@@ -768,5 +734,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-</script> 
-<!-- Script içeriği header-controller.js dosyasına taşındı --> 
+</script> <!-- Script içeriği header-controller.js dosyasına taşındı --> 
