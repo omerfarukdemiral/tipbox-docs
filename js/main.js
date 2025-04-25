@@ -76,6 +76,11 @@
       $sidebarToggleBtn.on('click', function(e) {
         e.preventDefault();
         toggleSidebarMenu();
+        
+        // Mobil uyumluluk için eklendi
+        $("body").toggleClass("sidebar-menu-open");
+        $(".sidebar-menu").toggleClass("active");
+        $(".sidebar-overlay").toggleClass("active");
       });
     }
     
@@ -83,6 +88,11 @@
       $sidebarCloseBtn.on('click', function(e) {
         e.preventDefault();
         toggleSidebarMenu();
+        
+        // Mobil uyumluluk için eklendi
+        $("body").removeClass("sidebar-menu-open");
+        $(".sidebar-menu").removeClass("active");
+        $(".sidebar-overlay").removeClass("active");
       });
     }
     
@@ -90,6 +100,11 @@
       $sidebarOverlay.on('click', function(e) {
         e.preventDefault();
         toggleSidebarMenu();
+        
+        // Mobil uyumluluk için eklendi
+        $("body").removeClass("sidebar-menu-open");
+        $(".sidebar-menu").removeClass("active");
+        $(".sidebar-overlay").removeClass("active");
       });
     }
     
@@ -102,43 +117,86 @@
       if ($dropdownLink.length) {
         $dropdownLink.on('click', function(e) {
           e.preventDefault();
+          e.stopPropagation(); // Olay kabarcıklanmasını durdur
+          
           $dropdown.toggleClass('active');
           
-          // Alt menü görünürlüğünü ayarla
+          // Mobil ve desktop için ortak submenu görünürlüğü
           if ($dropdown.hasClass('active')) {
-            // Menü aktifse görünür yap
-            $submenu.css('display', 'block');
-            // Yüksekliği ayarla (animasyon için)
+            console.log("Menü aktifleştiriliyor");
+            
+            // Yumuşak açılma animasyonu için önce display block yapıp sonra transition
+            $submenu.css({
+              'display': 'block',
+              'transition': 'max-height 300ms ease-in-out'
+            });
+            
+            // Küçük bir gecikme ekleyerek animasyonun daha düzgün başlamasını sağla
             setTimeout(function() {
               $submenu.css('max-height', $submenu[0].scrollHeight + 'px');
             }, 10);
+            
+            // Diğer açık menüleri kapat (hem desktop hem mobil için)
+            $('.sidebar-dropdown').not($dropdown).each(function() {
+              const $otherDropdown = $(this);
+              const $otherSubmenu = $otherDropdown.find('.sidebar-submenu');
+              
+              $otherDropdown.removeClass('active');
+              
+              // Yumuşak kapanma animasyonu
+              $otherSubmenu.css({
+                'max-height': '0',
+                'transition': 'max-height 300ms ease-in-out'
+              });
+              
+              setTimeout(function() {
+                if (!$otherDropdown.hasClass('active')) {
+                  $otherSubmenu.css('display', 'none');
+                }
+              }, 300);
+            });
           } else {
-            // Menü aktif değilse gizle
-            $submenu.css('max-height', '0');
-            // Animasyon tamamlandıktan sonra display:none yap
-            setTimeout(function() {
+            console.log("Menü kapatılıyor");
+            
+            // Yumuşak kapanma animasyonu
+            $submenu.css({
+              'max-height': '0',
+              'transition': 'max-height 300ms ease-in-out'
+            });
+            
+            setTimeout(function() { 
               if (!$dropdown.hasClass('active')) {
                 $submenu.css('display', 'none');
               }
-            }, 300);
+            }, 300); // display none yapmak için animasyonun bitmesini bekle
           }
-          
-          // Diğer açık menüleri kapat
-          $('.sidebar-dropdown').not($dropdown).each(function() {
-            const $otherDropdown = $(this);
-            const $otherSubmenu = $otherDropdown.find('.sidebar-submenu');
-            
-            $otherDropdown.removeClass('active');
-            $otherSubmenu.css('max-height', '0');
-            
-            // Animasyon tamamlandıktan sonra display:none yap
-            setTimeout(function() {
-              if (!$otherDropdown.hasClass('active')) {
-                $otherSubmenu.css('display', 'none');
-              }
-            }, 300);
-          });
         });
+      }
+    });
+    
+    // Sidebar içindeki linklere tıklandığında mobil için sidebar'ı kapat
+    $(".doc_left_sidebarlist a, .sidebar-menu a").on("click", function() {
+      // Dropdown menüyü açma/kapama değilse sidebar'ı kapat
+      if (!$(this).parent().hasClass("sidebar-dropdown") && !$(this).hasClass("has-dropdown")) {
+        var isMobile = window.matchMedia("(max-width: 768px)").matches;
+        
+        if (isMobile) {
+          console.log("Mobil: Link tıklaması, sidebar kapatılıyor");
+          
+          // Genel sidebar kapatma
+          $("body").removeClass("sidebar-menu-open");
+          $(".sidebar-menu").removeClass("active");
+          $(".sidebar-overlay").removeClass("active");
+          
+          // Doc mobile menu için de kapat
+          $(".doc_documentation_area,#left").removeClass("overlay");
+          $(".doc_mobile_menu").animate({
+            left: "-345px",
+          }, 300);
+          
+          // Main sidebar toggle
+          $('body').removeClass('body-sidebar-active');
+        }
       }
     });
   }
@@ -1269,192 +1327,11 @@
     }
   }
 
-  /*--------------- Sidebar Menu Mobil uyumluluk düzeltmesi --------*/
+  // initSidebarMenuMobile fonksiyonunu değiştirerek sadece main initSidebarMenu'ye yönlendiriyoruz
   function initSidebarMenuMobile() {
-    $("#sidebarToggleBtn").on("click", function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      $("body").toggleClass("sidebar-menu-open");
-      $(".sidebar-menu").toggleClass("active");
-      $(".sidebar-overlay").toggleClass("active");
-    });
-
-    $(".sidebar-overlay, .sidebar-close-btn").on("click", function(e) {
-      e.preventDefault();
-      $("body").removeClass("sidebar-menu-open");
-      $(".sidebar-menu").removeClass("active");
-      $(".sidebar-overlay").removeClass("active");
-    });
-
-    // Dropdown Toggle
-    $(".sidebar-dropdown > a").on("click", function(e) {
-      e.preventDefault();
-      $(this).parent().toggleClass("active");
-      $(this).next(".sidebar-submenu").slideToggle(300);
-      $(this).parent().siblings().removeClass("active").find(".sidebar-submenu").slideUp(300);
-    });
-    
-    // Sidebar içindeki herhangi bir linke tıklandığında sidebar'ı kapat
-    $(".doc_left_sidebarlist a").on("click", function() {
-      // Eğer dropdown menü linki ise ve dropdown açma/kapama fonksiyonu değilse kapat
-      if (!$(this).parent().hasClass("sidebar-dropdown") && !$(this).hasClass("has-dropdown")) {
-        $("body").removeClass("sidebar-menu-open");
-        $(".sidebar-menu").removeClass("active");
-        $(".sidebar-overlay").removeClass("active");
-        
-        // Doc mobile menu için de kapat - SADECE MOBİL CİHAZLARDA
-        var isMobile = window.matchMedia("(max-width: 768px)").matches;
-        console.log("Sidebar menü linkine tıklandı. Mobil cihaz mı? " + isMobile);
-        
-        if (isMobile) {
-          $(".doc_documentation_area,#left").removeClass("overlay");
-          $(".doc_mobile_menu").animate(
-            {
-              left: "-345px",
-            },
-            300
-          );
-        }
-      }
-    });
+    console.log("initSidebarMenuMobile çağrıldı - ana initSidebarMenu fonksiyonu kullanılıyor");
+    // Artık tüm işlemler initSidebarMenu'de birleştirildi
+    // Hiçbir şey yapmıyoruz, ana fonksiyonu kullanıyoruz
   }
-
-  // DOM yüklendiğinde çalıştır
-  $(document).ready(function(){
-    initSidebarMenuMobile();
-  });
-
-  /**
-   * Mobil menü için gerekli işlevler
-   * Technology sayfasından taşınmıştır
-   */
-  function initMobileSideNav() {
-    document.addEventListener('DOMContentLoaded', function() {
-        const menuToggle = document.querySelector('.fixed-menu-toggle');
-        const breadcrumbSection = document.querySelector('.page_breadcrumb');
-        const sideNavPanel = document.querySelector('.side-nav-panel');
-        const sideNavOverlay = document.querySelector('.side-nav-overlay');
-        const header = document.querySelector('.sticky-nav');
-        let menuOpen = false;
-        
-        // Header yüksekliğini alma - sabit 74px kullan
-        function getHeaderHeight() {
-            return 74; // Sabit header yüksekliği
-        }
-        
-        // Pozisyonları güncelleme
-        function updatePositions() {
-            const headerHeight = getHeaderHeight();
-            // Menü toggle butonunun pozisyonunu güncelleme
-            if (menuToggle && menuToggle.classList.contains('visible')) {
-                menuToggle.style.top = headerHeight + 'px';
-            }
-            
-            // Yan menü padding-top değerini güncelleme
-            if (sideNavPanel) {
-                sideNavPanel.style.paddingTop = headerHeight + 'px';
-            }
-        }
-        
-        // Mobil kontrolü
-        function isMobile() {
-            return window.innerWidth < 568;
-        }
-        
-        function checkScrollPosition() {
-            // Sadece mobil görünümde kontrolü yap
-            if (breadcrumbSection && menuToggle && isMobile()) {
-                const breadcrumbPosition = breadcrumbSection.getBoundingClientRect().top;
-                
-                // Breadcrumb'ın üstüne gelindiğinde veya geçildiğinde
-                if (breadcrumbPosition <= getHeaderHeight()) {
-                    menuToggle.classList.add('visible');
-                    updatePositions();
-                } else {
-                    menuToggle.classList.remove('visible');
-                }
-            } else if (menuToggle && !isMobile()) {
-                // Mobil değilse gizle
-                menuToggle.classList.remove('visible');
-            }
-        }
-        
-        // Sayfa yüklendiğinde pozisyonu kontrol et
-        if (menuToggle) {
-            checkScrollPosition();
-            
-            // Scroll olayında pozisyonu kontrol et
-            window.addEventListener('scroll', function() {
-                checkScrollPosition();
-            });
-            
-            // Ekran boyutu değiştiğinde pozisyonu kontrol et
-            window.addEventListener('resize', function() {
-                checkScrollPosition();
-            });
-            
-            // Menü açma/kapama düğmesine tıklama olayı
-            menuToggle.addEventListener('click', function() {
-                if (!menuOpen) {
-                    // Menüyü aç
-                    if (sideNavPanel) sideNavPanel.classList.add('open');
-                    if (sideNavOverlay) sideNavOverlay.classList.add('active');
-                    menuToggle.classList.add('open');
-                    document.body.style.overflow = 'hidden'; // Sayfa scrollunu engelle
-                    menuOpen = true;
-                } else {
-                    // Menüyü kapat
-                    closeMenu();
-                }
-            });
-        }
-        
-        // Menüyü kapatma işlevi
-        function closeMenu() {
-            if (sideNavPanel) sideNavPanel.classList.remove('open');
-            if (sideNavOverlay) sideNavOverlay.classList.remove('active');
-            if (menuToggle) menuToggle.classList.remove('open');
-            document.body.style.overflow = ''; // Sayfa scrollunu geri aç
-            menuOpen = false;
-        }
-        
-        // Overlay'e tıklama olayı
-        if (sideNavOverlay) {
-            sideNavOverlay.addEventListener('click', closeMenu);
-        }
-        
-        // Yan menüdeki linklere tıklama olayı
-        const sideNavLinks = document.querySelectorAll('.side-nav-panel .nav-item a');
-        sideNavLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Eğer aynı sayfada içerik yükleme fonksiyonu varsa
-                const contentFile = this.getAttribute('data-content-file');
-                if (contentFile && typeof loadContent === 'function') {
-                    e.preventDefault();
-                    
-                    // Önce tüm linklerden active sınıfını kaldır
-                    sideNavLinks.forEach(l => l.classList.remove('active'));
-                    // Tıklanan linke active sınıfını ekle
-                    this.classList.add('active');
-                    
-                    loadContent(contentFile);
-                    closeMenu();
-                }
-            });
-        });
-    });
-  }
-
-  // Sayfada DOMContentLoaded olduğunda mobil yan menüyü başlat
-  document.addEventListener('DOMContentLoaded', function() {
-    // Yan menü özelliğini başlat
-    initMobileSideNav();
-  });
-
-  // Sayfa yüklendiğinde tekrar kontrol et
-  window.addEventListener('load', function() {
-    // Yan menü özelliğini tekrar başlat
-    initMobileSideNav();
-  });
 
 })(jQuery);
