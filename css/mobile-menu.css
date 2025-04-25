@@ -5,16 +5,24 @@
     left: 0;
     z-index: 990; /* Header'ın z-index'inden düşük olması gerekir */
     background: #121318;
-    width: 40px;
-    height: 40px;
-    border-radius: 0 4px 4px 0;
+    width: auto;
+    min-width: 50px;
+    padding: 0 15px;
+    height: 50px;
+    border-radius: 0 8px 8px 0;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    opacity: 0;
+    opacity: 0.8!important;
     visibility: hidden;
+}
+
+.fixed-menu-toggle span {
+    color: #fff;
+    margin-right: 8px;
+    font-weight: 500;
 }
 
 .fixed-menu-toggle.visible {
@@ -47,7 +55,7 @@
 }
 
 .fixed-menu-toggle.open {
-    left: 240px; /* Menü genişliği (280px) - 40px */
+    left: 183px; /* Menü açıldığında içeri doğru giriş miktarı 280px -97px */ 
     border-radius: 4px 0 0 4px; /* Köşe yuvarlaklığı tersine çevrilir */
 }
 
@@ -94,7 +102,7 @@
 
 .side-nav-panel .nav-content {
     padding: 15px;
-    margin-top: 20px;
+    margin-top: 35px;
 }
 
 .side-nav-panel .nav-title {

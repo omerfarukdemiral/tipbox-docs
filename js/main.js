@@ -190,7 +190,7 @@
   function tabFixed() {
     var windowWidth = $(window).width();
     if ($(".header_tabs_area").length) {
-      if (windowWidth > 576) {
+      if (windowWidth > 567) {
         var tops = $(".header_tabs_area");
         var tabs = $(".header_tab_items").height() + 100;
         var leftOffset = tops.offset().top + tabs;
