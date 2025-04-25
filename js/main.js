@@ -299,6 +299,15 @@
 
   /*  Responsive Layout Handler - width değerine göre sınıfları değiştirecek */
   function responsiveLayoutHandler() {
+    // Sayfanın URL'sini kontrol et
+    var currentPath = window.location.pathname;
+    
+    // Eğer about.html sayfasıysa veya URL'de about kelimesi geçiyorsa, bu fonksiyonu çalıştırma
+    if (currentPath.includes('about') || currentPath.includes('about.html')) {
+      console.log("About sayfası tespit edildi, responsive layout değişiklikleri uygulanmıyor.");
+      return;
+    }
+    
     var windowWidth = $(window).width();
     if(windowWidth < 567){
       $(".doc_mobile_menu").css("display", "none");
