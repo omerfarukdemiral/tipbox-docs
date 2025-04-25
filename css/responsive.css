@@ -2522,4 +2522,7 @@
     font-size: 14px;
     line-height: 20px;
   }
+  .doc-middle-content{
+    margin-top: 30px;
+  }
 }
