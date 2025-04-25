@@ -146,25 +146,38 @@
         <div include-html="../components/header.html"></div>
 
         <!--================Banner Area =================-->
-        <section class="doc_banner_area search-banner-light">
-            <div class="container">
-                <div class="doc_banner_content">
-                    <form action="#" class="header_search_form">
-                        <div class="header_search_form_info">
-                            <h2>Project Blurb</h2>
-                        </div>
-                        <div class="header_search_keyword">
-                            <span class="">A concise overview of the project's core features, benefits, and unique value
-                                proposition.</span>
-                            <div class="scroll-down">
-                                <a href="#sticky_doc" class="scroll-link">
-                                    <i class="arrow_carrot-down"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+        <section class="doc_banner_area search-banner-light" style="position: relative; overflow: hidden;">
+            <div class="container" style="position: relative; z-index: 2;">
+                <div class="doc_banner_content" style="position: relative;">
+                    <h1 class="banner-title wow fadeInUp" data-wow-delay="0.2s"
+                        style="font-size: 48px; font-weight: 700; margin-bottom: 20px; font-family: 'Jura', sans-serif; color: var(--text-light); opacity: 0; animation: fadeInUp 1s forwards 0.3s;">
+                        Project Blurb</h1>
+
+                    <p class="banner-description wow fadeInUp" data-wow-delay="0.4s"
+                        style="font-size: 16px; max-width: 600px; margin: 0 auto 30px; color: #fff; opacity: 0; animation: fadeInUp 1s forwards 0.6s;">
+                        A concise overview of the project's core features, benefits, and unique value proposition.</p>
                 </div>
             </div>
+
+            <!-- Animate.css kullanımı için stil -->
+            <style>
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translate3d(0, 30px, 0);
+                    }
+
+                    to {
+                        opacity: 1;
+                        transform: translate3d(0, 0, 0);
+                    }
+                }
+
+                .banner-title,
+                .banner-description {
+                    opacity: 0;
+                }
+            </style>
         </section>
 
         <section class="page_breadcrumb">
