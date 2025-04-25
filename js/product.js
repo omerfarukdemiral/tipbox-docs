@@ -14,6 +14,11 @@ async function loadContent(contentFile) {
             
             // İçerik yüklendikten sonra içindekiler tablosunu oluştur
             generateTableOfContents();
+            
+            // MathJax'i yeniden çalıştır - formülleri işle
+            if (window.MathJax) {
+                window.MathJax.typeset();
+            }
         }
 
         // URL'i güncelle (sayfa yenilenmeden)

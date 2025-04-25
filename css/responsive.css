@@ -2485,3 +2485,41 @@
   display: flex !important;
   overflow-y: auto !important;
 }
+
+/* shortcode_title içindeki ul ve li elementleri için İnter font tanımlaması */
+.shortcode_title ul {
+  font-family: 'Inter', sans-serif;
+  padding-left: 25px;
+  margin-bottom: 20px;
+}
+
+.shortcode_title ul li {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  color: #b9b9b9;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.shortcode_title ul li strong,
+.shortcode_title ul li sub,
+.shortcode_title ul li sup {
+  font-family: 'Inter', sans-serif;
+}
+
+@media (max-width: 768px) {
+  .shortcode_title ul li {
+    font-size: 15px;
+    line-height: 22px;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .shortcode_title ul li {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}

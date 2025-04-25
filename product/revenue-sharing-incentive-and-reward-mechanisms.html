@@ -93,6 +93,25 @@
             
             <p>All economic distributions, user incentives, and creator payments on TIPBOX are based on the value of TIPS. However, relying solely on the current market price may cause imbalances or potential manipulation due to short-term price fluctuations. To address this, TIPBOX uses a reference pricing model where the current price is dominant, but the average price over a past period helps stabilize calculations. This periodic average price smooths out temporary volatility and supports fairer distribution calculations.</p>
             
+            <p>The average price is calculated as follows:</p>
+            
+            <div>$$P_{avg} = \frac{\sum_{i=1}^{T} P_i}{T}$$</div>
+            
+            <ul>
+                <li><strong>P<sub>i</sub></strong>: The TIPS price taken at each measurement period (e.g., hourly, 6-hourly)</li>
+                <li><strong>T</strong>: Total time period to average (e.g., last 24 hours)</li>
+            </ul>
+            
+            <p>Then this value is evaluated together with the instant market price (<em>P<sub>instant</sub></em>) to create a reference price:</p>
+            
+            <div>$$P_{ref} = 0.75 \cdot P_{instant} + 0.25 \cdot P_{avg}$$</div>
+            
+            <ul>
+                <li><strong>P<sub>ref</sub></strong>: Final reference token price used in distributions and calculations</li>
+                <li><strong>P<sub>instant</sub></strong>: Real market price at the time of transaction</li>
+                <li><strong>P<sub>avg</sub></strong>: Past period average price calculated above</li>
+            </ul>
+            
             <p>This system provides real-time price sensitivity while maintaining stability against short-term fluctuations, creating a safer and more predictable economic foundation for TIPBOX users and creators.</p>
             
             <h4>User Prestige & Interaction Rate</h4>
@@ -115,7 +134,26 @@
             
             <p>The following model represents the basic linear vesting structure, which maintains platform economy balance while ensuring long-term continuity.</p>
             
+            <div>$$V_{linear}(t) = Min\left(\frac{t}{T_{total}} \cdot TokenAmount_{total}, TokenAmount_{total}\right)$$</div>
+            
+            <ul>
+                <li><strong>V<sub>linear</sub>(t)</strong>: Number of tokens released at time t</li>
+                <li><strong>t</strong>: Current time (days, weeks, months)</li>
+                <li><strong>T<sub>total</sub></strong>: Total vesting period</li>
+                <li><strong>TokenAmount<sub>total</sub></strong>: Total amount of tokens to be vested</li>
+            </ul>
+            
             <p>Alternatively, logarithmic vesting can be used for a more balanced expansion pattern:</p>
+            
+            <div>$$V_{log}(t) = TokenAmount_{total} \cdot \frac{log(1+\alpha \cdot t)}{log(1+\alpha \cdot T_{total})}$$</div>
+            
+            <ul>
+                <li><strong>V<sub>log</sub>(t)</strong>: Number of tokens released at time t</li>
+                <li><strong>α</strong>: Logarithmic curve parameter (higher values make initial vesting slower)</li>
+                <li><strong>t</strong>: Current time (days, weeks, months)</li>
+                <li><strong>T<sub>total</sub></strong>: Total vesting period</li>
+                <li><strong>TokenAmount<sub>total</sub></strong>: Total amount of tokens to be vested</li>
+            </ul>
             
             <p>This second model encourages patient and sustained contributions from creators by starting with a slower release rate that accelerates over time.</p>
             
@@ -136,6 +174,16 @@
             
             <p>A user's total earnings are calculated as the sum of these two layers.</p>
             
+            <div>$$R_{user} = \frac{Pool_{total} \cdot 0.5}{BadgeHolders_{total}} + \frac{Pool_{total} \cdot 0.5 \cdot EngagementScore_{user}}{\sum_{i=1}^{n} EngagementScore_i}$$</div>
+            
+            <ul>
+                <li><strong>R<sub>user</sub></strong>: Total reward for a specific user</li>
+                <li><strong>Pool<sub>total</sub></strong>: Total size of the reward pool for the badge</li>
+                <li><strong>BadgeHolders<sub>total</sub></strong>: Total number of users holding the badge</li>
+                <li><strong>EngagementScore<sub>user</sub></strong>: Engagement score of the user</li>
+                <li><strong>∑EngagementScore<sub>i</sub></strong>: Sum of all badge holders' engagement scores</li>
+            </ul>
+            
             <p>The first component of this model — a fixed 50% distribution — ensures the accessibility of the badge system by encouraging broad-based participation. The remaining 50% is distributed based on each user's actual interaction strength on the platform, directly rewarding those who contribute more.</p>
             
             <p>In this way, the system offers rewards to passive participants while placing greater emphasis on encouraging active and high-impact users.</p>
@@ -145,14 +193,45 @@
             <p>On TIPBOX, creator users receive a direct share from the revenue-sharing pool based on the value they contribute to the platform. However, this share is not fixed; it is dynamically calculated according to the creator's influence, contribution level, and long-term performance consistency.</p>
             
             <p>This approach allows the system to prioritize not only content producers but also those who create sustainable and ongoing value for the ecosystem.</p>
+
+            <div>$$S_{creator} = Base\% + Bonus\% \cdot \left( \frac{Performance_{creator}}{\overline{Performance}} \right)^{\beta}$$</div>
+
+            <ul>
+                <li><strong>S<sub>creator</sub></strong>: Share percentage of creator from revenue pool</li>
+                <li><strong>Base%</strong>: Minimum guaranteed percentage (e.g., 5%)</li>
+                <li><strong>Bonus%</strong>: Additional percentage based on performance (e.g., up to 10%)</li>
+                <li><strong>Performance<sub>creator</sub></strong>: Performance score of creator</li>
+                <li><strong>Performance̅</strong>: Average performance of all creators</li>
+                <li><strong>β</strong>: Power coefficient to control progression curve (typically 0.5-1.5)</li>
+            </ul>
             
             <h4>Time-Weighted Score of Creator Performance</h4>
             
             <p>The influence of the creator can be calculated not by performance at a single moment, but by an average over time. This highlights consistent contribution, rewarding long-term value production rather than "one-off viral content." When distributing the creator's income, the decision can be made based on the average of the last 30 days, not just the last week. Regular contribution is rewarded rather than irregular but high volume contribution.</p>
+
+            <div>$$TWS_{creator} = \frac{\sum_{i=1}^{T} w_i \cdot Performance_i}{\sum_{i=1}^{T} w_i}$$</div>
+
+            <ul>
+                <li><strong>TWS<sub>creator</sub></strong>: Time-weighted score of creator</li>
+                <li><strong>Performance<sub>i</sub></strong>: Performance at day i</li>
+                <li><strong>w<sub>i</sub></strong>: Weight for day i (more recent days may have higher weights)</li>
+                <li><strong>T</strong>: Number of days considered (e.g., last 30 days)</li>
+            </ul>
             
             <h4>Dynamic Share Adjustment Based on Revenue Growth</h4>
             
             <p>If the total revenue of the platform increases, the percentage of the pool to be distributed can also be increased proportionally. This creates a loyalty mechanism that reflects the success of the platform directly to the user.</p>
+
+            <div>$$PoolShare\%(t) = BaseShare\% + Growth\% \cdot \min\left(\frac{Revenue(t) - Revenue(t_0)}{Revenue(t_0)}, GrowthCap\right)$$</div>
+
+            <ul>
+                <li><strong>PoolShare%(t)</strong>: Percentage of total revenue allocated to creator pool at time t</li>
+                <li><strong>BaseShare%</strong>: Base sharing percentage (e.g., 15%)</li>
+                <li><strong>Growth%</strong>: Growth multiplier for revenue increase (e.g., 0.2)</li>
+                <li><strong>Revenue(t)</strong>: Platform revenue at current time</li>
+                <li><strong>Revenue(t<sub>0</sub>)</strong>: Platform revenue at baseline time</li>
+                <li><strong>GrowthCap</strong>: Maximum growth multiplier (e.g., 3.0)</li>
+            </ul>
             
             <p>As the platform grows, the creator share can be increased automatically. This directly reinforces performance + success commitment for creators.</p>
             
@@ -162,11 +241,31 @@
             
             <p>This model calculates users' NFT-badge collections as a weighted sum of points, taking into account the difficulty coefficient and industry importance of each badge.</p>
             
+            <div>$$BP_{user} = \sum_{i=1}^{N} (Badge_i \cdot Difficulty_i \cdot IndustryWeight_i)$$</div>
+            
+            <ul>
+                <li><strong>BP<sub>user</sub></strong>: Badge Points for a user</li>
+                <li><strong>Badge<sub>i</sub></strong>: Binary value (0 or 1) indicating if user has badge i</li>
+                <li><strong>Difficulty<sub>i</sub></strong>: Difficulty coefficient of badge i (from 1.0 to 5.0)</li>
+                <li><strong>IndustryWeight<sub>i</sub></strong>: Strategic importance of badge i's industry (from 1.0 to 3.0)</li>
+                <li><strong>N</strong>: Total number of available badges in system</li>
+            </ul>
+            
             <p>This score highlights badge quality rather than badge number in prize pool distributions or prestige indicators. It also encourages users to choose more challenging missions and diversify their collection by earning achievements in new sectors. When necessary, the system can update these multipliers according to season, density or incentive targets.</p>
             
             <h4>NFT-Badges Aging and Decay Score</h4>
             
             <p>The older an NFT-badge is, the more likely its power to continuously benefit from the same pool may decrease over time. This reflects the principle of "permanent contribution, not permanent income".</p>
+            
+            <div>$$DecayFactor(t) = 1 - \min\left(\frac{t - T_{grace}}{T_{decay}}, DecayCap\right)$$</div>
+            
+            <ul>
+                <li><strong>DecayFactor(t)</strong>: Multiplier applied to badge's reward power at time t</li>
+                <li><strong>t</strong>: Age of badge in days</li>
+                <li><strong>T<sub>grace</sub></strong>: Grace period before decay begins (e.g., 90 days)</li>
+                <li><strong>T<sub>decay</sub></strong>: Period over which decay occurs (e.g., 270 days)</li>
+                <li><strong>DecayCap</strong>: Maximum decay percentage (e.g., 0.8, meaning badge maintains minimum 20% power)</li>
+            </ul>
             
             <p>This score plays an important role in encouraging badge holders to constantly earn new badges. Content sustainability is kept at a high level by ensuring that the impact of old content naturally declines over time.</p>
         </div>  
