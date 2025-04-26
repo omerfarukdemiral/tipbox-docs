@@ -2017,33 +2017,7 @@
             $("#viewMoreBtn").on("click", function(e) {
                 e.preventDefault();
                 // Önce tüm sınıfları temizleyelim
-                $("body").removeClass("sidebar-menu-open body-sidebar-active");
-                $(".sidebar-menu").removeClass("active");
-                $(".sidebar-overlay").removeClass("active");
-                
-                // Sonra yeniden ekleyelim (setTimeout ile işlem sırasını garanti edelim)
-                setTimeout(function() {
-                    $("body").addClass("sidebar-menu-open body-sidebar-active");
-                    $(".sidebar-menu").addClass("active");
-                    $(".sidebar-overlay").addClass("active");
-                    
-                    // Overlay stilini manuel olarak ayarlayalım
-                    $(".sidebar-overlay").css({
-                        "visibility": "visible",
-                        "opacity": "1"
-                    });
-                    
-                    // Sidebar menüsünün scroll özelliğini aktifleştir
-                    $(".sidebar-menu").css({
-                        "overflow-y": "auto"
-                    });
-                    
-                    // Modal açıldığında body scroll'unu koruyalım
-                    $("body").css({
-                        "overflow": "auto",
-                        "position": "static"
-                    });
-                }, 10);
+                toggleSidebarMenu();
             });
             
             // Accordion için özel işlevler - Hiçbir collapse açık değilse ilk öğeyi vurgula

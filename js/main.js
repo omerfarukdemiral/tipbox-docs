@@ -55,14 +55,19 @@
     });
   }
 
-  
-  function toggleSidebarMenu() {
+  // Global scope'da toggleSidebarMenu fonksiyonunu tanımla
+  window.toggleSidebarMenu = function() {
     // Eğer sidebar-controller.js'den gelen toggleSidebar fonksiyonu varsa onu kullan
     if (typeof window.toggleSidebar === 'function') {
       window.toggleSidebar();
     } else {
       $('body').toggleClass('body-sidebar-active');
     }
+  };
+
+  function toggleSidebarMenu() {
+    // Global fonksiyonu çağır 
+    window.toggleSidebarMenu();
   }
 
   // Jquery ile sadece gerekli element seçiciler 
