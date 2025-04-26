@@ -2046,69 +2046,6 @@
                 }, 10);
             });
             
-            // Sidebar Toggle Button
-            $("#sidebarToggleBtn").on("click", function() {
-                if ($("body").hasClass("sidebar-menu-open")) {
-                    // Kapatma işlemi
-                    $("body").removeClass("sidebar-menu-open body-sidebar-active");
-                    $(".sidebar-menu").removeClass("active");
-                    $(".sidebar-overlay").removeClass("active");
-                    
-                    // Overlay stilini manuel olarak ayarlayalım
-                    $(".sidebar-overlay").css({
-                        "visibility": "hidden",
-                        "opacity": "0"
-                    });
-                    
-                    // Body scroll'unu normale döndür
-                    $("body").css({
-                        "overflow": "auto",
-                        "position": "static"
-                    });
-                } else {
-                    // Açma işlemi
-                    $("body").addClass("sidebar-menu-open body-sidebar-active");
-                    $(".sidebar-menu").addClass("active");
-                    $(".sidebar-overlay").addClass("active");
-                    
-                    // Overlay stilini manuel olarak ayarlayalım
-                    $(".sidebar-overlay").css({
-                        "visibility": "visible", 
-                        "opacity": "1"
-                    });
-                    
-                    // Sidebar menüsünün scroll özelliğini aktifleştir
-                    $(".sidebar-menu").css({
-                        "overflow-y": "auto"
-                    });
-                    
-                    // Modal açıldığında body scroll'unu koruyalım
-                    $("body").css({
-                        "overflow": "auto",
-                        "position": "static"
-                    });
-                }
-            });
-            
-            // Sidebar Overlay & Close Button
-            $(".sidebar-overlay, .sidebar-close-btn").on("click", function() {
-                $("body").removeClass("sidebar-menu-open body-sidebar-active");
-                $(".sidebar-menu").removeClass("active");
-                $(".sidebar-overlay").removeClass("active");
-                
-                // Overlay stilini manuel olarak ayarlayalım
-                $(".sidebar-overlay").css({
-                    "visibility": "hidden",
-                    "opacity": "0"
-                });
-                
-                // Body scroll'unu normale döndür
-                $("body").css({
-                    "overflow": "auto",
-                    "position": "static"
-                });
-            });
-            
             // Accordion için özel işlevler - Hiçbir collapse açık değilse ilk öğeyi vurgula
             function checkAndHighlightFirstItem() {
                 // Aktif sekmeyi bul
