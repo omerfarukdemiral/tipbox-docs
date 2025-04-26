@@ -1,4 +1,4 @@
-// Product sayfası için işlevsellik
+// Company & Finance sayfası için işlevsellik
 
 // Menü elemanlarına tıklandığında içeriği değiştiren fonksiyon
 async function loadContent(contentFile) {
@@ -14,11 +14,6 @@ async function loadContent(contentFile) {
             
             // İçerik yüklendikten sonra içindekiler tablosunu oluştur
             generateTableOfContents();
-            
-            // MathJax'i yeniden çalıştır - formülleri işle
-            if (window.MathJax) {
-                window.MathJax.typeset();
-            }
         }
 
         // URL'i güncelle (sayfa yenilenmeden)
@@ -235,11 +230,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Menü elemanları yüklenmemiş olabilir, bu nedenle biraz bekleyelim
     setTimeout(() => {
-        initializeProductPage();
+        initializeCompanyFinancePage();
     }, 1000); // 1 saniye bekle
 });
 
-function initializeProductPage() {
+// Varsayılan olarak "company/overview.html" içeriğini yükle 
+async function initializeCompanyFinancePage() {
     // Tüm menü elemanlarını seç
     const menuItems = document.querySelectorAll('.nav-sidebar .nav-item a');
     
@@ -253,6 +249,10 @@ function initializeProductPage() {
         });
     });
 
+    // Varsayılan olarak ilk içeriği yükle (company/overview.html)
+    const firstContentFile = "company/overview.html";
+    await loadContent(firstContentFile);
+    
     // Varsayılan olarak ilk menü öğesini aktif hale getir
     const firstMenuItem = document.querySelector('.nav-sidebar .nav-item a');
     if (firstMenuItem) {

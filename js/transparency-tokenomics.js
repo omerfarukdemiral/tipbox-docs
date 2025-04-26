@@ -1,4 +1,4 @@
-// Product sayfası için işlevsellik
+// Transparency & Tokenomics sayfası için işlevsellik
 
 // Menü elemanlarına tıklandığında içeriği değiştiren fonksiyon
 async function loadContent(contentFile) {
@@ -14,11 +14,6 @@ async function loadContent(contentFile) {
             
             // İçerik yüklendikten sonra içindekiler tablosunu oluştur
             generateTableOfContents();
-            
-            // MathJax'i yeniden çalıştır - formülleri işle
-            if (window.MathJax) {
-                window.MathJax.typeset();
-            }
         }
 
         // URL'i güncelle (sayfa yenilenmeden)
@@ -235,11 +230,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Menü elemanları yüklenmemiş olabilir, bu nedenle biraz bekleyelim
     setTimeout(() => {
-        initializeProductPage();
+        initializeTransparencyTokenomicsPage();
     }, 1000); // 1 saniye bekle
 });
 
-function initializeProductPage() {
+// Varsayılan olarak "overview-principles.html" içeriğini yükle 
+async function initializeTransparencyTokenomicsPage() {
     // Tüm menü elemanlarını seç
     const menuItems = document.querySelectorAll('.nav-sidebar .nav-item a');
     
@@ -253,6 +249,10 @@ function initializeProductPage() {
         });
     });
 
+    // Varsayılan olarak ilk içeriği yükle (overview-principles.html)
+    const firstContentFile = "transparency/overview-principles.html";
+    await loadContent(firstContentFile);
+    
     // Varsayılan olarak ilk menü öğesini aktif hale getir
     const firstMenuItem = document.querySelector('.nav-sidebar .nav-item a');
     if (firstMenuItem) {
