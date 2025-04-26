@@ -202,6 +202,11 @@
             padding: 20px;
             margin: 0;
         }
+        
+        .parallax-image:hover {
+            opacity: 0.5;
+        }
+        
         .doc_features_inner .row {
             margin: 0;
             display: grid;
@@ -897,6 +902,33 @@
         .navbar_fixed .sidebar-toggle-icon-light span {
             background: #ffffff;
         }
+
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('img/loginbg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        /* Diğer var olan stiller */
+        
+        /* doc_round elementlerinin arka plan renklerini kaldır */
+        .doc_round.one, .doc_round.two {
+            background: transparent !important;
+        }
+        
+        .doc_round.one img, .doc_round.two img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* ... existing style ... */
     </style>
 </head>
 
@@ -977,7 +1009,7 @@
                         <a href="product.html" style="text-decoration: none; color: inherit; display: block;">
                             <div class="item-inner">
                                 <div class="icon-wrapper">
-                                    <img src="img/new/icon1.png" alt="" style="width: 48px; height: 48px;">
+                                    <img src="img/icon/home/product.svg" alt="" style="width: 48px; height: 48px;">
                                 </div>
                                 <div class="content-wrapper">
                                     <h4>Product</h4>
@@ -990,7 +1022,7 @@
                         <a href="market.html" style="text-decoration: none; color: inherit; display: block;">
                             <div class="item-inner">
                                 <div class="icon-wrapper">
-                                    <img src="img/new/icon2.png" alt="" style="width: 48px; height: 48px;">
+                                    <img src="img/icon/home/market.svg" alt="" style="width: 48px; height: 48px;">
                                 </div>
                                 <div class="content-wrapper">
                                     <h4>Market</h4>
@@ -1003,7 +1035,7 @@
                         <a href="go-to-market.html" style="text-decoration: none; color: inherit; display: block;">
                             <div class="item-inner">
                                 <div class="icon-wrapper">
-                                    <img src="img/new/icon3.png" alt="" style="width: 48px; height: 48px;">
+                                    <img src="img/icon/home/gotomarket.svg" alt="" style="width: 48px; height: 48px;">
                                 </div>
                                 <div class="content-wrapper">
                                     <h4>Go to Market</h4>
@@ -1018,7 +1050,7 @@
                         <a href="technology.html" style="text-decoration: none; color: inherit; display: block;">
                             <div class="item-inner">
                                 <div class="icon-wrapper">
-                                    <img src="img/new/icon9.png" alt="" style="width: 48px; height: 48px;">
+                                    <img src="img/icon/home/technology.svg" alt="" style="width: 48px; height: 48px;">
                                 </div>
                                 <div class="content-wrapper">
                                     <h4>Technology</h4>
@@ -1031,7 +1063,7 @@
                         <a href="transparency-tokenomics.html" style="text-decoration: none; color: inherit; display: block;">
                             <div class="item-inner">
                                 <div class="icon-wrapper">
-                                    <img src="img/new/icon5.png" alt="" style="width: 48px; height: 48px;">
+                                    <img src="img/icon/home/transparency.svg" alt="" style="width: 48px; height: 48px;">
                                 </div>
                                 <div class="content-wrapper">
                                     <h4>Transparency & Tokenomics</h4>
@@ -1044,7 +1076,7 @@
                         <a href="company-finance.html" style="text-decoration: none; color: inherit; display: block;">
                             <div class="item-inner">
                                 <div class="icon-wrapper">
-                                    <img src="img/new/icon4.png" alt="" style="width: 48px; height: 48px;">
+                                    <img src="img/icon/home/company.svg" alt="" style="width: 48px; height: 48px;">
                                 </div>
                                 <div class="content-wrapper">
                                     <h4>Company & Finance</h4>
@@ -1069,8 +1101,8 @@
         <section class="changelog_area" style="padding: 50px 0;">
             <div class="container">
                 <img class="doc_shap_one" src="img/shape.png" alt="">
-                <div class="doc_round one" data-parallax='{"x": -80, "y": -100, "rotateY":0}'></div>
-                <div class="doc_round two" data-parallax='{"x": -10, "y": 70, "rotateY":0}'></div>
+                <img class="parallax-image" src="img/icon/circle.svg" alt="" style="position: absolute; left: 120px; bottom: 120px; width: 260px; height: 260px; z-index: -1;" data-parallax='{"x": -80, "y": -100, "rotateY":0}'>
+                <img class="parallax-image" src="img/icon/circle.svg" alt="" style="position: absolute; right: 70px; top: 160px; width: 100px; height: 100px; z-index: -1;" data-parallax='{"x": -10, "y": 70, "rotateY":0}'>
                 <div class="doc_title text-center">
                     <h2 class="wow fadeInUp" data-wow-delay="0.2s">Patch Notes</h2>
                     <p class="wow fadeInUp" data-wow-delay="0.4s">Stay up to date with the latest improvements and updates to Tipbox documentation platform</p>
