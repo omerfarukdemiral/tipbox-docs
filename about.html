@@ -132,7 +132,7 @@
     <!-- Özel Stil Ayarları -->
     <style>
         :root {
-            --primary-color: #3051ff;
+            --primary-color: #571fdd;
             --secondary-color: #f5b111;
             --dark-bg: #121419;
             --card-bg: rgba(40, 44, 52, 0.7);
@@ -160,7 +160,7 @@
         .doc_documentation_area .doc_round.one {
             width: 600px;
             height: 600px;
-            background: rgba(48, 81, 255, 0.03);
+            background: rgba(87, 31, 221, 0.03);
             left: -200px;
             top: -200px;
             filter: blur(50px);
@@ -227,7 +227,7 @@
             bottom: -10px;
             width: 80px;
             height: 4px;
-            background: var(--primary-color);
+            background: #571fdd;
             border-radius: 2px;
         }
 
@@ -301,8 +301,8 @@
         }
 
         .vm-card.vision-card {
-            background: linear-gradient(145deg, rgba(48, 81, 255, 0.1), rgba(48, 81, 255, 0.05));
-            border: 1px solid rgba(48, 81, 255, 0.2);
+            background: linear-gradient(145deg, rgba(87, 31, 221, 0.1), rgba(87, 31, 221, 0.05));
+            border: 1px solid rgba(87, 31, 221, 0.2);
         }
 
         .vm-card.mission-card {
@@ -323,8 +323,8 @@
         }
 
         .vm-card.vision-card .card-icon {
-            background: rgba(48, 81, 255, 0.15);
-            color: var(--primary-color);
+            background: rgba(87, 31, 221, 0.15);
+            color: #571fdd;
         }
 
         .vm-card.mission-card .card-icon {
@@ -580,13 +580,13 @@
         .parallax-circle {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(48, 81, 255, 0.2) 0%, rgba(48, 81, 255, 0) 70%);
+            background: radial-gradient(circle, rgba(87, 31, 221, 0.2) 0%, rgba(87, 31, 221, 0) 70%);
             will-change: transform;
             transition: transform 0.3s ease-out;
         }
 
         .parallax-circle.primary {
-            background: radial-gradient(circle, rgba(48, 81, 255, 0.15) 0%, rgba(48, 81, 255, 0) 70%);
+            background: radial-gradient(circle, rgba(87, 31, 221, 0.15) 0%, rgba(87, 31, 221, 0) 70%);
         }
 
         .parallax-circle.secondary {
@@ -606,7 +606,7 @@
         }
 
         .glass-card:hover {
-            border-color: rgba(48, 81, 255, 0.2);
+            border-color: rgba(87, 31, 221, 0.2);
             transform: translateY(-5px);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
@@ -626,9 +626,9 @@
             right: -2px;
             bottom: -2px;
             background: linear-gradient(45deg,
-                    rgba(48, 81, 255, 0) 0%,
-                    rgba(48, 81, 255, 0.3) 50%,
-                    rgba(48, 81, 255, 0) 100%);
+                    rgba(87, 31, 221, 0) 0%,
+                    rgba(87, 31, 221, 0.3) 50%,
+                    rgba(87, 31, 221, 0) 100%);
             z-index: -1;
             border-radius: calc(var(--card-radius) + 2px);
             animation: border-glow-animation 6s linear infinite;
@@ -774,7 +774,7 @@
         }
 
         .team-card-modern:hover .team-info-modern {
-            border-color: rgba(48, 81, 255, 0.2);
+            border-color: rgba(87, 31, 221, 0.2);
             transform: translateZ(5px);
         }
 
@@ -786,8 +786,8 @@
             font-size: 12px;
             font-weight: 500;
             margin-bottom: 15px;
-            background: rgba(48, 81, 255, 0.1);
-            color: var(--primary-color);
+            background: rgba(87, 31, 221, 0.1);
+            color: #571fdd;
             transform: translateZ(15px);
         }
 
@@ -874,6 +874,19 @@
         .row .col-lg-4:nth-child(9) .animate-float {
             animation-delay: 4s;
         }
+
+        @media (min-width: 992px) {
+            .special-row .col-lg-4:first-child {
+                margin-left: 16.666667%;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .last-principles-row {
+                display: flex;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 
@@ -898,7 +911,8 @@
         <div include-html="components/header.html" class="sticky-nav"></div>
 
         <!--================Banner Area =================-->
-        <section class="doc_banner_area search-banner-light" style="position: relative; overflow: hidden;">
+        <section class="doc_banner_area search-banner-light"
+            style="position: relative; overflow: hidden; background: url('img/banner/about.png') no-repeat center center; background-size: cover;">
 
             <div class="container" style="position: relative; z-index: 2;">
                 <div class="doc_banner_content" style="position: relative;">
@@ -914,17 +928,17 @@
                     <div class="banner-features wow fadeInUp" data-wow-delay="0.6s"
                         style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 40px; opacity: 0; animation: fadeInUp 1s forwards 0.9s;">
                         <div class="feature-badge"
-                            style="background: rgba(246, 78, 96, 0.1); border-radius: 30px; padding: 8px 20px; color: #f64e60; font-size: 14px; display: flex; align-items: center;">
+                            style="background: rgba(236, 255, 132, 0.1); border-radius: 30px; padding: 8px 20px; color: #d8ff08; font-size: 14px; display: flex; align-items: center;">
                             <i class="icon_heart_alt" style="margin-right: 8px;"></i>
                             Mission & Vision
                         </div>
                         <div class="feature-badge"
-                            style="background: rgba(245, 177, 17, 0.1); border-radius: 30px; padding: 8px 20px; color: var(--secondary-color); font-size: 14px; display: flex; align-items: center;">
+                            style="background: rgba(236, 255, 132, 0.1); border-radius: 30px; padding: 8px 20px; color: #d8ff08; font-size: 14px; display: flex; align-items: center;">
                             <i class="icon_target" style="margin-right: 8px;"></i>
                             Our Team
                         </div>
                         <div class="feature-badge"
-                            style="background: rgba(15, 188, 139, 0.1); border-radius: 30px; padding: 8px 20px; color: #0fbc8b; font-size: 14px; display: flex; align-items: center;">
+                            style="background: rgba(236, 255, 132, 0.1); border-radius: 30px; padding: 8px 20px; color: #d8ff08; font-size: 14px; display: flex; align-items: center;">
                             <i class="icon_group" style="margin-right: 8px;"></i>
                             Principles
                         </div>
@@ -1086,7 +1100,8 @@
                                                     <div
                                                         style="position: absolute; width: 80%; height: 80%; border-radius: 50%; background: rgba(245, 177, 17, 0.03); top: 10%; left: 10%; animation: pulse 3s infinite 1s;">
                                                     </div>
-                                                    <img src="img/tipbox-square-yellow.png" alt="Tipbox Logo" class="img-fluid"
+                                                    <img src="img/tipbox-square-yellow.png" alt="Tipbox Logo"
+                                                        class="img-fluid"
                                                         style="position: absolute; width: 60%; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: float 6s ease-in-out infinite;">
                                                 </div>
                                             </div>
@@ -1109,22 +1124,22 @@
 
                                                 <div class="mt-4 d-flex flex-wrap">
                                                     <div class="badge-pill"
-                                                        style="background: rgba(48, 81, 255, 0.1); color: var(--primary-color); border-radius: 30px; padding: 8px 16px; margin-right: 10px; margin-bottom: 10px; font-size: 12px; display: inline-flex; align-items: center;">
+                                                        style="background: rgba(236, 255, 132, 0.1); color: #d8ff08; border-radius: 30px; padding: 8px 16px; margin-right: 10px; margin-bottom: 10px; font-size: 12px; display: inline-flex; align-items: center;">
                                                         <i class="icon_check_alt2" style="margin-right: 5px;"></i>
                                                         Experience Network
                                                     </div>
                                                     <div class="badge-pill"
-                                                        style="background: rgba(245, 177, 17, 0.1); color: var(--secondary-color); border-radius: 30px; padding: 8px 16px; margin-right: 10px; margin-bottom: 10px; font-size: 12px; display: inline-flex; align-items: center;">
+                                                        style="background: rgba(236, 255, 132, 0.1); color: #d8ff08; border-radius: 30px; padding: 8px 16px; margin-right: 10px; margin-bottom: 10px; font-size: 12px; display: inline-flex; align-items: center;">
                                                         <i class="icon_check_alt2" style="margin-right: 5px;"></i>
                                                         Web3 Integration
                                                     </div>
                                                     <div class="badge-pill"
-                                                        style="background: rgba(15, 188, 139, 0.1); color: #0fbc8b; border-radius: 30px; padding: 8px 16px; margin-right: 10px; margin-bottom: 10px; font-size: 12px; display: inline-flex; align-items: center;">
+                                                        style="background: rgba(236, 255, 132, 0.1); color: #d8ff08; border-radius: 30px; padding: 8px 16px; margin-right: 10px; margin-bottom: 10px; font-size: 12px; display: inline-flex; align-items: center;">
                                                         <i class="icon_check_alt2" style="margin-right: 5px;"></i>
                                                         NFT Badge System
                                                     </div>
                                                     <div class="badge-pill"
-                                                        style="background: rgba(246, 78, 96, 0.1); color: #f64e60; border-radius: 30px; padding: 8px 16px; margin-right: 10px; margin-bottom: 10px; font-size: 12px; display: inline-flex; align-items: center;">
+                                                        style="background: rgba(236, 255, 132, 0.1); color: #d8ff08; border-radius: 30px; padding: 8px 16px; margin-right: 10px; margin-bottom: 10px; font-size: 12px; display: inline-flex; align-items: center;">
                                                         <i class="icon_check_alt2" style="margin-right: 5px;"></i>
                                                         Token Economy
                                                     </div>
@@ -1155,19 +1170,23 @@
                                             <div class="tilt-card-inner">
                                                 <div class="wave-bg">
                                                     <div class="wave"></div>
-                                                    <div class="wave"></div>
+                                                    <div class="wave"
+                                                        style="background: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1440 320\'%3E%3Cpath fill=\'%23571fdd\' fill-opacity=\'0.08\' d=\'M0,224L48,218.7C96,213,192,203,288,202.7C384,203,480,213,576,229.3C672,245,768,267,864,266.7C960,267,1056,245,1152,229.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z\'%3E%3C/path%3E%3C/svg%3E');">
+                                                    </div>
                                                 </div>
-                                                <div class="pattern-bg"></div>
+                                                <div class="pattern-bg"
+                                                    style="background-image: linear-gradient(45deg, rgba(87, 31, 221, 0.15) 25%, transparent 25%), linear-gradient(-45deg, rgba(87, 31, 221, 0.15) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, rgba(87, 31, 221, 0.15) 75%), linear-gradient(-45deg, transparent 75%, rgba(87, 31, 221, 0.15) 75%); opacity: 0.05;">
+                                                </div>
                                                 <div class="tilt-card-content">
                                                     <div
                                                         style="display: flex; align-items: center; margin-bottom: 20px;">
                                                         <div
-                                                            style="background: rgba(48, 81, 255, 0.15); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                                                            style="background: rgba(87, 31, 221, 0.15); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
                                                             <i class="icon_lightbulb_alt"
-                                                                style="color: var(--primary-color); font-size: 28px;"></i>
+                                                                style="color: #571fdd; font-size: 28px;"></i>
                                                         </div>
                                                         <h1
-                                                            style="font-weight: 500; margin-bottom: 0; border-bottom: 2px solid #3051ff; display: inline-block; padding-bottom: 8px; font-size: 20px; font-family: 'Jura', sans-serif; color: #3051ff;">
+                                                            style="font-weight: 500; margin-bottom: 0; border-bottom: 2px solid #571fdd; display: inline-block; padding-bottom: 8px; font-size: 20px; font-family: 'Jura', sans-serif; color: #571fdd;">
                                                             Vision
                                                         </h1>
                                                     </div>
@@ -1200,12 +1219,12 @@
                                                     <div
                                                         style="display: flex; align-items: center; margin-bottom: 20px;">
                                                         <div
-                                                            style="background: rgba(245, 177, 17, 0.15); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                                                            style="background: rgba(236, 255, 132, 0.1); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
                                                             <i class="icon_target"
-                                                                style="color: var(--secondary-color); font-size: 28px;"></i>
+                                                                style="color: #d8ff08; font-size: 28px;"></i>
                                                         </div>
                                                         <h1
-                                                            style="font-weight: 500; margin-bottom: 0; border-bottom: 2px solid #f5b111; display: inline-block; padding-bottom: 8px; font-size: 20px; font-family: 'Jura', sans-serif; color: #f5b111;">
+                                                            style="font-weight: 500; margin-bottom: 0; border-bottom: 2px solid #d8ff08; display: inline-block; padding-bottom: 8px; font-size: 20px; font-family: 'Jura', sans-serif; color: #d8ff08;">
                                                             Mission
                                                         </h1>
                                                     </div>
@@ -1267,7 +1286,7 @@
                                                         style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">
                                                         Mihraç CERRAHOĞLU</h3>
                                                     <div class="team-role"
-                                                        style="color: #3051ff; background: rgba(48, 81, 255, 0.1);">
+                                                        style="color: #d8ff08; background: rgba(236, 255, 132, 0.1);">
                                                         Chief Executive Officer</div>
                                                     <p
                                                         style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
@@ -1294,7 +1313,7 @@
                                                         style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">
                                                         Burakcan KARAMAN</h3>
                                                     <div class="team-role"
-                                                        style="color: #f5b111; background: rgba(245, 177, 17, 0.1);">
+                                                        style="color: #d8ff08; background: rgba(236, 255, 132, 0.1);">
                                                         Chief Strategy Officer</div>
                                                     <p
                                                         style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
@@ -1322,7 +1341,7 @@
                                                         style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">
                                                         Ömer Faruk DEMİRAL</h3>
                                                     <div class="team-role"
-                                                        style="color: #0fbc8b; background: rgba(15, 188, 139, 0.1);">
+                                                        style="color: #d8ff08; background: rgba(236, 255, 132, 0.1);">
                                                         Development Team</div>
                                                     <p
                                                         style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
@@ -1349,7 +1368,7 @@
                                                         style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">
                                                         Mehmet KOÇ</h3>
                                                     <div class="team-role"
-                                                        style="color: #f64e60; background: rgba(246, 78, 96, 0.1);">
+                                                        style="color: #d8ff08; background: rgba(236, 255, 132, 0.1);">
                                                         Development Team</div>
                                                     <p
                                                         style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
@@ -1376,7 +1395,7 @@
                                                         style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">
                                                         Furkan KARABULUT</h3>
                                                     <div class="team-role"
-                                                        style="color: #6f42c1; background: rgba(111, 66, 193, 0.1);">
+                                                        style="color: #d8ff08; background: rgba(236, 255, 132, 0.1);">
                                                         Marketing Team</div>
                                                     <p
                                                         style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
@@ -1403,7 +1422,7 @@
                                                         style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">
                                                         Aycan KARAMAN</h3>
                                                     <div class="team-role"
-                                                        style="color: #0abbf5; background: rgba(10, 187, 245, 0.1);">
+                                                        style="color: #d8ff08; background: rgba(236, 255, 132, 0.1);">
                                                         Marketing Team</div>
                                                     <p
                                                         style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
@@ -1430,7 +1449,7 @@
                                                         style="font-size: 14px; font-weight: 500; font-family: 'Jura', sans-serif; margin-bottom: 5px; color: #fff;">
                                                         Ozan MUTLUOĞLU</h3>
                                                     <div class="team-role"
-                                                        style="color: #50cd89; background: rgba(80, 205, 137, 0.1);">
+                                                        style="color: #d8ff08; background: rgba(236, 255, 132, 0.1);">
                                                         Design & Art Team</div>
                                                     <p
                                                         style="font-size: 11pt; line-height: 1.6; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa;">
@@ -1458,10 +1477,15 @@
                                         <h2>Principles</h2>
                                         <p
                                             style="color: var(--text-muted); max-width: 800px; margin: 0 auto 40px; text-align: center; font-size: 11pt; font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.7;">
-                                            Tipbox is not just a platform, it's a cultural space where digital value is
-                                            being redefined. Every decision we make centers around empowering creators,
-                                            fostering meaningful digital engagement, and restoring ownership of data to
-                                            users.
+                                            Tipbox is committed to upholding platform integrity, user security, and
+                                            investor transparency at the highest level.
+                                            Built on a foundation of structured contribution culture, the platform
+                                            operates with open communication, fair incentive systems, and strict
+                                            regulatory compliance across all processes.
+                                            All fund management and user data handling are conducted under verifiable
+                                            and transparent standards.
+                                            These principles form the foundation for Tipbox's long-term sustainability
+                                            and the trust of its community and stakeholders.
                                         </p>
                                     </div>
 
@@ -1469,31 +1493,32 @@
                                         <!-- İlk satır -->
                                         <!-- Principle 1 -->
                                         <div class="col-lg-4 col-md-6 mb-4">
-                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
-                                                <div class="tilt-card-inner">
+                                            <div class="tilt-card glass-card" style="padding: 25px; height: 280px; display: flex; flex-direction: column;">
+                                                <div class="tilt-card-inner" style="height: 100%; flex: 1;">
                                                     <div class="pattern-bg"></div>
-                                                    <div class="tilt-card-content">
+                                                    <div class="tilt-card-content" style="height: 100%; display: flex; flex-direction: column;">
                                                         <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
                                                         <div
-                                                            style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            style="display: flex; flex-direction: column; align-items: center; height: 100%;">
                                                             <div
                                                                 style="display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 15px;">
                                                                 <div
-                                                                    style="background: rgba(48, 81, 255, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                                                                    <img src="img/icons/instructor_home_feature_1.png"
+                                                                    style="background: rgba(87, 31, 221, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icon/about/transparency-and-open-communication.svg"
                                                                         alt="Creator-First Mindset"
                                                                         style="width: 30px; height: 30px; object-fit: contain;"
                                                                         class="animate-float">
                                                                 </div>
                                                                 <h3
-                                                                    style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important;">
-                                                                    Creator First Mindset</h3>
+                                                                    style="font-size: 16px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important; text-align: left;">
+                                                                    Transparency and Open Communication</h3>
                                                             </div>
                                                             <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
                                                             <p
-                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">
-                                                                Every product decision prioritizes the needs and
-                                                                potential of content creators.</p>
+                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center; flex: 1; display: flex; align-items: center; padding: 0 5px;">
+                                                                Tipbox ensures that all platform updates, developments,
+                                                                and structural changes are communicated to investors and
+                                                                users regularly, clearly, and accessibly.</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1502,31 +1527,34 @@
 
                                         <!-- Principle 2 -->
                                         <div class="col-lg-4 col-md-6 mb-4">
-                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
-                                                <div class="tilt-card-inner">
+                                            <div class="tilt-card glass-card" style="padding: 25px; height: 280px; display: flex; flex-direction: column;">
+                                                <div class="tilt-card-inner" style="height: 100%; flex: 1;">
                                                     <div class="pattern-bg"></div>
-                                                    <div class="tilt-card-content">
+                                                    <div class="tilt-card-content" style="height: 100%; display: flex; flex-direction: column;">
                                                         <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
                                                         <div
-                                                            style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            style="display: flex; flex-direction: column; align-items: center; height: 100%;">
                                                             <div
                                                                 style="display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 15px;">
                                                                 <div
-                                                                    style="background: rgba(245, 177, 17, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                                                                    <img src="img/icons/instructor_home_feature_2.png"
+                                                                    style="background: rgba(87, 31, 221, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icon/about/fair-and-traceable-incentive-systems.svg"
                                                                         alt="Transparency & Accountability"
                                                                         style="width: 30px; height: 30px; object-fit: contain;"
                                                                         class="animate-float">
                                                                 </div>
                                                                 <h3
-                                                                    style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important;">
-                                                                    Transparency & Accountability</h3>
+                                                                    style="font-size: 16px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important; text-align: left;">
+                                                                    Fair and Traceable Incentive Systems</h3>
                                                             </div>
                                                             <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
                                                             <p
-                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">
-                                                                All token, reward, and revenue sharing mechanisms are
-                                                                designed to be observable, traceable, and fair.</p>
+                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center; flex: 1; display: flex; align-items: center; padding: 0 5px;">
+                                                                User contributions are rewarded based on predefined and
+                                                                measurable criteria.
+                                                                All incentive and reward distributions are transparently
+                                                                tracked through blockchain infrastructure.
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1535,31 +1563,32 @@
 
                                         <!-- Principle 3 -->
                                         <div class="col-lg-4 col-md-6 mb-4">
-                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
-                                                <div class="tilt-card-inner">
+                                            <div class="tilt-card glass-card" style="padding: 25px; height: 280px; display: flex; flex-direction: column;">
+                                                <div class="tilt-card-inner" style="height: 100%; flex: 1;">
                                                     <div class="pattern-bg"></div>
-                                                    <div class="tilt-card-content">
+                                                    <div class="tilt-card-content" style="height: 100%; display: flex; flex-direction: column;">
                                                         <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
                                                         <div
-                                                            style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            style="display: flex; flex-direction: column; align-items: center; height: 100%;">
                                                             <div
                                                                 style="display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 15px;">
                                                                 <div
-                                                                    style="background: rgba(15, 188, 139, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                                                                    <img src="img/icons/instructor_home_feature_3.png"
+                                                                    style="background: rgba(87, 31, 221, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icon/about/responsible-resource-management.svg"
                                                                         alt="Structured Contribution"
                                                                         style="width: 30px; height: 30px; object-fit: contain;"
                                                                         class="animate-float">
                                                                 </div>
                                                                 <h3
-                                                                    style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important;">
-                                                                    Structured Contribution</h3>
+                                                                    style="font-size: 16px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important; text-align: left;">
+                                                                    Responsible Resource Management</h3>
                                                             </div>
                                                             <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
                                                             <p
-                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">
-                                                                Each experience is organized and rewarded based on its
-                                                                context, intent, and quality.</p>
+                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center; flex: 1; display: flex; align-items: center; padding: 0 5px;">
+                                                                All platform and investment funds are managed strictly according to their designated purposes, following detailed planning and accountability practices.
+Development funds are used exclusively for development activities; marketing funds are reserved solely for growth and outreach initiatives.
+</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1569,31 +1598,32 @@
                                         <!-- İkinci satır -->
                                         <!-- Principle 4 -->
                                         <div class="col-lg-4 col-md-6 mb-4">
-                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
-                                                <div class="tilt-card-inner">
+                                            <div class="tilt-card glass-card" style="padding: 25px; height: 280px; display: flex; flex-direction: column;">
+                                                <div class="tilt-card-inner" style="height: 100%; flex: 1;">
                                                     <div class="pattern-bg"></div>
-                                                    <div class="tilt-card-content">
+                                                    <div class="tilt-card-content" style="height: 100%; display: flex; flex-direction: column;">
                                                         <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
                                                         <div
-                                                            style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            style="display: flex; flex-direction: column; align-items: center; height: 100%;">
                                                             <div
                                                                 style="display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 15px;">
                                                                 <div
-                                                                    style="background: rgba(246, 78, 96, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                                                                    <img src="img/icons/instructor_home_feature_4.png"
+                                                                    style="background: rgba(87, 31, 221, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icon/about/user-data-security-and-ownership.svg"
                                                                         alt="Growth with the Community"
                                                                         style="width: 30px; height: 30px; object-fit: contain;"
                                                                         class="animate-float">
                                                                 </div>
                                                                 <h3
-                                                                    style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important;">
-                                                                    Growth with the Community</h3>
+                                                                    style="font-size: 16px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important; text-align: left;">
+                                                                    User Data Security and Ownership</h3>
                                                             </div>
                                                             <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
                                                             <p
-                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">
-                                                                From roadmap decisions to cultural initiatives, we build
-                                                                with collective input, not in isolation.</p>
+                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center; flex: 1; display: flex; align-items: center; padding: 0 5px;">
+                                                                User data is securely encrypted and processed only within clearly defined consent frameworks.
+Data ownership remains with the users, with no unauthorized third-party sharing.
+</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1602,31 +1632,32 @@
 
                                         <!-- Principle 5 -->
                                         <div class="col-lg-4 col-md-6 mb-4">
-                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
-                                                <div class="tilt-card-inner">
+                                            <div class="tilt-card glass-card" style="padding: 25px; height: 280px; display: flex; flex-direction: column;">
+                                                <div class="tilt-card-inner" style="height: 100%; flex: 1;">
                                                     <div class="pattern-bg"></div>
-                                                    <div class="tilt-card-content">
+                                                    <div class="tilt-card-content" style="height: 100%; display: flex; flex-direction: column;">
                                                         <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
                                                         <div
-                                                            style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            style="display: flex; flex-direction: column; align-items: center; height: 100%;">
                                                             <div
                                                                 style="display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 15px;">
                                                                 <div
-                                                                    style="background: rgba(10, 187, 245, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                                                                    <img src="img/icons/instructor_home_feature_1.png"
+                                                                    style="background: rgba(87, 31, 221, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icon/about/smart-contract-and-tokenomics-transparency.svg"
                                                                         alt="Balance of Social Impact"
                                                                         style="width: 30px; height: 30px; object-fit: contain;"
                                                                         class="animate-float">
                                                                 </div>
                                                                 <h3
-                                                                    style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important;">
-                                                                    Balance of Social Impact & <br> Economic Value</h3>
+                                                                    style="font-size: 16px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important; text-align: left;">
+                                                                    Smart Contract and Tokenomics Transparency</h3>
                                                             </div>
                                                             <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
                                                             <p
-                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">
-                                                                Every feature is designed to benefit both the individual
-                                                                and the community as a whole.</p>
+                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center; flex: 1; display: flex; align-items: center; padding: 0 5px;">
+                                                                All smart contracts and token allocation processes are verifiable, transparent, and open to independent audits.
+Access authorizations and control mechanisms are clearly defined and publicly disclosed.
+</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1635,31 +1666,32 @@
 
                                         <!-- Principle 6 -->
                                         <div class="col-lg-4 col-md-6 mb-4">
-                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
-                                                <div class="tilt-card-inner">
+                                            <div class="tilt-card glass-card" style="padding: 25px; height: 280px; display: flex; flex-direction: column;">
+                                                <div class="tilt-card-inner" style="height: 100%; flex: 1;">
                                                     <div class="pattern-bg"></div>
-                                                    <div class="tilt-card-content">
+                                                    <div class="tilt-card-content" style="height: 100%; display: flex; flex-direction: column;">
                                                         <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
                                                         <div
-                                                            style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            style="display: flex; flex-direction: column; align-items: center; height: 100%;">
                                                             <div
                                                                 style="display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 15px;">
                                                                 <div
-                                                                    style="background: rgba(111, 66, 193, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                                                                    <img src="img/icons/instructor_home_feature_2.png"
+                                                                    style="background: rgba(87, 31, 221, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icon/about/user-and-community-participation.svg"
                                                                         alt="Trust & Respect"
                                                                         style="width: 30px; height: 30px; object-fit: contain;"
                                                                         class="animate-float">
                                                                 </div>
                                                                 <h3
-                                                                    style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important;">
-                                                                    Trust, Respect & Empowerment</h3>
+                                                                    style="font-size: 16px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important; text-align: left;">
+                                                                    User and Community Participation</h3>
                                                             </div>
                                                             <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
                                                             <p
-                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">
-                                                                Users are granted ownership, voice, and visible
-                                                                recognition for their expertise and contributions.</p>
+                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center; flex: 1; display: flex; align-items: center; padding: 0 5px;">
+                                                                User contributions are considered a core asset in the platform's evolution.
+Users have a voice both in content creation and in providing system feedback that helps shape the platform's future.
+</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1668,32 +1700,31 @@
 
                                         <!-- Üçüncü satır -->
                                         <!-- Principle 7 -->
-                                        <div class="col-lg-4 col-md-6 mb-4">
-                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
-                                                <div class="tilt-card-inner">
+                                        <div class="col-lg-4 col-md-6 mb-4 offset-lg-2">
+                                            <div class="tilt-card glass-card" style="padding: 25px; height: 280px; display: flex; flex-direction: column;">
+                                                <div class="tilt-card-inner" style="height: 100%; flex: 1;">
                                                     <div class="pattern-bg"></div>
-                                                    <div class="tilt-card-content">
+                                                    <div class="tilt-card-content" style="height: 100%; display: flex; flex-direction: column;">
                                                         <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
                                                         <div
-                                                            style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            style="display: flex; flex-direction: column; align-items: center; height: 100%;">
                                                             <div
                                                                 style="display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 15px;">
                                                                 <div
-                                                                    style="background: rgba(80, 205, 137, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                                                                    <img src="img/icons/instructor_home_feature_3.png"
+                                                                    style="background: rgba(87, 31, 221, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icon/about/continuous-regulatory-compliance.svg"
                                                                         alt="Technological Clarity"
                                                                         style="width: 30px; height: 30px; object-fit: contain;"
                                                                         class="animate-float">
                                                                 </div>
                                                                 <h3
-                                                                    style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important;">
-                                                                    Technological Clarity over Complexity</h3>
+                                                                    style="font-size: 16px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important; text-align: left;">
+                                                                    Continuous Regulatory Compliance</h3>
                                                             </div>
                                                             <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
                                                             <p
-                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">
-                                                                We adopt technology not for show, but for value
-                                                                creation favoring clarity over clutter.</p>
+                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center; flex: 1; display: flex; align-items: center; padding: 0 5px;">
+                                                                Tipbox commits to full compliance with all relevant national and international regulations, including financial services, data protection, user privacy, and digital asset management laws.</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1702,64 +1733,30 @@
 
                                         <!-- Principle 8 -->
                                         <div class="col-lg-4 col-md-6 mb-4">
-                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
-                                                <div class="tilt-card-inner">
+                                            <div class="tilt-card glass-card" style="padding: 25px; height: 280px; display: flex; flex-direction: column;">
+                                                <div class="tilt-card-inner" style="height: 100%; flex: 1;">
                                                     <div class="pattern-bg"></div>
-                                                    <div class="tilt-card-content">
+                                                    <div class="tilt-card-content" style="height: 100%; display: flex; flex-direction: column;">
                                                         <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
                                                         <div
-                                                            style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                                                            style="display: flex; flex-direction: column; align-items: center; height: 100%;">
                                                             <div
                                                                 style="display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 15px;">
                                                                 <div
-                                                                    style="background: rgba(245, 177, 17, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                                                                    <img src="img/icons/instructor_home_feature_4.png"
+                                                                    style="background: rgba(87, 31, 221, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                                    <img src="img/icon/about/sustainability-and-long-term-perspective.svg"
                                                                         alt="Sustainability"
                                                                         style="width: 30px; height: 30px; object-fit: contain;"
                                                                         class="animate-float">
                                                                 </div>
                                                                 <h3
-                                                                    style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important;">
-                                                                    Sustainability and LongTerm Focus</h3>
+                                                                    style="font-size: 16px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important; text-align: left;">
+                                                                    Sustainability and Long-Term Perspective</h3>
                                                             </div>
                                                             <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
                                                             <p
-                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">
-                                                                We design systems for durability, not just speed. Our
-                                                                token model and growth strategies reflect this.</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Principle 9 -->
-                                        <div class="col-lg-4 col-md-6 mb-4">
-                                            <div class="tilt-card glass-card" style="padding: 25px; min-height: 220px;">
-                                                <div class="tilt-card-inner">
-                                                    <div class="pattern-bg"></div>
-                                                    <div class="tilt-card-content">
-                                                        <!-- İkon ve Başlık bir div içinde center olarak hizalı -->
-                                                        <div
-                                                            style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
-                                                            <div
-                                                                style="display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 15px;">
-                                                                <div
-                                                                    style="background: rgba(48, 81, 255, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
-                                                                    <img src="img/icons/instructor_home_feature_1.png"
-                                                                        alt="Openness"
-                                                                        style="width: 30px; height: 30px; object-fit: contain;"
-                                                                        class="animate-float">
-                                                                </div>
-                                                                <h3
-                                                                    style="font-size: 17px !important; font-weight: 600; font-family: 'Jura', sans-serif; color: #fff; margin-bottom: 0!important;">
-                                                                    Openness & Learning Culture</h3>
-                                                            </div>
-                                                            <!-- Açıklama ayrı bir paragraph olarak ikon ve başlığın altında -->
-                                                            <p
-                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center;">
-                                                                We learn from data, grow through feedback, and extract
-                                                                value even from failure.</p>
+                                                                style="font-size: 11pt; line-height: 1.5; font-family: 'Inter', sans-serif; font-weight: 300; color: #9ba0aa; margin-bottom: 0; text-align: center; flex: 1; display: flex; align-items: center; padding: 0 5px;">
+                                                                Growth objectives are balanced against operational risks, with every strategic move designed to ensure the platform's long-term viability and ecosystem integrity.</p>
                                                         </div>
                                                     </div>
                                                 </div>
