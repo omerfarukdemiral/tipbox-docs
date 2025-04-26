@@ -4,7 +4,7 @@
     top: 74px;
     left: 0;
     z-index: 990; /* Header'ın z-index'inden düşük olması gerekir */
-    background: #121318;
+    background: #d8ff08;
     width: auto;
     min-width: 50px;
     padding: 0 15px;
@@ -15,18 +15,16 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    opacity: 0.8!important;
     visibility: hidden;
 }
 
 .fixed-menu-toggle span {
-    color: #fff;
+    color: #121318;
     margin-right: 8px;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .fixed-menu-toggle.visible {
-    opacity: 1;
     visibility: visible;
     top: 74px; /* Header yüksekliği */
 }
@@ -43,15 +41,16 @@
 }
 
 .fixed-menu-toggle i {
-    color: #fff;
+    color: #121318 !important;
     font-size: 24px;
     transition: transform 0.3s ease;
+    margin-bottom: -5px;
 }
 
 .fixed-menu-toggle:hover, 
 .fixed-menu-toggle:active, 
 .fixed-menu-toggle:focus {
-    background: #121318; /* Aynı renk kalır */
+    background: #d8ff08; /* Aynı renk kalır */
 }
 
 .fixed-menu-toggle.open {
@@ -111,6 +110,7 @@
     margin-bottom: 15px;
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
+    color: #121318;
 }
 
 .body_dark .side-nav-panel {
@@ -120,9 +120,14 @@
 
 .body_dark .side-nav-panel .nav-title {
     border-bottom-color: #2c2e35;
+    color: #fff;
 }
 
 /* Aktif menü öğesi için stil */
+.side-nav-panel .nav-item .nav-link {
+    color: #121318;
+}
+
 .side-nav-panel .nav-item .nav-link.active {
     color: #10b3d6;
     font-weight: 600;
@@ -131,4 +136,21 @@
 /* Menü öğelerine hover efekti */
 .side-nav-panel .nav-item .nav-link:hover {
     background: rgba(16, 179, 214, 0.05);
+}
+
+/* Nav link içindeki içerik için stil */
+.side-nav-panel .nav-item .nav-link-content span {
+    color: inherit;
+}
+
+.side-nav-panel .nav-item .nav-link-content i {
+    color: inherit !important;
+}
+
+.body_dark .side-nav-panel .nav-item .nav-link {
+    color: #fff;
+}
+
+.body_dark .side-nav-panel .nav-item .nav-link.active {
+    color: #10b3d6;
 } 

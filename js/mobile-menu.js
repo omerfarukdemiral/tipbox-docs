@@ -1,6 +1,8 @@
 /**
  * Mobile Menu Implementation
  * This script handles the mobile side menu functionality
+ * Menu styling is controlled via mobile-menu.css
+ * Theme colors: Menu background: #d8ff08 (sarı), Text color: #121318 (siyah)
  */
 document.addEventListener('DOMContentLoaded', function() {
     // Gerekli elementleri seçelim
