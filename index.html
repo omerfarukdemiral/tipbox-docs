@@ -566,7 +566,7 @@
             border: 0;
             background: none;
         }
-
+        
         .card.doc_accordion .card-header button {
             padding: 18px 20px;
             border-radius: 8px;
@@ -575,7 +575,7 @@
             justify-content: space-between;
             width: 100%;
             text-align: left;
-            background: #2c106f;
+            background: #212121;
             color: #fff;
             font-size: 17px;
             font-weight: 500;
@@ -585,9 +585,18 @@
 
         .card.doc_accordion .card-header button:hover,
         .card.doc_accordion .card-header button:focus {
-            background: #3a1694;
+            background: #2c106f;
             color: #fff;
             text-decoration: none;
+        }
+
+        .card.doc_accordion .card-header button.collapsed {
+            background: #212121;
+        }
+
+        .card.doc_accordion .card-header button:not(.collapsed) {
+            background: #2c106f;
+            color: #fff;
         }
 
         .card.doc_accordion .card-header button svg:first-of-type {
@@ -2089,6 +2098,77 @@
                     "position": "static"
                 });
             });
+            
+            // Accordion için özel işlevler - Hiçbir collapse açık değilse ilk öğeyi vurgula
+            function checkAndHighlightFirstItem() {
+                // Aktif sekmeyi bul
+                var activeTabId = $('.tab-pane.active').attr('id');
+                var accordionId = '#accordion-' + activeTabId;
+                
+                // Aktif sekme içinde açık bir collapse var mı kontrol et
+                var openCollapses = $(accordionId + ' .collapse.show').length;
+                
+                // Tüm butonların arka plan rengini sıfırla
+                $(accordionId + ' .card-header button').css({
+                    'background': '#212121',
+                    'color': '#fff'
+                });
+                
+                if (openCollapses === 0) {
+                    // Hiçbir collapse açık değilse ilk öğeyi vurgula
+                    $(accordionId + ' .card:first-child .card-header button').css({
+                        'background': '#2c106f',
+                        'color': '#fff'
+                    });
+                } else {
+                    // Açık collapse'in butonunu vurgula
+                    $(accordionId + ' .collapse.show').each(function() {
+                        var buttonSelector = '[data-target="#' + $(this).attr('id') + '"]';
+                        $(buttonSelector).css({
+                            'background': '#2c106f',
+                            'color': '#fff'
+                        });
+                    });
+                }
+            }
+            
+            // Sayfa yüklendiğinde ve tab değiştiğinde kontrol et
+            $('.nav-tabs a').on('shown.bs.tab', function() {
+                setTimeout(checkAndHighlightFirstItem, 10);
+            });
+            
+            // Collapse olaylarını dinle - açıldığında ve kapandığında
+            $('.collapse').on('hidden.bs.collapse shown.bs.collapse', function() {
+                setTimeout(checkAndHighlightFirstItem, 10);
+            });
+            
+            // Sayfa yüklendiğinde kontrol et
+            setTimeout(checkAndHighlightFirstItem, 100);
+            
+            // Accordion butonlarına hover efektleri
+            $('.card.doc_accordion .card-header button').hover(
+                function() {
+                    // Hover başladığında
+                    if ($(this).hasClass('collapsed')) {
+                        $(this).css({
+                            'background': '#3a1994',
+                            'color': '#fff'
+                        });
+                    }
+                },
+                function() {
+                    // Hover bittiğinde
+                    if ($(this).hasClass('collapsed')) {
+                        $(this).css({
+                            'background': '#212121',
+                            'color': '#fff'
+                        });
+                        
+                        // Durumu tekrar kontrol et
+                        checkAndHighlightFirstItem();
+                    }
+                }
+            );
         });
     </script>
 </body>
