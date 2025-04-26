@@ -2495,7 +2495,7 @@
 
 .shortcode_title ul li {
   font-family: 'Inter', sans-serif;
-  font-size: 16px;
+  font-size: 11pt !important;
   line-height: 24px;
   font-weight: 400;
   color: #b9b9b9;
