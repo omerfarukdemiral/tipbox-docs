@@ -30,6 +30,20 @@ function initializeHeader() {
                     el.textContent = email;
                 });
                 
+                // Privacy Policy durumunu güncelleme
+                const policyStatusElements = document.querySelectorAll('.privacy-policy-status');
+                let privacyPolicyAccepted = false;
+                
+                // Farklı privacy_policy değer formatlarını kontrol et
+                if (user.privacy_policy === true || user.privacy_policy === "true" || user.privacy_policy === 1) {
+                    privacyPolicyAccepted = true;
+                }
+                
+                policyStatusElements.forEach(el => {
+                    el.textContent = privacyPolicyAccepted ? 'Kabul Edildi' : 'Kabul Edilmedi';
+                    el.className = 'privacy-policy-status ' + (privacyPolicyAccepted ? 'text-success' : 'text-danger');
+                });
+                
                 // Admin paneli bağlantısı kontrolü
                 updateAdminPanelVisibility();
             } else {

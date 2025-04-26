@@ -58,12 +58,23 @@
      * @returns {boolean} Kabul edildiyse true, aksi halde false
      */
     function hasUserAcceptedLegalNotice() {
+        // Öncelikle doğrudan localStorage'daki özel anahtarı kontrol et
+        if (localStorage.getItem(LEGAL_NOTICE_ACCEPTED_KEY) === 'true') {
+            console.log('Yasal uyarı daha önce kabul edilmiş (özel anahtar)');
+            return true;
+        }
+        
+        // Alternatif olarak user verisinden kontrol et
         const userStr = localStorage.getItem('user');
         if (userStr) {
             try {
                 const userData = JSON.parse(userStr);
                 console.log('Privacy policy değeri:', userData.privacy_policy);
-                return userData.privacy_policy === true;
+                if (userData.privacy_policy === true) {
+                    // Özel anahtarı da ayarla ki bir sonraki kontrolde doğrudan bulunabilsin
+                    localStorage.setItem(LEGAL_NOTICE_ACCEPTED_KEY, 'true');
+                    return true;
+                }
             } catch (error) {
                 console.error('User verisi JSON olarak ayrıştırılamadı:', error);
                 return false;
@@ -113,7 +124,11 @@
             
             // LocalStorage'deki kullanıcı verisini güncelle
             userData.privacy_policy = true;
-            localStorage.setItem('user', JSON.stringify(userData));            
+            localStorage.setItem('user', JSON.stringify(userData));
+            
+            // Ayrı bir anahtarda da kabul durumunu sakla
+            // Böylece user verisi değişse bile bu kalır
+            localStorage.setItem(LEGAL_NOTICE_ACCEPTED_KEY, 'true');
         } catch (error) {
             console.error('Gizlilik politikası güncellenirken hata:', error);
             showToast('Gizlilik politikası güncellenirken bir hata oluştu: ' + error.message, 'error');
