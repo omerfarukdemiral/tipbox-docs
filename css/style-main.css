@@ -6521,7 +6521,7 @@ body.body_dark .table-of-content .nav-link:hover {
 
 /*================ preloader css ====================*/
 #preloader {
-  background: #fff;
+  background: #111;
   height: 100%;
   bottom: 0;
   left: 0;
@@ -6544,7 +6544,7 @@ body.body_dark .table-of-content .nav-link:hover {
 #preloader .spinner {
   animation: spinner 3s infinite linear;
   border-radius: 50%;
-  border: 3px solid #f1f6f8;
+  border: 3px solid #181818;
   border-left-color: var(--brand_color);
   border-top-color: var(--brand_color);
   margin: 0 auto 0em auto;
@@ -6560,7 +6560,7 @@ body.body_dark .table-of-content .nav-link:hover {
   height: 20px;
   border: 6px solid #fff;
   box-shadow: 0 0 20px 0 rgba(4, 46, 56, 0.2);
-  background: var(--brand_color);
+  background: #111;
   position: absolute;
   right: 31px;
   top: 41px;
@@ -15279,7 +15279,7 @@ body.body_dark .table-of-content .nav-link:hover {
 
 /*================ preloader css ====================*/
 #preloader {
-  background: #fff;
+  background: #181818;
   height: 100%;
   bottom: 0;
   left: 0;
@@ -15302,9 +15302,9 @@ body.body_dark .table-of-content .nav-link:hover {
 #preloader .spinner {
   animation: spinner 3s infinite linear;
   border-radius: 50%;
-  border: 3px solid #f1f6f8;
-  border-left-color: var(--brand_color);
-  border-top-color: var(--brand_color);
+  border: 3px solid #d8ff08;
+  border-left-color: #efefef;
+  border-top-color: #efefef;
   margin: 0 auto 0em auto;
   position: absolute;
   left: -40px;
@@ -15316,7 +15316,7 @@ body.body_dark .table-of-content .nav-link:hover {
   content: "";
   width: 20px;
   height: 20px;
-  border: 6px solid #fff;
+  border: 6px solid #efefef;
   box-shadow: 0 0 20px 0 rgba(4, 46, 56, 0.2);
   background: var(--brand_color);
   position: absolute;
@@ -15331,10 +15331,10 @@ body.body_dark .table-of-content .nav-link:hover {
 }
 #preloader .round_spinner {
   border-width: 1px;
-  border-color: rgb(238, 243, 244);
+  border-color: #d8ff08;
   border-style: solid;
   border-radius: 50%;
-  background-color: rgb(253, 253, 253);
+  background-color: #181818;
   box-shadow: 0 0 100px 0 rgba(4, 46, 56, 0.14);
   width: 248px;
   height: 248px;
@@ -15354,14 +15354,14 @@ body.body_dark .table-of-content .nav-link:hover {
   font-size: 30px;
   font-weight: 400;
   margin-bottom: 0;
-  color: var(--secondary_color);
+  color: #efefef;
 }
 #preloader .round_spinner h4 span {
   font-weight: 700;
 }
 
 #preloader .head {
-  color: var(--secondary_color);
+  color: #efefef;
   display: block;
   font-size: 26px;
   font-weight: 700;
@@ -15374,7 +15374,7 @@ body.body_dark .table-of-content .nav-link:hover {
 }
 
 #preloader p {
-  color: #425466;
+  color: #efefef;
   display: block;
   font-size: 14px;
   font-weight: 400;
@@ -24184,8 +24184,15 @@ blockquote .author {
 /*----------------------------------------------------*/
 /*=============  doc_banner_area css  =============*/
 .doc_banner_area {
-  background: #3636cd;
   text-align: center;
+  background-image: url('../img/bg.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed; /* Sabit arkaplan */
+  position: relative;
+  overflow: hidden;
+  display: flex;
   padding: 140px 0 200px;
   position: relative;
 }
@@ -24456,7 +24463,7 @@ blockquote .author {
   font-size: 13px;
   padding: 0 19px;
   border-radius: 45px;
-  background: #4a4ad2;
+  background: #353335;
   color: #fff;
 }
 
@@ -24480,7 +24487,7 @@ blockquote .author {
   overflow: hidden;
   box-shadow: 0 30px 60px 0 rgba(2, 2, 48, 0.08);
   border-radius: 10px;
-  background: var(--bs-white);
+  background: #212121;
   top: -80px;
   position: relative;
 }
