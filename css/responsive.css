@@ -1763,6 +1763,11 @@
   .doc_banner_area.search-banner-light {
     padding: 90px 0px 20px 0px;
   }
+  .documentation_body,
+  .doc_documentation_area {
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+  }
 }
 
 @media (max-width: 670px) {
@@ -2938,5 +2943,12 @@
 @media only screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
   .doc_banner_area.search-banner-light {
     padding: 90px 0px 20px 0px;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .documentation_body,
+  .doc_documentation_area {
+    padding-bottom: 0px !important;
   }
 }
