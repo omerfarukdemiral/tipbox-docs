@@ -1348,4 +1348,643 @@
     // Hiçbir şey yapmıyoruz, ana fonksiyonu kullanıyoruz
   }
 
+  /**
+   * Doküman Arama Fonksiyonu
+   * Bu fonksiyon, tüm HTML sayfalarında arama yapar
+   */
+  document.addEventListener('DOMContentLoaded', function() {
+    // Arama formu ve arama kutusu elementlerini seçelim
+    const searchForm = document.querySelector('.header_search_form');
+    const searchInput = document.getElementById('searchbox');
+    
+    if (searchForm && searchInput) {
+        // Form submit olayını dinle
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const searchTerm = searchInput.value.trim();
+            
+            if (searchTerm.length > 0) {
+                performSearch(searchTerm);
+            }
+        });
+        
+        // Arama kutusuna yazılırken (input olayını dinle)
+        searchInput.addEventListener('input', function() {
+            const searchTerm = searchInput.value.trim();
+            
+            // Eğer 4 veya daha fazla karakter yazıldıysa otomatik arama yap
+            if (searchTerm.length >= 4) {
+                performSearch(searchTerm);
+            } else if (searchTerm.length === 0) {
+                // Arama kutusu boşsa, sonuçları gizle
+                hideSearchResults();
+            }
+        });
+        
+        // Tıklama olaylarını dinleyerek dropdown'ın dışına tıklandığında kapanmasını sağla
+        document.addEventListener('click', function(event) {
+            const isClickInsideSearchForm = searchForm.contains(event.target);
+            
+            if (!isClickInsideSearchForm) {
+                hideSearchResults();
+            }
+        });
+    }
+  });
+
+  /**
+   * Arama yapan ana fonksiyon
+   * @param {string} searchTerm - Aranacak terim
+   */
+  function performSearch(searchTerm) {
+    // Arama başlamadan önce yükleniyor göstergesi
+    showLoadingIndicator();
+    
+    // Geçerli sayfayı almak için URL kontrolü
+    const currentPath = window.location.pathname;
+    const currentPage = currentPath.substring(currentPath.lastIndexOf('/') + 1);
+    console.log("Aktif sayfa:", currentPage);
+    
+    // Ana dizindeki sayfalar
+    const mainPages = [
+        'index.html',
+        'about.html',
+        'admin-panel.html',
+        'business-model-canvas.html',
+        'company-finance.html',
+        'forums.html',
+        'go-to-market.html',
+        'lean-canvas.html', 
+        'market.html',
+        'product.html',
+        'project-blueprint.html',
+        'project-blurb.html',
+        'project-deck.html',
+        'roadmap.html',
+        'signin.html',
+        'technology.html',
+        'transparency-tokenomics.html'
+    ];
+    
+    // Alt klasörler ve içlerindeki index.html dosyaları
+    const subFolders = [
+        'market/',
+        'transparency/',
+        'company/',
+        'product/',
+        'technology/',
+        'project-blueprint/',
+        'tokeneconomics/',
+        'pages/'
+    ];
+    
+    // Aranacak tüm sayfaları oluştur
+    const pagesToSearch = [...mainPages];
+    
+    // Alt klasörlerdeki index.html dosyalarını ekle
+    subFolders.forEach(folder => {
+        pagesToSearch.push(`${folder}index.html`);
+        
+        // Her klasöre özel ek sayfalar
+        if (folder === 'market/') {
+            pagesToSearch.push(`${folder}analysis.html`);
+            pagesToSearch.push(`${folder}strategy.html`);
+        } else if (folder === 'technology/') {
+            pagesToSearch.push(`${folder}architecture.html`);
+            pagesToSearch.push(`${folder}stack.html`);
+        } else if (folder === 'project-blueprint/') {
+            pagesToSearch.push(`${folder}details.html`);
+        }
+    });
+    
+    console.log("Aranacak toplam sayfa sayısı:", pagesToSearch.length);
+    
+    let searchResults = [];
+    let pagesSearched = 0;
+    
+    // Önce mevcut HTML sayfasını ara
+    if (document.body) {
+        const currentPageResults = searchInCurrentPage(searchTerm);
+        if (currentPageResults.length > 0) {
+            searchResults = searchResults.concat(currentPageResults);
+        }
+    }
+    
+    // Tüm sayfaları asenkron olarak ara
+    const searchPromises = pagesToSearch.map(page => {
+        // Mevcut sayfayı atla (zaten aradık)
+        if (page === currentPage) {
+            return Promise.resolve([]);
+        }
+        
+        return fetchAndSearch(page, searchTerm)
+            .catch(error => {
+                console.error(`Arama hatası (${page}):`, error);
+                return []; // Hata durumunda boş sonuç döndür
+            });
+    });
+    
+    // Tüm arama işlemleri tamamlandığında sonuçları göster
+    Promise.allSettled(searchPromises)
+        .then(results => {
+            results.forEach(result => {
+                if (result.status === 'fulfilled' && result.value.length > 0) {
+                    searchResults = searchResults.concat(result.value);
+                }
+            });
+            
+            // Sonuçları göster
+            displaySearchResults(searchResults);
+            hideLoadingIndicator();
+        })
+        .catch(error => {
+            console.error("Arama sırasında beklenmeyen hata:", error);
+            // Hata olsa bile mevcut sonuçları göster
+            displaySearchResults(searchResults);
+            hideLoadingIndicator();
+        });
+  }
+
+  /**
+   * Mevcut sayfada arama yap (sayfayı fetch etmeden doğrudan DOM üzerinden)
+   * @param {string} searchTerm - Aranacak terim
+   * @returns {Array} - Bulunan sonuçların listesi
+   */
+  function searchInCurrentPage(searchTerm) {
+    const results = [];
+    
+    // Sayfadaki tüm metni al
+    const bodyText = document.body.innerText || document.body.textContent;
+    const cleanContent = bodyText.replace(/\s+/g, ' ').trim();
+    
+    // Sayfa başlığını al
+    const pageTitle = document.title || window.location.pathname;
+    
+    // Meta description'ı bul
+    const metaDescription = document.querySelector('meta[name="description"]')?.getAttribute('content') || '';
+    
+    // Başlıklar, paragraflar ve diğer önemli içerik elementlerini topla
+    const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    const paragraphs = document.querySelectorAll('p');
+    const divContent = document.querySelectorAll('div[class*="content"], .doc_title, .shortcode_info, .changelog_info');
+    
+    let importantContent = '';
+    
+    // Başlıkları ekle
+    headings.forEach(heading => {
+        importantContent += heading.textContent + ' ';
+    });
+    
+    // Paragrafları ekle
+    paragraphs.forEach(paragraph => {
+        importantContent += paragraph.textContent + ' ';
+    });
+    
+    // İçerik div'lerini ekle
+    divContent.forEach(div => {
+        importantContent += div.textContent + ' ';
+    });
+    
+    // Case-insensitive arama için her şeyi küçük harfe çevir
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    const lowerContent = cleanContent.toLowerCase();
+    const lowerImportantContent = importantContent.toLowerCase();
+    
+    // Önce önemli içerikte ara
+    if (lowerImportantContent.includes(lowerSearchTerm)) {
+        // En az bir eşleşme bulundu
+        // İçerikte eşleşen her yeri bul
+        let lastIndex = 0;
+        let matchCount = 0;
+        const maxMatches = 3; // Bir sayfadan en fazla gösterilecek eşleşme sayısı
+        
+        while ((lastIndex = lowerImportantContent.indexOf(lowerSearchTerm, lastIndex + 1)) !== -1 && matchCount < maxMatches) {
+            // Bu eşleşme için snippet oluştur
+            const startPos = Math.max(0, lastIndex - 50);
+            const endPos = Math.min(importantContent.length, lastIndex + searchTerm.length + 50);
+            let snippet = importantContent.substring(startPos, endPos);
+            
+            // Kesilen metni işaretle
+            if (startPos > 0) {
+                snippet = '...' + snippet;
+            }
+            if (endPos < importantContent.length) {
+                snippet = snippet + '...';
+            }
+            
+            // Arama terimini vurgula
+            const highlightedSnippet = highlightSearchTerm(snippet, searchTerm);
+            
+            // Aynı snippet'i tekrar eklememek için kontrol
+            if (!results.some(result => result.snippet === highlightedSnippet)) {
+                results.push({
+                    title: pageTitle,
+                    url: window.location.pathname,
+                    description: metaDescription,
+                    snippet: highlightedSnippet
+                });
+                matchCount++;
+            }
+        }
+    }
+    
+    // Önemli içerikte bulunamadıysa veya hiç eşleşme yoksa, tüm içerikte ara
+    if (results.length === 0 && lowerContent.includes(lowerSearchTerm)) {
+        // İçerikte eşleşen yeri bul
+        const index = lowerContent.indexOf(lowerSearchTerm);
+        
+        // Eşleşmenin etrafındaki metni al (bağlam)
+        const startPos = Math.max(0, index - 100);
+        const endPos = Math.min(lowerContent.length, index + searchTerm.length + 100);
+        let snippet = cleanContent.substring(startPos, endPos);
+        
+        // Kesilen metni işaretle
+        if (startPos > 0) {
+            snippet = '...' + snippet;
+        }
+        if (endPos < cleanContent.length) {
+            snippet = snippet + '...';
+        }
+        
+        // Arama terimini vurgula
+        const highlightedSnippet = highlightSearchTerm(snippet, searchTerm);
+        
+        results.push({
+            title: pageTitle,
+            url: window.location.pathname,
+            description: metaDescription,
+            snippet: highlightedSnippet
+        });
+    }
+    
+    return results;
+  }
+
+  /**
+   * Belirtilen HTML sayfasını fetch eder ve içinde arama yapar
+   * @param {string} pageUrl - HTML sayfasının URL'si
+   * @param {string} searchTerm - Aranacak terim
+   * @returns {Promise} - Arama sonuçları promise'i
+   */
+  function fetchAndSearch(pageUrl, searchTerm) {
+    return new Promise((resolve, reject) => {
+        // URL'nin doğru olup olmadığını kontrol et
+        // Base URL'yi al
+        const baseUrl = window.location.origin;
+        
+        // URL'yi düzgünce formatla - eğer / ile başlamıyorsa ekle
+        if (!pageUrl.startsWith('/') && !pageUrl.startsWith('http') && pageUrl !== window.location.pathname.substring(1)) {
+            pageUrl = '/' + pageUrl;
+        }
+        
+        // Tam URL oluştur
+        const fullUrl = pageUrl.startsWith('http') ? pageUrl : baseUrl + pageUrl;
+        
+        // Konsola fetch bilgisini yazdır
+        console.log(`Fetching: ${fullUrl}`);
+        
+        fetch(fullUrl)
+            .then(response => {
+                if (!response.ok) {
+                    console.warn(`Sayfa bulunamadı (${fullUrl}): ${response.status} ${response.statusText}`);
+                    return Promise.resolve(''); // Boş içerik döndür ama promise'i reddetme
+                }
+                return response.text();
+            })
+            .then(html => {
+                if (!html) {
+                    resolve([]); // Boş içerik için boş sonuç listesi
+                    return;
+                }
+                const results = searchInHtml(html, searchTerm, pageUrl);
+                resolve(results);
+            })
+            .catch(error => {
+                console.error(`Fetch hatası (${fullUrl}):`, error);
+                resolve([]); // Hata durumunda boş sonuç döndür ama Promise'i reddetme
+            });
+    });
+  }
+
+  /**
+   * Arama terimini metinde vurgular
+   * @param {string} text - Metin
+   * @param {string} term - Vurgulanacak terim
+   * @returns {string} - Vurgulanmış metin
+   */
+  function highlightSearchTerm(text, term) {
+    // Regex kullanarak case-insensitive olarak tüm eşleşmeleri bul
+    const regex = new RegExp(term, 'gi');
+    return text.replace(regex, match => `<strong class="search-highlight">${match}</strong>`);
+  }
+
+  /**
+   * Arama sonuçlarını gösterir
+   * @param {Array} results - Arama sonuçları
+   */
+  function displaySearchResults(results) {
+    hideLoadingIndicator();
+    
+    // Önce mevcut dropdown panelini seçelim
+    const searchFormPanel = document.querySelector('.header_search_form_panel');
+    
+    if (searchFormPanel) {
+        // Panel içeriğini temizle
+        searchFormPanel.innerHTML = '';
+        
+        // Sonuç sayısını göster
+        const countDiv = document.createElement('div');
+        countDiv.className = 'search-results-count';
+        countDiv.textContent = `${results.length} sonuç bulundu`;
+        searchFormPanel.appendChild(countDiv);
+        
+        if (results.length === 0) {
+            // Sonuç bulunamadı mesajı
+            const noResults = document.createElement('div');
+            noResults.className = 'search-no-results';
+            noResults.textContent = 'Sonuç bulunamadı';
+            searchFormPanel.appendChild(noResults);
+        } else {
+            // Sonuçları listele
+            const resultsList = document.createElement('ul');
+            resultsList.className = 'search-results-list';
+            
+            // En fazla 10 sonucu göster
+            const maxResults = Math.min(results.length, 10);
+            
+            for (let i = 0; i < maxResults; i++) {
+                const result = results[i];
+                const resultItem = document.createElement('li');
+                resultItem.className = 'search-result-item';
+                
+                // Link oluştur
+                const resultLink = document.createElement('a');
+                resultLink.href = result.url;
+                resultLink.className = 'search-result-link';
+                
+                // Başlık oluştur
+                const resultTitle = document.createElement('div');
+                resultTitle.className = 'search-result-title';
+                resultTitle.textContent = result.title;
+                resultLink.appendChild(resultTitle);
+                
+                // Snippet oluştur
+                const resultSnippet = document.createElement('div');
+                resultSnippet.className = 'search-result-snippet';
+                resultSnippet.innerHTML = result.snippet;
+                resultLink.appendChild(resultSnippet);
+                
+                resultItem.appendChild(resultLink);
+                resultsList.appendChild(resultItem);
+            }
+            
+            // Daha fazla sonuç varsa tümünü göster linki ekle
+            if (results.length > 10) {
+                const showAllItem = document.createElement('li');
+                showAllItem.className = 'search-show-all';
+                
+                const showAllLink = document.createElement('a');
+                showAllLink.href = '#';
+                showAllLink.textContent = `Tüm ${results.length} sonucu göster`;
+                showAllLink.onclick = function(e) {
+                    e.preventDefault();
+                    showAllSearchResults(results);
+                };
+                
+                showAllItem.appendChild(showAllLink);
+                resultsList.appendChild(showAllItem);
+            }
+            
+            searchFormPanel.appendChild(resultsList);
+        }
+        
+        // Panel'i göster
+        searchFormPanel.style.display = 'block';
+    }
+  }
+
+  /**
+   * Tüm arama sonuçlarını tam sayfa overlay'de gösterir
+   * @param {Array} results - Arama sonuçları
+   */
+  function showAllSearchResults(results) {
+    // Overlay ile tüm sonuçları göster
+    hideSearchResults(); // Önce dropdown'ı kapat
+    
+    // Overlay için container oluştur
+    let resultsContainer = document.getElementById('search-results-container');
+    
+    if (!resultsContainer) {
+        resultsContainer = document.createElement('div');
+        resultsContainer.id = 'search-results-container';
+        resultsContainer.className = 'search-results-overlay';
+        document.body.appendChild(resultsContainer);
+    } else {
+        resultsContainer.innerHTML = '';
+    }
+    
+    // Close button ekle
+    const closeButton = document.createElement('button');
+    closeButton.className = 'search-results-close';
+    closeButton.innerHTML = '&times;';
+    closeButton.onclick = function() {
+        resultsContainer.style.display = 'none';
+    };
+    resultsContainer.appendChild(closeButton);
+    
+    // Sonuç sayısı
+    const countDiv = document.createElement('div');
+    countDiv.className = 'search-results-count';
+    countDiv.textContent = `${results.length} sonuç bulundu`;
+    resultsContainer.appendChild(countDiv);
+    
+    // Sonuçlar listesi
+    const resultsList = document.createElement('div');
+    resultsList.className = 'search-results-list full';
+    
+    // Tüm sonuçları göster
+    results.forEach(result => {
+        const resultItem = document.createElement('div');
+        resultItem.className = 'search-result-item';
+        
+        // Link oluştur
+        const resultLink = document.createElement('a');
+        resultLink.href = result.url;
+        resultLink.className = 'search-result-title';
+        resultLink.textContent = result.title;
+        resultItem.appendChild(resultLink);
+        
+        // Snippet oluştur
+        const resultSnippet = document.createElement('div');
+        resultSnippet.className = 'search-result-snippet';
+        resultSnippet.innerHTML = result.snippet;
+        resultItem.appendChild(resultSnippet);
+        
+        resultsList.appendChild(resultItem);
+    });
+    
+    resultsContainer.appendChild(resultsList);
+    resultsContainer.style.display = 'block';
+  }
+
+  /**
+   * Arama sonuçlarını gizler
+   */
+  function hideSearchResults() {
+    const searchFormPanel = document.querySelector('.header_search_form_panel');
+    if (searchFormPanel) {
+        searchFormPanel.style.display = 'none';
+    }
+  }
+
+  /**
+   * Yükleniyor göstergesini göster
+   */
+  function showLoadingIndicator() {
+    // Varsa gösterme
+    if (document.getElementById('search-loading')) {
+        document.getElementById('search-loading').style.display = 'flex';
+        return;
+    }
+    
+    // Yükleniyor göstergesi oluştur
+    const loadingDiv = document.createElement('div');
+    loadingDiv.id = 'search-loading';
+    loadingDiv.className = 'search-loading';
+    
+    const spinner = document.createElement('div');
+    spinner.className = 'search-loading-spinner';
+    loadingDiv.appendChild(spinner);
+    
+    document.body.appendChild(loadingDiv);
+  }
+
+  /**
+   * Yükleniyor göstergesini gizle
+   */
+  function hideLoadingIndicator() {
+    const loadingDiv = document.getElementById('search-loading');
+    if (loadingDiv) {
+        loadingDiv.style.display = 'none';
+    }
+  }
+
+  /**
+   * HTML içeriğinde arama yapar
+   * @param {string} html - HTML içeriği
+   * @param {string} searchTerm - Aranacak terim
+   * @param {string} pageUrl - Sayfa URL'si
+   * @returns {Array} - Bulunan sonuçların listesi
+   */
+  function searchInHtml(html, searchTerm, pageUrl) {
+    const results = [];
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    
+    // Title ve description bilgilerini al
+    const pageTitle = tempDiv.querySelector('title')?.textContent || pageUrl;
+    const metaDescription = tempDiv.querySelector('meta[name="description"]')?.getAttribute('content') || '';
+    
+    // Tüm metin içeriğini al (etiketlerle birlikte)
+    const bodyHtml = tempDiv.querySelector('body')?.innerHTML || '';
+    const bodyContent = tempDiv.querySelector('body')?.textContent || '';
+    const cleanContent = bodyContent.replace(/\s+/g, ' ').trim();
+    
+    // Başlıklar, paragraflar ve diğer önemli içerik elementlerini topla
+    const headings = tempDiv.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    const paragraphs = tempDiv.querySelectorAll('p');
+    const divContent = tempDiv.querySelectorAll('div[class*="content"], .doc_title, .shortcode_info, .changelog_info');
+    
+    let importantContent = '';
+    
+    // Başlıkları ekle
+    headings.forEach(heading => {
+        importantContent += heading.textContent + ' ';
+    });
+    
+    // Paragrafları ekle
+    paragraphs.forEach(paragraph => {
+        importantContent += paragraph.textContent + ' ';
+    });
+    
+    // İçerik div'lerini ekle
+    divContent.forEach(div => {
+        importantContent += div.textContent + ' ';
+    });
+    
+    // Case-insensitive arama için her şeyi küçük harfe çevir
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    const lowerContent = cleanContent.toLowerCase();
+    const lowerImportantContent = importantContent.toLowerCase();
+    
+    // Önce önemli içerikte ara
+    if (lowerImportantContent.includes(lowerSearchTerm)) {
+        // En az bir eşleşme bulundu
+        // İçerikte eşleşen her yeri bul
+        let lastIndex = 0;
+        let matchCount = 0;
+        const maxMatches = 3; // Bir sayfadan en fazla gösterilecek eşleşme sayısı
+        
+        while ((lastIndex = lowerImportantContent.indexOf(lowerSearchTerm, lastIndex + 1)) !== -1 && matchCount < maxMatches) {
+            // Bu eşleşme için snippet oluştur
+            const startPos = Math.max(0, lastIndex - 50);
+            const endPos = Math.min(importantContent.length, lastIndex + searchTerm.length + 50);
+            let snippet = importantContent.substring(startPos, endPos);
+            
+            // Kesilen metni işaretle
+            if (startPos > 0) {
+                snippet = '...' + snippet;
+            }
+            if (endPos < importantContent.length) {
+                snippet = snippet + '...';
+            }
+            
+            // Arama terimini vurgula
+            const highlightedSnippet = highlightSearchTerm(snippet, searchTerm);
+            
+            // Aynı snippet'i tekrar eklememek için kontrol
+            if (!results.some(result => result.snippet === highlightedSnippet)) {
+                results.push({
+                    title: pageTitle,
+                    url: pageUrl,
+                    description: metaDescription,
+                    snippet: highlightedSnippet
+                });
+                matchCount++;
+            }
+        }
+    }
+    
+    // Önemli içerikte bulunamadıysa veya hiç eşleşme yoksa, tüm içerikte ara
+    if (results.length === 0 && lowerContent.includes(lowerSearchTerm)) {
+        // İçerikte eşleşen yeri bul
+        const index = lowerContent.indexOf(lowerSearchTerm);
+        
+        // Eşleşmenin etrafındaki metni al (bağlam)
+        const startPos = Math.max(0, index - 100);
+        const endPos = Math.min(lowerContent.length, index + searchTerm.length + 100);
+        let snippet = cleanContent.substring(startPos, endPos);
+        
+        // Kesilen metni işaretle
+        if (startPos > 0) {
+            snippet = '...' + snippet;
+        }
+        if (endPos < cleanContent.length) {
+            snippet = snippet + '...';
+        }
+        
+        // Arama terimini vurgula
+        const highlightedSnippet = highlightSearchTerm(snippet, searchTerm);
+        
+        results.push({
+            title: pageTitle,
+            url: pageUrl,
+            description: metaDescription,
+            snippet: highlightedSnippet
+        });
+    }
+    
+    return results;
+  }
+
 })(jQuery);
