@@ -2643,3 +2643,274 @@
         width: 180px;
     }
 }
+
+/* Tüm img etiketleri için genel responsive ayarları */
+.documentation_body img, 
+.shortcode_title img,
+.shortcode_info img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-width: 100%;
+  margin: 20px 0;
+  border-radius: 6px;
+  cursor: pointer !important; /* Tıklanabilir olduğunu göstermek için imleç ekle ve !important ile zorla */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hover efekti için geçiş */
+  pointer-events: all !important; /* Tıklama olaylarını kesinlikle etkinleştir */
+  position: relative;
+  z-index: 10; /* Üst katmana çıkar */
+}
+
+/* Hover efekti ekle */
+.documentation_body img:hover, 
+.shortcode_title img:hover,
+.shortcode_info img:hover {
+  transform: scale(1.01); /* Çok hafif büyütme efekti */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Hafif gölge ekle */
+}
+
+/* Küçük ekranlar için resim kenar boşluklarını ayarla */
+@media (max-width: 768px) {
+  .documentation_body img, 
+  .shortcode_title img,
+  .shortcode_info img {
+    margin: 15px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .documentation_body img, 
+  .shortcode_title img,
+  .shortcode_info img {
+    margin: 10px 0;
+    border-radius: 4px;
+  }
+}
+
+/* Lightbox için gerekli stiller */
+.img-lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95); /* Arkaplan opaklığını %90'dan %95'e çıkardım */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.img-lightbox-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.img-lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.img-lightbox-content img {
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.img-lightbox-overlay.active .img-lightbox-content img {
+  transform: scale(1);
+}
+
+.img-lightbox-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.img-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.img-lightbox-caption {
+  color: white;
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
+  max-width: 90%;
+}
+
+/* Lightbox için navigasyon düğmeleri */
+.img-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.img-lightbox-nav:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.img-lightbox-prev {
+  left: 20px;
+}
+
+.img-lightbox-next {
+  right: 20px;
+}
+
+@media (max-width: 768px) {
+  .img-lightbox-content img {
+    max-height: 80vh;
+  }
+  
+  .img-lightbox-nav {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 576px) {
+  .img-lightbox-content {
+    max-width: 95%;
+  }
+  
+  .img-lightbox-nav {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .img-lightbox-prev {
+    left: 10px;
+  }
+  
+  .img-lightbox-next {
+    right: 10px;
+  }
+}
+
+/* Kontrol butonlarını içeren div */
+.img-lightbox-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 8px 15px;
+  border-radius: 30px;
+  z-index: 10;
+}
+
+/* Yakınlaştırma, uzaklaştırma, döndürme gibi kontrol butonları */
+.img-lightbox-control-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-size: 16px;
+  border: none;
+  outline: none;
+}
+
+.img-lightbox-control-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.img-lightbox-control-btn:active {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Mevcut zoom seviyesini gösteren etiket */
+.img-lightbox-zoom-level {
+  color: white;
+  font-size: 14px;
+  margin: 0 10px;
+  display: flex;
+  align-items: center;
+  min-width: 50px;
+  justify-content: center;
+}
+
+/* Zoom edilmiş resim stili */
+.img-lightbox-content img.zoomed {
+  cursor: grab;
+}
+
+.img-lightbox-content img.zoomed:active {
+  cursor: grabbing;
+}
+
+/* Rotasyon için stil */
+.img-lightbox-content img.rotated {
+  transition: transform 0.3s ease;
+}
+
+/* Responsive ayarlar */
+@media (max-width: 768px) {
+  .img-lightbox-controls {
+    bottom: 15px;
+    padding: 6px 12px;
+  }
+  
+  .img-lightbox-control-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .img-lightbox-controls {
+    gap: 8px;
+    padding: 5px 10px;
+  }
+  
+  .img-lightbox-control-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  
+  .img-lightbox-zoom-level {
+    font-size: 12px;
+    min-width: 40px;
+  }
+}
