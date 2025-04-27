@@ -7,6 +7,12 @@ async function loadContent(contentFile) {
         if (!response.ok) throw new Error('Content not found');
         const content = await response.text();
         
+        // Sayfayı en üste kaydır
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        
         // İçeriği doc-middle-content içine yerleştir
         const contentContainer = document.querySelector('.doc-middle-content');
         if (contentContainer) {
@@ -14,6 +20,14 @@ async function loadContent(contentFile) {
             
             // İçerik yüklendikten sonra içindekiler tablosunu oluştur
             generateTableOfContents();
+            
+            // MathJax'i yeniden çalıştır - formülleri işle
+            if (window.MathJax) {
+                window.MathJax.typeset();
+            }
+            
+            // Scroll dinleyicisini ekle
+            initScrollSpy();
         }
 
         // URL'i güncelle (sayfa yenilenmeden)
@@ -21,39 +35,53 @@ async function loadContent(contentFile) {
         newUrl.hash = contentFile.split('/').pop().replace('.html', '');
         window.history.pushState({}, '', newUrl);
 
-        // URL'de hash varsa ilgili içeriğe kaydır
-        if (window.location.hash) {
-            // Hedef başlığı bul
-            const targetId = window.location.hash.substring(1);
-            const targetElement = document.getElementById(targetId);
-
-            if (targetElement) {
-                // Sabit bir offset yerine, ekranın üst kısmında görünmesini sağla
-                const headerHeight = 100; // Üst menünün tahmini yüksekliği
-                const scrollPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                
-                // Sayfayı hesaplanan pozisyona kaydır
-                window.scrollTo({
-                    top: scrollPosition,
-                    behavior: 'smooth'
-                });
-            } else {
-                // Eğer belirli bir başlık bulunamazsa, içeriğin başına git
-                const docContent = document.querySelector('.doc_documentation_area');
-                if (docContent) {
-                    const headerHeight = 100; // Üst menünün tahmini yüksekliği
-                    window.scrollTo({
-                        top: docContent.offsetTop - headerHeight,
-                        behavior: 'smooth'
-                    });
-                }
-            }
-        }
-
         // Aktif menü öğesini güncelle
         updateActiveMenuItem(contentFile);
     } catch (error) {
         console.error('Error loading content:', error);
+    }
+}
+
+// Scroll pozisyonuna göre içindekiler tablosundaki elemanları aktif hale getiren fonksiyon
+function initScrollSpy() {
+    const headings = document.querySelectorAll('.doc-middle-content h1, .doc-middle-content h2, .doc-middle-content h3, .doc-middle-content h4');
+    if (headings.length === 0) return;
+    
+    // Önceki scroll olayını temizle
+    window.removeEventListener('scroll', scrollHandler);
+    
+    // Scroll olayını dinle
+    window.addEventListener('scroll', scrollHandler);
+    
+    // İlk kez kontrol et
+    scrollHandler();
+    
+    function scrollHandler() {
+        // Viewport'un en üstünden belirli bir uzaklık (header yüksekliği kadar)
+        const scrollPosition = window.scrollY + 150;
+        
+        // Viewport içinde görünen başlıkları bul
+        let currentHeading = null;
+        
+        // En çok görünen başlığı bul (viewport'un üstüne en yakın olan)
+        headings.forEach(heading => {
+            if (heading.offsetTop <= scrollPosition) {
+                currentHeading = heading;
+            }
+        });
+        
+        if (currentHeading) {
+            // İçindekiler tablosunda tüm active sınıflarını kaldır
+            document.querySelectorAll('.table-of-content a.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // İlgili başlığa ait linki aktif et
+            const currentLink = document.querySelector(`.table-of-content a[href="#${currentHeading.id}"]`);
+            if (currentLink) {
+                currentLink.classList.add('active');
+            }
+        }
     }
 }
 
@@ -172,6 +200,13 @@ function generateTableOfContents() {
         tocLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
+                
+                // Tüm linklerdeki active sınıfını kaldır
+                tocLinks.forEach(l => l.classList.remove('active'));
+                
+                // Tıklanan linke active sınıfını ekle
+                this.classList.add('active');
+                
                 const targetId = this.getAttribute('href').substring(1);
                 const targetElement = document.getElementById(targetId);
                 
@@ -197,65 +232,66 @@ function generateTableOfContents() {
         });
         
         console.log("İçindekiler tablosu oluşturuldu.");
+        
+        // Scroll dinleyicisini başlat
+        initScrollSpy();
     }
 }
 
 // Aktif menü öğesini güncelleme fonksiyonu
 function updateActiveMenuItem(contentFile) {
     // Tüm menü öğelerinden active sınıfını kaldır
-    document.querySelectorAll('.nav-sidebar .nav-item a').forEach(item => {
+    document.querySelectorAll('.nav-sidebar .nav-item .nav-link').forEach(item => {
         item.classList.remove('active');
     });
 
-    // Tıklanan menü öğesine active sınıfını ekle
-    const activeItem = document.querySelector(`[data-content-file="${contentFile}"]`);
-    if (activeItem) {
-        activeItem.classList.add('active');
-        
-        // Eğer alt menüdeyse, üst menüyü de aktif et
-        const parentItem = activeItem.closest('.dropdown_nav');
-        if (parentItem) {
-            const parentLink = parentItem.previousElementSibling;
-            if (parentLink && parentLink.tagName === 'A') {
-                parentLink.classList.add('active');
-            }
+    // Hem mobil menüdeki hem de normal menüdeki öğeleri kapsayacak şekilde seçici güncelle
+    const activeItems = document.querySelectorAll(`[data-content-file="${contentFile}"]`);
+    activeItems.forEach(activeItem => {
+        if (activeItem) {
+            activeItem.classList.add('active');
         }
-    }
+    });
 }
 
 // Sayfa yüklendiğinde çalışacak kod
 document.addEventListener('DOMContentLoaded', function() {
-    // Önce varsayılan içerik için içindekiler tablosunu oluştur
-    generateTableOfContents();
-    
     // Menü elemanları yüklenmemiş olabilir, bu nedenle biraz bekleyelim
     setTimeout(() => {
         initializeMarketPage();
+        // İlk içeriği yükle
+        const firstLink = document.querySelector('.nav-sidebar .nav-item .nav-link');
+        if (firstLink) {
+            const contentFile = firstLink.getAttribute('data-content-file');
+            if (contentFile) {
+                loadContent(contentFile);
+            }
+        }
+        // Scroll dinleyicisini başlat
+        initScrollSpy();
     }, 1000); // 1 saniye bekle
 });
 
-// Varsayılan olarak "market-overview.html" içeriğini yükle 
-async function initializeMarketPage() {
-    // Tüm menü elemanlarını seç
-    const menuItems = document.querySelectorAll('.nav-sidebar .nav-item a');
+function initializeMarketPage() {
+    // Tüm menü elemanlarını seç (hem ana menüden hem de mobil menüden)
+    const allMenuItems = document.querySelectorAll('.nav-sidebar .nav-item .nav-link');
     
-    menuItems.forEach(item => {
+    allMenuItems.forEach(item => {
         item.addEventListener('click', function(e) {
             e.preventDefault();
+            
+            // Önce tüm menü öğelerinden active sınıfını kaldır
+            allMenuItems.forEach(menuItem => {
+                menuItem.classList.remove('active');
+            });
+            
+            // Tıklanan öğeye active sınıfını ekle
+            this.classList.add('active');
+            
             const contentFile = this.getAttribute('data-content-file');
             if (contentFile) {
                 loadContent(contentFile);
             }
         });
     });
-
-    // Varsayılan olarak ilk içeriği yükle (market-overview.html)
-    const firstContentFile = "market/market-overview.html";
-    await loadContent(firstContentFile);
-    
-    // Varsayılan olarak ilk menü öğesini aktif hale getir
-    const firstMenuItem = document.querySelector('.nav-sidebar .nav-item a');
-    if (firstMenuItem) {
-        firstMenuItem.classList.add('active');
-    }
 } 

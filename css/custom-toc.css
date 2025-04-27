@@ -31,16 +31,27 @@
     max-width: 100%;
     width: calc(100% - 10px);
     display: block;
-    padding: 6px 0;
+    padding: 6px 10px;
     font-size: 14px;
     color: var(--p_color);
-    transition: color 0.2s ease;
+    transition: all 0.3s ease;
     position: relative;
+    border-radius: 4px;
 }
 
 .table-of-content .nav-link:hover {
     color: var(--brand_color);
     text-decoration: none;
+    background-color: rgba(87, 31, 221, 0.05);
+}
+
+/* Active link stili */
+.table-of-content .nav-link.active {
+    background-color: rgba(87, 31, 221, 0.1);
+    color: #571fdd;
+    font-weight: 600;
+    border-left: 3px solid #571fdd;
+    padding-left: 8px;
 }
 
 .table-of-content .nav.flex-column {
@@ -54,7 +65,7 @@
 
 .table-of-content .nav.flex-column .nav-link {
     font-size: 13px;
-    padding: 4px 0;
+    padding: 4px 10px;
     position: relative;
     width: calc(100% - 15px);
 }
@@ -67,6 +78,14 @@
     background: rgba(0,0,0,0.3);
     left: -10px;
     top: 50%;
+}
+
+/* Active state for nested links */
+.table-of-content .nav.flex-column .nav-link.active {
+    background-color: rgba(87, 31, 221, 0.1);
+    color: #571fdd;
+    border-left: 2px solid #571fdd;
+    padding-left: 9px;
 }
 
 /* Sağ kenar çubuğu stil ayarları */
@@ -109,8 +128,22 @@ body.body_dark .table-of-content .nav-link {
 
 body.body_dark .table-of-content .nav-link:hover {
     color: #d8ff08;
+    background-color: rgba(216, 255, 8, 0.05);
 }
 
 body.body_dark .table-of-content .nav.flex-column .nav-link:before {
     background: rgba(255,255,255,0.3);
+}
+
+/* Dark mode active link stili */
+body.body_dark .table-of-content .nav-link.active {
+    background-color: rgba(216, 255, 8, 0.1);
+    color: #d8ff08;
+    border-left-color: #d8ff08;
+}
+
+body.body_dark .table-of-content .nav.flex-column .nav-link.active {
+    background-color: rgba(216, 255, 8, 0.1);
+    color: #d8ff08;
+    border-left-color: #d8ff08;
 } 

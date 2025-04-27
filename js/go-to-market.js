@@ -7,6 +7,12 @@ async function loadContent(contentFile) {
         if (!response.ok) throw new Error('Content not found');
         const content = await response.text();
         
+        // Sayfayı en üste kaydır
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        
         // Place content inside doc-middle-content
         const contentContainer = document.querySelector('.doc-middle-content');
         if (contentContainer) {
@@ -14,6 +20,14 @@ async function loadContent(contentFile) {
             
             // Generate table of contents after content is loaded
             generateTableOfContents();
+            
+            // MathJax'i yeniden çalıştır - formülleri işle
+            if (window.MathJax) {
+                window.MathJax.typeset();
+            }
+            
+            // Scroll dinleyicisini ekle
+            initScrollSpy();
         }
 
         // Update URL (without page refresh)
@@ -21,39 +35,53 @@ async function loadContent(contentFile) {
         newUrl.hash = contentFile.split('/').pop().replace('.html', '');
         window.history.pushState({}, '', newUrl);
 
-        // If hash exists in URL, scroll to related content
-        if (window.location.hash) {
-            // Find target heading
-            const targetId = window.location.hash.substring(1);
-            const targetElement = document.getElementById(targetId);
-
-            if (targetElement) {
-                // Instead of fixed offset, ensure it appears at the top of the screen
-                const headerHeight = 100; // Estimated height of top menu
-                const scrollPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                
-                // Scroll page to calculated position
-                window.scrollTo({
-                    top: scrollPosition,
-                    behavior: 'smooth'
-                });
-            } else {
-                // If specific heading not found, go to beginning of content
-                const docContent = document.querySelector('.doc_documentation_area');
-                if (docContent) {
-                    const headerHeight = 100; // Estimated height of top menu
-                    window.scrollTo({
-                        top: docContent.offsetTop - headerHeight,
-                        behavior: 'smooth'
-                    });
-                }
-            }
-        }
-
         // Update active menu item
         updateActiveMenuItem(contentFile);
     } catch (error) {
         console.error('Error loading content:', error);
+    }
+}
+
+// Scroll pozisyonuna göre içindekiler tablosundaki elemanları aktif hale getiren fonksiyon
+function initScrollSpy() {
+    const headings = document.querySelectorAll('.doc-middle-content h1, .doc-middle-content h2, .doc-middle-content h3, .doc-middle-content h4');
+    if (headings.length === 0) return;
+    
+    // Önceki scroll olayını temizle
+    window.removeEventListener('scroll', scrollHandler);
+    
+    // Scroll olayını dinle
+    window.addEventListener('scroll', scrollHandler);
+    
+    // İlk kez kontrol et
+    scrollHandler();
+    
+    function scrollHandler() {
+        // Viewport'un en üstünden belirli bir uzaklık (header yüksekliği kadar)
+        const scrollPosition = window.scrollY + 150;
+        
+        // Viewport içinde görünen başlıkları bul
+        let currentHeading = null;
+        
+        // En çok görünen başlığı bul (viewport'un üstüne en yakın olan)
+        headings.forEach(heading => {
+            if (heading.offsetTop <= scrollPosition) {
+                currentHeading = heading;
+            }
+        });
+        
+        if (currentHeading) {
+            // İçindekiler tablosunda tüm active sınıflarını kaldır
+            document.querySelectorAll('.table-of-content a.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // İlgili başlığa ait linki aktif et
+            const currentLink = document.querySelector(`.table-of-content a[href="#${currentHeading.id}"]`);
+            if (currentLink) {
+                currentLink.classList.add('active');
+            }
+        }
     }
 }
 
@@ -172,6 +200,13 @@ function generateTableOfContents() {
         tocLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
+                
+                // Tüm linklerdeki active sınıfını kaldır
+                tocLinks.forEach(l => l.classList.remove('active'));
+                
+                // Tıklanan linke active sınıfını ekle
+                this.classList.add('active');
+                
                 const targetId = this.getAttribute('href').substring(1);
                 const targetElement = document.getElementById(targetId);
                 
@@ -197,65 +232,66 @@ function generateTableOfContents() {
         });
         
         console.log("Table of contents created.");
+        
+        // Scroll dinleyicisini başlat
+        initScrollSpy();
     }
 }
 
 // Function to update active menu item
 function updateActiveMenuItem(contentFile) {
     // Remove active class from all menu items
-    document.querySelectorAll('.nav-sidebar .nav-item a').forEach(item => {
+    document.querySelectorAll('.nav-sidebar .nav-item .nav-link').forEach(item => {
         item.classList.remove('active');
     });
 
-    // Add active class to clicked menu item
-    const activeItem = document.querySelector(`[data-content-file="${contentFile}"]`);
-    if (activeItem) {
-        activeItem.classList.add('active');
-        
-        // If in sub-menu, also make parent menu active
-        const parentItem = activeItem.closest('.dropdown_nav');
-        if (parentItem) {
-            const parentLink = parentItem.previousElementSibling;
-            if (parentLink && parentLink.tagName === 'A') {
-                parentLink.classList.add('active');
-            }
+    // Hem mobil menüdeki hem de normal menüdeki öğeleri kapsayacak şekilde seçici güncelle
+    const activeItems = document.querySelectorAll(`[data-content-file="${contentFile}"]`);
+    activeItems.forEach(activeItem => {
+        if (activeItem) {
+            activeItem.classList.add('active');
         }
-    }
+    });
 }
 
 // Code to run when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    // First generate table of contents for default content
-    generateTableOfContents();
-    
     // Menu items may not be loaded yet, so let's wait a bit
     setTimeout(() => {
         initializeGTMPage();
+        // İlk içeriği yükle
+        const firstLink = document.querySelector('.nav-sidebar .nav-item .nav-link');
+        if (firstLink) {
+            const contentFile = firstLink.getAttribute('data-content-file');
+            if (contentFile) {
+                loadContent(contentFile);
+            }
+        }
+        // Scroll dinleyicisini başlat
+        initScrollSpy();
     }, 1000); // Wait 1 second
 });
 
-// Load "marketing-plan.html" content by default 
-async function initializeGTMPage() {
-    // Select all menu items
-    const menuItems = document.querySelectorAll('.nav-sidebar .nav-item a');
+function initializeGTMPage() {
+    // Tüm menü elemanlarını seç (hem ana menüden hem de mobil menüden)
+    const allMenuItems = document.querySelectorAll('.nav-sidebar .nav-item .nav-link');
     
-    menuItems.forEach(item => {
+    allMenuItems.forEach(item => {
         item.addEventListener('click', function(e) {
             e.preventDefault();
+            
+            // Önce tüm menü öğelerinden active sınıfını kaldır
+            allMenuItems.forEach(menuItem => {
+                menuItem.classList.remove('active');
+            });
+            
+            // Tıklanan öğeye active sınıfını ekle
+            this.classList.add('active');
+            
             const contentFile = this.getAttribute('data-content-file');
             if (contentFile) {
                 loadContent(contentFile);
             }
         });
     });
-
-    // Load first content by default (marketing-plan.html)
-    const firstContentFile = "gtm/marketing-plan.html";
-    await loadContent(firstContentFile);
-    
-    // Make first menu item active by default
-    const firstMenuItem = document.querySelector('.nav-sidebar .nav-item a');
-    if (firstMenuItem) {
-        firstMenuItem.classList.add('active');
-    }
 } 
