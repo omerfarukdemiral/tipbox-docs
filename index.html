@@ -626,14 +626,22 @@
 
         /* Mobil için accordion düzeni */
         @media (max-width: 576px) {
-            .card.doc_accordion .card-header button {
+            .faq-tab-content .nav-tabs .nav-item {
+                flex: 1 0 100%;
+                margin: 3px 0;
+            }
+
+            .doc_accordion .card-header button {
                 padding: 15px;
-                font-size: 15px;
+                position: relative;
+                padding-right: 35px; /* Sağda ikon için yer açıyoruz */
             }
             
-            .card.doc_accordion .card-body {
-                padding: 15px;
-                font-size: 14px;
+            .doc_accordion .card-header button svg {
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
             }
         }
         
@@ -1316,18 +1324,18 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="tab-content faq-tab-content">
-                            <ul class="nav nav-tabs" id="faqTab" role="tablist">
+                            <ul class="nav nav-tabs" id="" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="product-tab" data-toggle="tab" href="#product" role="tab" aria-controls="product" aria-selected="true">Product</a>
+                                    <a class="nav-link active" id="product-tab" data-toggle="tab" href="#product" role="tab" aria-controls="product" aria-selected="true" onclick="window.location.href='product.html'">Product</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="market-tab" data-toggle="tab" href="#market" role="tab" aria-controls="market" aria-selected="false">Market</a>
+                                    <a class="nav-link" id="market-tab" data-toggle="tab" href="#market" role="tab" aria-controls="market" aria-selected="false" onclick="window.location.href='market.html'">Market</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="technology-tab" data-toggle="tab" href="#technology" role="tab" aria-controls="technology" aria-selected="false">Technology</a>
+                                    <a class="nav-link" id="technology-tab" data-toggle="tab" href="#technology" role="tab" aria-controls="technology" aria-selected="false" onclick="window.location.href='technology.html'">Technology</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="finance-tab" data-toggle="tab" href="#finance" role="tab" aria-controls="finance" aria-selected="false">Finance</a>
+                                    <a class="nav-link" id="finance-tab" data-toggle="tab" href="#finance" role="tab" aria-controls="finance" aria-selected="false" onclick="window.location.href='company-finance.html'">Finance</a>
                                 </li>
                             </ul>
                             
@@ -1361,7 +1369,7 @@
                                                      data-parent="#accordion-product">
                                                     <div class="card-body toggle_body">
                                                         Its structured content formats and contribution-based rewards generate continuous user engagement and repeatable value creation.
-                                                        <p><a href="product.html">→ More info: [Product]</a></p>
+                                                        <p><a href="product.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1391,7 +1399,7 @@
                                                      data-parent="#accordion-product">
                                                     <div class="card-body toggle_body">
                                                         It offers a reliable, incentivized alternative to unstructured and unverified user review systems.
-                                                        <p><a href="problem-solution.html">→ More info: [Focus Problem & Solution]</a></p>
+                                                        <p><a href="product.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1421,7 +1429,7 @@
                                                      data-parent="#accordion-product">
                                                     <div class="card-body toggle_body">
                                                         Experiences are transformed into NFTs, TIPS tokens, and social reputation—creating digital assets with intrinsic and marketable value.
-                                                        <p><a href="economy.html">→ More info: [In-App Economy & Rewards]</a></p>
+                                                        <p><a href="product.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1451,7 +1459,7 @@
                                                      data-parent="#accordion-product">
                                                     <div class="card-body toggle_body">
                                                         Its contribution → reward → reputation loop incentivizes continuous engagement from users and creators.
-                                                        <p><a href="engagement.html">→ More info: [Engagement Mechanics]</a></p>
+                                                        <p><a href="product.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1481,7 +1489,7 @@
                                                      data-parent="#accordion-product">
                                                     <div class="card-body toggle_body">
                                                         A modular design allows adaptation across user types and market segments without reengineering the core system.
-                                                        <p><a href="architecture.html">→ More info: [Platform Architecture]</a></p>
+                                                        <p><a href="product.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1518,7 +1526,7 @@
                                                      data-parent="#accordion-market">
                                                     <div class="card-body toggle_body">
                                                         It solves the trust and reliability issue in experience sharing by introducing structured, verifiable and rewarded contributions.
-                                                        <p><a href="market-analysis.html">→ More info: [Market Analysis]</a></p>
+                                                        <p><a href="market.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1548,7 +1556,7 @@
                                                      data-parent="#accordion-market">
                                                     <div class="card-body toggle_body">
                                                         It provides a scalable infrastructure for millions of users in focus markets.
-                                                        <p><a href="target-market.html">→ More info: [Target Market & Segmentation]</a></p>
+                                                        <p><a href="market.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1578,7 +1586,7 @@
                                                      data-parent="#accordion-market">
                                                     <div class="card-body toggle_body">
                                                         Its value-ownership model and cultural contribution system redefine participation from passive to invested.
-                                                        <p><a href="competitor-analysis.html">→ More info: [Competitor Analysis]</a></p>
+                                                        <p><a href="market.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1608,7 +1616,7 @@
                                                      data-parent="#accordion-market">
                                                     <div class="card-body toggle_body">
                                                         A phased rollout—creator-first seeding → viral content loops → premium monetization—drives compounding engagement.
-                                                        <p><a href="launch-plan.html">→ More info: [Launch Plan]</a></p>
+                                                        <p><a href="market.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1638,7 +1646,7 @@
                                                      data-parent="#accordion-market">
                                                     <div class="card-body toggle_body">
                                                         Experience formats are culturally flexible, and the Web3 infrastructure enables integration with global decentralized communities.
-                                                        <p><a href="expansion-strategy.html">→ More info: [Expansion Strategy]</a></p>
+                                                        <p><a href="market.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1675,7 +1683,7 @@
                                                      data-parent="#accordion-technology">
                                                     <div class="card-body toggle_body">
                                                         Its Web2–Web3 hybrid architecture enables mass adoption while ensuring decentralized ownership and data integrity.
-                                                        <p><a href="system-architecture.html">→ More info: [System Architecture Overview]</a></p>
+                                                        <p><a href="technology.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1705,7 +1713,7 @@
                                                      data-parent="#accordion-technology">
                                                     <div class="card-body toggle_body">
                                                         Tokenization of contributions creates new value layers and monetization opportunities, enhancing overall ROI.
-                                                        <p><a href="token-infrastructure.html">→ More info: [Token Infrastructure & Incentive Layer]</a></p>
+                                                        <p><a href="technology.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1735,7 +1743,7 @@
                                                      data-parent="#accordion-technology">
                                                     <div class="card-body toggle_body">
                                                         AI-based validation reduces operational cost and improves content quality, enabling leaner scalability.
-                                                        <p><a href="ai-validation.html">→ More info: [AI Validation & Labeling System]</a></p>
+                                                        <p><a href="technology.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1765,7 +1773,7 @@
                                                      data-parent="#accordion-technology">
                                                     <div class="card-body toggle_body">
                                                         User data and contributions are encrypted and stored immutably on-chain, ensuring full transparency and trust.
-                                                        <p><a href="data-governance.html">→ More info: [Data Governance & Privacy]</a></p>
+                                                        <p><a href="technology.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1795,7 +1803,7 @@
                                                      data-parent="#accordion-technology">
                                                     <div class="card-body toggle_body">
                                                         The platform is built on modular, replaceable components, reducing long-term technical debt and enabling adaptability.
-                                                        <p><a href="scalability-strategy.html">→ More info: [Scalability Strategy]</a></p>
+                                                        <p><a href="technology.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1813,18 +1821,20 @@
                                                         <button class="btn btn-link" data-toggle="collapse"
                                                                 data-target="#collapseFinance1" aria-expanded="true"
                                                                 aria-controls="collapseFinance1">
-                                                            How will post-investment funds be allocated?
-                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
-                                                                 xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
-                                                                      stroke="#efefef" stroke-width="2" stroke-linecap="round"
-                                                                      stroke-linejoin="round" />
-                                                            </svg>
-                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
-                                                                 xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13 1.38812H1" stroke="#efefef" stroke-width="2"
-                                                                      stroke-linecap="round" stroke-linejoin="round" />
-                                                            </svg>
+                                                            <span class="button-text">How will post-investment funds be allocated?</span>
+                                                            <span class="button-icons">
+                                                                <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                          stroke="#efefef" stroke-width="2" stroke-linecap="round"
+                                                                          stroke-linejoin="round" />
+                                                                </svg>
+                                                                <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M13 1.38812H1" stroke="#efefef" stroke-width="2"
+                                                                          stroke-linecap="round" stroke-linejoin="round" />
+                                                                </svg>
+                                                            </span>
                                                         </button>
                                                     </h5>
                                                 </div>
@@ -1832,7 +1842,7 @@
                                                      data-parent="#accordion-finance">
                                                     <div class="card-body toggle_body">
                                                         Funds are distributed across product development, creator incentives, marketing, and operational runway.
-                                                        <p><a href="fund-utilization.html">→ More info: [Fund Utilization Plan]</a></p>
+                                                        <p><a href="company-finance.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1843,18 +1853,20 @@
                                                         <button class="btn btn-link collapsed" data-toggle="collapse"
                                                                 data-target="#collapseFinance2" aria-expanded="false"
                                                                 aria-controls="collapseFinance2">
-                                                            How does the TIPS token model generate investor value?
-                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
-                                                                 xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
-                                                                      stroke="#efefef" stroke-width="2" stroke-linecap="round"
-                                                                      stroke-linejoin="round" />
-                                                            </svg>
-                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
-                                                                 xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13 1.38812H1" stroke="#efefef" stroke-width="2"
-                                                                      stroke-linecap="round" stroke-linejoin="round" />
-                                                            </svg>
+                                                            <span class="button-text">How does the TIPS token model generate investor value?</span>
+                                                            <span class="button-icons">
+                                                                <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                          stroke="#efefef" stroke-width="2" stroke-linecap="round"
+                                                                          stroke-linejoin="round" />
+                                                                </svg>
+                                                                <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M13 1.38812H1" stroke="#efefef" stroke-width="2"
+                                                                          stroke-linecap="round" stroke-linejoin="round" />
+                                                                </svg>
+                                                            </span>
                                                         </button>
                                                     </h5>
                                                 </div>
@@ -1862,7 +1874,7 @@
                                                      data-parent="#accordion-finance">
                                                     <div class="card-body toggle_body">
                                                         Limited supply, tiered utility, and community staking mechanics turn platform activity into economic return.
-                                                        <p><a href="tokeneconomics.html">→ More info: [Tokeneconomics]</a></p>
+                                                        <p><a href="company-finance.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1873,18 +1885,20 @@
                                                         <button class="btn btn-link collapsed" data-toggle="collapse"
                                                                 data-target="#collapseFinance3" aria-expanded="false"
                                                                 aria-controls="collapseFinance3">
-                                                            How diversified and scalable is the revenue model?
-                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
-                                                                 xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
-                                                                      stroke="#efefef" stroke-width="2" stroke-linecap="round"
-                                                                      stroke-linejoin="round" />
-                                                            </svg>
-                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
-                                                                 xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13 1.38812H1" stroke="#efefef" stroke-width="2"
-                                                                      stroke-linecap="round" stroke-linejoin="round" />
-                                                            </svg>
+                                                            <span class="button-text">How diversified and scalable is the revenue model?</span>
+                                                            <span class="button-icons">
+                                                                <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                          stroke="#efefef" stroke-width="2" stroke-linecap="round"
+                                                                          stroke-linejoin="round" />
+                                                                </svg>
+                                                                <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M13 1.38812H1" stroke="#efefef" stroke-width="2"
+                                                                          stroke-linecap="round" stroke-linejoin="round" />
+                                                                </svg>
+                                                            </span>
                                                         </button>
                                                     </h5>
                                                 </div>
@@ -1892,7 +1906,7 @@
                                                      data-parent="#accordion-finance">
                                                     <div class="card-body toggle_body">
                                                         Revenue comes from creator services, NFT sales, premium features, and platform transaction flows.
-                                                        <p><a href="revenue-model.html">→ More info: [Revenue Model Overview]</a></p>
+                                                        <p><a href="company-finance.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1903,18 +1917,20 @@
                                                         <button class="btn btn-link collapsed" data-toggle="collapse"
                                                                 data-target="#collapseFinance4" aria-expanded="false"
                                                                 aria-controls="collapseFinance4">
-                                                            What is the projected investor return timeline?
-                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
-                                                                 xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
-                                                                      stroke="#efefef" stroke-width="2" stroke-linecap="round"
-                                                                      stroke-linejoin="round" />
-                                                            </svg>
-                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
-                                                                 xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13 1.38812H1" stroke="#efefef" stroke-width="2"
-                                                                      stroke-linecap="round" stroke-linejoin="round" />
-                                                            </svg>
+                                                            <span class="button-text">What is the projected investor return timeline?</span>
+                                                            <span class="button-icons">
+                                                                <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                          stroke="#efefef" stroke-width="2" stroke-linecap="round"
+                                                                          stroke-linejoin="round" />
+                                                                </svg>
+                                                                <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M13 1.38812H1" stroke="#efefef" stroke-width="2"
+                                                                          stroke-linecap="round" stroke-linejoin="round" />
+                                                                </svg>
+                                                            </span>
                                                         </button>
                                                     </h5>
                                                 </div>
@@ -1922,7 +1938,7 @@
                                                      data-parent="#accordion-finance">
                                                     <div class="card-body toggle_body">
                                                         Based on the phased GTM model, returns are forecasted within 12–18 months depending on token activation and adoption.
-                                                        <p><a href="forecast.html">→ More info: [Break-Even & Forecast]</a></p>
+                                                        <p><a href="company-finance.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1933,18 +1949,20 @@
                                                         <button class="btn btn-link collapsed" data-toggle="collapse"
                                                                 data-target="#collapseFinance5" aria-expanded="false"
                                                                 aria-controls="collapseFinance5">
-                                                            What are the exit strategies under consideration?
-                                                            <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
-                                                                 xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
-                                                                      stroke="#efefef" stroke-width="2" stroke-linecap="round"
-                                                                      stroke-linejoin="round" />
-                                                            </svg>
-                                                            <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
-                                                                 xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13 1.38812H1" stroke="#efefef" stroke-width="2"
-                                                                      stroke-linecap="round" stroke-linejoin="round" />
-                                                            </svg>
+                                                            <span class="button-text">What are the exit strategies under consideration?</span>
+                                                            <span class="button-icons">
+                                                                <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M13 7.38812H1M7 1.38812V13.3881V1.38812Z"
+                                                                          stroke="#efefef" stroke-width="2" stroke-linecap="round"
+                                                                          stroke-linejoin="round" />
+                                                                </svg>
+                                                                <svg width="14" height="3" viewBox="0 0 14 3" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M13 1.38812H1" stroke="#efefef" stroke-width="2"
+                                                                          stroke-linecap="round" stroke-linejoin="round" />
+                                                                </svg>
+                                                            </span>
                                                         </button>
                                                     </h5>
                                                 </div>
@@ -1952,7 +1970,7 @@
                                                      data-parent="#accordion-finance">
                                                     <div class="card-body toggle_body">
                                                         Scenarios include token listing, strategic acquisition, or community-led continuation under DAO-like governance.
-                                                        <p><a href="exit-strategy.html">→ More info: [Exit Strategy Document]</a></p>
+                                                        <p><a href="company-finance.html">→ More info</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1981,7 +1999,6 @@
                         transform: translateX(-50%);
                         width: auto;
                         max-width: 600px;
-                        height: 1px;
                         background-color: #d8ff08;
                     }
                     
@@ -1998,9 +2015,28 @@
                         color: #909090;
                         transition: all 0.3s;
                         position: relative;
-                        background-color: transparent;
                     }
-                    
+
+                    /* Buton içindeki metin ve ikonlar için stil */
+                    .doc_accordion .card-header button {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        flex-wrap: nowrap;
+                    }
+
+                    .doc_accordion .card-header button .button-text {
+                        flex: 1;
+                        padding-right: 15px;
+                        text-align: left;
+                    }
+
+                    .doc_accordion .card-header button .button-icons {
+                        min-width: 20px;
+                        display: flex;
+                        justify-content: center;
+                    }
+
                     .faq-tab-content .nav-tabs .nav-link.active,
                     .faq-tab-content .nav-tabs .nav-link:hover {
                         color: #fff;
@@ -2029,6 +2065,10 @@
                             padding: 10px;
                             font-size: 16px;
                         }
+
+                        .doc_accordion .card-header button {
+                            padding: 12px 15px;
+                        }
                     }
                     
                     /* Mobil ekranlar için tab düzeni */
@@ -2036,6 +2076,19 @@
                         .faq-tab-content .nav-tabs .nav-item {
                             flex: 1 0 100%;
                             margin: 3px 0;
+                        }
+
+                        .doc_accordion .card-header button {
+                            padding: 15px;
+                            position: relative;
+                            padding-right: 35px; /* Sağda ikon için yer açıyoruz */
+                        }
+                        
+                        .doc_accordion .card-header button svg {
+                            position: absolute;
+                            right: 15px;
+                            top: 50%;
+                            transform: translateY(-50%);
                         }
                     }
                     
