@@ -9,8 +9,12 @@ const securityConfig = window.AppConfig ? window.AppConfig.security : {
     enableContextMenuProtection: true,
     enableDragProtection: true,
     enableSelectionProtection: true,
-    enableKeyboardShortcuts: true
+    enableKeyboardShortcuts: true,
+    disableImageInteraction: false // Resim etkileşimini engellemek için (false: etkileşim açık, true: etkileşim kapalı)
 };
+
+// securityConfig'i global olarak erişilebilir yap
+window.securityConfig = securityConfig;
 
 // Güvenlik durumunu kontrol et
 let isSecurityCompromised = false;
@@ -191,15 +195,42 @@ function toggleDevelopmentMode() {
     }
 }
 
+// Bir elementin görsel olup olmadığını kontrol et
+function isImageElement(element) {
+    // Eğer resim etkileşimi devre dışı bırakıldıysa, hiçbir şekilde resim etkileşimine izin verme
+    if (securityConfig.disableImageInteraction) {
+        return false;
+    }
+    
+    // Element bir IMG mi kontrol et
+    const isImg = element.tagName === 'IMG';
+    
+    // Element bir resim container'ı içinde mi kontrol et
+    const isInImgContainer = element.closest('.documentation_body img, .shortcode_title img, .shortcode_info img, .img-lightbox-overlay, .img-lightbox-content') !== null;
+    
+    // Eğer event.target doğrudan bir img değilse, parent'larını kontrol et
+    if (!isImg && element.querySelector('img')) {
+        return true;
+    }
+    
+    const result = isImg || isInImgContainer;
+    return result;
+}
+
 // Güvenlik olaylarını başlat
 function initSecurity() {
     // Development mode göstergesini ayarla
     toggleDevelopmentMode();
 
     if (!isDevelopment) {
-        // Tüm sayfa için sağ tık engelleme
+        // Tüm sayfa için sağ tık engelleme (görsel harici)
         if (securityConfig.enableContextMenuProtection) {
             document.addEventListener('contextmenu', e => {
+                // Görsel tıklama ve lightbox için istisna tanımla
+                if (isImageElement(e.target)) {
+                    return true;
+                }
+                
                 e.preventDefault();
                 showSecurityAlert('Sağ tık menüsü güvenlik nedeniyle devre dışı bırakılmıştır.');
                 return false;
@@ -209,6 +240,12 @@ function initSecurity() {
         // Klavye kısayollarını engelle
         if (securityConfig.enableKeyboardShortcuts) {
             document.addEventListener('keydown', e => {
+                // Lightbox açıkken ESC tuşu için istisna tanımla
+                const lightboxOpen = document.querySelector('.img-lightbox-overlay.active');
+                if (lightboxOpen && e.keyCode === 27) { // ESC tuşu
+                    return true;
+                }
+                
                 if (
                     (e.ctrlKey && e.keyCode == 83) || // Ctrl+S
                     (e.ctrlKey && e.keyCode == 85) || // Ctrl+U
@@ -232,6 +269,11 @@ function initSecurity() {
         // Kopyalamayı engelle
         if (securityConfig.enableCopyProtection) {
             document.addEventListener('copy', e => {
+                // Resim kopyalama için istisna tanımla
+                if (isImageElement(e.target)) {
+                    return true;
+                }
+                
                 e.preventDefault();
                 showSecurityAlert('İçerik kopyalama devre dışı bırakılmıştır.');
             });
@@ -247,21 +289,39 @@ function initSecurity() {
             });
         }
 
-        // Sürükle-bırak engelleme
+        // Sürükle-bırak engelleme (görsel harici)
         if (securityConfig.enableDragProtection) {
             document.addEventListener('dragstart', e => {
+                // Görseller için istisna tanımla
+                if (isImageElement(e.target)) {
+                    return true;
+                }
+                
                 e.preventDefault();
                 showSecurityAlert('Sürükle-bırak işlemi devre dışı bırakılmıştır.');
             });
         }
 
-        // Metin seçimini engelle
+        // Metin seçimini engelle (görsel harici)
         if (securityConfig.enableSelectionProtection) {
             document.addEventListener('selectstart', e => {
+                // Görseller için istisna tanımla
+                if (isImageElement(e.target) || e.target.closest('.img-lightbox-overlay')) {
+                    return true;
+                }
+                
                 e.preventDefault();
                 showSecurityAlert('Metin seçimi devre dışı bırakılmıştır.');
             });
         }
+        
+        // Tıklama olayları için görsel istisna ekle
+        document.addEventListener('click', e => {
+            // Görsel veya lightbox üzerinde tıklama varsa, olayı devam ettir
+            if (isImageElement(e.target) || e.target.closest('.img-lightbox-overlay')) {
+                return true;
+            }
+        }, true); // true parametresi capture phase'de çalışmasını sağlar
 
         // Periyodik kontroller
         setInterval(() => {
