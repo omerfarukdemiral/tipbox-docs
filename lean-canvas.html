@@ -95,9 +95,6 @@
             if (!user) {
                 window.location.href = 'signin.html';
             } else {
-                console.log('Giriş yapan kullanıcı:', user.displayName);
-                console.log('Email:', user.email);
-                console.log('Profil fotoğrafı:', user.photoURL);
 
                 // Header yüklendikten sonra kullanıcı bilgilerini güncelle
                 if (document.readyState === 'complete') {

@@ -24,9 +24,7 @@ let firestore = null;
 async function loadFirestoreIfNeeded() {
     if (!firebase.firestore) {
         try {
-            console.log('Firestore modülü yükleniyor...');
             await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js');
-            console.log('Firestore modülü başarıyla yüklendi');
             firestore = firebase.firestore();
             return true;
         } catch (error) {
@@ -349,7 +347,6 @@ function signUp(email, password, additionalData = {}) {
 function resetPassword(email) {
     auth.sendPasswordResetEmail(email)
         .then(() => {
-            console.log('Şifre sıfırlama emaili gönderildi');
         })
         .catch((error) => {
             console.error('Şifre sıfırlama hatası:', error);
@@ -416,7 +413,6 @@ async function checkUserRole(uid, requiredRole = 'admin') {
 
         if (userDoc.exists) {
             const userData = userDoc.data();
-            console.log("Kullanıcı rolü kontrol ediliyor: " + JSON.stringify(userData.privacy_policy));
             // Rol bilgisini window'a kaydet
             if (window.currentUser && window.currentUser.uid === uid) {
                 window.userRole = userData.role || 'user';

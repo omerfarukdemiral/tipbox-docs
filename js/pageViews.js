@@ -24,12 +24,18 @@ const TRACKED_PAGES = {
     'project-blueprint.html': 'Project Blueprint'
 };
 
-console.log('🔍 PageViews.js yüklendi');
+(function () {
+    if (location.hostname !== 'localhost') {
+      console.log = function() {};
+      console.warn = function() {};
+      console.error = function() {};
+      console.info = function() {};
+      console.debug = function() {};
+    }
+  })();
 
 // Firebase bağlantısını doğrula
-async function checkFirebaseConnection() {
-    console.log('🔍 Firebase bağlantısı kontrol ediliyor...');
-    
+async function checkFirebaseConnection() {    
     if (typeof firebase === 'undefined') {
         console.error('❌ Firebase kütüphanesi yüklenemedi!');
         return false;
@@ -44,7 +50,6 @@ async function checkFirebaseConnection() {
             if (window.firebaseConfig) {
                 try {
                     firebase.initializeApp(window.firebaseConfig);
-                    console.log('✅ Firebase başarıyla başlatıldı');
                 } catch (initError) {
                     console.error('❌ Firebase başlatma hatası:', initError);
                     return false;
@@ -62,7 +67,6 @@ async function checkFirebaseConnection() {
                         measurementId: "G-SEMNFLSB42"
                     };
                     firebase.initializeApp(defaultConfig);
-                    console.log('✅ Firebase varsayılan yapılandırma ile başlatıldı');
                 } catch (initError) {
                     console.error('❌ Firebase varsayılan yapılandırma ile başlatma hatası:', initError);
                     return false;
@@ -71,9 +75,7 @@ async function checkFirebaseConnection() {
         }
         
         // Firestore'a erişimi kontrol et ve dinamik olarak yükle
-        if (!firebase.firestore) {
-            console.log('⚠️ Firestore modülü yüklü değil, dinamik olarak yükleniyor...');
-            
+        if (!firebase.firestore) {            
             try {
                 // Firestore'u dinamik olarak yükle
                 await new Promise((resolve, reject) => {
@@ -83,8 +85,6 @@ async function checkFirebaseConnection() {
                     script.onerror = reject;
                     document.head.appendChild(script);
                 });
-                
-                console.log('✅ Firestore modülü başarıyla yüklendi');
                 
                 // Bir saniye bekleyelim
                 await new Promise(resolve => setTimeout(resolve, 1000));
@@ -99,8 +99,6 @@ async function checkFirebaseConnection() {
                 return false;
             }
         }
-        
-        console.log('✅ Firebase bağlantısı doğrulandı');
         isFirebaseConnected = true;
         return true;
     } catch (error) {
@@ -135,8 +133,6 @@ function generateUUID() {
  */
 async function initializePageViews() {
     if (isInitialized) return;
-    
-    console.log('🚀 Sayfa görüntüleme takibi başlatılıyor');
     isInitialized = true;
     
     // Firebase bağlantısını kontrol et - asenkron çalıştır
@@ -163,7 +159,6 @@ async function initializePageViews() {
  * Tüm olay dinleyicilerini kurar
  */
 function setupEventListeners() {
-    console.log('🔄 Olay dinleyicileri kuruluyor');
     
     // Sayfa içi navigasyonu yakala
     document.addEventListener('click', handleLinkClick);
@@ -175,7 +170,6 @@ function setupEventListeners() {
     // Sayfa/sekme görünürlüğünü izle
     document.addEventListener('visibilitychange', handleVisibilityChange);
     
-    console.log('✅ Tüm olay dinleyicileri başarıyla eklendi');
 }
 
 /**
@@ -185,7 +179,6 @@ function setupEventListeners() {
 async function handleLinkClick(event) {
     // Event'in daha önce işlenip işlenmediğini kontrol et
     if (event.handled === true) {
-        console.log('⏭️ Bu tıklama eventi daha önce işlenmiş, atlanıyor');
         return;
     }
     
@@ -201,9 +194,6 @@ async function handleLinkClick(event) {
         return;
     }
     
-    // İç sayfa navigasyonu için
-    console.log(`🔄 Sayfa içi navigasyon tespit edildi: ${href}`);
-    
     event.handled = true;
     event.preventDefault();
     event.stopPropagation();
@@ -211,7 +201,6 @@ async function handleLinkClick(event) {
     
     try {
         await recordTimeSpent();
-        console.log(`⏩ Yönlendirme: ${href}`);
         setTimeout(() => {
             window.location.href = href;
         }, 100);
@@ -228,13 +217,11 @@ async function handleLinkClick(event) {
 function handlePageUnload() {
     if (!entryTime || isProcessing) return;
     
-    console.log('👋 Sayfa kapanıyor/yenileniyor');
     isPageNavigating = true;
     
     const duration = calculateDuration();
     
     if (duration >= MIN_DURATION) {
-        console.log('💾 Sayfa kapatıldığı için süre kaydediliyor');
         
         // beforeunload sırasında asenkron işlemler tam olarak çalışmayabilir
         // Bu nedenle lokal depolamada yedekle
@@ -248,9 +235,7 @@ function handlePageUnload() {
         };
         
         localStorage.setItem('pendingPageView', JSON.stringify(backupData));
-        console.log('💾 Sayfa kapatılırken veri yerel depolamaya yedeklendi', backupData);
     } else {
-        console.log(`⏩ Süre çok kısa (${Math.round(duration / 1000)}sn), kayıt yapılmıyor`);
     }
 }
 
@@ -259,10 +244,8 @@ function handlePageUnload() {
  */
 function handleVisibilityChange() {
     if (document.visibilityState === 'hidden' && !isProcessing) {
-        console.log('🙈 Sayfa görünmez oldu');
         recordTimeSpent();
     } else if (document.visibilityState === 'visible') {
-        console.log('👁️ Sayfa tekrar görünür oldu');
         resetTimer();
     }
 }
@@ -281,13 +264,11 @@ function setupPageUnloadHandler() {
         
         // Min süre kontrolü - 10 saniyeden az ise kaydetme
         if (durationInSeconds < MIN_DURATION / 1000) {
-            console.log(`⏱️ Süre çok kısa (${durationInSeconds}s), beforeunload'da kayıt yapılmıyor`);
             return;
         }
         
         // Kullanıcı kimliği kontrolü
         if (!userId || userId === 'anonymous') {
-            console.log(`👤 Kullanıcı ID geçersiz (${userId}), beforeunload'da kayıt yapılmıyor`);
             return;
         }
         
@@ -304,11 +285,8 @@ function setupPageUnloadHandler() {
             timestamp: new Date().toISOString()
         };
         
-        console.log('💾 beforeunload: Sayfa kapatılıyor, veri kaydedilecek', viewData);
-        
         // Senkron olarak localStorage'a kaydet (bu mutlaka çalışacak)
         localStorage.setItem('pendingPageView', JSON.stringify(viewData));
-        console.log('💾 beforeunload: Veri localStorage\'a kaydedildi');
         
         try {
             // Firebase doğrudan yazma denemesi
@@ -327,8 +305,6 @@ function setupPageUnloadHandler() {
                     duration: durationInSeconds,
                     timestamp: firebase.firestore.Timestamp.fromDate(new Date())
                 });
-            
-            console.log('🔥 beforeunload: Firestore yazma işlemi başlatıldı (tamamlanmayabilir)');
         } catch (error) {
             console.error('❌ beforeunload: Firestore yazma hatası', error);
             // Zaten localStorage'a kaydettik, hata durumunda bir şey yapmaya gerek yok
@@ -343,36 +319,27 @@ function checkPendingRecords() {
     const pendingRecord = localStorage.getItem('pendingPageView');
     
     if (!pendingRecord) {
-        console.log('✅ Bekleyen kayıt bulunmuyor');
         return;
     }
     
     try {
-        console.log('🔍 Bekleyen kayıt bulundu:', pendingRecord);
         const data = JSON.parse(pendingRecord);
         
         // Minimum süre kontrolü yap
         if (data.duration < MIN_DURATION / 1000) {
-            console.log(`⏱️ Süre çok kısa (${data.duration}s), kayıt silinecek`);
             localStorage.removeItem('pendingPageView');
             return;
         }
         
         if (!data.processID) {
             data.processID = `${data.userId}_${data.pageSlug || 'unknown'}_${Date.now()}`;
-            console.log('⚠️ ProcessID bulunamadı, otomatik oluşturuldu:', data.processID);
-        }
-        
-        console.log('🔄 ProcessID kontrolü başlatılıyor:', data.processID);
-        
+        }        
         // ProcessID kontrolü - Firestore'da aynı processID var mı kontrol et
         checkIfRecordExists(data)
             .then(exists => {
                 if (exists) {
-                    console.log('⚠️ Bu kayıt zaten Firestore\'da mevcut, atlanıyor:', data.processID);
                     localStorage.removeItem('pendingPageView');
                 } else {
-                    console.log('✅ Kayıt Firestore\'da bulunamadı, kaydedilecek');
                     saveRecordToFirestore(data);
                 }
             })
@@ -397,14 +364,11 @@ async function checkIfRecordExists(data) {
     }
     
     if (!data.processID) {
-        console.log('⚠️ ProcessID bulunamadı, Firestore kontrolü yapılamıyor');
         // ProcessID yoksa, kontrol yapılamaz
         return false;
     }
     
-    try {
-        console.log(`🔍 Firestore'da sorgu yapılıyor: pageViews/processID=${data.processID}`);
-        
+    try {        
         // Yeni yapıda, pageViews koleksiyonunda processID'ye göre sorgulama yap
         const db = firebase.firestore();
         const querySnapshot = await db
@@ -414,7 +378,6 @@ async function checkIfRecordExists(data) {
             .get();
         
         const exists = !querySnapshot.empty;
-        console.log(`🔍 Firestore sorgu sonucu: ${exists ? 'Kayıt bulundu' : 'Kayıt bulunamadı'}`);
         return exists;
     } catch (error) {
         console.error('❌ ProcessID kontrolü sırasında hata:', error);
@@ -433,12 +396,9 @@ function saveRecordToFirestore(data) {
         return;
     }
     
-    console.log('💾 Firestore\'a kayıt başlatılıyor:', data);
-    
     // ProcessID yoksa ekle
     if (!data.processID) {
         data.processID = `${data.userId}_${data.pageSlug || data.pageName.replace(/\s+/g, '-').toLowerCase()}_${Date.now()}`;
-        console.log('⚠️ ProcessID bulunamadı, otomatik oluşturuldu:', data.processID);
     }
     
     // pageSlug yoksa oluştur
@@ -452,7 +412,6 @@ function saveRecordToFirestore(data) {
         
         // Firestore'a kaydet: pageViews/{uuid}
         const db = firebase.firestore();
-        console.log(`📝 Koleksiyon yolu: pageViews/${documentId}`);
         
         db.collection('pageViews')
             .doc(documentId)
@@ -465,7 +424,6 @@ function saveRecordToFirestore(data) {
                 timestamp: firebase.firestore.Timestamp.fromDate(new Date(data.timestamp))
             })
             .then(() => {
-                console.log('✅ Kayıt başarıyla Firestore\'a gönderildi');
                 localStorage.removeItem('pendingPageView');
             })
             .catch(err => {
@@ -500,21 +458,18 @@ async function saveToDatabase(duration) {
         
         // Minimum süre kontrolü - 10 saniyeden az ise kaydetme
         if (durationInSeconds < MIN_DURATION / 1000) {
-            console.log(`⏱️ Süre çok kısa (${durationInSeconds}s), kayıt yapılmıyor`);
             isProcessing = false;
             return;
         }
         
         // Kullanıcı kimliği kontrolü
         if (!userId || userId === 'anonymous') {
-            console.log(`👤 Kullanıcı kimliği geçersiz (${userId}), kayıt yapılmıyor`);
             isProcessing = false;
             return;
         }
         
         // Benzersiz bir processID oluştur
         const processID = `${userId}_${pageSlug}_${Date.now()}`;
-        console.log(`🆔 Yeni processID oluşturuldu: ${processID}`);
         
         // Benzersiz bir belge ID'si oluştur
         const documentId = generateUUID();
@@ -529,25 +484,18 @@ async function saveToDatabase(duration) {
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         };
         
-        console.log('💾 Firestore\'a kayıt yapılacak veri:', viewData);
-        
         // Firestore'a kaydet: pageViews/{uuid} koleksiyonuna
         const db = firebase.firestore();
-        
-        console.log(`📝 Koleksiyon yolu: pageViews/${documentId}`);
         
         const docRef = await db
             .collection('pageViews')
             .doc(documentId)
             .set(viewData);
-            
-        console.log(`✅ Sayfa görüntüleme kaydedildi: ${currentPage} (${pageSlug}) - ${userId} - ${durationInSeconds}s, DocID: ${documentId}`);
         
         // Başarılı kayıt işlemi sonrası isteğe bağlı olarak veri doğrulama
         try {
             const savedDoc = await db.collection('pageViews').doc(documentId).get();
             if (savedDoc.exists) {
-                console.log('✅✅ Kayıt doğrulandı, veri mevcut:', savedDoc.data());
             } else {
                 console.error('⚠️ Kayıt oluşturuldu ama veri doğrulanamadı!');
             }
@@ -572,7 +520,6 @@ async function saveToDatabase(duration) {
             };
             
             localStorage.setItem('pendingPageView', JSON.stringify(backupData));
-            console.log('💾 Hata durumunda veri localStorage\'a kaydedildi', backupData);
         }
     } finally {
         isProcessing = false;
@@ -584,16 +531,13 @@ async function saveToDatabase(duration) {
  */
 async function recordTimeSpent() {
     if (!entryTime || isProcessing) {
-        console.log('⚠️ recordTimeSpent: entryTime yok veya işlem devam ediyor');
         return;
     }
     
     const duration = calculateDuration();
-    console.log(`⏱️ Ölçülen süre: ${Math.round(duration / 1000)} saniye`);
     
     // Süre çok kısa ise kaydetme
     if (duration < MIN_DURATION) {
-        console.log(`⏱️ Süre çok kısa (${Math.round(duration / 1000)}s), kayıt yapılmıyor`);
         
         if (isPageNavigating) {
             isPageNavigating = false;
@@ -606,7 +550,6 @@ async function recordTimeSpent() {
     }
     
     // Kayıt işlemi
-    console.log('🔄 saveToDatabase çağrılıyor, süre:', Math.round(duration / 1000));
     await saveToDatabase(duration);
     
     if (isPageNavigating) {
@@ -622,21 +565,17 @@ async function recordTimeSpent() {
  */
 function resetTimer() {
     entryTime = Date.now();
-    console.log('⏱️ Zamanlayıcı sıfırlandı:', new Date(entryTime).toLocaleTimeString());
 }
 
 // DOM yüklendiğinde sayfa takibini başlat
 document.addEventListener("DOMContentLoaded", async function() {
-    console.log('🚀 DOM yüklendi');
     
     // Firebase Auth doğrudan dinle
     if (firebase && firebase.auth) {
         firebase.auth().onAuthStateChanged(async user => {
             if (user) {
                 userId = user.uid;
-                console.log('👤 Oturum açmış kullanıcı tespit edildi:', userId);
             } else {
-                console.log('👤 Anonim kullanıcı');
                 userId = 'anonymous';
             }
             
@@ -648,16 +587,13 @@ document.addEventListener("DOMContentLoaded", async function() {
             if (TRACKED_PAGES[filename]) {
                 pageSlug = filename.replace('.html', '');  // Firestore belge ID olarak kullanmak için
                 currentPage = TRACKED_PAGES[filename];     // Görüntüleme için okunabilir isim
-                console.log(`📄 İzlenen sayfa: ${currentPage} (Belge ID: ${pageSlug})`);
                 
                 // Sayfa görüntülemeyi başlat
                 await initializePageViews();
             } else {
-                console.log('⚠️ Bu sayfa izlenmiyor:', filename);
             }
         });
     } else {
-        console.log('❌ Firebase Auth kullanılamıyor! Anonim kullanıcı olarak devam edilecek.');
         userId = 'anonymous';
         
         // Geçerli sayfa adını belirle
@@ -668,12 +604,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (TRACKED_PAGES[filename]) {
             pageSlug = filename.replace('.html', '');  // Firestore belge ID olarak kullanmak için
             currentPage = TRACKED_PAGES[filename];     // Görüntüleme için okunabilir isim
-            console.log(`📄 İzlenen sayfa: ${currentPage} (Belge ID: ${pageSlug})`);
             
             // Sayfa görüntülemeyi başlat
             await initializePageViews();
         } else {
-            console.log('⚠️ Bu sayfa izlenmiyor:', filename);
         }
     }
     

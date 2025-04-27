@@ -56,5 +56,3 @@ replacements.forEach(({ pattern, replacement }) => {
 
 // Değiştirilmiş içeriği geri yaz
 fs.writeFileSync(cssFilePath, cssContent, 'utf8');
-
-console.log('Stil güncellemeleri tamamlandı!'); 

@@ -1,3 +1,13 @@
+(function () {
+  if (location.hostname !== 'localhost2') {
+    console.log = function() {};
+    console.warn = function() {};
+    console.error = function() {};
+    console.info = function() {};
+    console.debug = function() {};
+  }
+})();
+
 (function ($) {
   "use strict";
 
@@ -127,9 +137,7 @@
           $dropdown.toggleClass('active');
           
           // Mobil ve desktop için ortak submenu görünürlüğü
-          if ($dropdown.hasClass('active')) {
-            console.log("Menü aktifleştiriliyor");
-            
+          if ($dropdown.hasClass('active')) {            
             // Yumuşak açılma animasyonu için önce display block yapıp sonra transition
             $submenu.css({
               'display': 'block',
@@ -160,9 +168,7 @@
                 }
               }, 300);
             });
-          } else {
-            console.log("Menü kapatılıyor");
-            
+          } else {            
             // Yumuşak kapanma animasyonu
             $submenu.css({
               'max-height': '0',
@@ -186,7 +192,6 @@
         var isMobile = window.matchMedia("(max-width: 768px)").matches;
         
         if (isMobile) {
-          console.log("Mobil: Link tıklaması, sidebar kapatılıyor");
           
           // Genel sidebar kapatma
           $("body").removeClass("sidebar-menu-open");
@@ -309,7 +314,6 @@
     
     // Eğer about.html sayfasıysa veya URL'de about kelimesi geçiyorsa, bu fonksiyonu çalıştırma
     if (currentPath.includes('about') || currentPath.includes('about.html')) {
-      console.log("About sayfası tespit edildi, responsive layout değişiklikleri uygulanmıyor.");
       return;
     }
     
@@ -412,13 +416,11 @@
     // Menüyü kapatma işlemini sadece mobil görünümde çalıştırmak için bir fonksiyon oluşturalım
     function closeMobileMenuOnClick() {
       var isMobile = window.matchMedia("(max-width: 768px)").matches;
-      console.log("Mobil cihaz mı? " + isMobile + " (Ekran genişliği: " + window.innerWidth + "px)");
       
       if (isMobile) {
         $(".doc_mobile_menu .nav-sidebar a").on("click", function(e) {
           // Eğer dropdown menü değilse kapat
           if (!$(this).parent().hasClass("dropdown_nav") && !$(this).hasClass("dropdown-toggle")) {
-            console.log("Mobil menü kapatılıyor...");
             $(".doc_documentation_area,#left").removeClass("overlay");
             $(".doc_mobile_menu").animate(
               {
@@ -430,13 +432,11 @@
           }
         });
       } else {
-        console.log("Masaüstü modunda, mobil menü kapatma olayları eklenmedi");
       }
     }
     
     // Pencere boyutu değiştiğinde yeniden kontrol etmek için
     $(window).on('resize', function() {
-      console.log("Pencere boyutu değişti, mobil menü olayları yeniden ayarlanıyor...");
       // Önce eski event listener'ları kaldır
       $(".doc_mobile_menu .nav-sidebar a").off("click");
       // Sonra yeniden kontrol et ve gerekirse ekle
@@ -703,8 +703,6 @@
           mainArray[i].controller.control = navArray[i];
           navArray[i].controller.control = mainArray[i];
         }
-
-        console.log("multipleSwiperSlides: Things should be working fine. B)");
       }
     };
 
@@ -714,7 +712,6 @@
   multipleSwiperSlides();
 
   function customPlayer(count) {
-    // console.log(count);
     var player = videojs("player_" + count);
     player.nuevo({
       theaterButton: true,
@@ -1099,7 +1096,6 @@
   if ($(".zoom").length) {
     $(".zoom").magnify({
       afterLoad: function () {
-        console.log("Magnification powers activated!");
       },
     });
   }
@@ -1343,7 +1339,6 @@
 
   // initSidebarMenuMobile fonksiyonunu değiştirerek sadece main initSidebarMenu'ye yönlendiriyoruz
   function initSidebarMenuMobile() {
-    console.log("initSidebarMenuMobile çağrıldı - ana initSidebarMenu fonksiyonu kullanılıyor");
     // Artık tüm işlemler initSidebarMenu'de birleştirildi
     // Hiçbir şey yapmıyoruz, ana fonksiyonu kullanıyoruz
   }
@@ -1403,7 +1398,6 @@
     // Geçerli sayfayı almak için URL kontrolü
     const currentPath = window.location.pathname;
     const currentPage = currentPath.substring(currentPath.lastIndexOf('/') + 1);
-    console.log("Aktif sayfa:", currentPage);
     
     // Ana dizindeki sayfalar
     const mainPages = [
@@ -1456,8 +1450,6 @@
             pagesToSearch.push(`${folder}details.html`);
         }
     });
-    
-    console.log("Aranacak toplam sayfa sayısı:", pagesToSearch.length);
     
     let searchResults = [];
     let pagesSearched = 0;
@@ -1639,9 +1631,6 @@
         
         // Tam URL oluştur
         const fullUrl = pageUrl.startsWith('http') ? pageUrl : baseUrl + pageUrl;
-        
-        // Konsola fetch bilgisini yazdır
-        console.log(`Fetching: ${fullUrl}`);
         
         fetch(fullUrl)
             .then(response => {

@@ -82,10 +82,8 @@
     <script>
         async function signInWithLinkedIn() {
             try {
-                console.log('LinkedIn ile giriş başlatılıyor...');
                 // Önce mevcut oturumu kapat
                 await firebase.auth().signOut();
-                console.log('Mevcut oturum kapatıldı, LinkedIn OAuth başlatılıyor');
 
                 // Event listener'ı önce ekle
                 const messageHandler = async function (event) {
@@ -95,34 +93,24 @@
                     if (!allowedOrigins.includes(event.origin)) {
                         console.warn('Bilinmeyen kaynaktan mesaj:', event.origin);
                         return;
-                    }
-
-                    console.log('Mesaj alındı, origin:', event.origin, 'data:', event.data);
-                    
+                    }                    
                     // Mesaj formatı farklı olabilir, kontrol edelim
                     const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
                     
                     // Mesaj tipini kontrol et - hem 'linkedinAuthSuccess' hem de 'auth-success' kontrolü ekledik
                     if (messageData.type === 'linkedinAuthSuccess' || messageData.type === 'auth-success') {
                         try {
-                            console.log('LinkedIn auth başarılı mesajı alındı:', messageData);
-                            
                             // Tokeni farklı yerde de arayalım
                             const firebaseToken = messageData.firebaseToken || messageData.token || (messageData.data && messageData.data.firebaseToken);
                             const user = messageData.user || messageData.userData || (messageData.data && messageData.data.user);
-                            
-                            console.log('Çıkarılan token:', firebaseToken);
-                            console.log('Çıkarılan kullanıcı bilgileri:', user);
-                            
+                                                    
                             if (!firebaseToken) {
                                 throw new Error('Firebase token bulunamadı - mesaj yapısı:', JSON.stringify(messageData));
                             }
                             
                             // Firebase ile giriş yap
-                            console.log('Firebase token alındı, giriş yapılıyor:', firebaseToken);
                             await firebase.auth().signInWithCustomToken(firebaseToken)
                                 .then((userCredential) => {
-                                    console.log('Firebase authentication successful:', userCredential.user);
                                     // Kullanıcı bilgilerini localStorage'a kaydet
                                     if (user) {
                                         localStorage.setItem('user', JSON.stringify(user));
@@ -166,12 +154,9 @@
                     throw new Error('Popup penceresi açılamadı - popup engelleyici aktif olabilir');
                 }
                 
-                console.log('LinkedIn auth penceresi açıldı, mesaj bekleniyor...');
-                
                 // 60 saniye sonra kapanmamış popup'ı kapat
                 setTimeout(() => {
                     if (authWindow && !authWindow.closed) {
-                        console.log('LinkedIn auth penceresi 60 saniye sonra otomatik kapatıldı');
                         authWindow.close();
                         alert('LinkedIn giriş işlemi zaman aşımına uğradı. Lütfen tekrar deneyin.');
                         window.removeEventListener('message', messageHandler);
@@ -706,12 +691,8 @@
                 // Loading spinner'ı göster
                 document.getElementById('loginSpinner').style.display = 'flex';
                 
-                console.log('Token giriş işlemi başlıyor:', code);
-
                 // Firestore'dan token bilgisini doğrudan ID ile al
                 const tokenDoc = await db.collection('guestTokens').doc(code).get();
-
-                console.log('Token dokümanı bulundu mu:', tokenDoc.exists);
 
                 if (!tokenDoc.exists) {
                     // Loading spinner'ı gizle
@@ -721,7 +702,6 @@
                 }
 
                 const tokenData = tokenDoc.data();
-                console.log('Token verileri:', tokenData);
 
                 if (!tokenData.isActive) {
                     // Loading spinner'ı gizle
@@ -738,7 +718,6 @@
                 }
 
                 // Custom token oluştur
-                console.log('Backend API isteği gönderiliyor...');
                 const response = await fetch('https://tipbox-docs-backend.vercel.app/auth/guest', {
                     method: 'POST',
                     headers: {
@@ -746,8 +725,6 @@
                     },
                     body: JSON.stringify({ code })
                 });
-
-                console.log('Backend yanıtı alındı, durum:', response.status);
 
                 if (!response.ok) {
                     // Loading spinner'ı gizle

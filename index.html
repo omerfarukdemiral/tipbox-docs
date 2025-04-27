@@ -75,7 +75,7 @@
                     if (user) {
                         updateUserInterface(user);
                     } else {
-                        console.log("Oturum kapalı");
+                        
                     }
                 });
             } 
@@ -92,7 +92,6 @@
                     if (user) {
                         updateUserInterface(user);
                     } else {
-                        console.log("Oturum kapalı");
                     }
                 });
             } else {
@@ -152,7 +151,6 @@
             // Önce doğrudan firebase.auth'u kontrol et
             if (typeof firebase !== 'undefined' && firebase.auth) {
                 firebase.auth().signOut().then(() => {
-                    console.log("Çıkış başarılı (firebase.auth)");
                     window.location.href = 'signin.html';
                 }).catch((error) => {
                     console.error('Çıkış yapılırken hata oluştu (firebase.auth):', error);
@@ -161,7 +159,6 @@
             // Sonra window.firebaseAuth'u kontrol et
             else if (window.firebaseAuth) {
                 window.firebaseAuth.signOut().then(() => {
-                    console.log("Çıkış başarılı (window.firebaseAuth)");
                     window.location.href = 'signin.html';
                 }).catch((error) => {
                     console.error('Çıkış yapılırken hata oluştu (window.firebaseAuth):', error);
