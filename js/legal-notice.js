@@ -58,23 +58,12 @@
      * @returns {boolean} Kabul edildiyse true, aksi halde false
      */
     function hasUserAcceptedLegalNotice() {
-        // Öncelikle doğrudan localStorage'daki özel anahtarı kontrol et
-        if (localStorage.getItem(LEGAL_NOTICE_ACCEPTED_KEY) === 'true') {
-            console.log('Yasal uyarı daha önce kabul edilmiş (özel anahtar)');
-            return true;
-        }
-        
-        // Alternatif olarak user verisinden kontrol et
         const userStr = localStorage.getItem('user');
         if (userStr) {
             try {
                 const userData = JSON.parse(userStr);
                 console.log('Privacy policy değeri:', userData.privacy_policy);
-                if (userData.privacy_policy === true) {
-                    // Özel anahtarı da ayarla ki bir sonraki kontrolde doğrudan bulunabilsin
-                    localStorage.setItem(LEGAL_NOTICE_ACCEPTED_KEY, 'true');
-                    return true;
-                }
+                return userData.privacy_policy === true;
             } catch (error) {
                 console.error('User verisi JSON olarak ayrıştırılamadı:', error);
                 return false;
@@ -124,11 +113,7 @@
             
             // LocalStorage'deki kullanıcı verisini güncelle
             userData.privacy_policy = true;
-            localStorage.setItem('user', JSON.stringify(userData));
-            
-            // Ayrı bir anahtarda da kabul durumunu sakla
-            // Böylece user verisi değişse bile bu kalır
-            localStorage.setItem(LEGAL_NOTICE_ACCEPTED_KEY, 'true');
+            localStorage.setItem('user', JSON.stringify(userData));            
         } catch (error) {
             console.error('Gizlilik politikası güncellenirken hata:', error);
             showToast('Gizlilik politikası güncellenirken bir hata oluştu: ' + error.message, 'error');
@@ -174,7 +159,7 @@
         }
         
         // Varsayılan olarak Türkçe kullan
-        return 'tr';
+        return 'en';
     }
     
     /**
@@ -226,54 +211,7 @@
                 }
             });
         }
-    }
-    
-    // Toast mesajı gösterme fonksiyonu
-    function showToast(message, type = 'success') {
-        // Mevcut toast container'ı kontrol et veya oluştur
-        let toastContainer = document.getElementById('toast-container');
-        if (!toastContainer) {
-            toastContainer = document.createElement('div');
-            toastContainer.id = 'toast-container';
-            toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
-            toastContainer.style.zIndex = '999999';
-            document.body.appendChild(toastContainer);
-        }
-        
-        // Toast elementini oluştur
-        const toastElement = document.createElement('div');
-        toastElement.className = `toast ${type === 'success' ? 'bg-success' : 'bg-danger'} text-white`;
-        toastElement.setAttribute('role', 'alert');
-        toastElement.setAttribute('aria-live', 'assertive');
-        toastElement.setAttribute('aria-atomic', 'true');
-        
-        // Toast içeriği
-        toastElement.innerHTML = `
-            <div class="toast-header ${type === 'success' ? 'bg-success' : 'bg-danger'} text-white">
-                <strong class="me-auto">Bildirim</strong>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Kapat"></button>
-            </div>
-            <div class="toast-body">
-                ${message}
-            </div>
-        `;
-        
-        // Toast'ı container'a ekle
-        toastContainer.appendChild(toastElement);
-        
-        // Bootstrap Toast nesnesini oluştur ve göster
-        const toast = new bootstrap.Toast(toastElement, {
-            autohide: true,
-            delay: 5000
-        });
-        toast.show();
-        
-        // Toast kapandığında DOM'dan kaldır
-        toastElement.addEventListener('hidden.bs.toast', function () {
-            toastElement.remove();
-        });
-    }
-    
+    }  
     // initLegalNotice fonksiyonunu global olarak erişilebilir yap
     window.initLegalNotice = initLegalNotice;
 })(); 
