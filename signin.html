@@ -556,8 +556,8 @@
                         <label class="text-white mb-2">Your Invitation Code</label>
                         <div class="input-group">
                             <input type="text" class="form-control bg-dark text-white border-secondary" id="inviteCode"
-                                maxlength="8" style="letter-spacing: 3px; font-size: 18px; text-align: center;"
-                                placeholder="XXXXXXXX">
+                                maxlength="8" style="letter-spacing: 3px; font-size: 18px; text-align: center; text-transform: uppercase;"
+                                placeholder="XXXXXXXX" oninput="formatInviteCode(this)">
                         </div>
                         <small class="form-text text-muted mt-2">
                             Please enter the 8-character invitation code provided to you
@@ -677,6 +677,22 @@
 
         function showGuestLoginModal() {
             $('#guestLoginModal').modal('show');
+            // Modal açıldığında input alanını sıfırla
+            document.getElementById('inviteCode').value = '';
+        }
+
+        // Davet kodu formatı için yeni fonksiyon
+        function formatInviteCode(input) {
+            // Değeri al ve büyük harfe çevir
+            let value = input.value.toUpperCase();
+            
+            // Karakter sayısını 8 ile sınırla
+            if (value.length > 8) {
+                value = value.slice(0, 8);
+            }
+            
+            // Güncellenmiş değeri input alanına ata
+            input.value = value;
         }
 
         async function verifyInviteCode() {
