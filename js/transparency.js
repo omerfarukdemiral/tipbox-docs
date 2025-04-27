@@ -2,7 +2,7 @@
  * Transparency Page Interactive Features
  */
 
-// Global Chart nesneleri
+// Global Chart objects
 let distributionChart = null;
 let unlockRatioChart = null;
 
@@ -10,55 +10,55 @@ document.addEventListener('DOMContentLoaded', () => {
     initTransparencyElements();
 });
 
-// Grafikleri sayfada daha sonra da başlatabilmek için fonksiyonu ayrı tanımladım
+// Function defined separately to be able to initialize charts later on the page
 function initTransparencyElements() {
-    // Grafikler için Chart.js kütüphanesinin kontrolü
+    // Check for Chart.js library
     if (typeof Chart !== 'undefined') {
-        // Grafiklerin çizileceği canvas elemanları var mı kontrol edelim
+        // Check if canvas elements exist for the charts
         const tokenDistributionChartElement = document.getElementById('tokenDistributionChart');
         const unlockRatioChartElement = document.getElementById('unlockRatioChart');
         
         if (tokenDistributionChartElement) {
             renderDistributionChart();
-            console.log('Token dağılım grafiği başlatıldı');
+            console.log('Token distribution chart initialized');
         } else {
-            console.log('Token dağılım grafiği için canvas elemanı bulunamadı');
+            console.log('Canvas element for token distribution chart not found');
         }
         
         if (unlockRatioChartElement) {
             renderUnlockRatioChart();
-            console.log('Kilit açma oranı grafiği başlatıldı');
+            console.log('Unlock ratio chart initialized');
         } else {
-            console.log('Kilit açma oranı grafiği için canvas elemanı bulunamadı');
+            console.log('Canvas element for unlock ratio chart not found');
         }
     } else {
-        console.error('Chart.js kütüphanesi bulunamadı! Kütüphaneyi yüklediğinizden emin olun.');
+        console.error('Chart.js library not found! Make sure you have loaded the library.');
     }
     
-    // Token kategorisi adres görüntüleme düğmesi 
+    // Token category address view buttons 
     initAddressViewButtons();
     
-    // Modal kontrolleri
+    // Modal controls
     initModalControls();
     
-    // Başlat butonuna tıklandığında scroll
+    // Scroll when Get Started button is clicked
     initGetStartedButton();
     
-    // Token kategorisi görünürlüğü
+    // Token category visibility
     initTokenCategoryInteraction();
     
-    // Açılışta tüm kategori açıklamalarını genişlet
+    // Expand all category descriptions on load
     expandAllCategoryDescriptions();
 
-    // Tema Yönetimi
+    // Theme Management
     const themeToggleBtn = document.getElementById('theme-toggle-btn');
     const htmlElement = document.documentElement;
     
-    // Kayıtlı temayı kontrol et veya varsayılan tema olarak karanlık temayı ayarla
+    // Check saved theme or set dark theme as default
     const savedTheme = localStorage.getItem('tipbox-theme') || 'dark';
     htmlElement.setAttribute('data-theme', savedTheme);
     
-    // Tema değiştirme işlevi
+    // Theme toggle function
     if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', () => {
             const currentTheme = htmlElement.getAttribute('data-theme');
@@ -67,20 +67,20 @@ function initTransparencyElements() {
             htmlElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('tipbox-theme', newTheme);
             
-            // Tema değişimi sonrası grafikleri yeniden oluştur (biraz gecikme ile)
+            // Recreate charts after theme change (with a slight delay)
             setTimeout(() => {
                 renderDistributionChart();
                 renderUnlockRatioChart();
-            }, 100); // Küçük bir gecikme ile tema değişiminin tamamlanmasını bekle
+            }, 100); // Small delay to let theme change complete
         });
     }
 }
 
 /**
- * Token dağılımı grafiğini oluştur
+ * Render token distribution chart
  */
 function renderDistributionChart() {
-    // Eğer önceki bir grafik varsa, yeni oluşturmadan önce yok et
+    // If a previous chart exists, destroy it before creating a new one
     if (distributionChart) {
         distributionChart.destroy();
     }
@@ -88,33 +88,33 @@ function renderDistributionChart() {
     const ctx = document.getElementById('tokenDistributionChart');
     
     if (!ctx) {
-        console.error('Dağılım grafiği için canvas bulunamadı!');
+        console.error('Canvas not found for distribution chart!');
         return;
     }
     
     const isDark = isDarkMode();
     
-    // Kategori verileri - Ekran görüntüsüne uygun dağılım
+    // Category data - matches the screenshot
     const data = {
         labels: ['Reward Farming', 'Strategic Investors', 'Development', 'Ecosystem', 'Staking', 'Liquidity', 'Reserve', 'Advisors'],
         datasets: [{
             data: [40, 15, 15, 10, 10, 5, 4, 1],
             backgroundColor: [
-                '#7986CB', // Ödül Çiftçiliği - Mor-mavi
-                '#4f71e7', // Stratejik Yatırımcılar - Mavi
-                '#a56bfc', // Geliştirme - Mor
-                '#64FFDA', // Ekosistem - Turkuaz
-                '#FFA726', // Staking - Turuncu
-                '#5CD6B1', // Likidite - Yeşil
-                '#EF5350', // Rezerv - Kırmızı
-                '#80DEEA'  // Danışmanlar - Açık Mavi
+                '#7986CB', // Reward Farming - Purple-blue
+                '#4f71e7', // Strategic Investors - Blue
+                '#a56bfc', // Development - Purple
+                '#64FFDA', // Ecosystem - Turquoise
+                '#FFA726', // Staking - Orange
+                '#5CD6B1', // Liquidity - Green
+                '#EF5350', // Reserve - Red
+                '#80DEEA'  // Advisors - Light Blue
             ],
             borderWidth: 0,
             hoverOffset: 15
         }]
     };
     
-    // Pasta grafiği oluştur - Ekran görüntüsüne uygun
+    // Create pie chart - matches the screenshot
     distributionChart = new Chart(ctx, {
         type: 'pie',
         data: data,
@@ -126,7 +126,7 @@ function renderDistributionChart() {
             },
             plugins: {
                 legend: {
-                    display: false // Efsaneyi gizle, sağ tarafta zaten gösteriyoruz
+                    display: false // Hide legend, already showing on the right
                 },
                 tooltip: {
                     enabled: true,
@@ -151,16 +151,16 @@ function renderDistributionChart() {
                     borderWidth: 0,
                 }
             },
-            cutout: '0%' // Tam pasta dilimi
+            cutout: '0%' // Full pie slice
         }
     });
 }
 
 /**
- * Kilit açma oranı grafiğini oluştur
+ * Render unlock ratio chart
  */
 function renderUnlockRatioChart() {
-    // Eğer önceki bir grafik varsa, yeni oluşturmadan önce yok et
+    // If a previous chart exists, destroy it before creating a new one
     if (unlockRatioChart) {
         unlockRatioChart.destroy();
     }
@@ -168,7 +168,7 @@ function renderUnlockRatioChart() {
     const ctx = document.getElementById('unlockRatioChart');
     
     if (!ctx) {
-        console.error('Kilit açma grafiği için canvas bulunamadı!');
+        console.error('Canvas not found for unlock ratio chart!');
         return;
     }
     
@@ -176,10 +176,10 @@ function renderUnlockRatioChart() {
     const textColor = isDark ? '#F8FAFC' : '#334155';
     const gridColor = isDark ? 'rgba(248, 250, 252, 0.1)' : 'rgba(51, 65, 85, 0.1)';
     
-    // Gelecek 24 ay için etiketler oluştur
+    // Generate labels for next 24 months
     const labels = generateMonthLabels(24);
     
-    // Yığın veri setleri
+    // Stack data sets
     const datasets = [
         {
             label: 'Treasury',
@@ -213,7 +213,7 @@ function renderUnlockRatioChart() {
         }
     ];
     
-    // Yığın grafiği oluştur
+    // Create stacked chart
     unlockRatioChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -296,7 +296,7 @@ function renderUnlockRatioChart() {
 }
 
 /**
- * Ay etiketleri oluştur
+ * Generate month labels
  */
 function generateMonthLabels(months) {
     const labels = [];
@@ -312,13 +312,13 @@ function generateMonthLabels(months) {
 }
 
 /**
- * Örnekler için yığın verileri oluştur
+ * Generate sample stacked data
  */
 function generateStackedData(months, maxValue, factor) {
     const data = [];
     
     for (let i = 0; i < months; i++) {
-        // Yükselen bir eğri oluşturmak için logaritmik artış
+        // Logarithmic increase to create a rising curve
         const value = Math.round((Math.log(i + 1) / Math.log(months)) * maxValue * factor * 100) / 100;
         data.push(Math.min(value, maxValue));
     }
@@ -327,7 +327,7 @@ function generateStackedData(months, maxValue, factor) {
 }
 
 /**
- * Adres görüntüleme düğmeleri
+ * Address view buttons
  */
 function initAddressViewButtons() {
     const addressButtons = document.querySelectorAll('.view-address a');
@@ -342,7 +342,7 @@ function initAddressViewButtons() {
 }
 
 /**
- * Modal popup kontrollerini başlatır
+ * Initialize modal popup controls
  */
 function initModalControls() {
     const openModalBtns = document.querySelectorAll('.open-modal');
@@ -354,7 +354,7 @@ function initModalControls() {
             const targetModal = document.getElementById(this.dataset.modal);
             if (targetModal) {
                 targetModal.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Sayfanın kaydırılmasını engelle
+                document.body.style.overflow = 'hidden'; // Prevent page scrolling
             }
         });
     });
@@ -364,12 +364,12 @@ function initModalControls() {
             const modal = this.closest('.modal');
             if (modal) {
                 modal.classList.remove('active');
-                document.body.style.overflow = ''; // Sayfa kaydırmayı geri etkinleştir
+                document.body.style.overflow = ''; // Re-enable page scrolling
             }
         });
     });
     
-    // Modal dışı tıklamada kapatma
+    // Close on outside click
     modals.forEach(modal => {
         modal.addEventListener('click', function(e) {
             if (e.target === this) {
@@ -379,7 +379,7 @@ function initModalControls() {
         });
     });
     
-    // ESC tuşu ile kapatma
+    // Close with ESC key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             modals.forEach(modal => {
@@ -393,7 +393,7 @@ function initModalControls() {
 }
 
 /**
- * "Hadi Başlayalım" butonuna tıklandığında token dağılımı bölümüne smooth scroll
+ * Smooth scroll to token distribution section when "Let's Get Started" button is clicked
  */
 function initGetStartedButton() {
     const getStartedBtn = document.querySelector('.get-started-btn button');
@@ -401,14 +401,14 @@ function initGetStartedButton() {
     if (!getStartedBtn) return;
     
     getStartedBtn.addEventListener('click', (e) => {
-        // Modal açılması için varsayılan davranışı engelleme
+        // Prevent default behavior for modal opening
         // e.preventDefault();
         
         // Smooth scroll
         const tokenDistributionSection = document.querySelector('.token-distribution-section');
         
         if (tokenDistributionSection) {
-            // Scroll işlemi 300ms sonra yapılıyor, böylece modal açılma animasyonu tamamlandıktan sonra scroll başlıyor
+            // Scroll operation happens after 300ms, so the modal opening animation completes first
             setTimeout(() => {
                 tokenDistributionSection.scrollIntoView({ 
                     behavior: 'smooth' 
@@ -419,7 +419,7 @@ function initGetStartedButton() {
 }
 
 /**
- * Token kategorilerine tıklandığında detayları göster/gizle
+ * Show/hide details when token categories are clicked
  */
 function initTokenCategoryInteraction() {
     const tokenCategories = document.querySelectorAll('.token-category');
@@ -434,7 +434,7 @@ function initTokenCategoryInteraction() {
             header.addEventListener('click', () => {
                 description.classList.toggle('expanded');
                 
-                // Header'a tıklandığında ikon değişimi eklenebilir
+                // Icon change when header is clicked can be added here
                 const icon = header.querySelector('.toggle-icon');
                 if (icon) {
                     icon.classList.toggle('active');
@@ -445,7 +445,7 @@ function initTokenCategoryInteraction() {
 }
 
 /**
- * Sayfa yüklendiğinde tüm kategori açıklamalarını genişlet
+ * Expand all category descriptions when page loads
  */
 function expandAllCategoryDescriptions() {
     const descriptions = document.querySelectorAll('.category-description');
@@ -456,20 +456,20 @@ function expandAllCategoryDescriptions() {
 }
 
 /**
- * Modal içinde görüntülenecek veri için
+ * For data to be displayed in modal
  */
 function loadTokenData() {
-    // Bu fonksiyon gerçek bir uygulamada API'den verileri çekebilir
-    // Örnek için sabit veriler kullanıyoruz
+    // This function could fetch data from API in a real application
+    // Using static data for example
     
-    // Token verilerini göster
+    // Show token data
     updateTokenMetrics({
         unlockedSupply: 0,
         circulatingSupply: 0,
         totalSupply: 100000000,
         categories: [
             {
-                name: 'Ödül Çiftçiliği',
+                name: 'Reward Farming',
                 percentage: 40,
                 unlockedPercentage: 0,
                 circulatingPercentage: 0,
@@ -477,35 +477,34 @@ function loadTokenData() {
                 address: '0x1234...'
             },
             {
-                name: 'Stratejik Yatırımcılar',
+                name: 'Strategic Investors',
                 percentage: 15,
                 unlockedPercentage: 0,
                 circulatingPercentage: 0,
                 circulatingAmount: 0,
                 address: '0x5678...'
             },
-            // Diğer kategoriler buraya eklenebilir
+            // Other categories can be added here
         ]
     });
 }
 
 /**
- * Token metriklerini güncelleme
+ * Update token metrics
  */
 function updateTokenMetrics(data) {
-    // Burada gerçek bir uygulamada DOM elementlerini güncellemek için
-    // API'den gelen veri kullanılacaktır
+    // In a real application, DOM elements would be updated with API data here
     console.log('Token metrics updated with:', data);
 }
 
 /**
- * Mevcut tema karanlık mı kontrolü
+ * Check if current theme is dark
  */
 function isDarkMode() {
     return document.documentElement.getAttribute('data-theme') === 'dark';
 }
 
-// Sayfa kaydırma butonları
+// Page scroll buttons
 document.addEventListener('DOMContentLoaded', function() {
     const scrollLinks = document.querySelectorAll('a.scroll-link');
     
@@ -526,7 +525,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Kategori açıklamalarını tıklamada göster/gizle
+// Show/hide category descriptions on click
 document.addEventListener('DOMContentLoaded', function() {
     const categoryDescriptions = document.querySelectorAll('.category-description');
     const categoryCards = document.querySelectorAll('.token-category-card');
@@ -541,15 +540,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Tema değişikliğinde grafikleri güncelle
+// Update charts when theme changes
 function updateChartsForTheme(theme) {
-    // Grafik nesnelerine erişip onları yeniden oluştur
+    // Access chart objects and recreate them
     renderDistributionChart();
     renderUnlockRatioChart();
 }
 
 /**
- * Tüm grafikleri yenile
+ * Refresh all charts
  */
 function refreshAllCharts() {
     if (distributionChart) {
