@@ -3,7 +3,7 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px 0;
-    font-family: var(--main-font);
+    font-family: 'Inter', sans-serif;
     color: var(--text-color);
 }
 
@@ -56,8 +56,8 @@
 
 /* Token Distribution Chart */
 .distribution-chart-wrapper {
-    padding: 30px 0 60px;
-    margin-bottom: 50px;
+    padding: 30px 0 10px;
+    margin-bottom: 5px;
 }
 
 .distribution-chart-container {
@@ -79,32 +79,35 @@
 
 .distribution-legend {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 12px 15px;
+    padding: 0 5px;
 }
 
 .legend-row {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 8px;
 }
 
 .legend-percentage {
-    font-size: 24px;
-    font-weight: 700;
-    width: 70px;
+    font-size: 16px;
+    font-weight: 600;
+    width: 40px;
+    font-family: 'Inter', sans-serif;
 }
 
 .legend-color {
-    width: 22px;
-    height: 22px;
-    border-radius: 4px;
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
 }
 
 .legend-label {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 500;
+    font-family: 'Inter', sans-serif;
 }
 
 /* Renk Paleti - Koyu tema uyumlu */
@@ -420,7 +423,7 @@
 @media (max-width: 992px) {
     .distribution-chart-container {
         flex-direction: column;
-        gap: 40px;
+        gap: 30px;
     }
     
     .distribution-chart {
@@ -430,8 +433,7 @@
     
     .distribution-legend {
         max-width: 100%;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -463,7 +465,7 @@
     --card-bg-color: #fff;
     --secondary-bg-color: #f1f5f9;
     --border-color: #e2e8f0;
-    --main-font: 'Jura', sans-serif;
+    --main-font: 'Inter', sans-serif;
     
     /* Açık temada renkler */
     --reward-farming-color: #7B89F9;
@@ -722,8 +724,8 @@ ul {
 }
 
 .distribution-chart-container {
-  max-width: 550px;
-  height: 550px;
+  max-width: 350px;
+  height: 350px;
   margin: 0 auto;
 }
 
