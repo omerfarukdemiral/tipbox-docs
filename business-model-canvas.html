@@ -26,13 +26,22 @@
     <link rel="stylesheet" href="assets/mcustomscrollbar/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="css/style-main.css">
     <link rel="stylesheet" href="css/responsive.css">
-    <!-- Güvenlik CSS -->
-    <link rel="stylesheet" href="css/security.css">
     <title>Business Model Canvas - Tipbox Docs</title>
+
+    <!-- jQuery ve Turn.js için gerekli dosyalar -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
+
+    <!-- PDF.js için gerekli dosyalar -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <!-- Güvenlik JS -->
     <script src="js/security.js"></script>
@@ -110,73 +119,431 @@
             });
         }
     </script>
+
+    <!-- Sayfa görüntüleme takibi için -->
+    <script src="js/pageViews.js"></script>
+
+    <style>
+        .pdf-container {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - var(--header-height) - var(--breadcrumb-height) - 60px);
+            max-width: 1200px;
+            background: #1d1e20;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+            margin: 0 auto;
+        }
+
+        #flipbook {
+            width: 100%;
+            height: 100%;
+            display: none;
+            /* Başlangıçta gizli */
+        }
+
+        #flipbook .page {
+            background: #1d1e20;
+            overflow: hidden;
+        }
+
+        #flipbook .page canvas {
+            background: transparent;
+        }
+
+        .pdf-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(29, 30, 32, 0.95);
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .pdf-controls button {
+            background: var(--brand_color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .pdf-controls button:hover {
+            background: #3a3af0;
+            transform: translateY(-2px);
+        }
+
+        .pdf-controls .page-num {
+            display: inline-block;
+            margin: 0 15px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* PDF Yükleme Animasyonu Stilleri */
+        .pdf-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1d1e20;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loader-content {
+            text-align: center;
+            color: #fff;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--brand_color);
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .pdf-container {
+                height: calc(100vh - var(--header-mobile-height) - var(--breadcrumb-height) - 40px);
+            }
+
+            .pdf-controls {
+                padding: 8px 15px;
+            }
+
+            .pdf-controls button {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+
+        .scroll-down {
+            text-align: center;
+            margin-top: 30px;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-down a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            background: var(--brand_color);
+            color: #fff;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-down a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .doc-middle-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+        }
+
+        .pdf-container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        #flipbook {
+            margin: 0 auto;
+        }
+
+        .doc_documentation_area#pdf-section {
+            padding: 30px 0;
+            min-height: calc(100vh - var(--header-height) - var(--breadcrumb-height));
+            display: flex;
+            align-items: center;
+        }
+
+        .doc-middle-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 0;
+        }
+
+        .pdf-container {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            height: calc(100vh - var(--header-height) - var(--breadcrumb-height) - 60px);
+            background: #1d1e20;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+            margin: 0 auto;
+        }
+
+        #flipbook {
+            width: 100%;
+            height: 100%;
+            display: none;
+            /* Başlangıçta gizli */
+        }
+
+        #flipbook .page {
+            background: #1d1e20;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #flipbook .page canvas {
+            background: transparent;
+            max-width: 100%;
+            max-height: 100%;
+            width: auto !important;
+            height: auto !important;
+            object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            .doc_documentation_area#pdf-section {
+                padding: 20px 0;
+            }
+
+            .pdf-container {
+                width: 95%;
+                height: calc(100vh - var(--header-mobile-height) - var(--breadcrumb-height) - 40px);
+            }
+        }
+
+        /* Container için özel stil */
+        .custom_container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .row {
+            width: 100%;
+        }
+
+        :root {
+            --header-height: 80px;
+            --header-mobile-height: 60px;
+            --breadcrumb-height: 120px;
+        }
+
+        /* Tam ekran stili */
+        .fullscreen-mode {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: none !important;
+            z-index: 9999;
+            background: #1d1e20;
+            margin: 0 !important;
+            padding: 10px !important;
+        }
+
+        .fullscreen-mode #flipbook {
+            width: 98% !important;
+            height: 95% !important;
+            margin: 0 auto !important;
+        }
+
+        .fullscreen-mode .pdf-controls {
+            bottom: 20px;
+            background: rgba(29, 30, 32, 0.98);
+        }
+
+        .pdf-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .fullscreen-btn {
+            background: var(--brand_color);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+            padding: 0;
+        }
+
+        .fullscreen-btn:hover {
+            background: #3a3af0;
+            transform: translateY(-2px);
+        }
+
+        .fullscreen-btn i {
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .fullscreen-mode .fullscreen-btn i.fa-expand::before {
+            content: "\f066";
+            /* fa-compress ikonu */
+        }
+
+        /* ESC tuşu göstergesi */
+        .fullscreen-mode::after {
+            content: "Press ESC key to exit";
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            padding: 8px 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            pointer-events: none;
+            backdrop-filter: blur(5px);
+        }
+
+        @media (max-width: 768px) {
+            .fullscreen-mode::after {
+                display: none;
+            }
+        }
+
+        /* Watermark stilleri */
+        .watermark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.1;
+        }
+
+        /* Güvenlik için ek stiller */
+        .secure-container {
+            position: relative;
+        }
+
+        .secure-container canvas {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Yazdırma engelleme */
+        @media print {
+            .secure-container {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
 
 <body class="doc wide-container" data-spy="scroll" data-target="#navbar-example3" data-scroll-animation="true"
     data-offset="70">
     <div id="preloader">
         <div id="ctn-preloader" class="ctn-preloader">
-            <div class="round_spinner">
-                <div class="spinner"></div>
-                <div class="text">
-                    <img src="img/spinner_logo.png" alt="">
-                    <h4><span>Tip</span>Docs</h4>
+            <div class="modern-loader">
+                <div class="loader-logo">
+                    <img src="img/main-logo.png" alt="Tipbox Logo">
+                </div>
+                <h4>Blueprints Panel</h4>
+                <div class="loader-progress">
+                    <span class="bar"></span>
                 </div>
             </div>
-            <h2 class="head">Did You Know?</h2>
-            <p></p>
         </div>
     </div>
-
     <div class="body_wrapper">
         <!-- Header Component -->
-        <div include-html="components/header.html" class="sticky-nav"></div>
+        <div include-html="components/header.html"></div>
 
-        <!--================Banner Area =================-->
-        <section class="doc_banner_area search-banner-light" style="position: relative; overflow: hidden;">
-            <div class="container" style="position: relative; z-index: 2;">
-                <div class="doc_banner_content" style="position: relative;">
-                    <h1 class="banner-title wow fadeInUp" data-wow-delay="0.2s"
-                        style="font-size: 48px; font-weight: 700; margin-bottom: 20px; font-family: 'Jura', sans-serif; color: var(--text-light); opacity: 0; animation: fadeInUp 1s forwards 0.3s;">
-                        Business Model Canvas</h1>
+      <!--================Banner Area =================-->
+      <section class="doc_banner_area search-banner-light"
+      style="position: relative; overflow: hidden; background: url('img/banner/about.png') no-repeat center center; background-size: cover;">
 
-                    <p class="banner-description wow fadeInUp" data-wow-delay="0.4s"
-                        style="font-size: 16px; max-width: 600px; margin: 0 auto 30px; color: #fff; opacity: 0; animation: fadeInUp 1s forwards 0.6s;">
-                        Visual chart that defines our business model, value proposition, infrastructure, customers, and finances.</p>
-                </div>
-            </div>
+      <div class="container" style="position: relative; z-index: 2;">
+          <div class="doc_banner_content" style="position: relative;">
+              <h1 class="banner-title wow fadeInUp" data-wow-delay="0.2s"
+                  style="font-size: 48px; font-weight: 700; margin-bottom: 20px; font-family: 'Jura', sans-serif; color: var(--text-light); opacity: 0; animation: fadeInUp 1s forwards 0.3s;">
+                  Business Model Canvas</h1>
 
-            <!-- Animate.css kullanımı için stil -->
-            <style>
-                @keyframes fadeInUp {
-                    from {
-                        opacity: 0;
-                        transform: translate3d(0, 30px, 0);
-                    }
+              <p class="banner-description wow fadeInUp" data-wow-delay="0.4s"
+                  style="font-size: 16px; max-width: 600px; margin: 0 auto 30px; color: #fff; opacity: 0; animation: fadeInUp 1s forwards 0.6s;">
+                  Visual chart that defines our business model, value proposition, infrastructure, customers, and finances.</p>
 
-                    to {
-                        opacity: 1;
-                        transform: translate3d(0, 0, 0);
-                    }
-                }
+          </div>
+      </div>
 
-                .banner-title,
-                .banner-description {
-                    opacity: 0;
-                }
-            </style>
-        </section>
+  </section>
 
-        <section class="page_breadcrumb">
+    <section class="page_breadcrumb">
             <div class="container custom_container">
                 <div class="row">
                     <div class="col-sm-7">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Tipbox</a></li>
-                                <li class="breadcrumb-item"><a href="#">Docs</a></li>
-                                <li class="breadcrumb-item active"><a href="business-model-canvas.html">Business Model
-                                        Canvas</a></li>
+                                <li class="breadcrumb-item active"><a href="business-model-canvas.html">Business Model Canvas</a></li>
                             </ol>
                         </nav>
                     </div>
@@ -186,45 +553,221 @@
                 </div>
             </div>
         </section>
+        <!--================End Forum Breadcrumb Area =================-->
 
-        <!--================Content Area =================-->
-        <section class="doc_documentation_area" id="sticky_doc">
+        <!--================Topic Area =================-->
+        <section class="doc_documentation_area" id="pdf-section">
             <div class="overlay_bg"></div>
             <div class="container custom_container">
                 <div class="row">
-                    <div class="col-lg-12 col-md-8 doc-middle-content">
-                        <article class="documentation_info">
-                            <div class="" id="documentation">
-                                <div class="shortcode_title">
-                                    <h1>Business Model Canvas</h1>
-                                    <p>Bu sayfa iş modelimizin görsel bir haritasını ve bileşenlerini içerecektir.</p>
+
+                    <div class="col-lg-12 col-md-12 doc-middle-content">
+                        <div class="pdf-container secure-container">
+                            <div id="flipbook"></div>
+                            <div class="pdf-controls">
+                                <button onclick="previousPage()">Previous</button>
+                                <div class="page-num">
+                                    <span id="current-page">1</span> / <span id="total-pages">0</span>
+                                </div>
+                                <button onclick="nextPage()">Next</button>
+                                <button onclick="toggleFullscreen()" class="fullscreen-btn" title="Full Screen">
+                                    <i class="fa-solid fa-expand"></i>
+                                </button>
+                            </div>
+                            <div class="watermark"></div>
+                            <!-- PDF Yükleme Animasyonu -->
+                            <div id="pdf-loader" class="pdf-loader">
+                                <div class="loader-content">
+                                    <div class="spinner"></div>
+                                    <p>Loading Business Model Canvas...</p>
                                 </div>
                             </div>
-                        </article>
+                        </div>
+
+                        <script>
+                            // PDF.js worker script'ini yükle
+                            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js';
+
+                            let currentScale = 1;
+                            let pdfDoc = null;
+                            let pageNum = 1;
+                            let flipBook = null;
+                            const loader = document.getElementById('pdf-loader');
+
+                            // Sayfa boyutunu hesapla
+                            function calculateScale(viewport) {
+                                const container = document.querySelector('.pdf-container');
+                                const containerWidth = container.clientWidth;
+                                const containerHeight = container.clientHeight;
+
+                                // Sayfa ve container oranlarını hesapla
+                                const pageRatio = viewport.width / viewport.height;
+                                const containerRatio = containerWidth / containerHeight;
+
+                                // En-boy oranına göre ölçeklendirme faktörünü hesapla
+                                if (pageRatio > containerRatio) {
+                                    // Sayfa daha geniş, genişliğe göre ölçekle
+                                    return (containerWidth * 0.9) / viewport.width;
+                                } else {
+                                    // Sayfa daha uzun, yüksekliğe göre ölçekle
+                                    return (containerHeight * 0.9) / viewport.height;
+                                }
+                            }
+
+                            // PDF'yi yükle ve görüntüle
+                            async function loadPDF() {
+                                const url = 'pitch-deck.pdf';
+                                try {
+                                    // Yükleme animasyonunu göster
+                                    loader.style.display = 'flex';
+
+                                    pdfDoc = await pdfjsLib.getDocument(url).promise;
+                                    document.getElementById('total-pages').textContent = pdfDoc.numPages;
+
+                                    // Flipbook div'ini temizle
+                                    const flipbookElement = document.getElementById('flipbook');
+                                    flipbookElement.innerHTML = '';
+                                    flipbookElement.style.display = 'none';
+
+                                    // İlk sayfayı al ve ölçeği hesapla
+                                    const firstPage = await pdfDoc.getPage(1);
+                                    const viewport = firstPage.getViewport({ scale: 1.0 });
+                                    currentScale = calculateScale(viewport);
+
+                                    // Tüm sayfaları yükle
+                                    for (let i = 1; i <= pdfDoc.numPages; i++) {
+                                        const page = await pdfDoc.getPage(i);
+                                        const canvas = document.createElement('canvas');
+                                        const context = canvas.getContext('2d');
+
+                                        const scaledViewport = page.getViewport({ scale: currentScale });
+                                        canvas.height = scaledViewport.height;
+                                        canvas.width = scaledViewport.width;
+
+                                        const renderContext = {
+                                            canvasContext: context,
+                                            viewport: scaledViewport,
+                                            background: 'transparent'
+                                        };
+
+                                        await page.render(renderContext).promise;
+
+                                        const div = document.createElement('div');
+                                        div.className = 'page';
+                                        div.appendChild(canvas);
+                                        flipbookElement.appendChild(div);
+                                    }
+
+                                    // Turn.js'yi başlat
+                                    if (flipBook) {
+                                        flipBook.turn('destroy');
+                                    }
+
+                                    // Yükleme tamamlandığında
+                                    flipbookElement.style.display = 'block';
+                                    loader.style.display = 'none';
+
+                                    const containerWidth = $('.pdf-container').width();
+                                    const containerHeight = $('.pdf-container').height();
+
+                                    flipBook = $('#flipbook').turn({
+                                        width: containerWidth * 0.85,
+                                        height: containerHeight * 0.85,
+                                        autoCenter: true,
+                                        gradients: true,
+                                        acceleration: true,
+                                        display: 'single',
+                                        elevation: 50,
+                                        when: {
+                                            turning: function (event, page, pageObject) {
+                                                document.getElementById('current-page').textContent = page;
+                                            }
+                                        }
+                                    });
+
+                                } catch (error) {
+                                    console.error('PDF yüklenirken hata oluştu:', error);
+                                    loader.innerHTML = '<div class="loader-content"><p>Error loading PDF.</p></div>';
+                                }
+                            }
+
+                            // Sayfa geçiş fonksiyonları
+                            function previousPage() {
+                                if (flipBook && flipBook.turn) {
+                                    flipBook.turn('previous');
+                                }
+                            }
+
+                            function nextPage() {
+                                if (flipBook && flipBook.turn) {
+                                    flipBook.turn('next');
+                                }
+                            }
+
+                            // Pencere boyutu değiştiğinde yeniden ölçeklendir
+                            let resizeTimeout;
+                            $(window).resize(function () {
+                                clearTimeout(resizeTimeout);
+                                resizeTimeout = setTimeout(function () {
+                                    reloadPDF();
+                                }, 250);
+                            });
+
+                            async function reloadPDF() {
+                                await loadPDF();
+                            }
+
+                            // Sayfa yüklendiğinde PDF'yi göster
+                            $(document).ready(function () {
+                                setTimeout(loadPDF, 1000);
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
         </section>
+        <!--================End Topic Area =================-->
 
         <!-- Footer Component -->
         <div include-html="components/footer.html"></div>
-
-        <!-- Back to top button -->
-        <a id="back-to-top" title="Back to Top"></a>
-
-        <!-- End Back to top button -->
     </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="js/jquery-3.5.1.min.js"></script>
+    <!-- Tooltip content -->
+    <div class="tooltip_templates d-none">
+        <div id="note-link-a" class="tip_content">
+            <div class="text footnotes_item">
+                <h6 class="title">Footnote Name A</h6>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Amet voluptas dicta dolor.</p>
+            </div>
+        </div>
+    </div>
+    <div class="tooltip_templates d-none">
+        <div id="note-link-b" class="tip_content">
+            <div class="text footnotes_item">
+                <h6 class="title"> <strong>Footnote Name B</strong> <a href="#0">[PDF]</a> </h6>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Amet voluptas dicta dolor.</p>
+            </div>
+        </div>
+    </div>
+    <div class="tooltip_templates d-none">
+        <div id="note-link-c" class="tip_content">
+            <div class="text footnotes_item">
+                <h6 class="title"> <strong>Footnote Name C</strong> </h6>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Amet voluptas dicta dolor.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to top button -->
+    <a id="back-to-top" title="Back to Top"></a>
+
+    <!-- Scripts -->
     <script src="js/pre-loader.js"></script>
     <script src="assets/bootstrap/js/popper.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap-select.min.js"></script>
-    <script src="assets/wow/wow.min.js"></script>
     <script src="assets/niceselectpicker/jquery.nice-select.min.js"></script>
-    <script src="assets/slick/slick.min.js"></script>
+    <script src="assets/wow/wow.min.js"></script>
     <script src="assets/mcustomscrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="assets/font-size/js/rv-jquery-fontsize-2.0.3.min.js"></script>
     <script src="js/anchor.js"></script>
@@ -232,29 +775,145 @@
     <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
     <script src="js/plugins.js"></script>
-
-    <!-- Dark mode script önce yüklenmeli -->
     <script src="js/main.js"></script>
-    <!-- Sonra component include script -->
+
+    <!-- Component Include Script -->
     <script src="js/include-components.js"></script>
-    <script src="js/style-docs-update.js"></script>
-    <!-- Yasal Uyarı Popup'ı JS -->
-    <script src="js/legal-notice.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            includeHTML().then(() => {
+                // Header yüklendikten sonra, mevcut kullanıcı varsa bilgileri güncelle
+                const currentUser = firebase.auth().currentUser;
+                if (currentUser) {
+                    window.updateUserProfile(currentUser);
+                }
+
+                // Dark mode'u başlat
+                if (typeof initDarkMode === 'function') {
+                    initDarkMode();
+                }
+            }).catch(error => {
+                console.error("Component yükleme hatası:", error);
+            });
+        });
+    </script>
 
     <script>
-        // Component'ları yükle ve sonra Firebase kontrolünü yap
-        document.addEventListener('DOMContentLoaded', async function() {
-            try {
-                // Önce component'ları yükle
-                await includeHTML();
-                
-                // Kullanıcı durumunu kontrol et
-                checkUserAuthentication();
-            } catch (error) {
-                console.error("Component yükleme hatası:", error);
+        // Smooth scroll fonksiyonu
+        document.querySelectorAll('.scroll-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Header ve breadcrumb yüksekliklerini hesapla
+                const header = document.querySelector('.mobile_main_menu') || document.querySelector('header');
+                const breadcrumb = document.querySelector('.page_breadcrumb');
+                const isMobile = window.innerWidth <= 768;
+
+                const headerHeight = isMobile ? 60 : 80; // Mobil/desktop header yüksekliği
+                const breadcrumbHeight = breadcrumb ? breadcrumb.offsetHeight : 0;
+                const extraPadding = 30; // Ekstra üst boşluk
+
+                // Toplam offset hesapla
+                const totalOffset = headerHeight + breadcrumbHeight + extraPadding;
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    // Sayfanın en üstünden scroll pozisyonunu hesapla
+                    const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - totalOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Pencere boyutu değiştiğinde container yüksekliğini güncelle
+        function updateContainerHeight() {
+            const container = document.querySelector('.pdf-container');
+            if (!container) return;
+
+            const isMobile = window.innerWidth <= 768;
+            const headerHeight = isMobile ? 60 : 80;
+            const breadcrumb = document.querySelector('.page_breadcrumb');
+            const breadcrumbHeight = breadcrumb ? breadcrumb.offsetHeight : 0;
+            const extraPadding = isMobile ? 40 : 60;
+
+            container.style.height = `calc(100vh - ${headerHeight}px - ${breadcrumbHeight}px - ${extraPadding}px)`;
+        }
+
+        // Sayfa yüklendiğinde ve pencere boyutu değiştiğinde yüksekliği güncelle
+        window.addEventListener('load', updateContainerHeight);
+        window.addEventListener('resize', updateContainerHeight);
+    </script>
+
+    <script>
+        // Tam ekran fonksiyonu
+        function toggleFullscreen() {
+            const container = document.querySelector('.pdf-container');
+            const flipbookElement = document.getElementById('flipbook');
+            const fullscreenBtn = document.querySelector('.fullscreen-btn i');
+
+            if (!container.classList.contains('fullscreen-mode')) {
+                // Tam ekrana geç
+                container.classList.add('fullscreen-mode');
+                document.body.style.overflow = 'hidden';
+
+                // Turn.js'yi yeniden başlat
+                const containerWidth = window.innerWidth * 0.98;
+                const containerHeight = window.innerHeight * 0.95;
+
+                if (flipBook) {
+                    flipBook.turn('size', containerWidth, containerHeight);
+                    flipBook.turn('center');
+                }
+            } else {
+                // Normal ekrana dön
+                container.classList.remove('fullscreen-mode');
+                document.body.style.overflow = '';
+
+                // Normal boyutlara dön
+                const normalWidth = container.offsetWidth * 0.85;
+                const normalHeight = container.offsetHeight * 0.85;
+
+                if (flipBook) {
+                    flipBook.turn('size', normalWidth, normalHeight);
+                    flipBook.turn('center');
+                }
+            }
+        }
+
+        // ESC tuşu ile çıkış
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                const container = document.querySelector('.pdf-container');
+                if (container.classList.contains('fullscreen-mode')) {
+                    toggleFullscreen();
+                }
+            }
+        });
+
+        // Pencere boyutu değiştiğinde tam ekran modunda yeniden boyutlandır
+        window.addEventListener('resize', function () {
+            const container = document.querySelector('.pdf-container');
+            if (container.classList.contains('fullscreen-mode')) {
+                const containerWidth = window.innerWidth * 0.95;
+                const containerHeight = window.innerHeight * 0.9;
+
+                if (flipBook) {
+                    flipBook.turn('size', containerWidth, containerHeight);
+                    flipBook.turn('center');
+                }
             }
         });
     </script>
+    <script src="js/style-docs-update.js"></script>
+    <!-- Yasal Uyarı Popup'ı JS -->
+    <script src="js/legal-notice.js"></script>
 </body>
 
-</html>
+</html> 

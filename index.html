@@ -956,17 +956,121 @@
         .card.doc_accordion .card-header button:active svg path {
             stroke: #d8ff08;
         }
+
+        /* Modern Preloader Styles */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0f1116;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .ctn-preloader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modern-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader-logo {
+            margin-bottom: 20px;
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+
+        .loader-logo img {
+            width: auto;
+            height: 50px;
+            object-fit: contain;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        .modern-loader h4 {
+            color: #fff;
+            font-family: 'Jura', sans-serif;
+            font-weight: 500;
+            font-size: 20px;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        .loader-progress {
+            width: 200px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .loader-progress .bar {
+            display: block;
+            width: 0;
+            height: 100%;
+            background: #d8ff08;
+            border-radius: 3px;
+            animation: progress 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes progress {
+            0% {
+                width: 0;
+                opacity: 1;
+            }
+            50% {
+                width: 100%;
+                opacity: 0.8;
+            }
+            100% {
+                width: 0;
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 
 <body data-scroll-animation="true">
     <div id="preloader">
         <div id="ctn-preloader" class="ctn-preloader">
-            <div class="round_spinner">
-                <div class="spinner"></div>
-                <div class="text">
-                    <img style="width: auto; height: 40px; object-fit: contain; -webkit-backface-visibility: hidden; backface-visibility: hidden; image-rendering: -webkit-optimize-contrast;" src="img/main-logo.png" alt="">
-                        <h4><span>Blueprints Panel</h4>
+            <div class="modern-loader">
+                <div class="loader-logo">
+                    <img src="img/main-logo.png" alt="Tipbox Logo">
+                </div>
+                <h4>Blueprints Panel</h4>
+                <div class="loader-progress">
+                    <span class="bar"></span>
                 </div>
             </div>
         </div>
