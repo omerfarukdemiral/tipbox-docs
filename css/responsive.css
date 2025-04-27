@@ -1760,6 +1760,9 @@
   .forum_l_inner.comment_l .forum_head .nav.right {
     margin-top: 0px;
   }
+  .doc_banner_area.search-banner-light {
+    padding: 90px 0px 20px 0px;
+  }
 }
 
 @media (max-width: 670px) {
@@ -1938,6 +1941,9 @@
   .doc_community_item .doc_community_icon {
     margin-right: 0;
     margin-bottom: 25px;
+  }
+  .doc_banner_area.search-banner-light {
+    padding: 90px 0px 20px 0px;
   }
 }
 
@@ -2204,6 +2210,9 @@
     padding-top: 70px;
     padding-bottom: 70px;
   }
+  .doc_banner_area.search-banner-light {
+    padding: 90px 0px 20px 0px;
+  }
 }
 @media (max-width: 575px) {
   .h_item {
@@ -2336,6 +2345,9 @@
   }
   .forum_l_inner.comment_l .forum_head .nav.right {
     margin-top: 0px;
+  }
+  .doc_banner_area.search-banner-light {
+    padding: 90px 0px 20px 0px;
   }
 }
 
@@ -2912,5 +2924,19 @@
   .img-lightbox-zoom-level {
     font-size: 12px;
     min-width: 40px;
+  }
+}
+
+/* iPad Mini, iPad Air ve iPad Pro için özel media query (768px ile 1024px arası) */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .doc_banner_area.search-banner-light {
+    padding: 90px 0px 20px 0px;
+  }
+}
+
+/* iPad Pro için özel dikey görünüm (1024px ile 1366px arası) */
+@media only screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
+  .doc_banner_area.search-banner-light {
+    padding: 90px 0px 20px 0px;
   }
 }
