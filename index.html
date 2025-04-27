@@ -1071,6 +1071,81 @@
             }
         }
     </style>
+    <style>
+        /* Ana sayfa özellikleri bölümü için özel stiller */
+        .doc_features_area .content-wrapper h4 {
+            font-family: "Jura", sans-serif !important;
+            font-weight: 500 !important;
+            margin-bottom: 10px !important;
+        }
+        
+        .doc_features_area .content-wrapper p {
+            font-family: "Jura", sans-serif !important;
+            font-weight: 300 !important;
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+        }
+        
+        /* FAQ ve Changelog bölümü için */
+        .changelog_area p, 
+        .accordion_area p,
+        .tab-content p {
+            font-family: "Jura", sans-serif !important;
+        }
+        
+        .doc_title h2 {
+            font-family: "Jura", sans-serif !important;
+        }
+        
+        .doc_title p {
+            font-family: "Jura", sans-serif !important;
+        }
+        
+        /* Ek changelog öğeleri */
+        .changelog_date h6,
+        .c_date p,
+        .c_version,
+        .changelog_content span,
+        .nav-tabs .nav-link,
+        .accordion .card-header button,
+        .accordion .card-body {
+            font-family: "Jura", sans-serif !important;
+        }
+        
+        /* Navbar linkleri ve tüm paragraflar için */
+        .navbar-nav .nav-link,
+        .navbar-nav li a {
+            font-family: "Jura", sans-serif !important;
+        }
+        
+        /* Footer bölümü için */
+        .footer_top p,
+        .footer_top h3,
+        .footer_bottom p,
+        .footer_widgets .widget ul li a,
+        .footer-widget .f_title,
+        .footer-widget p {
+            font-family: "Jura", sans-serif !important;
+        }
+        
+        /* Banner ve diğer içerik alanları */
+        .doc_banner_content h2,
+        .doc_banner_content p,
+        .doc_banner_area p,
+        .doc_banner_area .banner_search_form .form-control,
+        .list-unstyled li a {
+            font-family: "Jura", sans-serif !important;
+        }
+        
+        /* Button ve form elementleri */
+        button, 
+        .btn,
+        input,
+        select,
+        textarea {
+            font-family: "Jura", sans-serif !important;
+        }
+    </style>
 </head>
 
 <body data-scroll-animation="true">
@@ -2143,19 +2218,19 @@
                     <img class="one" src="img/new/subscribe_shap.png" alt="">
                     <img class="two" src="img/new/subscribe_shap_two.png" alt="">
                     <div class="text wow fadeInLeft" data-wow-delay="0.2s">
-                        <h2>Stay Ahead with <br>Early Access Updates</h2>
-                        <p class="wow fadeInLeft" data-wow-delay="0.3s">Reach out to us with your burning questions and let's shape the future of documentation together!</p>
+                        <h2 style="font-family: 'Jura', sans-serif !important;">Stay Ahead with <br>Early Access Updates</h2>
+                        <p class="wow fadeInLeft" data-wow-delay="0.3s" style="font-family: 'Jura', sans-serif !important;">Reach out to us with your burning questions and let's shape the future of documentation together!</p>
                     </div>
                     <form action="#" class="doc_subscribe_form wow fadeInRight mailchimp" data-wow-delay="0.4s"
                         method="post">
                         <div class="form-group">
                             <div class="input-fill">
                                 <input type="email" name="EMAIL" id="email" class="memail"
-                                    placeholder="Your work email">
+                                    placeholder="Your work email" style="font-family: 'Jura', sans-serif !important;">
                             </div>
-                            <button type="submit" class="submit_btn" style="background-color: #d8ff08; color: #1d2746;">Send</button>
-                            <p class="mchimp-errmessage" style="display: none;"></p>
-                            <p class="mchimp-sucmessage" style="display: none;"></p>
+                            <button type="submit" class="submit_btn" style="background-color: #d8ff08; color: #1d2746; font-family: 'Jura', sans-serif !important;">Send</button>
+                            <p class="mchimp-errmessage" style="display: none; font-family: 'Jura', sans-serif !important;"></p>
+                            <p class="mchimp-sucmessage" style="display: none; font-family: 'Jura', sans-serif !important;"></p>
                         </div>
                     </form>
                 </div>
@@ -2183,6 +2258,19 @@
     <script src="js/plugins.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
+    
+    <!-- Son eklenen Jura font düzenlemeleri için gerçek zamanlı CSS -->
+    <style>
+        /* Tüm sayfadaki metin öğeleri için genel Jura font ayarları */
+        body * {
+            font-family: "Jura", sans-serif !important;
+        }
+        
+        /* Özel paragraf düzenlemesi (eski Inter font ayarlarını geçersiz kılmak için) */
+        p, li, span, a, button, input, label, select, textarea {
+            font-family: "Jura", sans-serif !important;
+        }
+    </style>
     
     <!-- Dark mode script önce yüklenmeli -->
     <script src="js/main.js"></script>
