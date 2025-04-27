@@ -18,7 +18,7 @@ function initializeHeader() {
 
                 // İsim güncelleme
                 const nameElements = document.querySelectorAll('.user-name, .user-name-sm');
-                const displayName = user.displayName || 'Misafir Kullanıcı';
+                const displayName = user.displayName || 'Guest User';
                 nameElements.forEach(el => {
                     el.textContent = displayName;
                 });

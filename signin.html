@@ -378,6 +378,120 @@
                 padding: 30px 20px;
             }
         }
+
+        /* Toast Bildirimi Stilleri */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background-color: rgba(33, 33, 33, 0.95);
+            color: #fff;
+            border-radius: 8px;
+            padding: 18px 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 400px;
+            width: 100%;
+            min-height: 80px;
+            position: relative;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.error {
+            border-left: 6px solid #ff4d4d;
+        }
+
+        .toast.success {
+            border-left: 6px solid #4dff4d;
+        }
+
+        .toast.warning {
+            border-left: 6px solid #ffbb33;
+        }
+
+        .toast-icon {
+            margin-right: 15px;
+            font-size: 24px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast-content {
+            flex: 1;
+            display: flex;
+            padding-right: 20px;
+        }
+
+        .toast-text {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 18px;
+            letter-spacing: 0.3px;
+        }
+
+        .toast-message {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+            margin-bottom: 5px;
+        }
+
+        .toast-close {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            padding: 0;
+            margin: 0;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+        }
+
+        .toast-close:hover {
+            opacity: 1;
+        }
+
+        /* Responsive ayarlamalar */
+        @media (max-width: 576px) {
+            .toast-container {
+                right: 15px;
+                left: 15px;
+                bottom: 15px;
+            }
+
+            .toast {
+                width: 100%;
+                max-width: none;
+            }
+        }
     </style>
 </head>
 
@@ -405,11 +519,11 @@
                     <div class="d-flex flex-column">
                         <a href="#" class="btn-login" onclick="signInWithLinkedIn()">
                             <img style="width: auto; height: 15px;" src="img/signup/linkedin.png" alt="">
-                            <span class="btn-text font-weight-bold">LinkedIn ile Giriş Yap</span>
+                            <span class="btn-text font-weight-bold">Login with LinkedIn</span>
                         </a>
                         <a href="#" class="btn-login" onclick="showGuestLoginModal()">
                             <i class="icon_profile"></i>
-                            <span class="btn-text font-weight-bold">Misafir Girişi</span>
+                            <span class="btn-text font-weight-bold">Guest Login</span>
                         </a>
                     </div>
                 </div>
@@ -417,7 +531,7 @@
         </section>
     </div>
 
-    <!-- Misafir Giriş Modal -->
+    <!-- Misafir Giriş Modal - İngilizce arayüz -->
     <div class="modal fade" id="guestLoginModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content bg-dark">
@@ -425,42 +539,45 @@
                 <div class="spinner-container" id="loginSpinner">
                     <div class="d-flex flex-column align-items-center">
                         <div class="spinner-border" role="status">
-                            <span class="sr-only">Yükleniyor...</span>
+                            <span class="sr-only">Loading...</span>
                         </div>
-                        <div class="spinner-text mt-3">Giriş yapılıyor...</div>
+                        <div class="spinner-text mt-3">Logging in...</div>
                     </div>
                 </div>
                 
                 <div class="modal-header border-0">
-                    <h5 class="modal-title text-white">Misafir Girişi</h5>
+                    <h5 class="modal-title text-white">Guest Login</h5>
                     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="text-white mb-2">Davetiye Kodunuz</label>
+                        <label class="text-white mb-2">Your Invitation Code</label>
                         <div class="input-group">
                             <input type="text" class="form-control bg-dark text-white border-secondary" id="inviteCode"
                                 maxlength="8" style="letter-spacing: 3px; font-size: 18px; text-align: center;"
                                 placeholder="XXXXXXXX">
                         </div>
                         <small class="form-text text-muted mt-2">
-                            Lütfen size verilen 8 karakterli davetiye kodunu giriniz
+                            Please enter the 8-character invitation code provided to you
                         </small>
                     </div>
                 </div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn modal-btn modal-btn-outline" data-dismiss="modal">
-                        İptal
+                        Cancel
                     </button>
                     <button type="button" class="btn modal-btn modal-btn-primary" onclick="verifyInviteCode()">
-                        Giriş Yap
+                        Login
                     </button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Toast Bildirim Konteyneri -->
+    <div class="toast-container" id="toastContainer"></div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -475,6 +592,89 @@
     <script src="js/main.js"></script>
 
     <script>
+        // Toast fonksiyonları
+        function createToast(type, title, message, duration = 5000) {
+            const toastContainer = document.getElementById('toastContainer');
+            
+            // Toast elementi oluştur
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            // İkon belirleme
+            let icon = '';
+            switch(type) {
+                case 'error':
+                    icon = '&#10060;'; // X işareti
+                    break;
+                case 'success':
+                    icon = '&#9989;'; // Yeşil tik işareti
+                    break;
+                case 'warning':
+                    icon = '&#9888;'; // Uyarı işareti
+                    break;
+                default:
+                    icon = 'ℹ️'; // Bilgi işareti
+            }
+            
+            // Toast içeriği
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <div class="toast-icon">${icon}</div>
+                    <div class="toast-text">
+                        <div class="toast-title">${title}</div>
+                        <div class="toast-message">${message}</div>
+                    </div>
+                </div>
+                <button type="button" class="toast-close">&times;</button>
+            `;
+            
+            // Toast'ı container'a ekle
+            toastContainer.appendChild(toast);
+            
+            // Toast'ı göster
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // Kapatma düğmesi listener'ı
+            const closeButton = toast.querySelector('.toast-close');
+            closeButton.addEventListener('click', () => {
+                closeToast(toast);
+            });
+            
+            // Otomatik kapanma
+            if (duration) {
+                setTimeout(() => {
+                    closeToast(toast);
+                }, duration);
+            }
+            
+            return toast;
+        }
+        
+        function closeToast(toast) {
+            toast.classList.remove('show');
+            
+            // Animasyon tamamlandıktan sonra elementi kaldır
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }
+        
+        function showErrorToast(message) {
+            createToast('error', 'Error', message);
+        }
+        
+        function showSuccessToast(message) {
+            createToast('success', 'Success', message);
+        }
+        
+        function showWarningToast(message) {
+            createToast('warning', 'Warning', message);
+        }
+
         function showGuestLoginModal() {
             $('#guestLoginModal').modal('show');
         }
@@ -482,7 +682,7 @@
         async function verifyInviteCode() {
             const code = document.getElementById('inviteCode').value.toUpperCase();
             if (!code || code.length !== 8) {
-                alert('Lütfen 8 karakterli bir kod giriniz.');
+                showWarningToast('Please enter a valid invitation code. The code must be 8 characters long.');
                 return;
             }
 
@@ -500,7 +700,7 @@
                 if (!tokenDoc.exists) {
                     // Loading spinner'ı gizle
                     document.getElementById('loginSpinner').style.display = 'none';
-                    alert('Geçersiz kod!');
+                    showErrorToast('The invitation code you entered could not be found in our system. Please check the code and try again or contact an administrator.');
                     return;
                 }
 
@@ -510,14 +710,14 @@
                 if (!tokenData.isActive) {
                     // Loading spinner'ı gizle
                     document.getElementById('loginSpinner').style.display = 'none';
-                    alert('Bu kod artık aktif değil!');
+                    showErrorToast('This invitation code is no longer active. The code may have expired or been deactivated. Please contact an administrator for assistance.');
                     return;
                 }
 
                 if (tokenData.usageCount >= tokenData.maxUsageCount) {
                     // Loading spinner'ı gizle
                     document.getElementById('loginSpinner').style.display = 'none';
-                    alert('Bu kod maksimum kullanım sayısına ulaşmış!');
+                    showErrorToast('This invitation code has reached its maximum usage limit. Each code can only be used a limited number of times. Please contact an administrator to request a new code.');
                     return;
                 }
 
@@ -537,7 +737,7 @@
                     // Loading spinner'ı gizle
                     document.getElementById('loginSpinner').style.display = 'none';
                     const errorData = await response.json();
-                    throw new Error(errorData.error || 'Sunucu hatası');
+                    throw new Error(errorData.error || 'Server error');
                 }
 
                 const data = await response.json();
@@ -545,6 +745,9 @@
                 // Firebase ile giriş yap
                 await firebase.auth().signInWithCustomToken(data.firebaseToken);
                 localStorage.setItem('user', JSON.stringify(data.user));
+                
+                // Başarılı toast göster (sayfa yenilenecek ama yine de gösterelim)
+                showSuccessToast('Login successful! Redirecting...');
                 
                 // Modal kapatılmadan önce loading spinner'ı gizlemeye gerek yok
                 // çünkü sayfa yenilenecek
@@ -554,7 +757,7 @@
                 // Loading spinner'ı gizle
                 document.getElementById('loginSpinner').style.display = 'none';
                 console.error('Giriş hatası:', error);
-                alert('Giriş yapılırken bir hata oluştu: ' + error.message);
+                showErrorToast('An error occurred during login: ' + error.message + '. Please check your internet connection and try again. If the problem persists, please contact an administrator.');
             }
         }
     </script>
