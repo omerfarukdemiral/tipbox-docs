@@ -14,6 +14,15 @@ async function loadContent(contentFile) {
             
             // İçerik yüklendikten sonra içindekiler tablosunu oluştur
             generateTableOfContents();
+            
+            // İçerik yüklendikten sonra grafikleri başlat
+            if (typeof initTransparencyElements === 'function' && contentFile.includes('transparency.html')) {
+                console.log('Transparency sayfası yüklendi, grafikleri başlatma deneniyor...');
+                // Biraz bekleyerek DOM'un tamamen yüklenmesini sağla
+                setTimeout(() => {
+                    initTransparencyElements();
+                }, 300);
+            }
         }
 
         // URL'i güncelle (sayfa yenilenmeden)

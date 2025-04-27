@@ -36,6 +36,12 @@
     <link rel="stylesheet" href="css/custom-toc.css">
     <!-- Mobil Menü CSS -->
     <link rel="stylesheet" href="css/mobile-menu.css">
+    <!-- Transparency CSS -->
+    <link rel="stylesheet" href="css/transparency.css">
+    
+    <!-- Chart.js kütüphanesi -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <title>Transparency & Tokenomics | TipBox Documentation</title>
 
     <!-- Güvenlik JS -->
@@ -63,6 +69,17 @@
                 if (typeof initDarkMode === 'function') {
                     initDarkMode();
                 }
+                
+                // URL'de belirli bir hash yoksa varsayılan olarak transparency içeriğini yükle
+                if (!window.location.hash && typeof loadContent === 'function') {
+                    // Transparency sayfası menü linkini bul ve aktif et
+                    const transparencyLink = document.querySelector('a[data-content-file="transparency/transparency.html"]');
+                    if (transparencyLink) {
+                        transparencyLink.classList.add('active');
+                        // İçeriği yükle
+                        loadContent('transparency/transparency.html');
+                    }
+                }
             } catch (error) {
                 console.error("Component yükleme hatası:", error);
             }
@@ -74,6 +91,8 @@
 
     <!-- Transparency & Tokenomics özel script -->
     <script src="js/transparency-tokenomics.js"></script>
+    <!-- Transparency interaktif özellikleri -->
+    <script src="js/transparency.js"></script>
     
     <!-- Mobil Menü JS -->
     <script src="js/mobile-menu.js"></script>
@@ -156,6 +175,14 @@
                             </div>
                         </a>
                     </li>
+                   <li class="nav-item">
+                        <a href="#" class="nav-link" data-content-file="transparency/transparency.html">
+                            <div class="nav-link-content">
+                                <span>Transparency</span>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </a>
+                    </li> 
                 </ul>
             </div>
         </div>
@@ -273,6 +300,14 @@
                                             </div>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link" data-content-file="transparency/transparency.html">
+                                            <div class="nav-link-content">
+                                                <span>Transparency</span>
+                                                <i class="fas fa-chevron-right"></i>
+                                            </div>
+                                        </a>
+                                    </li> 
                                 </ul>
                             </div>
                         </aside>

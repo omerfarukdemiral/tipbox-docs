@@ -1,0 +1,1194 @@
+/* Transparency Page CSS */
+.transparency-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0;
+    font-family: var(--main-font);
+    color: var(--text-color);
+}
+
+.transparency-intro {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 20px;
+}
+
+.transparency-intro p {
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.get-started-btn button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.get-started-btn button:hover {
+    background-color: var(--primary-color-dark);
+}
+
+/* Token Distribution Section */
+.token-distribution-section {
+    margin-bottom: 60px;
+}
+
+.token-distribution-section h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.token-distribution-section h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Token Distribution Chart */
+.distribution-chart-wrapper {
+    padding: 30px 0 60px;
+    margin-bottom: 50px;
+}
+
+.distribution-chart-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+    justify-content: center;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.distribution-chart {
+    flex: 1;
+    max-width: 500px;
+    aspect-ratio: 1/1;
+    position: relative;
+}
+
+.distribution-legend {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.legend-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.legend-percentage {
+    font-size: 24px;
+    font-weight: 700;
+    width: 70px;
+}
+
+.legend-color {
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+}
+
+.legend-label {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* Renk Paleti - Koyu tema uyumlu */
+.legend-color.reward-farming,
+.color-box.reward-farming { background-color: var(--reward-farming-color); }
+
+.legend-color.strategic-investors,
+.color-box.strategic-investors { background-color: var(--strategic-investors-color); }
+
+.legend-color.development,
+.color-box.development { background-color: var(--development-color); }
+
+.legend-color.ecosystem,
+.color-box.ecosystem { background-color: var(--ecosystem-color); }
+
+.legend-color.staking,
+.color-box.staking { background-color: var(--staking-color); }
+
+.legend-color.liquidity,
+.color-box.liquidity { background-color: var(--liquidity-color); }
+
+.legend-color.reserve,
+.color-box.reserve { background-color: var(--reserve-color); }
+
+.legend-color.advisors,
+.color-box.advisors { background-color: var(--advisors-color); }
+
+.category {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.category-label {
+    margin-left: 8px;
+    color: var(--text-muted);
+}
+
+/* Supply Metrics */
+.supply-metrics-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.supply-metric {
+    flex: 1;
+    min-width: 300px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.supply-metric h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 10px;
+    background-color: var(--secondary-bg-color);
+    border-radius: 5px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #6366f1;
+    border-radius: 5px;
+}
+
+.supply-amount {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.value {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+/* Unlock Ratio Chart */
+.unlock-ratio-container {
+    margin: 50px 20px;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.unlock-chart-container {
+    height: 400px;
+    margin-top: 20px;
+}
+
+/* Token Category Grid */
+.token-category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 60px;
+    padding: 0 20px;
+}
+
+.token-category-card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.category-color-bar {
+    height: 5px;
+    width: 100%;
+}
+
+.token-category-card.reward-farming .category-color-bar { background-color: var(--reward-farming-color); }
+.token-category-card.strategic-investors .category-color-bar { background-color: var(--strategic-investors-color); }
+.token-category-card.development .category-color-bar { background-color: var(--development-color); }
+.token-category-card.ecosystem .category-color-bar { background-color: var(--ecosystem-color); }
+.token-category-card.staking .category-color-bar { background-color: var(--staking-color); }
+.token-category-card.liquidity .category-color-bar { background-color: var(--liquidity-color); }
+.token-category-card.reserve .category-color-bar { background-color: var(--reserve-color); }
+.token-category-card.advisors .category-color-bar { background-color: var(--advisors-color); }
+
+.category-content {
+    padding: 25px;
+}
+
+.category-content h4 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.supply-detail {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.detail-label {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.detail-value {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.view-address {
+    margin: 20px 0;
+}
+
+.view-address a {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: var(--secondary-bg-color);
+    color: var(--primary-color);
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.view-address a:hover {
+    background-color: var(--border-color);
+}
+
+.category-description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+/* Professionals Section */
+.professionals-section {
+    margin: 60px 0;
+    overflow: hidden;
+}
+
+.professionals-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.professional-type {
+    padding: 10px 20px;
+    background-color: var(--card-bg-color);
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(-20px);
+    transition: transform 0.3s;
+}
+
+.modal.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.close-modal {
+    font-size: 28px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: color 0.3s;
+}
+
+.close-modal:hover {
+    color: var(--primary-color);
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.product-item {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: var(--secondary-bg-color);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.product-item h4 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.product-item p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* Category Description Toggle */
+.category-description {
+    max-height: none;
+    overflow: visible;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .distribution-chart-container {
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    .distribution-chart {
+        max-width: 100%;
+        height: 350px;
+    }
+    
+    .distribution-legend {
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .distribution-chart,
+    .distribution-legend {
+        max-width: 100%;
+    }
+    
+    .supply-metric {
+        max-width: 100%;
+    }
+    
+    .token-category-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .distribution-legend {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dark Mode Support - Koyu arka plan için güncellenmiş renkler */
+:root {
+    --primary-color: #6366f1;
+    --primary-color-dark: #4f46e5;
+    --text-color: #333;
+    --text-muted: #64748b;
+    --card-bg-color: #fff;
+    --secondary-bg-color: #f1f5f9;
+    --border-color: #e2e8f0;
+    --main-font: 'Jura', sans-serif;
+    
+    /* Açık temada renkler */
+    --reward-farming-color: #7B89F9;
+    --strategic-investors-color: #0E47B2;
+    --development-color: #8048DD;
+    --ecosystem-color: #35D399;
+    --staking-color: #F7A948;
+    --liquidity-color: #048B94;
+    --reserve-color: #FF5063;
+    --advisors-color: #5CE4F0;
+}
+
+[data-theme="dark"] {
+    --text-color: #e2e8f0;
+    --text-muted: #94a3b8;
+    --card-bg-color: #1e293b;
+    --secondary-bg-color: #334155;
+    --border-color: #475569;
+    
+    /* Koyu temada renkler - daha parlak ve canlı */
+    --reward-farming-color: #7B89F9;
+    --strategic-investors-color: #1E7AF5;
+    --development-color: #9D4EFF;
+    --ecosystem-color: #3AEE9C;
+    --staking-color: #FFAC4D;
+    --liquidity-color: #0FB8C2;
+    --reserve-color: #FF5A6E;
+    --advisors-color: #67E4F9;
+}
+
+/* Temel renkler */
+--background-dark: #121218;
+--background-light: #f8f9fa;
+--text-dark: #e4e6eb;
+--text-light: #1a1b1e;
+--primary: #5670ff;
+--primary-hover: #4560fe;
+--border-dark: #2d2e3a;
+--border-light: #dee2e6;
+
+/* Kart arkaplan renkleri */
+--card-dark: #1d1e2b;
+--card-light: #ffffff;
+
+/* Metrik değişim renkleri */
+--positive-change: #56ff70;
+--negative-change: #ff5670;
+
+/* Dönem-bazlı renk paleti - Çubuk grafik için */
+--q1-color: rgba(86, 112, 255, 0.85);
+--q2-color: rgba(86, 177, 255, 0.85);
+--q3-color: rgba(86, 255, 241, 0.85);
+--q4-color: rgba(86, 255, 177, 0.85);
+
+/* Geçiş ve gölge değerleri */
+--transition-speed: 0.3s;
+--box-shadow-dark: 0 4px 12px rgba(0, 0, 0, 0.25);
+--box-shadow-light: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+/* Responsive değerler */
+--container-width: 1200px;
+--padding-section: 60px 20px;
+
+/* Tema değişikliği - açık/koyu tema */
+[data-theme="light"] {
+  --background: var(--background-light);
+  --text: var(--text-light);
+  --card-bg: var(--card-light);
+  --border: var(--border-light);
+  --box-shadow: var(--box-shadow-light);
+}
+
+[data-theme="dark"] {
+  --background: var(--background-dark);
+  --text: var(--text-dark);
+  --card-bg: var(--card-dark);
+  --border: var(--border-dark);
+  --box-shadow: var(--box-shadow-dark);
+}
+
+/* Genel stiller */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Jura", -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+  line-height: 1.6;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color var(--transition-speed) ease;
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+h3 {
+  font-size: 1.8rem;
+  margin: 2rem 0 1rem;
+}
+
+h4 {
+  font-size: 1.4rem;
+  margin-bottom: 0.75rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+.section-description {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  text-align: center;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Header Stili */
+.transparency-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: var(--card-bg);
+  box-shadow: var(--box-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 40px;
+  margin-right: 15px;
+}
+
+.logo-container h1 {
+  font-size: 1.5rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.main-nav ul {
+  display: flex;
+  gap: 25px;
+}
+
+.main-nav a {
+  color: var(--text);
+  font-weight: 500;
+  padding: 5px 0;
+  position: relative;
+}
+
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary);
+  transition: width var(--transition-speed) ease;
+}
+
+.main-nav a:hover::after {
+  width: 100%;
+}
+
+.theme-toggle button {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  transition: transform var(--transition-speed) ease;
+}
+
+.theme-toggle button:hover {
+  transform: rotate(15deg);
+}
+
+[data-theme="light"] .light-mode-icon {
+  display: none;
+}
+
+[data-theme="light"] .dark-mode-icon {
+  display: inline-block;
+}
+
+[data-theme="dark"] .light-mode-icon {
+  display: inline-block;
+}
+
+[data-theme="dark"] .dark-mode-icon {
+  display: none;
+}
+
+/* Ana Bölüm Stilleri */
+.transparency-section {
+  padding: var(--padding-section);
+}
+
+.section-container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+}
+
+/* Token Dağılım Bölümü */
+.token-distribution-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.distribution-chart-container {
+  max-width: 550px;
+  height: 550px;
+  margin: 0 auto;
+}
+
+.token-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.token-category-card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--box-shadow);
+  border-left: 4px solid var(--category-color);
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.token-category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.category-header h4 {
+  color: var(--category-color);
+  margin: 0;
+}
+
+.category-header .percentage {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.category-description {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.view-address {
+  margin-top: 15px;
+}
+
+.view-address a {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+}
+
+.view-address a:hover {
+  text-decoration: underline;
+}
+
+.token-info-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: var(--box-shadow);
+}
+
+.info-item {
+  flex: 1 1 200px;
+  text-align: center;
+  padding: 15px;
+}
+
+.info-item h4 {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+.info-item p {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Kilit Açma Planı Bölümü */
+.unlock-chart-container {
+  max-width: 900px;
+  height: 400px;
+  margin: 0 auto 40px;
+}
+
+.unlock-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.info-card {
+  flex: 1 1 300px;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: var(--box-shadow);
+}
+
+.info-card h4 {
+  color: var(--primary);
+  margin-bottom: 15px;
+}
+
+/* Token Metrikleri Bölümü */
+.metrics-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.metric-card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: var(--box-shadow);
+  text-align: center;
+  transition: transform var(--transition-speed) ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-5px);
+}
+
+.metric-value {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 15px 0;
+}
+
+.metric-change {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.metric-change.positive {
+  color: var(--positive-change);
+}
+
+.metric-change.negative {
+  color: var(--negative-change);
+}
+
+.metric-change span {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.token-utility h3 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.utility-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.utility-card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: var(--box-shadow);
+  text-align: center;
+  transition: transform var(--transition-speed) ease;
+}
+
+.utility-card:hover {
+  transform: translateY(-5px);
+}
+
+.utility-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+/* Modal Stili */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: var(--box-shadow);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header h3 {
+  margin: 0;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: color var(--transition-speed) ease;
+}
+
+.close-modal:hover {
+  color: var(--primary);
+}
+
+.modal-body {
+  padding: 25px;
+}
+
+.faq-item {
+  margin-bottom: 25px;
+}
+
+.faq-item:last-child {
+  margin-bottom: 0;
+}
+
+.faq-item h4 {
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.modal.active {
+  display: block;
+}
+
+/* Footer Stili */
+.transparency-footer {
+  background-color: var(--card-bg);
+  padding: 50px 20px 20px;
+  margin-top: 50px;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  gap: 40px;
+}
+
+.footer-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-logo img {
+  height: 35px;
+  margin-bottom: 15px;
+}
+
+.footer-links, .footer-social {
+  flex: 1 1 200px;
+}
+
+.footer-links ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.social-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.social-icons a {
+  padding: 8px 12px;
+  background-color: rgba(86, 112, 255, 0.1);
+  border-radius: 6px;
+  transition: background-color var(--transition-speed) ease;
+}
+
+.social-icons a:hover {
+  background-color: rgba(86, 112, 255, 0.2);
+}
+
+.footer-bottom {
+  max-width: var(--container-width);
+  margin: 40px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* Responsive Stiller */
+@media (min-width: 768px) {
+  .token-distribution-content {
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .distribution-chart-container {
+    flex: 0 0 45%;
+  }
+  
+  .token-categories {
+    flex: 0 0 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .transparency-header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  .main-nav ul {
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .theme-toggle {
+    margin-top: 10px;
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+  }
+  
+  .token-distribution-content {
+    gap: 20px;
+  }
+  
+  .distribution-chart-container {
+    height: 350px;
+  }
+  
+  .metrics-container, 
+  .utility-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .token-info-box {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+/* Grafik Özel Stiller */
+#distribution-chart {
+  position: relative;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Animasyon */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.token-category-card, 
+.metric-card, 
+.utility-card,
+.info-card {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.token-category-card:nth-child(2) { animation-delay: 0.1s; }
+.token-category-card:nth-child(3) { animation-delay: 0.2s; }
+.token-category-card:nth-child(4) { animation-delay: 0.3s; }
+.token-category-card:nth-child(5) { animation-delay: 0.4s; }
+.token-category-card:nth-child(6) { animation-delay: 0.5s; }
+.token-category-card:nth-child(7) { animation-delay: 0.6s; }
+.token-category-card:nth-child(8) { animation-delay: 0.7s; }
+
+.metric-card:nth-child(2) { animation-delay: 0.1s; }
+.metric-card:nth-child(3) { animation-delay: 0.2s; }
+.metric-card:nth-child(4) { animation-delay: 0.3s; }
+
+.utility-card:nth-child(2) { animation-delay: 0.1s; }
+.utility-card:nth-child(3) { animation-delay: 0.2s; }
+.utility-card:nth-child(4) { animation-delay: 0.3s; }
+
+/* Adres Görüntüleme İçin Tooltip */
+.address-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.address-tooltip .tooltip-text {
+  visibility: hidden;
+  width: 250px;
+  background-color: var(--card-bg);
+  color: var(--text);
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  box-shadow: var(--box-shadow);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.8rem;
+  word-break: break-all;
+}
+
+.address-tooltip .tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--card-bg) transparent transparent transparent;
+}
+
+.address-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+} 
