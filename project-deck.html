@@ -476,7 +476,7 @@
             height: 100%;
             pointer-events: none;
             z-index: 1000;
-            opacity: 0.5;
+            opacity: 0.1;
         }
 
         /* Güvenlik için ek stiller */
@@ -517,256 +517,24 @@
         <!-- Header Component -->
         <div include-html="../components/header.html"></div>
 
-        <div class="mobile_main_menu dark_menu sticky-nav ">
-            <div class="container">
-                <div class="mobile_menu_left">
-                    <button type="button" class="navbar-toggler mobile_menu_btn">
-                        <span class="menu_toggle ">
-                            <span class="hamburger">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </span>
-                        </span>
-                    </button>
-                    <a class="navbar-brand header_logo" href="index.html">
-                        <img class="sticky_logo main_logo logo_light_version" src="img/logo.png" alt="logo">
-                        <img class="white_logo logo_dark_version" src="img/logo-w.png" alt="logo">
-                    </a>
-                </div>
-                <div class="mobile_menu_right">
-                    <div class="right-nav">
-                        <a class="nav_btn tp_btn" href="https://is.gd/nDvqm2" target="_blank">Get Tipbox</a>
-                        <div class="px-2 js-darkmode-btn" title="Toggle dark mode">
-                            <label for="something" class="tab-btn tab-btns">
-                                <ion-icon name="moon"></ion-icon>
-                            </label>
-                            <label for="something" class="tab-btn">
-                                <ion-icon name="sunny"></ion-icon>
-                            </label>
-                            <label class=" ball" for="something"></label>
-                            <input type="checkbox" name="something" id="something" class="dark_mode_switcher">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="click_capture"></div>
-        <div class="side_menu">
-            <div class="mobile_menu_header">
-                <div class="close_nav">
-                    <i class="arrow_left"></i>
-                    <i class="icon_close"></i>
-                </div>
-                <div class="mobile_logo">
-                    <a class="navbar-brand header_logo" href="index.html">
-                        <img class="sticky_logo main_logo" src="img/logo.png" alt="logo">
-                        <img class="white_logo" src="img/logo-w.png" alt="logo">
-                    </a>
-                </div>
-            </div>
-            <div class="mobile_nav_wrapper">
-                <nav class="mobile_nav_top">
-                    <ul class="navbar-nav menu ml-auto">
-                        <li class="nav-item dropdown submenu">
-                            <a href="#" class="nav-link">Home</a>
-                        </li>
-                        <li class="nav-item dropdown submenu active">
-                            <a href="#" class="nav-link">Docs</a>
-                            <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a href="doc-content-video.html" class="nav-link">Doc Archives</a>
-                                </li>
-                                <li class="nav-item"><a href="doc-main.html" class="nav-link">DocTopics</a></li>
-                                <li class="nav-item dropdown submenu">
-                                    <a href="#" class="nav-link">Elements</a>
-                                    <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item"><a href="doc-element-tab.html" class="nav-link">Tabs</a>
-                                        </li>
-                                        <li class="nav-item"><a href="doc-element-accordion.html"
-                                                class="nav-link">Accordion</a></li>
-                                        <li class="nav-item"><a href="doc-element-notice.html"
-                                                class="nav-link">Notices</a></li>
-                                        <li class="nav-item"><a href="doc-content-tables.html"
-                                                class="nav-link">Tables</a></li>
-                                        <li class="nav-item"><a href="doc-content-tooltip.html"
-                                                class="nav-link">Tooltips & Direction</a></li>
-                                        <li class="nav-item"><a href="doc-element-hotspots.html" class="nav-link">Image
-                                                Hotspots</a></li>
-                                        <li class="nav-item"><a href="doc-element-lightbox.html"
-                                                class="nav-link">Lightbox</a></li>
-                                        <li class="nav-item"><a href="doc-changelog.html" class="nav-link">Changelog</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item dropdown submenu">
-                                    <a href="#" class="nav-link">Layouts</a>
-                                    <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item"><a href="doc-element-hotspots.html" class="nav-link">Left
-                                                Sidebar</a></li>
-                                        <li class="nav-item"><a href="doc-content-video.html"
-                                                class="nav-link">Full-width</a></li>
-                                        <li class="nav-item"><a href="doc-layout-banner-gradient.html"
-                                                class="nav-link">Gradient Banner</a></li>
-                                        <li class="nav-item"><a href="doc-layout-banner-empty.html"
-                                                class="nav-link">Without Banner</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown submenu">
-                            <a href="#" class="nav-link">Pages</a>
-                            <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a href="onepage.html" class="nav-link">Onepage Doc</a></li>
-                                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-                                <li class="nav-item"><a href="onepage.html" class="nav-link">Onepage Doc</a></li>
-                                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-                                <li class="nav-item"><a href="typography.html" class="nav-link">Typography</a></li>
-                                <li class="nav-item"><a href="404-error.html" class="nav-link">404 Error</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown submenu">
-                            <a href="#" class="nav-link">Forum</a>
-                            <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a href="forums.html" class="nav-link">Forums Root</a></li>
-                                <li class="nav-item"><a href="forum-topics.html" class="nav-link">Forum Topics</a></li>
-                                <li class="nav-item"><a href="forum-single.html" class="nav-link">Topic Details</a></li>
-                                <li class="nav-item"><a href="forum-profile.html" class="nav-link">User Profile</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown submenu">
-                            <a class="nav-link" href="#"> Blog </a>
-                            <i class="arrow_carrot-down_alt2 mobile_dropdown_icon"></i>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a href="blog-grid.html" class="nav-link">Blog Grid</a></li>
-                                <li class="nav-item"><a href="blog-grid-two.html" class="nav-link">Blog Grid Two</a>
-                                </li>
-                                <li class="nav-item"><a href="blog-list.html" class="nav-link">Blog List</a></li>
-                                <li class="nav-item"><a href="blog-single.html" class="nav-link">Blog Details</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <div class="mobile_nav_bottom">
-                        <aside class="doc_left_sidebarlist">
-                            <div class="scroll">
-                                <ul class="list-unstyled nav-sidebar">
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="project-deck/executive-summary.html"><img
-                                                src="img/side-nav/home.png" alt="">Executive Summary</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link"
-                                            data-content-file="project-deck/legal-notice.html"><img
-                                                src="img/side-nav/document.png" alt="">Legal Notice</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link"><img src="img/side-nav/layout.png"
-                                                alt="">Introduction</a>
-                                        <span class="icon"><i class="arrow_carrot-down"></i></span>
-                                        <ul class="list-unstyled dropdown_nav">
-                                            <li><a href="#"
-                                                    data-content-file="project-deck/introduction/focus-problems.html">Focus
-                                                    Problems</a></li>
-                                            <li><a href="#"
-                                                    data-content-file="project-deck/introduction/compact-solutions.html">Compact
-                                                    Solutions</a></li>
-                                            <li><a href="#"
-                                                    data-content-file="project-deck/introduction/pollen-post-ecosystem.html">The
-                                                    Tipbox Ecosystem</a></li>
-                                            <li><a href="#"
-                                                    data-content-file="project-deck/introduction/platform-highlights.html">Platform
-                                                    Highlights</a></li>
-                                            <li><a href="#"
-                                                    data-content-file="project-deck/introduction/why-Tipbox.html">Why
-                                                    Tipbox?</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link"><img src="img/side-nav/briefcase.png"
-                                                alt="">Market</a>
-                                        <span class="icon"><i class="arrow_carrot-down"></i></span>
-                                        <ul class="list-unstyled dropdown_nav">
-                                            <li><a href="#"
-                                                    data-content-file="project-deck/market/competition-analysis.html">Competition
-                                                    Analysis and Market Positioning</a></li>
-                                            <li><a href="#"
-                                                    data-content-file="project-deck/market/product-service-focuses.html">Product-Service
-                                                    Focusses in Early Phase</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link"><img src="img/side-nav/coding.png"
-                                                alt="">Technology</a>
-                                        <span class="icon"><i class="arrow_carrot-down"></i></span>
-                                        <ul class="list-unstyled dropdown_nav">
-                                            <li><a href="#"
-                                                    data-content-file="project-deck/technology/web2-application.html">Web2
-                                                    Application</a></li>
-                                            <li><a href="#"
-                                                    data-content-file="project-deck/technology/web3-application.html">Web3
-                                                    Application</a></li>
-                                            <li><a href="#"
-                                                    data-content-file="project-deck/technology/platform-integration.html">Platform
-                                                    Integration</a></li>
-                                            <li><a href="#"
-                                                    data-content-file="project-deck/technology/tipbox-chain.html">TIPBOX
-                                                    Chain</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link"><img src="img/side-nav/chat1.png" alt="">POLLEN
-                                            Token</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link"><img src="img/side-nav/clock.png"
-                                                alt="">Tokenomics</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link"><img src="img/side-nav/edit.png" alt="">Roadmap</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link"><img src="img/side-nav/users.png" alt="">Team and
-                                            Principles</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link"><img src="img/side-nav/united-states.png"
-                                                alt="">Information Center</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </aside>
-                    </div>
-                </nav>
+      <!--================Banner Area =================-->
+      <section class="doc_banner_area search-banner-light"
+      style="position: relative; overflow: hidden; background: url('img/banner/about.png') no-repeat center center; background-size: cover;">
 
-            </div>
-        </div>
+      <div class="container" style="position: relative; z-index: 2;">
+          <div class="doc_banner_content" style="position: relative;">
+              <h1 class="banner-title wow fadeInUp" data-wow-delay="0.2s"
+                  style="font-size: 48px; font-weight: 700; margin-bottom: 20px; font-family: 'Jura', sans-serif; color: var(--text-light); opacity: 0; animation: fadeInUp 1s forwards 0.3s;">
+                  Project Deck</h1>
 
-        <!--================Forum Breadcrumb Area =================-->
-        <section class="doc_banner_area search-banner-light">
-            <div class="container">
-                <div class="doc_banner_content">
-                    <form action="#" class="header_search_form">
-                        <div class="header_search_form_info">
-                            <h2>Project Deck</h2>
-                        </div>
-                        <div class="header_search_keyword">
-                            <span class="">A presentation that highlights the project's value proposition,
-                                progress, and strategic direction to potential stakeholders.</span>
-                            <div class="scroll-down">
-                                <a href="#pdf-section" class="scroll-link">
-                                    <i class="arrow_carrot-down"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </section>
+              <p class="banner-description wow fadeInUp" data-wow-delay="0.4s"
+                  style="font-size: 16px; max-width: 600px; margin: 0 auto 30px; color: #fff; opacity: 0; animation: fadeInUp 1s forwards 0.6s;">
+                  This is the pitch deck for the project.</p>
+
+          </div>
+      </div>
+
+  </section>
         <section class="page_breadcrumb">
             <div class="container custom_container">
                 <div class="row">
@@ -847,7 +615,7 @@
 
                             // PDF'yi yükle ve görüntüle
                             async function loadPDF() {
-                                const url = 'Deck-Presentation.pdf';
+                                const url = 'pitch-deck.pdf';
                                 try {
                                     // Yükleme animasyonunu göster
                                     loader.style.display = 'flex';

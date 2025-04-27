@@ -144,7 +144,7 @@ function createWatermark() {
     if (securityConfig.enableWatermark) {
         const watermarks = document.querySelectorAll('.watermark');
         watermarks.forEach(watermark => {
-            const text = isDevelopment ? 'DEVELOPMENT MODE - TIPBOX DOCS' : 'TIPBOX DOCS - CONFIDENTIAL';
+            const text = isDevelopment ? 'TIPBOX DOCS - CONFIDENTIAL' : 'TIPBOX DOCS - CONFIDENTIAL';
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             
