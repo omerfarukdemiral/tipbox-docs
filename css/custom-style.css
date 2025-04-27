@@ -21,6 +21,125 @@
     color: #6b707f;
 }
 
+/* More info link için stil */
+.more-info-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--primary-color, #3051ff) !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.more-info-link i {
+    margin-left: 6px;
+    font-size: 14px;
+    transition: transform 0.3s ease;
+    vertical-align: middle;
+}
+
+.more-info-link:hover {
+    color: var(--secondary-color, #f5b111) !important;
+}
+
+.more-info-link:hover i {
+    transform: translateX(3px);
+}
+
+/* Accordion butonları için düzenlemeler */
+.doc_accordion .card-header button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    padding: 15px 20px;
+    position: relative;
+}
+
+.doc_accordion .card-header button .button-text {
+    width: 85%;
+    padding-right: 15px;
+}
+
+.doc_accordion .card-header button .button-icons {
+    width: 15%;
+    text-align: right;
+    position: relative;
+}
+
+.doc_accordion .card-header button .button-icons svg {
+    transition: opacity 0.3s ease;
+}
+
+.doc_accordion .card-header button .button-icons svg:last-child {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+}
+
+.doc_accordion .card-header button.collapsed .button-icons svg:first-of-type {
+    opacity: 1;
+}
+
+.doc_accordion .card-header button.collapsed .button-icons svg:last-child {
+    opacity: 0;
+}
+
+.doc_accordion .card-header button:not(.collapsed) .button-icons svg:first-of-type {
+    opacity: 0;
+}
+
+.doc_accordion .card-header button:not(.collapsed) .button-icons svg:last-child {
+    opacity: 1;
+}
+
+/* Mobil görünüm düzenlemeleri */
+@media (max-width: 767px) {
+    .doc_accordion .card-header {
+        position: relative;
+    }
+    
+    .doc_accordion .card-header h5 {
+        width: 100%;
+    }
+    
+    .doc_accordion .card-header button {
+        padding: 12px 15px;
+    }
+    
+    .doc_accordion .card-header button .button-text {
+        width: 80%;
+        font-size: 15px;
+        line-height: 1.4;
+    }
+    
+    .doc_accordion .card-header button .button-icons {
+        width: 20%;
+    }
+}
+
+@media (max-width: 480px) {
+    .doc_accordion .card-header button {
+        padding: 10px 12px;
+    }
+    
+    .doc_accordion .card-header button .button-text {
+        width: 75%;
+        font-size: 14px;
+    }
+    
+    .doc_accordion .card-header button .button-icons {
+        width: 25%;
+    }
+    
+    .doc_accordion .card-header button .button-icons svg {
+        width: 12px;
+        height: 12px;
+    }
+}
+
 .section-container {
     margin-bottom: 4rem;
     padding: 1.5rem;
