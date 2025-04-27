@@ -10,11 +10,9 @@
                             <img src="img/main-logo.png" class="logo-dark" alt="" style="width: auto; height: 40px; object-fit: contain; -webkit-backface-visibility: hidden; backface-visibility: hidden; image-rendering: -webkit-optimize-contrast;">
                         </a>
                         <p>Enrich Lives with Your Tips & $TIPS</p>
-                        <ul class="list-unstyled social-icons">
-                            <li><a href="#"><i class="social_linkedin"></i></a></li>
-                            <li><a href="#"><i class="social_twitter"></i></a></li>
-                            <li><a href="#"><i class="social_facebook"></i></a></li>
-                            <li><a href="#"><i class="social_vimeo"></i></a></li>
+                        <ul class="list-unstyled social-icons d-flex">
+                            <li><a target="_blank" href="https://x.com/tipboxco" class="social-icon-link"><img style="margin-top: -4px;" src="img/icon/social/x4.svg" alt="X" class="social-icon"></a></li>
+                            <li><a href="mailto:hello@tipbox.co" class="social-icon-link"><img style="margin-top: -4px; width: 32px; height: 32px;" src="img/icon/social/mail4.svg" alt="Email" class="social-icon"></a></li>
                         </ul>
                     </div>
                 </div>
@@ -141,5 +139,50 @@
 
 .f_widget p {
     margin-bottom: 12px;
+}
+
+.social-icons {
+    gap: 10px;
+}
+
+.social-icons li {
+    margin-right: 0 !important;
+}
+
+.social-icon-link {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333333;
+    border-radius: 10px;
+}
+
+.social-icon-link:hover {
+    background-color: #444444;
+}
+
+.static-icon {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333333;
+    border-radius: 10px;
+    pointer-events: none;
+    user-select: none;
+}
+
+.social-icon {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+}
+
+.producthunt-icon, .angellist-icon {
+    width: 28px;
+    height: 28px;
 }
 </style> 
