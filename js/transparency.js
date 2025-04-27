@@ -20,16 +20,12 @@ function initTransparencyElements() {
         
         if (tokenDistributionChartElement) {
             renderDistributionChart();
-            console.log('Token distribution chart initialized');
         } else {
-            console.log('Canvas element for token distribution chart not found');
         }
         
         if (unlockRatioChartElement) {
             renderUnlockRatioChart();
-            console.log('Unlock ratio chart initialized');
         } else {
-            console.log('Canvas element for unlock ratio chart not found');
         }
     } else {
         console.error('Chart.js library not found! Make sure you have loaded the library.');

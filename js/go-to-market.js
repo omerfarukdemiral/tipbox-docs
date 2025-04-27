@@ -90,11 +90,9 @@ function generateTableOfContents() {
     // Select main element containing content
     const contentContainer = document.querySelector('.doc-middle-content article .documentation_body');
     if (!contentContainer) {
-        console.log("Content container not found, looking for alternative container...");
         // Alternatively check just article content
         const articleContainer = document.querySelector('.doc-middle-content article');
         if (!articleContainer) {
-            console.log("No content container found.");
             return;
         }
         // Use alternative container
@@ -109,16 +107,12 @@ function generateTableOfContents() {
         // Select all headings (h1, h2, h3, h4)
         const headings = container.querySelectorAll('h1, h2, h3, h4');
         if (headings.length === 0) {
-            console.log("No headings found in content.");
             return;
         }
-        
-        console.log("Number of headings found:", headings.length);
         
         // Container for table of contents
         const tocContainer = document.querySelector('.table-of-content');
         if (!tocContainer) {
-            console.log("Table of contents container not found.");
             return;
         }
         
@@ -145,9 +139,7 @@ function generateTableOfContents() {
                     .replace(/[^a-z0-9]+/g, '-')
                     .replace(/(^-|-$)/g, '');
                 heading.id = safeId || `heading-${index}`;
-                console.log("New ID created:", heading.id);
             } else {
-                console.log("Existing ID used:", heading.id);
             }
             
             // Determine heading level (h1=1, h2=2, etc.)
@@ -229,10 +221,7 @@ function generateTableOfContents() {
                     window.history.pushState({}, '', newUrl);
                 }
             });
-        });
-        
-        console.log("Table of contents created.");
-        
+        });        
         // Scroll dinleyicisini başlat
         initScrollSpy();
     }

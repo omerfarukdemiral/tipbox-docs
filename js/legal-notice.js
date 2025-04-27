@@ -36,7 +36,6 @@
     function initLegalNotice() {
         // Kullanıcı daha önce kabul ettiyse popup'ı gösterme
         const isAccepted = hasUserAcceptedLegalNotice();
-        console.log(isAccepted);
         if (isAccepted) {
             return;
         }
@@ -62,7 +61,6 @@
         if (userStr) {
             try {
                 const userData = JSON.parse(userStr);
-                console.log('Privacy policy değeri:', userData.privacy_policy);
                 return userData.privacy_policy === true;
             } catch (error) {
                 console.error('User verisi JSON olarak ayrıştırılamadı:', error);

@@ -559,24 +559,19 @@ body.body-sidebar-active .sidebar-menu,
 
 <script>
 // Çıkış yapma işlemi - tüm sayfalarda çalışacak şekilde
-function logout() {
-    console.log("Çıkış fonksiyonu çağrıldı");
-    
+function logout() {    
     // LocalStorage'den user bilgisini sil
     localStorage.removeItem('user');
-    console.log("LocalStorage'den user bilgisi silindi");
     
     // Firebase Auth'u doğrudan kullan
     if (firebase && firebase.auth) {
         firebase.auth().signOut().then(() => {
-            console.log("Çıkış başarılı");
             window.location.href = 'signin.html';
         }).catch((error) => {
             console.error('Çıkış yapılırken hata oluştu:', error);
         });
     } else if (window.firebaseAuth) {
         window.firebaseAuth.signOut().then(() => {
-            console.log("Çıkış başarılı (window.firebaseAuth)");
             window.location.href = 'signin.html';
         }).catch((error) => {
             console.error('Çıkış yapılırken hata oluştu (window.firebaseAuth):', error);

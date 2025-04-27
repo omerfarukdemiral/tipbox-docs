@@ -188,10 +188,8 @@ function createWatermark() {
 function toggleDevelopmentMode() {
     if (isDevelopment) {
         document.body.classList.add('development-mode');
-        console.log('Development Mode: ACTIVE');
     } else {
         document.body.classList.remove('development-mode');
-        console.log('Development Mode: INACTIVE');
     }
 }
 

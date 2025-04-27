@@ -113,11 +113,9 @@ function generateTableOfContents() {
     // İçeriği içeren ana elementi seç
     const contentContainer = document.querySelector('.doc-middle-content article .documentation_body');
     if (!contentContainer) {
-        console.log("İçerik konteyneri bulunamadı, alternatif konteyner aranıyor...");
         // Alternatif olarak sadece article içeriğini kontrol et
         const articleContainer = document.querySelector('.doc-middle-content article');
         if (!articleContainer) {
-            console.log("Hiçbir içerik konteyneri bulunamadı.");
             return;
         }
         // Alternatif konteyneri kullan
@@ -132,16 +130,12 @@ function generateTableOfContents() {
         // Tüm başlıkları seç (h1, h2, h3, h4)
         const headings = container.querySelectorAll('h1, h2, h3, h4');
         if (headings.length === 0) {
-            console.log("İçerik içinde başlık bulunamadı.");
             return;
         }
-        
-        console.log("Bulunan başlık sayısı:", headings.length);
         
         // İçindekiler tablosu için konteyner
         const tocContainer = document.querySelector('.table-of-content');
         if (!tocContainer) {
-            console.log("İçindekiler tablosu konteyneri bulunamadı.");
             return;
         }
         
@@ -168,9 +162,7 @@ function generateTableOfContents() {
                     .replace(/[^a-z0-9]+/g, '-')
                     .replace(/(^-|-$)/g, '');
                 heading.id = safeId || `heading-${index}`;
-                console.log("Yeni ID oluşturuldu:", heading.id);
             } else {
-                console.log("Mevcut ID kullanıldı:", heading.id);
             }
             
             // Başlık seviyesini belirle (h1=1, h2=2, vb.)
@@ -252,10 +244,7 @@ function generateTableOfContents() {
                     window.history.pushState({}, '', newUrl);
                 }
             });
-        });
-        
-        console.log("İçindekiler tablosu oluşturuldu.");
-        
+        });        
         // Scroll dinleyicisini başlat
         initScrollSpy();
     }

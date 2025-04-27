@@ -47,7 +47,6 @@ function initializeHeader() {
                 // Admin paneli bağlantısı kontrolü
                 updateAdminPanelVisibility();
             } else {
-                console.log('Kullanıcı oturumu bulunamadı');
             }
         }
         
@@ -111,7 +110,6 @@ function initializeHeader() {
                 }
             } else {
                 // Kullanıcı giriş yapmamış
-                console.log("Kullanıcı oturumu yok");
             }
         });
     } else {
