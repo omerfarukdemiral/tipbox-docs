@@ -4,7 +4,6 @@
 
 // Global Chart objects
 let distributionChart = null;
-let unlockRatioChart = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     initTransparencyElements();
@@ -16,16 +15,9 @@ function initTransparencyElements() {
     if (typeof Chart !== 'undefined') {
         // Check if canvas elements exist for the charts
         const tokenDistributionChartElement = document.getElementById('tokenDistributionChart');
-        const unlockRatioChartElement = document.getElementById('unlockRatioChart');
         
         if (tokenDistributionChartElement) {
             renderDistributionChart();
-        } else {
-        }
-        
-        if (unlockRatioChartElement) {
-            renderUnlockRatioChart();
-        } else {
         }
     } else {
         console.error('Chart.js library not found! Make sure you have loaded the library.');
@@ -66,7 +58,6 @@ function initTransparencyElements() {
             // Recreate charts after theme change (with a slight delay)
             setTimeout(() => {
                 renderDistributionChart();
-                renderUnlockRatioChart();
             }, 100); // Small delay to let theme change complete
         });
     }
@@ -150,176 +141,6 @@ function renderDistributionChart() {
             cutout: '0%' // Full pie slice
         }
     });
-}
-
-/**
- * Render unlock ratio chart
- */
-function renderUnlockRatioChart() {
-    // If a previous chart exists, destroy it before creating a new one
-    if (unlockRatioChart) {
-        unlockRatioChart.destroy();
-    }
-
-    const ctx = document.getElementById('unlockRatioChart');
-    
-    if (!ctx) {
-        console.error('Canvas not found for unlock ratio chart!');
-        return;
-    }
-    
-    const isDark = isDarkMode();
-    const textColor = isDark ? '#F8FAFC' : '#334155';
-    const gridColor = isDark ? 'rgba(248, 250, 252, 0.1)' : 'rgba(51, 65, 85, 0.1)';
-    
-    // Generate labels for next 24 months
-    const labels = generateMonthLabels(24);
-    
-    // Stack data sets
-    const datasets = [
-        {
-            label: 'Treasury',
-            data: generateStackedData(24, 25, 1.2),
-            backgroundColor: isDark ? '#3B82F6' : '#60A5FA'
-        },
-        {
-            label: 'Founders',
-            data: generateStackedData(24, 20, 0.8),
-            backgroundColor: isDark ? '#10B981' : '#34D399'
-        },
-        {
-            label: 'Ecosystem',
-            data: generateStackedData(24, 15, 1.0),
-            backgroundColor: isDark ? '#F59E0B' : '#FBBF24'
-        },
-        {
-            label: 'Advisors',
-            data: generateStackedData(24, 10, 1.5),
-            backgroundColor: isDark ? '#EC4899' : '#F472B6'
-        },
-        {
-            label: 'Community',
-            data: generateStackedData(24, 20, 0.9),
-            backgroundColor: isDark ? '#8B5CF6' : '#A78BFA'
-        },
-        {
-            label: 'Staking Rewards',
-            data: generateStackedData(24, 10, 1.1),
-            backgroundColor: isDark ? '#F43F5E' : '#FB7185'
-        }
-    ];
-    
-    // Create stacked chart
-    unlockRatioChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: datasets
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    stacked: true,
-                    grid: {
-                        color: gridColor,
-                        borderColor: gridColor,
-                        tickColor: gridColor
-                    },
-                    ticks: {
-                        color: textColor,
-                        font: {
-                            family: "'Inter', sans-serif",
-                            size: 10
-                        }
-                    }
-                },
-                y: {
-                    stacked: true,
-                    grid: {
-                        color: gridColor,
-                        borderColor: gridColor,
-                        tickColor: gridColor
-                    },
-                    ticks: {
-                        color: textColor,
-                        font: {
-                            family: "'Inter', sans-serif",
-                            size: 12
-                        },
-                        callback: function(value) {
-                            return '%' + value;
-                        }
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                    labels: {
-                        font: {
-                            family: "'Inter', sans-serif",
-                            size: 12
-                        },
-                        color: textColor,
-                        boxWidth: 12,
-                        padding: 12
-                    }
-                },
-                tooltip: {
-                    backgroundColor: isDark ? '#1E293B' : '#FFFFFF',
-                    titleColor: textColor,
-                    bodyColor: textColor,
-                    bodyFont: {
-                        family: "'Inter', sans-serif",
-                        size: 12
-                    },
-                    displayColors: true,
-                    borderColor: gridColor,
-                    borderWidth: 1,
-                    padding: 12,
-                    callbacks: {
-                        label: function(context) {
-                            return `${context.dataset.label}: %${context.raw}`;
-                        }
-                    }
-                }
-            }
-        }
-    });
-}
-
-/**
- * Generate month labels
- */
-function generateMonthLabels(months) {
-    const labels = [];
-    const now = new Date();
-    
-    for (let i = 0; i < months; i++) {
-        const date = new Date(now);
-        date.setMonth(now.getMonth() + i);
-        labels.push(date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' }));
-    }
-    
-    return labels;
-}
-
-/**
- * Generate sample stacked data
- */
-function generateStackedData(months, maxValue, factor) {
-    const data = [];
-    
-    for (let i = 0; i < months; i++) {
-        // Logarithmic increase to create a rising curve
-        const value = Math.round((Math.log(i + 1) / Math.log(months)) * maxValue * factor * 100) / 100;
-        data.push(Math.min(value, maxValue));
-    }
-    
-    return data;
 }
 
 /**
@@ -540,7 +361,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateChartsForTheme(theme) {
     // Access chart objects and recreate them
     renderDistributionChart();
-    renderUnlockRatioChart();
 }
 
 /**
@@ -549,9 +369,5 @@ function updateChartsForTheme(theme) {
 function refreshAllCharts() {
     if (distributionChart) {
         distributionChart.update();
-    }
-    
-    if (unlockRatioChart) {
-        unlockRatioChart.update();
     }
 } 

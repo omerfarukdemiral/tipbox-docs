@@ -16,58 +16,78 @@
                     
                     <!-- Distribution chart -->
                     <div class="distribution-chart-wrapper">
-                        <div class="distribution-chart-container">
-                            <div class="distribution-chart">
-                                <canvas id="tokenDistributionChart"></canvas>
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-md-5 col-12 text-center">
+                                <div class="distribution-chart mb-4 mb-md-0">
+                                    <img src="../img/transparency/chart.svg" alt="Token Distribution Chart" class="img-fluid" style="max-width: 85%;">
+                                </div>
                             </div>
                             
-                            <div class="distribution-legend">
-                                <div class="legend-row">
-                                    <div class="legend-percentage">40%</div>
-                                    <div class="legend-color reward-farming"></div>
-                                    <div class="legend-label">Reward Farming</div>
-                                </div>
-                                
-                                <div class="legend-row">
-                                    <div class="legend-percentage">15%</div>
-                                    <div class="legend-color strategic-investors"></div>
-                                    <div class="legend-label">Strategic Investors</div>
-                                </div>
-                                
-                                <div class="legend-row">
-                                    <div class="legend-percentage">15%</div>
-                                    <div class="legend-color development"></div>
-                                    <div class="legend-label">Development</div>
-                                </div>
-                                
-                                <div class="legend-row">
-                                    <div class="legend-percentage">10%</div>
-                                    <div class="legend-color ecosystem"></div>
-                                    <div class="legend-label">Ecosystem</div>
-                                </div>
-                                
-                                <div class="legend-row">
-                                    <div class="legend-percentage">10%</div>
-                                    <div class="legend-color staking"></div>
-                                    <div class="legend-label">Staking</div>
-                                </div>
-                                
-                                <div class="legend-row">
-                                    <div class="legend-percentage">5%</div>
-                                    <div class="legend-color liquidity"></div>
-                                    <div class="legend-label">Liquidity</div>
-                                </div>
-                                
-                                <div class="legend-row">
-                                    <div class="legend-percentage">4%</div>
-                                    <div class="legend-color reserve"></div>
-                                    <div class="legend-label">Reserve</div>
-                                </div>
-                                
-                                <div class="legend-row">
-                                    <div class="legend-percentage">1%</div>
-                                    <div class="legend-color advisors"></div>
-                                    <div class="legend-label">Advisors</div>
+                            <div class="col-md-5 col-12">
+                                <div class="distribution-legend">
+                                    <div class="legend-row">
+                                        <div class="legend-percentage">40%</div>
+                                        <div class="legend-color reward-farming"></div>
+                                        <div class="legend-label">Reward Farming</div>
+                                    </div>
+                                    
+                                    <div class="legend-row">
+                                        <div class="legend-percentage">15%</div>
+                                        <div class="legend-color strategic-investors"></div>
+                                        <div class="legend-label">Strategic Investors</div>
+                                    </div>
+                                    
+                                    <div class="legend-row">
+                                        <div class="legend-percentage">15%</div>
+                                        <div class="legend-color development"></div>
+                                        <div class="legend-label">Development</div>
+                                    </div>
+                                    
+                                    <div class="legend-row">
+                                        <div class="legend-percentage">10%</div>
+                                        <div class="legend-color ecosystem"></div>
+                                        <div class="legend-label">Ecosystem</div>
+                                    </div>
+                                    
+                                    <div class="legend-row">
+                                        <div class="legend-percentage">10%</div>
+                                        <div class="legend-color staking"></div>
+                                        <div class="legend-label">Staking</div>
+                                    </div>
+                                    
+                                    <div class="legend-row">
+                                        <div class="legend-percentage">5%</div>
+                                        <div class="legend-color liquidity"></div>
+                                        <div class="legend-label">Liquidity</div>
+                                    </div>
+                                    
+                                    <div class="legend-row">
+                                        <div class="legend-percentage">4%</div>
+                                        <div class="legend-color reserve"></div>
+                                        <div class="legend-label">Reserve</div>
+                                    </div>
+                                    
+                                    <div class="legend-row">
+                                        <div class="legend-percentage">1%</div>
+                                        <div class="legend-color advisors"></div>
+                                        <div class="legend-label">Advisors</div>
+                                    </div>
+                                    <div class="legend-row">
+                                        <div class="legend-percentage">4%</div>
+                                        <div class="legend-color reserve"></div>
+                                        <div class="legend-label">Reserve</div>
+                                    </div>
+                                    
+                                    <div class="legend-row">
+                                        <div class="legend-percentage">1%</div>
+                                        <div class="legend-color advisors"></div>
+                                        <div class="legend-label">Advisors</div>
+                                    </div>
+                                    <div class="legend-row">
+                                        <div class="legend-percentage">1%</div>
+                                        <div class="legend-color advisors"></div>
+                                        <div class="legend-label">Advisors</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -97,218 +117,13 @@
                     <!-- Unlock ratio chart -->
                     <div class="unlock-ratio-container">
                         <h3>Unlock Ratio</h3>
-                        <div class="unlock-chart-container">
-                            <canvas id="unlockRatioChart"></canvas>
+                        <div class="unlock-chart-container responsive-iframe-container">
+                            <div class="responsive-iframe-wrapper">
+                                <iframe frameborder="0" seamless class="responsive-iframe" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRjsA1GYVLpyz3D0uc528tP36HdFiV2tgIKgL8_SlqEc94HhbX0AEyVbzeREqKkH-hO9ZPsOBrf3yVn/pubhtml?gid=1553435013&amp;single=true&amp;widget=true&amp;headers=false" style="overflow: hidden; height: 100%; width: 100%; margin-bottom: -40px;" frameborder="0" allowfullscreen></iframe>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Token category cards grid -->
-                    <div class="token-category-grid">
-                        <!-- Reward Farming -->
-                        <div class="token-category-card reward-farming">
-                            <div class="category-color-bar"></div>
-                            <div class="category-content">
-                                <h4>Reward Farming (40%)</h4>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Unlocked Supply</span>
-                                    <span class="detail-value">46.86%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Supply</span>
-                                    <span class="detail-value">33.48%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Amount</span>
-                                    <span class="detail-value">133,857,622</span>
-                                </div>
-                                
-                                <p class="category-description">Users in the Tipbox ecosystem earn a share of reward farming by using Tipbox products. This serves as an incentive to promote greater awareness and adoption of Tipbox within the ecosystem.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Strategic Investors -->
-                        <div class="token-category-card strategic-investors">
-                            <div class="category-color-bar"></div>
-                            <div class="category-content">
-                                <h4>Strategic Investors (15%)</h4>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Unlocked Supply</span>
-                                    <span class="detail-value">100.00%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Supply</span>
-                                    <span class="detail-value">54.89%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Amount</span>
-                                    <span class="detail-value">82,332,249</span>
-                                </div>
-
-                                <p class="category-description">This share belongs to early private investors, such as Coinbase, Galaxy Digital, GBV, NoLimit Holdings, CMS Holdings, and others. The invested capital was used for the initial development of Tipbox products.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Development -->
-                        <div class="token-category-card development">
-                            <div class="category-color-bar"></div>
-                            <div class="category-content">
-                                <h4>Development (15%)</h4>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Unlocked Supply</span>
-                                    <span class="detail-value">100.00%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Supply</span>
-                                    <span class="detail-value">0.00%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Amount</span>
-                                    <span class="detail-value">0</span>
-                                </div>
-                                
-                                <p class="category-description">The development share is responsible for the operations of the development team to continue building and expanding the Tipbox ecosystem. Note that no individual, including founders, has direct and personal access to this share.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Ecosystem -->
-                        <div class="token-category-card ecosystem">
-                            <div class="category-color-bar"></div>
-                            <div class="category-content">
-                                <h4>Ecosystem (10%)</h4>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Unlocked Supply</span>
-                                    <span class="detail-value">100.00%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Supply</span>
-                                    <span class="detail-value">50.96%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Amount</span>
-                                    <span class="detail-value">50,961,526</span>
-                                </div>
-                                
-                                
-                                <p class="category-description">The role of the ecosystem share is to promote the growth and expansion of the Tipbox ecosystem, including establishing partnerships, providing developer grants, covering marketing and PR expenses, and hiring important teams and board members.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Staking -->
-                        <div class="token-category-card staking">
-                            <div class="category-color-bar"></div>
-                            <div class="category-content">
-                                <h4>Staking (10%)</h4>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Unlocked Supply</span>
-                                    <span class="detail-value">100.00%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Supply</span>
-                                    <span class="detail-value">11.26%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Amount</span>
-                                    <span class="detail-value">11,260,766</span>
-                                </div>
-                                
-                                
-                                <p class="category-description">The staking share serves as a reward for staking, aiming to incentivize investors and users to diversify and provide liquidity to both decentralized marketplaces or exchanges and centralized staking services.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Liquidity -->
-                        <div class="token-category-card liquidity">
-                            <div class="category-color-bar"></div>
-                            <div class="category-content">
-                                <h4>Liquidity (5%)</h4>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Unlocked Supply</span>
-                                    <span class="detail-value">100.00%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Supply</span>
-                                    <span class="detail-value">88.41%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Amount</span>
-                                    <span class="detail-value">44,203,809</span>
-                                </div>
-                                
-                                
-                                <p class="category-description">The liquidity share serves the purpose of increasing liquidity in the market by offering it on various centralized exchanges for investors to access. It is typically loaned to trading firms for market-making activities.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Reserve -->
-                        <div class="token-category-card reserve">
-                            <div class="category-color-bar"></div>
-                            <div class="category-content">
-                                <h4>Reserve (4%)</h4>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Unlocked Supply</span>
-                                    <span class="detail-value">100.00%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Supply</span>
-                                    <span class="detail-value">62.34%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Amount</span>
-                                    <span class="detail-value">24,934,306</span>
-                                </div>
-                                
-                                
-                                <p class="category-description">The reserve share is designated for covering unexpected or emergency expenses to protect the interests of the company and its users. All expenditures from this share and the rationale behind them will be made public.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Advisors -->
-                        <div class="token-category-card advisors">
-                            <div class="category-color-bar"></div>
-                            <div class="category-content">
-                                <h4>Advisors (1%)</h4>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Unlocked Supply</span>
-                                    <span class="detail-value">100.00%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Supply</span>
-                                    <span class="detail-value">28.00%</span>
-                                </div>
-                                
-                                <div class="supply-detail">
-                                    <span class="detail-label">Circulating Amount</span>
-                                    <span class="detail-value">2,800,000</span>
-                                </div>
-                                
-                                
-                                <p class="category-description">The advisor share is designed to acquire important advisors in the early stages of the ecosystem. Advisors may have different roles and responsibilities, from legal matters to establishing connections and developing strategies.</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>  
@@ -320,3 +135,4 @@
     <!-- Include JavaScript files -->
     <script src="../js/transparency.js"></script>
 </article> 
+

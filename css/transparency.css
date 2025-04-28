@@ -56,52 +56,45 @@
 
 /* Token Distribution Chart */
 .distribution-chart-wrapper {
-    padding: 30px 0 10px;
+    padding: 20px 0;
     margin-bottom: 5px;
 }
 
-.distribution-chart-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 40px;
-    justify-content: center;
-    max-width: 1000px;
-    margin: 0 auto;
+.distribution-chart {
+    position: relative;
+    width: 100%;
 }
 
-.distribution-chart {
-    flex: 1;
-    max-width: 500px;
-    aspect-ratio: 1/1;
-    position: relative;
+.distribution-chart img {
+    width: 100%;
 }
 
 .distribution-legend {
-    flex: 1;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 12px 15px;
-    padding: 0 5px;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 12px;
+    padding: 0;
 }
 
 .legend-row {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    margin-bottom: 8px;
 }
 
 .legend-percentage {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
-    width: 40px;
+    width: 45px;
     font-family: 'Inter', sans-serif;
+    color: var(--text-color);
 }
 
 .legend-color {
-    width: 18px;
-    height: 18px;
-    border-radius: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
 }
 
 .legend-label {
@@ -198,14 +191,14 @@
 
 /* Unlock Ratio Chart */
 .unlock-ratio-container {
-    margin: 50px 20px;
+    margin: 10px 5px;
     border-radius: 10px;
     padding: 30px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .unlock-chart-container {
-    height: 400px;
+    height: auto;
     margin-top: 20px;
 }
 
@@ -476,6 +469,38 @@
     --liquidity-color: #048B94;
     --reserve-color: #FF5063;
     --advisors-color: #5CE4F0;
+    
+    /* Temel renkler */
+    --background-dark: #121218;
+    --background-light: #f8f9fa;
+    --text-dark: #e4e6eb;
+    --primary: #5670ff;
+    --primary-hover: #4560fe;
+    --border-dark: #2d2e3a;
+    --border-light: #dee2e6;
+    
+    /* Kart arkaplan renkleri */
+    --card-dark: #1d1e2b;
+    --card-light: #ffffff;
+    
+    /* Metrik değişim renkleri */
+    --positive-change: #56ff70;
+    --negative-change: #ff5670;
+    
+    /* Dönem-bazlı renk paleti - Çubuk grafik için */
+    --q1-color: rgba(86, 112, 255, 0.85);
+    --q2-color: rgba(86, 177, 255, 0.85);
+    --q3-color: rgba(86, 255, 241, 0.85);
+    --q4-color: rgba(86, 255, 177, 0.85);
+    
+    /* Geçiş ve gölge değerleri */
+    --transition-speed: 0.3s;
+    --box-shadow-dark: 0 4px 12px rgba(0, 0, 0, 0.25);
+    --box-shadow-light: 0 4px 12px rgba(0, 0, 0, 0.1);
+    
+    /* Responsive değerler */
+    --container-width: 1200px;
+    --padding-section: 60px 20px;
 }
 
 [data-theme="dark"] {
@@ -495,39 +520,6 @@
     --reserve-color: #FF5A6E;
     --advisors-color: #67E4F9;
 }
-
-/* Temel renkler */
---background-dark: #121218;
---background-light: #f8f9fa;
---text-dark: #e4e6eb;
---text-light: #1a1b1e;
---primary: #5670ff;
---primary-hover: #4560fe;
---border-dark: #2d2e3a;
---border-light: #dee2e6;
-
-/* Kart arkaplan renkleri */
---card-dark: #1d1e2b;
---card-light: #ffffff;
-
-/* Metrik değişim renkleri */
---positive-change: #56ff70;
---negative-change: #ff5670;
-
-/* Dönem-bazlı renk paleti - Çubuk grafik için */
---q1-color: rgba(86, 112, 255, 0.85);
---q2-color: rgba(86, 177, 255, 0.85);
---q3-color: rgba(86, 255, 241, 0.85);
---q4-color: rgba(86, 255, 177, 0.85);
-
-/* Geçiş ve gölge değerleri */
---transition-speed: 0.3s;
---box-shadow-dark: 0 4px 12px rgba(0, 0, 0, 0.25);
---box-shadow-light: 0 4px 12px rgba(0, 0, 0, 0.1);
-
-/* Responsive değerler */
---container-width: 1200px;
---padding-section: 60px 20px;
 
 /* Tema değişikliği - açık/koyu tema */
 [data-theme="light"] {
@@ -1193,4 +1185,115 @@ ul {
 .address-tooltip:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+/* Google Sheets alt bilgi ve sayfa selektörünü tamamen gizle */
+.responsive-iframe-container {
+    position: relative;
+    width: 100%;
+    height: auto; /* Otomatik yükseklik */
+    min-height: 400px; /* Minimum yükseklik */
+    margin-top: 20px;
+    overflow: hidden;
+    padding-bottom: 0;
+    -webkit-overflow-scrolling: touch;
+    aspect-ratio: 16 / 9; /* 16:9 oranı - grafik görüntüleme için ideal */
+}
+
+.responsive-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.responsive-iframe-container::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px; /* Alt bilgi yüksekliği - daha fazla alan kaplasın */
+    background-color: white; /* Beyaz arka plan ile tamamen kapat */
+    z-index: 10;
+    pointer-events: none;
+}
+
+[data-theme="dark"] .responsive-iframe-container::after {
+    background-color: #121218; /* Koyu tema için arka plan rengi */
+}
+
+/* Mobil cihazlar için yatay kaydırma */
+@media (max-width: 768px) {
+    .responsive-iframe-container {
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 100%;
+        height: 480px; /* Mobil için biraz daha küçük */
+    }
+    
+    .responsive-iframe {
+        min-width: 800px; /* Minimum genişlik - sağa sola kaydırma için */
+    }
+    
+    .responsive-iframe-container::after {
+        height: 40px; /* Alt bilgiyi gizleme yüksekliği */
+    }
+}
+
+/* Google Sheets içindeki sekme ve alt bilgilerini gizle */
+.responsive-iframe {
+    scrollbar-width: none; /* Firefox için scrollbar'ı gizle */
+}
+
+.responsive-iframe::-webkit-scrollbar {
+    display: none; /* Chrome, Safari ve Opera için scrollbar'ı gizle */
+}
+
+/* Google Sheets sekme kontrollerinin gizlenmesi için özel CSS */
+.responsive-iframe-container {
+    clip-path: inset(0px 0px 40px 0px); /* Alt kısmı kırp - sağ alt köşedeki "Grafik1" yazısını keser */
+}
+
+/* Mobil cihazlar için yatay kaydırma */
+@media (max-width: 768px) {
+    .responsive-iframe-container {
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 100%;
+        height: auto; /* Otomatik yükseklik */
+        min-height: 350px; /* Mobil için minimum yükseklik */
+        max-height: 450px; /* Mobil için maksimum yükseklik */
+        aspect-ratio: 4 / 3; /* Mobil için daha kare formata yakın */
+    }
+    
+    .responsive-iframe {
+        min-width: 800px; /* Minimum genişlik - sağa sola kaydırma için */
+    }
+    
+    .responsive-iframe-container::after {
+        height: 40px; /* Alt bilgiyi gizleme yüksekliği */
+    }
+}
+
+.responsive-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+/* Otomatik yükseklik ayarı için iframe wrapper */
+.responsive-iframe-wrapper {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    overflow: hidden;
+    width: 100%;
 } 
