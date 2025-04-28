@@ -43,10 +43,10 @@
                     <div class="f_widget doc_service_list_widget pl-30 wow fadeInUp" data-wow-delay="0.5s">
                         <h3 class="f_title_two"><img src="img/icon/footer/docs.svg" alt="" style="width: 18px; height: 18px; margin-right: 8px; margin-top: -4px;">Docs</h3>
                         <ul class="list-unstyled">
-                            <li><a href="project-blurb.html"><i class="icon_document_alt mr-2"></i>Blurb</a></li>
-                            <li><a href="project-deck.html"><i class="icon_easel mr-2"></i>Pitchdeck</a></li>
-                            <li><a href="lean-canvas.html"><i class="icon_pencil-edit mr-2"></i>Lean Canvas</a></li>
-                            <li><a href="business-model-canvas.html"><i class="icon_flowchart mr-2"></i>Business Model Canvas</a></li>
+                            <li><a href="blurb.html"><i class="icon_document_alt mr-2"></i>Blurb</a></li>
+                            <li><a href="pitchdeck.html"><i class="icon_easel mr-2"></i>Pitchdeck</a></li>
+                            <li><a href="javascript:void(0);" onclick="event.preventDefault();" class="footer-disabled-link"><i class="icon_pencil-edit mr-2"></i>Lean Canvas</a></li>
+                            <li><a href="javascript:void(0);" onclick="event.preventDefault();" class="footer-disabled-link"><i class="icon_flowchart mr-2"></i>Business Model Canvas</a></li>
                         </ul>
                     </div>
                 </div>
@@ -184,5 +184,25 @@
 .producthunt-icon, .angellist-icon {
     width: 28px;
     height: 28px;
+}
+
+.footer-disabled-link {
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: auto !important;
+}
+
+.footer-disabled-link:hover {
+    text-decoration: none;
+    color: #6b707f !important;
+    background-color: transparent !important;
+}
+
+.footer-disabled-link i {
+    color: #6b707f !important;
+}
+
+.footer-disabled-link:hover i {
+    color: #6b707f !important;
 }
 </style> 

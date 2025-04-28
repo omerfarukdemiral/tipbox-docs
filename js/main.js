@@ -1413,7 +1413,7 @@
         'product.html',
         'project-blueprint.html',
         'project-blurb.html',
-        'project-deck.html',
+        'pitchdeck.html',
         'roadmap.html',
         'signin.html',
         'technology.html',
