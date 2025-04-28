@@ -80,7 +80,7 @@ function loadContent(contentFile) {
             }
             
             // Update document title
-            document.title = (heading || 'Company & Finance') + ' | TipBox Documentation';
+            document.title = (heading || 'Company & Finance') + ' | Tipbox Documentation';
             
             // Generate table of contents
             generateTOC();

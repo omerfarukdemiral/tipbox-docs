@@ -1,5 +1,5 @@
 /**
- * TipBox Arama İşlevselliği
+ * Tipbox Arama İşlevselliği
  * pages.json içerisindeki verilere göre arama yapar ve sonuçları gösterir
  */
 
