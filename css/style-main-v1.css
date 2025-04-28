@@ -26315,3 +26315,7 @@ body.body_dark img.logo-light {
  .jura-font, .jura-font p {
   font-family: 'Jura', sans-serif !important;
 }
+
+.inter-font, .inter-font strong, .inter-font li, .inter-font strong {
+  font-family: 'Inter', sans-serif !important;
+}
