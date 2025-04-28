@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Stil dosyasının yolu
-const cssFilePath = path.join(__dirname, 'css', 'style-main.css');
+const cssFilePath = path.join(__dirname, 'css', 'style-main-v1.css');
 
 // Stil dosyasını oku
 let cssContent = fs.readFileSync(cssFilePath, 'utf8');
