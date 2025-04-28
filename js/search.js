@@ -232,9 +232,10 @@
     const resultCountHtml = `<div class="search-results-count">${results.length} results found</div>`;
     searchPanel.append(resultCountHtml);
 
-    // Sonuçları göster (ilk 5 sonuç)
-    const firstFiveResults = results.slice(0, 5);
-    firstFiveResults.forEach(result => {
+    // Sonuçları göster (ilk 10 sonuç)
+    const maxResults = Math.min(results.length, 10);
+    for (let i = 0; i < maxResults; i++) {
+        const result = results[i];
         const isSubItem = result.type === "sub";
         
         // Sonuç metnini oluştur
@@ -257,90 +258,10 @@
         `;
         
         searchPanel.append(resultItemHtml);
-    });
-
-    // Eğer 5'ten fazla sonuç varsa "Show all" linkini ekle
-    if (results.length > 5) {
-        const showAllHtml = `
-            <div class="search-show-all">
-                <a href="#" id="show-all-results">Show all ${results.length} results</a>
-            </div>
-        `;
-        searchPanel.append(showAllHtml);
-
-        // Tümünü göster butonuna tıklandığında
-        $("#show-all-results").on("click", function (e) {
-            e.preventDefault();
-            displayAllSearchResults(results);
-        });
     }
 
     // Sonuçları göster
     searchPanel.slideDown(300);
-  }
-
-  /**
-   * Tüm arama sonuçlarını göster
-   * @param {Array} results - Arama sonuçları
-   */
-  function displayAllSearchResults(results) {
-    // Overlay oluştur
-    const overlay = $('<div class="search-results-overlay"></div>');
-    const closeButton = $('<button class="search-results-close">&times;</button>');
-    const resultsContainer = $('<div class="search-results-container"></div>');
-    
-    const resultCountHtml = `<h3 class="search-results-title">${results.length} results</h3>`;
-    resultsContainer.append(resultCountHtml);
-    
-    const resultsListHtml = $('<div class="search-results-list full"></div>');
-    
-    // Tüm sonuçları göster
-    results.forEach(function (result) {
-      const isSubItem = result.type === "sub";
-      
-      // Sonuç metnini oluştur
-      let resultText = '';
-      if (isSubItem) {
-        resultText = `<strong>"${result.title}"</strong> content found in <strong>${capitalize(result.section)}</strong> page.`;
-      } else {
-        resultText = `<strong>"${result.title}"</strong> content found in <strong>${capitalize(result.section)}</strong> page.`;
-      }
-      
-      let resultItemHtml = `
-        <div class="search-results-item">
-          <a href="${result.href}" class="search-result-link">
-            <div class="search-result-content">
-              <div class="search-result-text">${resultText}</div>
-              <div class="search-result-arrow">→</div>
-            </div>
-          </a>
-        </div>
-      `;
-      
-      resultsListHtml.append(resultItemHtml);
-    });
-    
-    resultsContainer.append(resultsListHtml);
-    overlay.append(closeButton).append(resultsContainer);
-    $("body").append(overlay).addClass("search-overlay-active");
-    
-    // Overlay'i göster
-    overlay.fadeIn(300);
-    
-    // Kapatma butonuna tıklandığında overlay'i kaldır
-    closeButton.on("click", function () {
-      overlay.fadeOut(300, function () {
-        overlay.remove();
-        $("body").removeClass("search-overlay-active");
-      });
-    });
-    
-    // Escape tuşuna basıldığında da kapat
-    $(document).on("keydown.searchOverlay", function (e) {
-      if (e.key === "Escape") {
-        closeButton.trigger("click");
-      }
-    });
   }
 
   /**
