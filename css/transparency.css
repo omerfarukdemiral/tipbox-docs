@@ -8,7 +8,7 @@
 }
 
 .transparency-intro {
-    text-align: center;
+    text-align: left;
     margin-bottom: 50px;
     padding: 20px;
 }
@@ -531,7 +531,7 @@
     
     .distribution-chart {
         max-width: 100%;
-        height: 350px;
+        height: auto;
     }
     
     .distribution-legend {
