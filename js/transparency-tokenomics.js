@@ -30,7 +30,8 @@ async function loadContent(contentFile) {
             initScrollSpy();
             
             // İçerik yüklendikten sonra grafikleri başlat
-            if (typeof initTransparencyElements === 'function' && contentFile.includes('transparency.html')) {
+            if (typeof initTransparencyElements === 'function' && contentFile.includes('overview-principles.html')) {
+                console.log('Transparency sayfası yüklendi, grafikleri başlatma deneniyor...');
                 // Biraz bekleyerek DOM'un tamamen yüklenmesini sağla
                 setTimeout(() => {
                     initTransparencyElements();

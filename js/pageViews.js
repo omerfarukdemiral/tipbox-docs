@@ -19,7 +19,7 @@ const MIN_DURATION = 10 * 1000;
 // İzlenen sayfalar ve insan tarafından okunabilir adları
 const TRACKED_PAGES = {
     'tokeneconomics.html': 'Tokenekonomics',
-    'project-deck.html': 'Project Deck',
+    'pitchdeck.html': 'Pitchdeck',
     'project-blurb.html': 'Project Blurb',
     'project-blueprint.html': 'Project Blueprint'
 };

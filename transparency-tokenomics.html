@@ -79,11 +79,11 @@
                 // URL'de belirli bir hash yoksa varsayılan olarak transparency içeriğini yükle
                 if (!window.location.hash && typeof loadContent === 'function') {
                     // Transparency sayfası menü linkini bul ve aktif et
-                    const transparencyLink = document.querySelector('a[data-content-file="transparency/transparency.html"]');
+                    const transparencyLink = document.querySelector('a[data-content-file="transparency/overview-principles.html"]');
                     if (transparencyLink) {
                         transparencyLink.classList.add('active');
                         // İçeriği yükle
-                        loadContent('transparency/transparency.html');
+                        loadContent('transparency/overview-principles.html');
                     }
                 }
             } catch (error) {
@@ -243,7 +243,7 @@
                         </nav>
                     </div>
                     <div class="col-sm-5">
-                        <a href="#" class="date"><i class="icon_clock_alt"></i>Updated on January 15, 2025</a>
+                        <a href="#" class="date"><i class="icon_clock_alt"></i>Updated on March 20, 2025</a>
                     </div>
                 </div>
             </div>

@@ -161,10 +161,11 @@
                     <i class="arrow_carrot-down"></i>
                 </a>
                 <ul class="sidebar-submenu">
-                    <li><a href="project-deck.html"><i class="icon_easel mr-2"></i>Pitchdeck</a></li>
-                    <li><a href="project-blurb.html"><i class="icon_document_alt mr-2"></i>Blurb</a></li>
-                    <li><a href="lean-canvas.html"><i class="icon_pencil-edit mr-2"></i>Lean Canvas</a></li>
-                    <li><a href="business-model-canvas.html"><i class="icon_flowchart mr-2"></i>Business Model Canvas</a></li>
+                    <li><a href="pitchdeck.html"><i class="icon_easel mr-2"></i>Pitchdeck</a></li>
+                    <li><a href="all-in-one-deck.html"><i class="icon_easel mr-2"></i>All in One Deck</a></li>
+                    <li><a href="blurb.html"><i class="icon_document_alt mr-2"></i>Blurb</a></li>
+                    <li><a href="javascript:void(0);" onclick="event.preventDefault();" class="disabled-link"><i class="icon_pencil-edit mr-2"></i>Lean Canvas</a></li>
+                    <li><a href="javascript:void(0);" onclick="event.preventDefault();" class="disabled-link"><i class="icon_flowchart mr-2"></i>Business Model Canvas</a></li>
                 </ul>
             </li>
         </ul>
@@ -551,6 +552,26 @@ body.body-sidebar-active .sidebar-menu,
     .sidebar-menu {
         width: 100%; /* Mobil görünümde tam genişlik */
     }
+}
+
+.disabled-link {
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: auto !important;
+}
+
+.disabled-link:hover {
+    text-decoration: none;
+    color: #ddd !important;
+    background-color: transparent !important;
+}
+
+.disabled-link i {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.disabled-link:hover i {
+    color: rgba(255, 255, 255, 0.5) !important;
 }
 </style>
 
