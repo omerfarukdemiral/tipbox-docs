@@ -21,7 +21,20 @@ const TRACKED_PAGES = {
     'tokeneconomics.html': 'Tokenekonomics',
     'pitchdeck.html': 'Pitchdeck',
     'project-blurb.html': 'Project Blurb',
-    'project-blueprint.html': 'Project Blueprint'
+    'project-blueprint.html': 'Project Blueprint',
+    'index.html': 'Ana Sayfa',
+    'about.html': 'About',
+    'product.html': 'Product',
+    'market.html': 'Market',
+    'go-to-market.html': 'Go To Market',
+    'technology.html': 'Technology',
+    'transparency-tokenomics.html': 'Transparency & Tokenomics',
+    'company-finance.html': 'company & Finance',
+    'roadmap.html': 'Roadmap',
+    'project-deck.html': 'Proje Deck',
+    'lean-canvas.html': 'Lean Canvas',
+    'business-model-canvas.html': 'Business Model Canvas',
+    'all-in-one-deck.html': 'All in One Deck'
 };
 
 (function () {
