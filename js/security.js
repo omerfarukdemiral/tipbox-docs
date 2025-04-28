@@ -57,9 +57,9 @@ function showSecurityAlert(action, isWarning = true) {
     `;
     
     alertDiv.innerHTML = `
-        <h3 style="margin: 0 0 10px 0; font-size: 18px;">⚠️ Güvenlik Uyarısı</h3>
+        <h3 style="margin: 0 0 10px 0; font-size: 18px;">⚠️ Security Alert</h3>
         <p style="margin: 0; font-size: 16px;">${action}</p>
-        ${isWarning ? '<p style="margin: 10px 0 0 0; font-size: 14px; color: #ffd700;">Güvenlik nedeniyle içerik korunmaktadır.</p>' : ''}
+        ${isWarning ? '<p style="margin: 10px 0 0 0; font-size: 14px; color: #ffd700;">Content is protected for security reasons.</p>' : ''}
     `;
     
     document.body.appendChild(alertDiv);
@@ -75,7 +75,7 @@ function updateSecurityState() {
     if (!isDevelopment && (extensionDetected || devToolsOpened)) {
         isSecurityCompromised = true;
         document.body.classList.add('security-compromised');
-        showSecurityAlert('Güvenlik ihlali tespit edildi. Lütfen eklentileri devre dışı bırakın veya geliştirici araçlarını kapatın.', true);
+        showSecurityAlert('Security breach detected. Please disable extensions or close developer tools.', true);
     } else {
         isSecurityCompromised = false;
         document.body.classList.remove('security-compromised');
@@ -116,7 +116,7 @@ function detectExtensions() {
         }
 
         if (extensionDetected) {
-            showSecurityAlert('İçerik koruma eklentisi tespit edildi. Lütfen eklentiyi devre dışı bırakın.');
+            showSecurityAlert('Content protection extension detected. Please disable the extension.');
             updateSecurityState();
         }
     }
@@ -131,7 +131,7 @@ function detectDevTools() {
         if (widthThreshold || heightThreshold) {
             if (!devToolsOpened) {
                 devToolsOpened = true;
-                showSecurityAlert('Geliştirici araçları tespit edildi. Güvenlik nedeniyle içerik gizlenmiştir.');
+                showSecurityAlert('Developer tools detected. Content is hidden for security reasons.', true);
                 updateSecurityState();
             }
         } else {
@@ -230,7 +230,7 @@ function initSecurity() {
                 }
                 
                 e.preventDefault();
-                showSecurityAlert('Sağ tık menüsü güvenlik nedeniyle devre dışı bırakılmıştır.');
+                showSecurityAlert('Right-click menu is disabled for security reasons.');
                 return false;
             });
         }
@@ -258,7 +258,7 @@ function initSecurity() {
                 ) {
                     e.preventDefault();
                     e.stopPropagation();
-                    showSecurityAlert('Bu kısayol güvenlik nedeniyle devre dışı bırakılmıştır.');
+                    showSecurityAlert('This shortcut is disabled for security reasons.');
                     return false;
                 }
             });
@@ -273,17 +273,17 @@ function initSecurity() {
                 }
                 
                 e.preventDefault();
-                showSecurityAlert('İçerik kopyalama devre dışı bırakılmıştır.');
+                showSecurityAlert('Copying content is disabled.');
             });
 
             document.addEventListener('cut', e => {
                 e.preventDefault();
-                showSecurityAlert('İçerik kesme devre dışı bırakılmıştır.');
+                showSecurityAlert('Cutting content is disabled.');
             });
 
             document.addEventListener('paste', e => {
                 e.preventDefault();
-                showSecurityAlert('İçerik yapıştırma devre dışı bırakılmıştır.');
+                showSecurityAlert('Pasting content is disabled.');
             });
         }
 
@@ -296,7 +296,7 @@ function initSecurity() {
                 }
                 
                 e.preventDefault();
-                showSecurityAlert('Sürükle-bırak işlemi devre dışı bırakılmıştır.');
+                showSecurityAlert('Drag and drop is disabled.');
             });
         }
 
@@ -309,7 +309,7 @@ function initSecurity() {
                 }
                 
                 e.preventDefault();
-                showSecurityAlert('Metin seçimi devre dışı bırakılmıştır.');
+                showSecurityAlert('Selecting text is disabled.');
             });
         }
         

@@ -10,6 +10,19 @@
         
         <div class="navbar-right d-flex align-items-center">
 
+            
+            
+            <!-- Contents Title - Desktop only -->
+            <h4 class="contents-title d-none d-md-flex ml-3 my-0 align-items-center">Contents</h4>
+            <!-- Sidebar Toggle Button -->
+            <button id="sidebarToggleBtn" class="sidebar-toggle-btn ml-3" type="button" aria-label="Toggle sidebar menu">
+                <span class="sidebar-toggle-icon sidebar-toggle-icon-light">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+
             <!-- Kullanıcı Profil Menüsü -->
             <div class="user-profile-menu ml-3">
                 <div class="dropdown">
@@ -42,14 +55,6 @@
                 </div>
             </div>
 
-            <!-- Sidebar Toggle Button -->
-            <button id="sidebarToggleBtn" class="sidebar-toggle-btn ml-3" type="button" aria-label="Toggle sidebar menu">
-                <span class="sidebar-toggle-icon sidebar-toggle-icon-light">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </span>
-            </button>
         </div>
     </div>
 </nav>
@@ -577,6 +582,26 @@ body.body-sidebar-active .sidebar-menu,
     right: 0;
     left: auto;
     min-width: 250px;
+}
+
+/* Contents title styling */
+.contents-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-left: 15px !important;
+    display: flex;
+    align-items: center;
+}
+
+/* Dark mode compatibility */
+.dark-mode .contents-title {
+    color: var(--text-light);
+}
+
+/* When navbar is fixed/sticky */
+.navbar_fixed .contents-title {
+    color: var(--black_800);
 }
 </style>
 
