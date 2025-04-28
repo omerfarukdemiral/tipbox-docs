@@ -151,6 +151,67 @@
             background: transparent;
         }
 
+        /* Mobil için PDF görüntüleme stili */
+        @media (max-width: 768px) {
+            .pdf-container {
+                height: auto;
+                max-height: none;
+                overflow-y: auto;
+                padding: 20px 0;
+                display: block;
+            }
+            
+            #flipbook {
+                display: block !important;
+                width: 100% !important;
+                height: auto !important;
+                transform: none !important;
+            }
+            
+            #flipbook .page {
+                margin-bottom: 20px;
+                width: 100% !important;
+                height: auto !important;
+                position: relative !important;
+                display: block !important;
+                float: none !important;
+                top: auto !important;
+                left: auto !important;
+                transform: none !important;
+            }
+            
+            #flipbook .page canvas {
+                width: 100% !important;
+                height: auto !important;
+                display: block;
+                margin: 0 auto;
+            }
+            
+            #flipbook .shadow,
+            #flipbook .depth,
+            #flipbook .gradient {
+                display: none !important;
+            }
+            
+            .pdf-container.fullscreen-mode {
+                z-index: 9999;
+                position: fixed !important;
+                top: 0;
+                left: 0;
+                width: 100vw !important;
+                height: 100vh !important;
+                overflow-y: auto;
+            }
+            
+            .pdf-controls {
+                position: fixed;
+                bottom: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 10000;
+            }
+        }
+
         .pdf-controls {
             position: absolute;
             bottom: 20px;
@@ -224,10 +285,6 @@
         }
 
         @media (max-width: 768px) {
-            .pdf-container {
-                height: calc(100vh - var(--header-mobile-height) - var(--breadcrumb-height) - 40px);
-            }
-
             .pdf-controls {
                 padding: 8px 15px;
             }
@@ -633,15 +690,25 @@
                                     const viewport = firstPage.getViewport({ scale: 1.0 });
                                     currentScale = calculateScale(viewport);
 
+                                    // Ekran piksel oranını al (Retina ekranlar için)
+                                    const pixelRatio = window.devicePixelRatio || 1;
+                                    
                                     // Tüm sayfaları yükle
                                     for (let i = 1; i <= pdfDoc.numPages; i++) {
                                         const page = await pdfDoc.getPage(i);
                                         const canvas = document.createElement('canvas');
                                         const context = canvas.getContext('2d');
 
-                                        const scaledViewport = page.getViewport({ scale: currentScale });
+                                        // Yüksek çözünürlük için ölçeklendirilmiş viewport
+                                        const scaledViewport = page.getViewport({ scale: currentScale * pixelRatio });
+                                        
+                                        // Canvas boyutlarını piksel oranına göre ayarla
                                         canvas.height = scaledViewport.height;
                                         canvas.width = scaledViewport.width;
+                                        
+                                        // CSS ile görüntü boyutunu ayarla
+                                        canvas.style.width = (scaledViewport.width / pixelRatio) + 'px';
+                                        canvas.style.height = (scaledViewport.height / pixelRatio) + 'px';
 
                                         const renderContext = {
                                             canvasContext: context,
@@ -657,32 +724,99 @@
                                         flipbookElement.appendChild(div);
                                     }
 
-                                    // Turn.js'yi başlat
-                                    if (flipBook) {
-                                        flipBook.turn('destroy');
-                                    }
-
                                     // Yükleme tamamlandığında
                                     flipbookElement.style.display = 'block';
                                     loader.style.display = 'none';
 
-                                    const containerWidth = $('.pdf-container').width();
-                                    const containerHeight = $('.pdf-container').height();
-
-                                    flipBook = $('#flipbook').turn({
-                                        width: containerWidth * 0.9,
-                                        height: containerHeight * 0.9,
-                                        autoCenter: true,
-                                        gradients: true,
-                                        acceleration: true,
-                                        display: 'single',
-                                        elevation: 50,
-                                        when: {
-                                            turning: function (event, page, pageObject) {
-                                                document.getElementById('current-page').textContent = page;
-                                            }
+                                    // Mobil cihaz kontrolü
+                                    const isMobile = window.innerWidth <= 768;
+                                    
+                                    if (!isMobile) {
+                                        // Sadece masaüstü için Turn.js'yi başlat
+                                        if (flipBook) {
+                                            flipBook.turn('destroy');
                                         }
-                                    });
+
+                                        const containerWidth = $('.pdf-container').width();
+                                        const containerHeight = $('.pdf-container').height();
+
+                                        flipBook = $('#flipbook').turn({
+                                            width: containerWidth * 0.9,
+                                            height: containerHeight * 0.9,
+                                            autoCenter: true,
+                                            gradients: true,
+                                            acceleration: true,
+                                            display: 'single',
+                                            elevation: 50,
+                                            when: {
+                                                turning: function (event, page, pageObject) {
+                                                    document.getElementById('current-page').textContent = page;
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        // Mobil cihazlar için kontrolleri güncelle
+                                        document.getElementById('current-page').textContent = "1";
+                                        
+                                        // Mobil'de sayfa gezinme işlevleri
+                                        window.previousPage = function() {
+                                            const currentPage = parseInt(document.getElementById('current-page').textContent);
+                                            if (currentPage > 1) {
+                                                const newPage = currentPage - 1;
+                                                document.getElementById('current-page').textContent = newPage;
+                                                
+                                                // İlgili sayfaya kaydır
+                                                const pages = document.querySelectorAll('#flipbook .page');
+                                                if (pages[newPage - 1]) {
+                                                    pages[newPage - 1].scrollIntoView({ behavior: 'smooth' });
+                                                }
+                                            }
+                                        };
+                                        
+                                        window.nextPage = function() {
+                                            const currentPage = parseInt(document.getElementById('current-page').textContent);
+                                            const totalPages = pdfDoc.numPages;
+                                            if (currentPage < totalPages) {
+                                                const newPage = currentPage + 1;
+                                                document.getElementById('current-page').textContent = newPage;
+                                                
+                                                // İlgili sayfaya kaydır
+                                                const pages = document.querySelectorAll('#flipbook .page');
+                                                if (pages[newPage - 1]) {
+                                                    pages[newPage - 1].scrollIntoView({ behavior: 'smooth' });
+                                                }
+                                            }
+                                        };
+                                        
+                                        // Mobil'de kaydırma olayını dinle
+                                        const pdfContainer = document.querySelector('.pdf-container');
+                                        pdfContainer.addEventListener('scroll', function() {
+                                            const pages = document.querySelectorAll('#flipbook .page');
+                                            const containerTop = pdfContainer.scrollTop;
+                                            const containerHeight = pdfContainer.clientHeight;
+                                            
+                                            // En çok görünen sayfayı bul
+                                            let maxVisiblePage = 1;
+                                            let maxVisibleArea = 0;
+                                            
+                                            pages.forEach((page, index) => {
+                                                const rect = page.getBoundingClientRect();
+                                                const pageTop = rect.top;
+                                                const pageBottom = rect.bottom;
+                                                const visibleTop = Math.max(pageTop, 0);
+                                                const visibleBottom = Math.min(pageBottom, containerHeight);
+                                                const visibleArea = Math.max(0, visibleBottom - visibleTop);
+                                                
+                                                if (visibleArea > maxVisibleArea) {
+                                                    maxVisibleArea = visibleArea;
+                                                    maxVisiblePage = index + 1;
+                                                }
+                                            });
+                                            
+                                            // Sayfa numarasını güncelle
+                                            document.getElementById('current-page').textContent = maxVisiblePage;
+                                        });
+                                    }
 
                                 } catch (error) {
                                     console.error('PDF yüklenirken hata oluştu:', error);
@@ -692,14 +826,22 @@
 
                             // Sayfa geçiş fonksiyonları
                             function previousPage() {
-                                if (flipBook && flipBook.turn) {
+                                const isMobile = window.innerWidth <= 768;
+                                if (!isMobile && flipBook && flipBook.turn) {
                                     flipBook.turn('previous');
+                                } else if (isMobile) {
+                                    // Mobil için özel previousPage fonksiyonu
+                                    window.previousPage();
                                 }
                             }
 
                             function nextPage() {
-                                if (flipBook && flipBook.turn) {
+                                const isMobile = window.innerWidth <= 768;
+                                if (!isMobile && flipBook && flipBook.turn) {
                                     flipBook.turn('next');
+                                } else if (isMobile) {
+                                    // Mobil için özel nextPage fonksiyonu
+                                    window.nextPage();
                                 }
                             }
 
@@ -886,7 +1028,20 @@
         // Pencere boyutu değiştiğinde tam ekran modunda yeniden boyutlandır
         window.addEventListener('resize', function () {
             const container = document.querySelector('.pdf-container');
-            if (container.classList.contains('fullscreen-mode')) {
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // Mobil görünümde turn.js'yi kaldır
+                if (flipBook && typeof flipBook.turn === 'function') {
+                    try {
+                        flipBook.turn('destroy');
+                        flipBook = null;
+                    } catch (e) {
+                        console.log('Turn.js zaten yüklü değil');
+                    }
+                }
+            } else if (container.classList.contains('fullscreen-mode')) {
+                // Masaüstünde tam ekranda yeniden boyutlandır
                 const containerWidth = window.innerWidth * 0.95;
                 const containerHeight = window.innerHeight * 0.9;
 
@@ -894,6 +1049,9 @@
                     flipBook.turn('size', containerWidth, containerHeight);
                     flipBook.turn('center');
                 }
+            } else {
+                // Masaüstünde normal modda reloadPDF() çağır
+                reloadPDF();
             }
         });
     </script>
