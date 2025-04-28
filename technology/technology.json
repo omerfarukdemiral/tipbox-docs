@@ -1,0 +1,31 @@
+{
+  "section": "technology",
+  "heading1": [
+    {
+      "title": "Application Architecture (Web2 - Web3)",
+      "href": "technology/application-architecture.html",
+      "sub": [
+        "AI Integration and Modular Architecture",
+        "Web3 Wallet Module",
+        "Account Abstraction",
+        "Web3 Wallet Module Architecture",
+        "Application Integrity"
+      ]
+    },
+    {
+      "title": "Network Infrastructure",
+      "href": "technology/network-infrastructure.html",
+      "sub": []
+    },
+    {
+      "title": "Multi-Layered Architecture",
+      "href": "technology/multi-layered-architecture.html",
+      "sub": []
+    },
+    {
+      "title": "Core Architectural Principles",
+      "href": "technology/core-architectural-principles.html",
+      "sub": []
+    }
+  ]
+} 

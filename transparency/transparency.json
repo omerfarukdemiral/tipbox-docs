@@ -1,0 +1,40 @@
+{
+  "section": "transparency",
+  "heading1": [
+    {
+      "title": "OVERVIEW & PRINCIPLES",
+      "href": "transparency/overview-principles.html",
+      "sub": []
+    },
+    {
+      "title": "TOKENECONOMICS & DISTRIBUTION",
+      "href": "transparency/tokeneconomics-distribution.html",
+      "sub": []
+    },
+    {
+      "title": "IN-APP ECONOMY & REVENUE STREAMS",
+      "href": "transparency/in-app-economy-revenue-streams.html",
+      "sub": []
+    },
+    {
+      "title": "TOKEN SALE & LIQUIDITY STRATEGY",
+      "href": "transparency/token-sale-liquidity-strategy.html",
+      "sub": []
+    },
+    {
+      "title": "TREASURY MANAGEMENT & GOVERNANCE",
+      "href": "transparency/treasury-management-governance.html",
+      "sub": []
+    },
+    {
+      "title": "COMPLIANCE & REGULATORY RISK MANAGEMENT",
+      "href": "transparency/compliance-regulatory-risk-management.html",
+      "sub": []
+    },
+    {
+      "title": "TRANSPARENCY",
+      "href": "transparency/transparency.html",
+      "sub": []
+    }
+  ]
+} 

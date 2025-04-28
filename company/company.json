@@ -1,0 +1,40 @@
+{
+  "section": "company",
+  "heading1": [
+    {
+      "title": "OVERVIEW",
+      "href": "company/overview.html",
+      "sub": []
+    },
+    {
+      "title": "CAP TABLE & OWNERSHIP ALLOCATIONS",
+      "href": "company/cap-table-ownership-allocations.html",
+      "sub": []
+    },
+    {
+      "title": "SHARE CLASSES & RIGHTS",
+      "href": "company/share-classes-rights.html",
+      "sub": []
+    },
+    {
+      "title": "INVESTMENT PLAN",
+      "href": "company/investment-plan.html",
+      "sub": []
+    },
+    {
+      "title": "INVESTMENT ROUNDS & DILUTION EFFECTS",
+      "href": "company/investment-rounds-dilution-effects.html",
+      "sub": []
+    },
+    {
+      "title": "FINANCIAL PROJECTIONS & BREAK-EVEN ANALYSIS",
+      "href": "company/financial-projections-break-even-analysis.html",
+      "sub": []
+    },
+    {
+      "title": "EXIT STRATEGIES",
+      "href": "company/exit-strategies.html",
+      "sub": []
+    }
+  ]
+} 

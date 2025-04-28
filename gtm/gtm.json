@@ -1,0 +1,41 @@
+{
+  "section": "go-to-market",
+  "heading1": [
+    {
+      "title": "Go to Market Model & Logic",
+      "href": "gtm/go-to-market.html",
+      "sub": [
+        "Product-Led Model",
+        "Inbound Model"
+      ]
+    },
+    {
+      "title": "Marketing Plan",
+      "href": "gtm/marketing-plan.html",
+      "sub": [
+        "Creator Program",
+        "Localization & Expansion"
+      ]
+    },
+    {
+      "title": "Sales & Pricing Strategy",
+      "href": "gtm/sales-pricing-strategy.html",
+      "sub": []
+    },
+    {
+      "title": "KPIs and Success Metrics",
+      "href": "gtm/kpis-and-success-metrics.html",
+      "sub": []
+    },
+    {
+      "title": "Expansion Strategy",
+      "href": "gtm/expansion-strategy.html",
+      "sub": []
+    },
+    {
+      "title": "User Behavior Flow and Conversion Expectations",
+      "href": "gtm/user-behavior-flow-and-conversion-expectations.html",
+      "sub": []
+    }
+  ]
+} 

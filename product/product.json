@@ -1,0 +1,84 @@
+{
+  "product": {
+    "heading1": [
+      {
+        "title": "OVERVIEW",
+        "href": "overview.html",
+        "sub": [
+          "TIPBOX Versus Traditional Platforms",
+          "Reward Mechanism",
+          "User Experience and Tools",
+          "AI-Supported Systems",
+          "TIPBOX's Vision"
+        ]
+      },
+      {
+        "title": "FOCUS PROBLEMS",
+        "href": "focus-problems.html",
+        "sub": [
+          "Major Problems",
+          "Minor Problems",
+          "TIPBOX's Focus"
+        ]
+      },
+      {
+        "title": "COMPACT SOLUTIONS",
+        "href": "compact-solutions.html",
+        "sub": [
+          "Incentive and Reward Mechanism",
+          "Multi-Platform Integration",
+          "Integration Benefits",
+          "Innovative Experience Sharing Model"
+        ]
+      },
+      {
+        "title": "PLATFORM CONCEPT AND HIGHLIGHTED FEATURES",
+        "href": "platform-concept-and-highlighted-features.html",
+        "sub": [
+          "Slices of Experience",
+          "NFT Badge System",
+          "Hybrid Structure",
+          "Integrated Modules"
+        ]
+      },
+      {
+        "title": "USERS AND ECOSYSTEM",
+        "href": "users-and-ecosystem.html",
+        "sub": [
+          "User Profiles",
+          "User Interaction with the Platform",
+          "Social Mechanisms That Hold the Ecosystem Together",
+          "Strategic Ecosystem Advantages",
+          "User Access and Participation Model (Freemium Structure)"
+        ]
+      },
+      {
+        "title": "ON-PLATFORM ECONOMY",
+        "href": "on-platform-economy.html",
+        "sub": [
+          "TIPBOX Prime Pass",
+          "TIPBOX Premium"
+        ]
+      },
+      {
+        "title": "REVENUE SHARING, INCENTIVE AND REWARD MECHANISMS",
+        "href": "revenue-sharing-incentive-and-reward-mechanisms.html",
+        "sub": [
+          "Economic Incentives and Rewards for Users",
+          "Creator Program and Revenue Sharing Details",
+          "Strategic Advantages of Revenue Sharing",
+          "Prize Pool and Distribution Models in Revenue Sharing"
+        ]
+      },
+      {
+        "title": "TIPS",
+        "href": "tips.html",
+        "sub": [
+          "TIPS Token and Its Functions",
+          "Experience-Based NFT Badges: Purpose and Functionality",
+          "Special NFTs and Their Functions"
+        ]
+      }
+    ]
+  }
+} 

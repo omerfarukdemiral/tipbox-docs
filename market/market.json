@@ -1,0 +1,56 @@
+{
+  "market": {
+    "heading1": [
+      {
+        "title": "Global & Local Trends",
+        "href": "global-local-trends.html",
+        "sub": [
+          "Global Trends",
+          "Trends Observed in Turkey", 
+          "Turkish Market Overview",
+          "Competitor Analysis & SWOT",
+          "SWOT Analysis",
+          "Differentiation Matrix",
+          "Moat & Defensibility",
+          "Gap Analysis in Review Ecosystem"
+        ]
+      },
+      {
+        "title": "Market Overview",
+        "href": "market-overview.html",
+        "sub": [
+          "Overview of Target Markets",
+          "Strategic Market Choices and Sectoral Focuses in the Early Phases"
+        ]
+      },
+      {
+        "title": "Market Positioning",
+        "href": "market-positioning.html",
+        "sub": [
+          "Value Proposition",
+          "PRODUCT / SERVICE", 
+          "CUSTOMER",
+          "Positioning Strategy:"
+        ]
+      },
+      {
+        "title": "Risk Assesments (PESTELC)",
+        "href": "risk-assesments-pestelc.html",
+        "sub": []
+      },
+      {
+        "title": "Target Market & Segmentation",
+        "href": "target-market-segmentation.html",
+        "sub": [
+          "Addressable Market Size",
+          "User Profiles and Segmentation"
+        ]
+      },
+      {
+        "title": "User Journey Map",
+        "href": "user-journey-map.html",
+        "sub": []
+      }
+    ]
+  }
+} 
