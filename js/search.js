@@ -212,74 +212,67 @@
     ];
 
     // Sonuçları göster
-    displaySearchResults(results, term);
+    displaySearchResults(results);
   }
 
   /**
    * Arama sonuçlarını göster
    * @param {Array} results - Arama sonuçları
-   * @param {string} searchTerm - Arama terimi
    */
-  function displaySearchResults(results, searchTerm) {
+  function displaySearchResults(results) {
     searchPanel.empty();
 
     if (results.length === 0) {
-      searchPanel.html('<div class="search-no-results">No results found.</div>');
-      searchPanel.slideDown(300);
-      return;
+        searchPanel.html('<div class="search-no-results">No results found</div>');
+        searchPanel.slideDown(300);
+        return;
     }
 
     // Sonuç sayısını göster
     const resultCountHtml = `<div class="search-results-count">${results.length} results found</div>`;
     searchPanel.append(resultCountHtml);
 
-    // Sonuçları listele
-    const resultsListHtml = $('<ul class="search-results-list"></ul>');
-
-    // En fazla 10 sonuç göster
-    const maxResults = Math.min(results.length, 10);
-    for (let i = 0; i < maxResults; i++) {
-      const result = results[i];
-      const isSubItem = result.type === "sub";
-      
-      // Sonuç metnini oluştur
-      let resultText = '';
-      if (isSubItem) {
-        resultText = `<strong>"${result.title}"</strong> content found in <strong>${capitalize(result.section)}</strong> page.`;
-      } else {
-        resultText = `<strong>"${result.title}"</strong> content found in <strong>${capitalize(result.section)}</strong> page.`;
-      }
-      
-      let resultItemHtml = `
-        <li>
-          <a href="${result.href}" class="search-result-link">
-            <div class="search-result-content">
-              <span class="search-result-text">${resultText}</span>
-              <span class="search-result-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+    // Sonuçları göster (ilk 5 sonuç)
+    const firstFiveResults = results.slice(0, 5);
+    firstFiveResults.forEach(result => {
+        const isSubItem = result.type === "sub";
+        
+        // Sonuç metnini oluştur
+        let resultText = '';
+        if (isSubItem) {
+            resultText = `<strong>"${result.title}"</strong> content found in <strong>${capitalize(result.section)}</strong> page.`;
+        } else {
+            resultText = `<strong>"${result.title}"</strong> content found in <strong>${capitalize(result.section)}</strong> page.`;
+        }
+        
+        let resultItemHtml = `
+            <div class="search-results-item">
+                <a href="${result.href}" class="search-result-link">
+                    <div class="search-result-content">
+                        <div class="search-result-text">${resultText}</div>
+                        <div class="search-result-arrow">→</div>
+                    </div>
+                </a>
             </div>
-          </a>
-        </li>
-      `;
-      
-      resultsListHtml.append(resultItemHtml);
-    }
+        `;
+        
+        searchPanel.append(resultItemHtml);
+    });
 
-    searchPanel.append(resultsListHtml);
+    // Eğer 5'ten fazla sonuç varsa "Show all" linkini ekle
+    if (results.length > 5) {
+        const showAllHtml = `
+            <div class="search-show-all">
+                <a href="#" id="show-all-results">Show all ${results.length} results</a>
+            </div>
+        `;
+        searchPanel.append(showAllHtml);
 
-    // Daha fazla sonuç varsa "Tümünü Göster" butonu ekle
-    if (results.length > 10) {
-      const showAllHtml = `
-        <div class="search-show-all">
-          <a href="#" id="show-all-results">View all ${results.length} results</a>
-        </div>
-      `;
-      searchPanel.append(showAllHtml);
-
-      // Tümünü göster butonuna tıklandığında
-      $("#show-all-results").on("click", function (e) {
-        e.preventDefault();
-        displayAllSearchResults(results, searchTerm);
-      });
+        // Tümünü göster butonuna tıklandığında
+        $("#show-all-results").on("click", function (e) {
+            e.preventDefault();
+            displayAllSearchResults(results);
+        });
     }
 
     // Sonuçları göster
@@ -289,18 +282,17 @@
   /**
    * Tüm arama sonuçlarını göster
    * @param {Array} results - Arama sonuçları
-   * @param {string} searchTerm - Arama terimi
    */
-  function displayAllSearchResults(results, searchTerm) {
+  function displayAllSearchResults(results) {
     // Overlay oluştur
     const overlay = $('<div class="search-results-overlay"></div>');
     const closeButton = $('<button class="search-results-close">&times;</button>');
     const resultsContainer = $('<div class="search-results-container"></div>');
     
-    const resultCountHtml = `<h3 class="search-results-title">${results.length} results for "${searchTerm}"</h3>`;
+    const resultCountHtml = `<h3 class="search-results-title">${results.length} results</h3>`;
     resultsContainer.append(resultCountHtml);
     
-    const resultsListHtml = $('<ul class="search-results-list full"></ul>');
+    const resultsListHtml = $('<div class="search-results-list full"></div>');
     
     // Tüm sonuçları göster
     results.forEach(function (result) {
@@ -315,14 +307,14 @@
       }
       
       let resultItemHtml = `
-        <li>
+        <div class="search-results-item">
           <a href="${result.href}" class="search-result-link">
             <div class="search-result-content">
-              <span class="search-result-text">${resultText}</span>
-              <span class="search-result-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+              <div class="search-result-text">${resultText}</div>
+              <div class="search-result-arrow">→</div>
             </div>
           </a>
-        </li>
+        </div>
       `;
       
       resultsListHtml.append(resultItemHtml);
