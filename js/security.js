@@ -56,18 +56,6 @@ function showSecurityAlert(action, isWarning = true) {
         filter: none !important;
     `;
     
-    alertDiv.innerHTML = `
-        <h3 style="margin: 0 0 10px 0; font-size: 18px;">⚠️ Security Alert</h3>
-        <p style="margin: 0; font-size: 16px;">${action}</p>
-        ${isWarning ? '<p style="margin: 10px 0 0 0; font-size: 14px; color: #ffd700;">Content is protected for security reasons.</p>' : ''}
-    `;
-    
-    document.body.appendChild(alertDiv);
-    
-    setTimeout(() => {
-        alertDiv.style.animation = 'fadeOut 0.3s ease';
-        setTimeout(() => alertDiv.remove(), 300);
-    }, 4000);
 }
 
 // Güvenlik durumunu güncelle
