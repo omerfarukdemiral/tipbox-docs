@@ -28,7 +28,7 @@ const TRACKED_PAGES = {
     'market.html': 'Market',
     'go-to-market.html': 'Go To Market',
     'technology.html': 'Technology',
-    'transparency-tokenomics.html': 'Transparency & Tokenomics',
+    'transparency-tokenomics.html': 'Tokenomics & Transparency',
     'company-finance.html': 'company & Finance',
     'roadmap.html': 'Roadmap',
     'project-deck.html': 'Proje Deck',

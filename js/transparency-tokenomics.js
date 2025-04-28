@@ -1,4 +1,4 @@
-// Transparency & Tokenomics sayfası için işlevsellik
+// Tokenomics & Transparency sayfası için işlevsellik
 
 // Sayfa yüklendiğinde hazırlık işlevini çağır
 document.addEventListener("DOMContentLoaded", function() {

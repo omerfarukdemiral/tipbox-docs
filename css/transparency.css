@@ -95,6 +95,7 @@
     width: 20px;
     height: 20px;
     border-radius: 4px;
+    margin-right: 12px;
 }
 
 .legend-label {
@@ -104,29 +105,38 @@
 }
 
 /* Renk Paleti - Koyu tema uyumlu */
-.legend-color.reward-farming,
-.color-box.reward-farming { background-color: var(--reward-farming-color); }
+.legend-color.incentives-rewards,
+.color-box.incentives-rewards { background-color: var(--incentives-rewards-color); }
 
-.legend-color.strategic-investors,
-.color-box.strategic-investors { background-color: var(--strategic-investors-color); }
+.legend-color.founders-team,
+.color-box.founders-team { background-color: var(--founders-team-color); }
+
+.legend-color.marketing,
+.color-box.marketing { background-color: var(--marketing-color); }
+
+.legend-color.operations-growth,
+.color-box.operations-growth { background-color: var(--operations-growth-color); }
 
 .legend-color.development,
 .color-box.development { background-color: var(--development-color); }
 
-.legend-color.ecosystem,
-.color-box.ecosystem { background-color: var(--ecosystem-color); }
-
-.legend-color.staking,
-.color-box.staking { background-color: var(--staking-color); }
-
 .legend-color.liquidity,
 .color-box.liquidity { background-color: var(--liquidity-color); }
 
-.legend-color.reserve,
-.color-box.reserve { background-color: var(--reserve-color); }
+.legend-color.bonding-reserve,
+.color-box.bonding-reserve { background-color: var(--bonding-reserve-color); }
 
-.legend-color.advisors,
-.color-box.advisors { background-color: var(--advisors-color); }
+.legend-color.angel,
+.color-box.angel { background-color: var(--angel-color); }
+
+.legend-color.pre-seed,
+.color-box.pre-seed { background-color: var(--pre-seed-color); }
+
+.legend-color.seed,
+.color-box.seed { background-color: var(--seed-color); }
+
+.legend-color.seed-extension,
+.color-box.seed-extension { background-color: var(--seed-extension-color); }
 
 .category {
     font-weight: 500;
@@ -174,7 +184,7 @@
 
 .progress-bar {
     height: 100%;
-    background-color: #6366f1;
+    background-color: #d8ff08;
     border-radius: 5px;
 }
 
@@ -202,6 +212,103 @@
     margin-top: 20px;
 }
 
+/* Token Metrics Cards */
+.token-metrics-cards {
+    padding: 0 20px;
+}
+
+.token-metric-card {
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: #111;
+    height: 100%;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.token-metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.metric-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.bg-primary {
+    background-color: #6366f1;
+}
+
+.metric-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.progress-bar-custom {
+    width: 100%;
+    height: 8px;
+    background-color: var(--secondary-bg-color);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #6366f1;
+    border-radius: 5px;
+}
+
+.metric-detail {
+    margin-bottom: 10px;
+}
+
+.metric-detail p {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 3px;
+}
+
+.metric-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.metric-link {
+    display: inline-block;
+    color: #efefef;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 8px;
+    transition: color 0.3s;
+}
+
+.metric-link:hover {
+    color: #d8ff08;
+    text-decoration: underline;
+}
+
+.metric-description {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-color);
+}
+
+.metric-description p {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-muted);
+}
+
 /* Token Category Grid */
 .token-category-grid {
     display: grid;
@@ -223,14 +330,17 @@
     width: 100%;
 }
 
-.token-category-card.reward-farming .category-color-bar { background-color: var(--reward-farming-color); }
-.token-category-card.strategic-investors .category-color-bar { background-color: var(--strategic-investors-color); }
+.token-category-card.incentives-rewards .category-color-bar { background-color: var(--incentives-rewards-color); }
+.token-category-card.founders-team .category-color-bar { background-color: var(--founders-team-color); }
+.token-category-card.marketing .category-color-bar { background-color: var(--marketing-color); }
+.token-category-card.operations-growth .category-color-bar { background-color: var(--operations-growth-color); }
 .token-category-card.development .category-color-bar { background-color: var(--development-color); }
-.token-category-card.ecosystem .category-color-bar { background-color: var(--ecosystem-color); }
-.token-category-card.staking .category-color-bar { background-color: var(--staking-color); }
 .token-category-card.liquidity .category-color-bar { background-color: var(--liquidity-color); }
-.token-category-card.reserve .category-color-bar { background-color: var(--reserve-color); }
-.token-category-card.advisors .category-color-bar { background-color: var(--advisors-color); }
+.token-category-card.bonding-reserve .category-color-bar { background-color: var(--bonding-reserve-color); }
+.token-category-card.angel .category-color-bar { background-color: var(--angel-color); }
+.token-category-card.pre-seed .category-color-bar { background-color: var(--pre-seed-color); }
+.token-category-card.seed .category-color-bar { background-color: var(--seed-color); }
+.token-category-card.seed-extension .category-color-bar { background-color: var(--seed-extension-color); }
 
 .category-content {
     padding: 25px;
@@ -449,76 +559,37 @@
     }
 }
 
-/* Dark Mode Support - Koyu arka plan için güncellenmiş renkler */
+/* CSS Variables */
 :root {
+    --text-color: #1a202c;
+    --text-muted: #64748b;
     --primary-color: #6366f1;
     --primary-color-dark: #4f46e5;
-    --text-color: #333;
-    --text-muted: #64748b;
-    --card-bg-color: #fff;
-    --secondary-bg-color: #f1f5f9;
+    --secondary-bg-color: #e2e8f0;
+    --card-bg-color: #ffffff;
     --border-color: #e2e8f0;
-    --main-font: 'Inter', sans-serif;
     
-    /* Açık temada renkler */
-    --reward-farming-color: #7B89F9;
-    --strategic-investors-color: #0E47B2;
-    --development-color: #8048DD;
-    --ecosystem-color: #35D399;
-    --staking-color: #F7A948;
-    --liquidity-color: #048B94;
-    --reserve-color: #FF5063;
-    --advisors-color: #5CE4F0;
-    
-    /* Temel renkler */
-    --background-dark: #121218;
-    --background-light: #f8f9fa;
-    --text-dark: #e4e6eb;
-    --primary: #5670ff;
-    --primary-hover: #4560fe;
-    --border-dark: #2d2e3a;
-    --border-light: #dee2e6;
-    
-    /* Kart arkaplan renkleri */
-    --card-dark: #1d1e2b;
-    --card-light: #ffffff;
-    
-    /* Metrik değişim renkleri */
-    --positive-change: #56ff70;
-    --negative-change: #ff5670;
-    
-    /* Dönem-bazlı renk paleti - Çubuk grafik için */
-    --q1-color: rgba(86, 112, 255, 0.85);
-    --q2-color: rgba(86, 177, 255, 0.85);
-    --q3-color: rgba(86, 255, 241, 0.85);
-    --q4-color: rgba(86, 255, 177, 0.85);
-    
-    /* Geçiş ve gölge değerleri */
-    --transition-speed: 0.3s;
-    --box-shadow-dark: 0 4px 12px rgba(0, 0, 0, 0.25);
-    --box-shadow-light: 0 4px 12px rgba(0, 0, 0, 0.1);
-    
-    /* Responsive değerler */
-    --container-width: 1200px;
-    --padding-section: 60px 20px;
+    /* Token Distribution Colors */
+    --incentives-rewards-color: #6366f1;
+    --founders-team-color: #818cf8;
+    --marketing-color: #f59e0b;
+    --liquidity-color: #10b981;
+    --development-color: #3b82f6;
+    --seed-color: #d946ef;
+    --operations-growth-color: #14b8a6;
+    --seed-extension-color: #8b5cf6;
+    --pre-seed-color: #ec4899;
+    --bonding-reserve-color: #f97316;
+    --angel-color: #a855f7;
 }
 
+/* Dark Theme Variables */
 [data-theme="dark"] {
-    --text-color: #e2e8f0;
+    --text-color: #f1f5f9;
     --text-muted: #94a3b8;
+    --secondary-bg-color: #2d3748;
     --card-bg-color: #1e293b;
-    --secondary-bg-color: #334155;
-    --border-color: #475569;
-    
-    /* Koyu temada renkler - daha parlak ve canlı */
-    --reward-farming-color: #7B89F9;
-    --strategic-investors-color: #1E7AF5;
-    --development-color: #9D4EFF;
-    --ecosystem-color: #3AEE9C;
-    --staking-color: #FFAC4D;
-    --liquidity-color: #0FB8C2;
-    --reserve-color: #FF5A6E;
-    --advisors-color: #67E4F9;
+    --border-color: #334155;
 }
 
 /* Tema değişikliği - açık/koyu tema */
@@ -728,7 +799,7 @@ ul {
 }
 
 .token-category-card {
-  background-color: var(--card-bg);
+  background-color: var(--card-bg-color);
   border-radius: 12px;
   padding: 20px;
   box-shadow: var(--box-shadow);
@@ -754,7 +825,7 @@ ul {
 }
 
 .category-header .percentage {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 1.2rem;
   font-weight: 500;
 }
@@ -771,7 +842,7 @@ ul {
 }
 
 .view-address a {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
   color: var(--primary);
   display: inline-flex;
@@ -805,7 +876,7 @@ ul {
 }
 
 .info-item p {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 1.4rem;
   font-weight: 500;
   margin: 0;
@@ -860,14 +931,14 @@ ul {
 }
 
 .metric-value {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 1.8rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
   font-weight: 600;
   margin: 15px 0;
 }
 
 .metric-change {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   font-weight: 500;
 }
@@ -1166,7 +1237,7 @@ ul {
   opacity: 0;
   transition: opacity 0.3s;
   box-shadow: var(--box-shadow);
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
   word-break: break-all;
 }
