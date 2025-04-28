@@ -37,15 +37,6 @@ const TRACKED_PAGES = {
     'all-in-one-deck.html': 'All in One Deck'
 };
 
-(function () {
-    if (location.hostname !== 'localhost') {
-      console.log = function() {};
-      console.warn = function() {};
-      console.error = function() {};
-      console.info = function() {};
-      console.debug = function() {};
-    }
-  })();
 
 // Firebase bağlantısını doğrula
 async function checkFirebaseConnection() {    

@@ -71,7 +71,17 @@
     if (typeof window.toggleSidebar === 'function') {
       window.toggleSidebar();
     } else {
-      $('body').toggleClass('body-sidebar-active');
+      // Eğer Safari tarayıcısıysa ve sidebar açıksa (body-sidebar-active varsa)
+      if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent) && $('body').hasClass('body-sidebar-active')) {
+        // Açıksa kapat (toggle yerine kesin kaldırma)
+        $('body').removeClass('body-sidebar-active');
+        $("body").removeClass("sidebar-menu-open");
+        $(".sidebar-menu").removeClass("active");
+        $(".sidebar-overlay").removeClass("active");
+      } else {
+        // Normal toggle işlemi
+        $('body').toggleClass('body-sidebar-active');
+      }
     }
   };
 
@@ -80,47 +90,145 @@
     window.toggleSidebarMenu();
   }
 
+  // Safari için kesin olarak sidebar'ı kapatma fonksiyonu
+  function forceSidebarClose() {
+    // Body sınıflarını kesin olarak kaldır
+    $('body').removeClass('body-sidebar-active');
+    $("body").removeClass("sidebar-menu-open");
+    $(".sidebar-menu").removeClass("active");
+    $(".sidebar-overlay").removeClass("active");
+  }
+
+  // Tarayıcı tespiti yapan fonksiyon
+  function detectSafari() {
+    var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    return isSafari;
+  }
+
   // Jquery ile sadece gerekli element seçiciler 
   function initSidebarMenu() {
     const $sidebarToggleBtn = $('#sidebarToggleBtn');
     const $sidebarCloseBtn = $('.sidebar-close-btn');
     const $sidebarOverlay = $('.sidebar-overlay');
+    const isSafari = detectSafari();
     
     // Event listener'ları ekle
     if ($sidebarToggleBtn.length) {
-      $sidebarToggleBtn.on('click', function(e) {
-        e.preventDefault();
-        toggleSidebarMenu();
+      // Safari için farklı event binding yöntemi kullan
+      if (isSafari) {
+        // Safari için doğrudan tıklama işlevini bind et
+        $sidebarToggleBtn[0].onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // Safari için toggle işlemi
+          toggleSidebarMenu();
+          
+          // Mobil uyumluluk için eklendi
+          $("body").toggleClass("sidebar-menu-open");
+          $(".sidebar-menu").toggleClass("active");
+          $(".sidebar-overlay").toggleClass("active");
+          
+          return false; // Event'i tamamen durdur
+        };
         
-        // Mobil uyumluluk için eklendi
-        $("body").toggleClass("sidebar-menu-open");
-        $(".sidebar-menu").toggleClass("active");
-        $(".sidebar-overlay").toggleClass("active");
-      });
+        // Ayrıca touchstart ile de dinleyelim
+        $sidebarToggleBtn[0].addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          $sidebarToggleBtn[0].click(); // manuel tıklama tetikle
+        }, {passive: false});
+        
+      } else {
+        // Diğer tarayıcılar için normal jQuery binding
+        $sidebarToggleBtn.on('click', function(e) {
+          e.preventDefault();
+          
+          toggleSidebarMenu();
+          
+          // Mobil uyumluluk için eklendi
+          $("body").toggleClass("sidebar-menu-open");
+          $(".sidebar-menu").toggleClass("active");
+          $(".sidebar-overlay").toggleClass("active");
+        });
+      }
+    } else {
+      console.warn('Sidebar toggle butonu bulunamadı! (#sidebarToggleBtn)');
     }
     
     if ($sidebarCloseBtn.length) {
-      $sidebarCloseBtn.on('click', function(e) {
-        e.preventDefault();
-        toggleSidebarMenu();
+      // Safari için farklı event binding yöntemi kullan
+      if (isSafari) {
+        // Safari için doğrudan tıklama işlevini bind et
+        $sidebarCloseBtn[0].onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // toggleSidebarMenu yerine forceSidebarClose kullan
+          forceSidebarClose();
+          
+          // Mobil uyumluluk için eklendi - zaten forceSidebarClose içinde var ama kesinlik için
+          $("body").removeClass("sidebar-menu-open");
+          $(".sidebar-menu").removeClass("active");
+          $(".sidebar-overlay").removeClass("active");
+          
+          return false; // Event'i tamamen durdur
+        };
         
-        // Mobil uyumluluk için eklendi
-        $("body").removeClass("sidebar-menu-open");
-        $(".sidebar-menu").removeClass("active");
-        $(".sidebar-overlay").removeClass("active");
-      });
+        // Ayrıca touchstart ile de dinleyelim
+        $sidebarCloseBtn[0].addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          $sidebarCloseBtn[0].click(); // manuel tıklama tetikle
+        }, {passive: false});
+      } else {
+        // Diğer tarayıcılar için normal jQuery binding
+        $sidebarCloseBtn.on('click', function(e) {
+          e.preventDefault();
+          toggleSidebarMenu();
+          
+          // Mobil uyumluluk için eklendi
+          $("body").removeClass("sidebar-menu-open");
+          $(".sidebar-menu").removeClass("active");
+          $(".sidebar-overlay").removeClass("active");
+        });
+      }
     }
     
     if ($sidebarOverlay.length) {
-      $sidebarOverlay.on('click', function(e) {
-        e.preventDefault();
-        toggleSidebarMenu();
+      // Safari için farklı event binding yöntemi kullan
+      if (isSafari) {
+        // Safari için doğrudan tıklama işlevini bind et
+        $sidebarOverlay[0].onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // toggleSidebarMenu yerine forceSidebarClose kullan
+          forceSidebarClose();
+          
+          // Mobil uyumluluk için eklendi - zaten forceSidebarClose içinde var ama kesinlik için
+          $("body").removeClass("sidebar-menu-open");
+          $(".sidebar-menu").removeClass("active");
+          $(".sidebar-overlay").removeClass("active");
+          
+          return false; // Event'i tamamen durdur
+        };
         
-        // Mobil uyumluluk için eklendi
-        $("body").removeClass("sidebar-menu-open");
-        $(".sidebar-menu").removeClass("active");
-        $(".sidebar-overlay").removeClass("active");
-      });
+        // Ayrıca touchstart ile de dinleyelim
+        $sidebarOverlay[0].addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          $sidebarOverlay[0].click(); // manuel tıklama tetikle
+        }, {passive: false});
+      } else {
+        // Diğer tarayıcılar için normal jQuery binding
+        $sidebarOverlay.on('click', function(e) {
+          e.preventDefault();
+          toggleSidebarMenu();
+          
+          // Mobil uyumluluk için eklendi
+          $("body").removeClass("sidebar-menu-open");
+          $(".sidebar-menu").removeClass("active");
+          $(".sidebar-overlay").removeClass("active");
+        });
+      }
     }
     
     // Dropdown menülerin açılıp kapanması
@@ -220,6 +328,8 @@
     
     // Dark Mode işlevselliğini başlat
     initDarkMode();
+    console.log('Global asdasdasdasda fonksiyonu çağrıldı');
+
     
     // Responsive Layout Handler'ı çağır
     responsiveLayoutHandler();
@@ -1071,8 +1181,8 @@
   });
 
   /*-------------------------------------
-	Intersection Observer
-	-------------------------------------*/
+    Intersection Observer
+    -------------------------------------*/
   if (!!window.IntersectionObserver) {
     let observer = new IntersectionObserver(
       (entries, observer) => {
@@ -1206,8 +1316,8 @@
   });
 
   /*-------------------------------------------------------------------------------
-	  MAILCHIMP js
-	-------------------------------------------------------------------------------*/
+      MAILCHIMP js
+    -------------------------------------------------------------------------------*/
   if ($(".mailchimp").length > 0) {
     $(".mailchimp").ajaxChimp({
       callback: mailchimpCallback,
