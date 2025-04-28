@@ -33,14 +33,6 @@ img, canvas, video, audio {
     z-index: 1000;
 }
 
-/* Güvenlik ihlali durumunda bulanıklaştırma */
-body.security-compromised {
-    filter: blur(10px);
-}
-
-body.security-compromised * {
-    pointer-events: none !important;
-}
 
 /* Watermark stilleri */
 .watermark {
@@ -61,30 +53,6 @@ body.security-compromised * {
     }
 }
 
-/* Geliştirme modu göstergesi */
-body.development-mode::before {
-    content: 'DEV';
-    display: block;
-    position: fixed;
-    bottom: 5px;
-    left: 5px;
-    background: rgba(255, 193, 7, 0.9);
-    color: #1d1e20;
-    padding: 2px 2px;
-    border-radius: 4px;
-    font-size: 6px;
-    font-weight: 600;
-    font-family: 'Jura', sans-serif;
-    z-index: 100000;
-    pointer-events: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(5px);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    border: 1px solid rgba(255, 193, 7, 0.3);
-    animation: pulse 2s infinite;
-}
 
 /* Development mode pulse animasyonu */
 @keyframes pulse {
@@ -160,39 +128,12 @@ body.development-mode::before {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Bulanıklaştırma efekti */
-.secure-container.blurred {
-    filter: blur(10px);
-    transition: filter 0.3s ease;
-}
+
 
 /* Güvenli içerik stilleri */
 .secure-content {
     position: relative;
     z-index: 1;
-}
-
-/* Development Mode Badge */
-.dev-mode-badge {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background: rgba(255, 193, 7, 0.9);
-    color: #1d1e20;
-    padding: 8px 15px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    font-family: 'Jura', sans-serif;
-    z-index: 100000;
-    pointer-events: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    border: 2px solid rgba(255, 193, 7, 0.3);
-    animation: pulse 2s infinite;
 }
 
 /* Mobil cihazlar için development mode göstergesi */

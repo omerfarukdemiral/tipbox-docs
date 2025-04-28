@@ -212,6 +212,9 @@
   }
 
   $(document).ready(function() {
+    // Sayfa yüklendiğinde body'e body_dark classını ekle
+    $("body").addClass("body_dark");
+    
     // Sidebar menüsünü başlat
     initSidebarMenu();
     
@@ -222,7 +225,14 @@
     responsiveLayoutHandler();
   });
 
+  // DOM içeriği tamamen yüklenmeden önce body'e body_dark sınıfını ekler ve remove sınıfını kaldırır
+  document.body.classList.add('body_dark');
+  document.body.classList.remove('remove');
+
   $(window).on("load", function () {
+    // Sayfa tamamen yüklendiğinde tekrar body_dark sınıfını ekle ve remove sınıfını kaldır
+    $("body").addClass("body_dark").removeClass("remove");
+    
     // Document is fully loaded, initialize sidebar again to make sure it works
     initSidebarMenu();
     
@@ -789,16 +799,10 @@
     window.matchMedia("(prefers-color-scheme: dark)").matches;
   var selectedNightTheme = readCookie("body_dark");
 
-  if (
-    selectedNightTheme == "true" ||
-    (selectedNightTheme === null && prefersDark)
-  ) {
-    applyNight();
-    $(".dark_mode_switcher").prop("checked", true);
-  } else {
-    applyDay();
-    $(".dark_mode_switcher").prop("checked", false);
-  }
+  // Tema kontrolünü atlayarak doğrudan dark mode uygula
+  applyNight();
+  $(".dark_mode_switcher").prop("checked", true);
+  createCookie("body_dark", true, 999);
 
   function applyNight() {
     if ($(".js-darkmode-btn .ball").length) {
@@ -811,17 +815,18 @@
     if ($(".js-darkmode-btn .ball").length) {
       $(".js-darkmode-btn .ball").css("left", "3px");
     }
-    $("body").removeClass("body_dark");
+    // body_dark sınıfını kaldırma işlemini yorum satırına alıyorum
+    // $("body").removeClass("body_dark");
+    
+    // Bunun yerine, her zaman body_dark sınıfını ekliyoruz
+    $("body").addClass("body_dark");
   }
 
   $(".dark_mode_switcher").change(function () {
-    if ($(this).is(":checked")) {
-      applyNight();
-      createCookie("body_dark", true, 999);
-    } else {
-      applyDay();
-      createCookie("body_dark", false, 999);
-    }
+    // Anahtar kapatılsa bile her zaman dark mode uygula
+    applyNight();
+    $(".dark_mode_switcher").prop("checked", true);
+    createCookie("body_dark", true, 999);
   });
 
   $(".mobile_menu_btn").on("click", function () {
@@ -1299,22 +1304,38 @@
   function initDarkMode() {
     const darkModeSwitcher = document.querySelector('.dark_mode_switcher');
     if (darkModeSwitcher) {
-        // Sayfa yüklendiğinde localStorage'dan tercihi al
-        const isDarkMode = localStorage.getItem('darkMode') === 'true';
-        document.body.classList.toggle('dark', isDarkMode);
-        darkModeSwitcher.checked = isDarkMode;
+        // Cihazın temasını göz ardı ederek her zaman dark mode'u aktif et
+        document.body.classList.add('dark');
+        document.body.classList.add('dark-mode');
+        document.body.classList.add('body_dark'); // body_dark class'ını ekle
+        darkModeSwitcher.checked = true;
+        
+        // Dark mode'u localStorage'a kaydet
+        localStorage.setItem('darkMode', 'true');
+        createCookie("body_dark", true, 999);
 
-        // Sidebar dark mode uyumluluğu
-        if (isDarkMode) {
-          document.body.classList.add('dark-mode');
-        }
-
+        // Dark mode değişikliği için event listener kaldırıldı - her zaman dark kalacak
         darkModeSwitcher.addEventListener('change', function() {
-            document.body.classList.toggle('dark');
-            document.body.classList.toggle('dark-mode');
-            localStorage.setItem('darkMode', this.checked);
+            // İşlem yapmasına izin verme
+            event.preventDefault();
+            event.stopPropagation();
+            
+            // Tekrar dark mode'a zorla
+            document.body.classList.add('dark');
+            document.body.classList.add('dark-mode');
+            document.body.classList.add('body_dark');
+            darkModeSwitcher.checked = true;
+            
+            // Cookie'yi güncelle
+            createCookie("body_dark", true, 999);
+            localStorage.setItem('darkMode', 'true');
+            
+            return false;
         });
     }
+    
+    // Body'e doğrudan body_dark ekle (darkModeSwitcher olmasa bile)
+    document.body.classList.add('body_dark');
   }
 
   // initSidebarMenuMobile fonksiyonunu değiştirerek sadece main initSidebarMenu'ye yönlendiriyoruz
