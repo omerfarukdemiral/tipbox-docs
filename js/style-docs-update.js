@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
             font-size: 18px !important;
             font-weight: 600 !important; /* Semi-Bold */
             font-family: "Jura", sans-serif !important;
-            color: var(--black_800) !important;
+            color: #d8ff08 !important;
             margin-bottom: 15px !important;
         }
 
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
             font-size: 16px !important;
             font-weight: 500 !important; /* Mid */
             font-family: "Jura", sans-serif !important;
-            color: var(--black_800) !important;
+            color: #d8ff08 !important;
             margin-bottom: 15px !important;
         }
 
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
             font-size: 15px !important;
             font-weight: 500 !important; /* Mid */
             font-family: "Jura", sans-serif !important;
-            color: var(--black_800) !important;
+            color: #d8ff08 !important;
             margin-bottom: 15px !important;
         }
 
