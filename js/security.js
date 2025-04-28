@@ -1,5 +1,5 @@
 // Geliştirme modunu ve güvenlik ayarlarını merkezi yapılandırmadan al
-const isDevelopment = window.AppConfig ? window.AppConfig.isDevelopment : false;
+const isDevelopment = false;
 const securityConfig = window.AppConfig ? window.AppConfig.security : {
     enableWatermark: true,
     enableCopyProtection: true,
