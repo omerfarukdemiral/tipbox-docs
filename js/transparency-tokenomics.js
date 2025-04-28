@@ -1,10 +1,68 @@
 // Transparency & Tokenomics sayfası için işlevsellik
 
+// Sayfa yüklendiğinde hazırlık işlevini çağır
+document.addEventListener("DOMContentLoaded", function() {
+    // Sayfa yüklendikten sonra URL hash kontrolü yap
+    checkHashAndLoadContent();
+    
+    // Menü elemanlarına click event ekle
+    setupMenuClickEvents();
+});
+
+// Menü tıklama olaylarını ayarla
+function setupMenuClickEvents() {
+    // Sayfa yüklendikten sonra tüm navigasyon linklerini seç
+    const navLinks = document.querySelectorAll('.nav-sidebar .nav-link, .side-nav-panel .nav-link');
+    
+    // Her link için tıklama olayını dinle
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Data attribute'dan içerik dosyası yolunu al
+            const contentFile = this.getAttribute('data-content-file');
+            if (contentFile) {
+                loadContent(contentFile);
+                
+                // Aktif menü öğesini güncelle
+                updateActiveMenuItem(contentFile);
+            }
+        });
+    });
+}
+
+// URL hash değerine göre ilgili içeriği yükle
+function checkHashAndLoadContent() {
+    // URL'de bir hash varsa, ilgili içeriği yükle
+    if (window.location.hash) {
+        const hash = window.location.hash.substring(1);
+        // Hash değeri .html uzantısına sahip değilse, ekliyoruz
+        let contentFile;
+        if (hash.endsWith('.html')) {
+            contentFile = `transparency/${hash}`;
+        } else {
+            contentFile = `transparency/${hash}.html`;
+        }
+        
+        console.log(`Hash değerine göre yükleniyor: ${contentFile}`);
+        loadContent(contentFile);
+        
+        // İlgili menü öğesini aktif et
+        updateActiveMenuItem(contentFile);
+    }
+}
+
 // Menü elemanlarına tıklandığında içeriği değiştiren fonksiyon
 async function loadContent(contentFile) {
     try {
+        console.log(`İçerik dosyası yükleniyor: ${contentFile}`);
+        
         const response = await fetch(contentFile);
-        if (!response.ok) throw new Error('Content not found');
+        if (!response.ok) {
+            console.error(`İçerik bulunamadı: ${contentFile}, Durum: ${response.status}`);
+            throw new Error('Content not found');
+        }
+        
         const content = await response.text();
         
         // Sayfayı en üste kaydır
@@ -17,6 +75,7 @@ async function loadContent(contentFile) {
         const contentContainer = document.querySelector('.doc-middle-content');
         if (contentContainer) {
             contentContainer.innerHTML = content;
+            console.log(`İçerik başarıyla yüklendi: ${contentFile}`);
             
             // İçerik yüklendikten sonra içindekiler tablosunu oluştur
             generateTableOfContents();
@@ -37,6 +96,8 @@ async function loadContent(contentFile) {
                     initTransparencyElements();
                 }, 300);
             }
+        } else {
+            console.error('İçerik konteyneri bulunamadı (.doc-middle-content)');
         }
 
         // URL'i güncelle (sayfa yenilenmeden)
@@ -48,6 +109,21 @@ async function loadContent(contentFile) {
         updateActiveMenuItem(contentFile);
     } catch (error) {
         console.error('Error loading content:', error);
+        // Hata durumunda kullanıcıya göster
+        const contentContainer = document.querySelector('.doc-middle-content');
+        if (contentContainer) {
+            contentContainer.innerHTML = `
+                <article class="documentation_info">
+                    <div class="documentation_body" id="documentation">
+                        <div class="shortcode_title">
+                            <h1>Error Loading Content</h1>
+                            <p>Sorry, we couldn't load the requested content. Please try again or contact support.</p>
+                            <p class="error-details">Details: ${error.message}</p>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
     }
 }
 
@@ -250,49 +326,5 @@ function updateActiveMenuItem(contentFile) {
         if (activeItem) {
             activeItem.classList.add('active');
         }
-    });
-}
-
-// Sayfa yüklendiğinde çalışacak kod
-document.addEventListener('DOMContentLoaded', function() {
-    // Menü elemanları yüklenmemiş olabilir, bu nedenle biraz bekleyelim
-    setTimeout(() => {
-        initializeTransparencyTokenomicsPage();
-        // İlk içeriği yükle (eğer URL'de hash yoksa)
-        if (!window.location.hash) {
-            const firstLink = document.querySelector('.nav-sidebar .nav-item .nav-link');
-            if (firstLink) {
-                const contentFile = firstLink.getAttribute('data-content-file');
-                if (contentFile) {
-                    loadContent(contentFile);
-                }
-            }
-        }
-        // Scroll dinleyicisini başlat
-        initScrollSpy();
-    }, 1000); // 1 saniye bekle
-});
-
-async function initializeTransparencyTokenomicsPage() {
-    // Tüm menü elemanlarını seç (hem ana menüden hem de mobil menüden)
-    const allMenuItems = document.querySelectorAll('.nav-sidebar .nav-item .nav-link');
-    
-    allMenuItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Önce tüm menü öğelerinden active sınıfını kaldır
-            allMenuItems.forEach(menuItem => {
-                menuItem.classList.remove('active');
-            });
-            
-            // Tıklanan öğeye active sınıfını ekle
-            this.classList.add('active');
-            
-            const contentFile = this.getAttribute('data-content-file');
-            if (contentFile) {
-                loadContent(contentFile);
-            }
-        });
     });
 } 
