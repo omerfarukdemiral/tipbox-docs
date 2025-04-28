@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;">
+        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https:; worker-src blob: https:;">
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
@@ -34,6 +34,10 @@
 
     <!-- PDF.js için gerekli dosyalar -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+    <script>
+        // PDF.js worker URL'sini manuel olarak ayarla
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js';
+    </script>
 
     <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -151,6 +155,67 @@
             background: transparent;
         }
 
+        /* Mobil için PDF görüntüleme stili */
+        @media (max-width: 768px) {
+            .pdf-container {
+                height: auto;
+                max-height: none;
+                overflow-y: auto;
+                padding: 20px 0;
+                display: block;
+            }
+            
+            #flipbook {
+                display: block !important;
+                width: 100% !important;
+                height: auto !important;
+                transform: none !important;
+            }
+            
+            #flipbook .page {
+                margin-bottom: 20px;
+                width: 100% !important;
+                height: auto !important;
+                position: relative !important;
+                display: block !important;
+                float: none !important;
+                top: auto !important;
+                left: auto !important;
+                transform: none !important;
+            }
+            
+            #flipbook .page canvas {
+                width: 100% !important;
+                height: auto !important;
+                display: block;
+                margin: 0 auto;
+            }
+            
+            #flipbook .shadow,
+            #flipbook .depth,
+            #flipbook .gradient {
+                display: none !important;
+            }
+            
+            .pdf-container.fullscreen-mode {
+                z-index: 9999;
+                position: fixed !important;
+                top: 0;
+                left: 0;
+                width: 100vw !important;
+                height: 100vh !important;
+                overflow-y: auto;
+            }
+            
+            .pdf-controls {
+                position: fixed;
+                bottom: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 10000;
+            }
+        }
+
         .pdf-controls {
             position: absolute;
             bottom: 20px;
@@ -224,10 +289,6 @@
         }
 
         @media (max-width: 768px) {
-            .pdf-container {
-                height: calc(100vh - var(--header-mobile-height) - var(--breadcrumb-height) - 40px);
-            }
-
             .pdf-controls {
                 padding: 8px 15px;
             }
@@ -495,6 +556,123 @@
                 display: none !important;
             }
         }
+
+        /* Responsive tasarım için CSS */
+        @media (min-width: 768px) {
+            .desktop-only { display: block; }
+            .mobile-only { display: none; }
+        }
+        
+        @media (max-width: 767px) {
+            .desktop-only { display: none; }
+            .mobile-only { display: block; }
+        }
+        
+        .mobile-pdf-preview {
+            padding: 30px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+        
+        .mobile-pdf-preview i {
+            font-size: 48px;
+            color: #d9534f;
+            margin-bottom: 10px;
+        }
+        
+        .mobile-pdf-preview p {
+            margin: 0;
+            font-weight: bold;
+        }
+        
+        .pdf-lightbox-trigger {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        /* Mobil PDF görüntüleyici stilleri */
+        .mobile-pdf-viewer {
+            width: 100%;
+            margin: 15px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mobile-pdf-viewer iframe {
+            border: none;
+            border-radius: 8px;
+        }
+
+        /* Mobil galeri görüntüleyici stilleri */
+        .mobile-gallery-viewer {
+            width: 100%;
+            margin: 15px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            background: #1d1e20;
+            position: relative;
+        }
+        
+        .gallery-container {
+            width: 100%;
+            position: relative;
+        }
+        
+        .slide {
+            display: none;
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        .slide img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .mobile-gallery-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background: rgba(29, 30, 32, 0.95);
+        }
+        
+        .mobile-gallery-controls button {
+            background: #d8ff08;
+            color: black;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-gallery-controls button:hover,
+        .mobile-gallery-controls button:active {
+            background: #c9eb00;
+        }
+        
+        .mobile-gallery-controls .page-num {
+            display: inline-block;
+            margin: 0 15px;
+            color: #fff;
+            font-weight: 500;
+        }
     </style>
 </head>
 
@@ -529,7 +707,7 @@
 
               <p class="banner-description wow fadeInUp" data-wow-delay="0.4s"
                   style="font-size: 16px; max-width: 600px; margin: 0 auto 30px; color: #fff; opacity: 0; animation: fadeInUp 1s forwards 0.6s;">
-                  This document contains the complete project summary and detailed information.</p>
+                  This is the all in one deck for the project.</p>
 
           </div>
       </div>
@@ -542,7 +720,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Tipbox</a></li>
-                                <li class="breadcrumb-item active"><a href="all-in-one-deck.html">All in One Deck</a></li>
+                                <li class="breadcrumb-item active"><a href="pitchdeck.html">Pitchdeck</a></li>
                             </ol>
                         </nav>
                     </div>
@@ -561,7 +739,7 @@
                 <div class="row">
 
                     <div class="col-lg-12 col-md-12 doc-middle-content">
-                        <div class="pdf-container secure-container">
+                        <div class="pdf-container secure-container desktop-only">
                             <div id="flipbook"></div>
                             <div class="pdf-controls">
                                 <button onclick="previousPage()">Previous</button>
@@ -582,11 +760,128 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Mobil cihazlar için PDF görüntüleyici -->
+                        <div class="pdf-container-mobile mobile-only">
+                            <div class="mobile-gallery-viewer">
+                                <div class="gallery-container">
+                                    <div class="slide active" data-page="1">
+                                        <img src="img/all-in-one/1.jpg" alt="Page 1">
+                                    </div>
+                                    <div class="slide" data-page="2">
+                                        <img src="img/all-in-one/2.jpg" alt="Page 2">
+                                    </div>
+                                    <div class="slide" data-page="3">
+                                        <img src="img/all-in-one/3.jpg" alt="Page 3">
+                                    </div>
+                                    <div class="slide" data-page="4">
+                                        <img src="img/all-in-one/4.jpg" alt="Page 4">
+                                    </div>
+                                    <div class="slide" data-page="5">
+                                        <img src="img/all-in-one/5.jpg" alt="Page 5">
+                                    </div>
+                                    <div class="slide" data-page="6">
+                                        <img src="img/all-in-one/6.jpg" alt="Page 6">
+                                    </div>
+                                    <div class="slide" data-page="7">
+                                        <img src="img/all-in-one/7.jpg" alt="Page 7">
+                                    </div>
+                                    <div class="slide" data-page="8">
+                                        <img src="img/all-in-one/8.jpg" alt="Page 8">
+                                    </div>
+                                    <div class="slide" data-page="9">
+                                        <img src="img/all-in-one/9.jpg" alt="Page 9">
+                                    </div>
+                                    <div class="slide" data-page="10">
+                                        <img src="img/all-in-one/10.jpg" alt="Page 10">
+                                    </div>
+                                    <div class="slide" data-page="11">
+                                        <img src="img/all-in-one/11.jpg" alt="Page 11">
+                                    </div>
+                                    <div class="slide" data-page="12">
+                                        <img src="img/all-in-one/12.jpg" alt="Page 12">
+                                    </div>
+                                    <div class="slide" data-page="13">
+                                        <img src="img/all-in-one/13.jpg" alt="Page 13">
+                                    </div>
+                                    <div class="slide" data-page="14">
+                                        <img src="img/all-in-one/14.jpg" alt="Page 14">
+                                    </div>
+                                    <div class="slide" data-page="15">
+                                        <img src="img/all-in-one/15.jpg" alt="Page 15">
+                                    </div>
+                                    <div class="slide" data-page="16">
+                                        <img src="img/all-in-one/16.jpg" alt="Page 16">
+                                    </div>
+                                    <div class="slide" data-page="17">
+                                        <img src="img/all-in-one/17.jpg" alt="Page 17">
+                                    </div>
+                                    <div class="slide" data-page="18">
+                                        <img src="img/all-in-one/18.jpg" alt="Page 18">
+                                    </div>
+                                    <div class="slide" data-page="19">
+                                        <img src="img/all-in-one/19.jpg" alt="Page 19">
+                                    </div>
+                                    <div class="slide" data-page="20">
+                                        <img src="img/all-in-one/20.jpg" alt="Page 20">
+                                    </div>
+                                    <div class="slide" data-page="21">
+                                        <img src="img/all-in-one/21.jpg" alt="Page 21">
+                                    </div>
+                                    <div class="slide" data-page="22">
+                                        <img src="img/all-in-one/22.jpg" alt="Page 22">
+                                    </div>
+                                    <div class="slide" data-page="23">
+                                        <img src="img/all-in-one/23.jpg" alt="Page 23">
+                                    </div>
+                                    <div class="slide" data-page="24">
+                                        <img src="img/all-in-one/24.jpg" alt="Page 24">
+                                    </div>
+                                    <div class="slide" data-page="25">
+                                        <img src="img/all-in-one/25.jpg" alt="Page 25">
+                                    </div>
+                                    <div class="slide" data-page="26">
+                                        <img src="img/all-in-one/26.jpg" alt="Page 26">
+                                    </div>
+                                    <div class="slide" data-page="27">
+                                        <img src="img/all-in-one/27.jpg" alt="Page 27">
+                                    </div>
+                                    <div class="slide" data-page="28">
+                                        <img src="img/all-in-one/28.jpg" alt="Page 28">
+                                    </div>
+                                    <div class="slide" data-page="29">
+                                        <img src="img/all-in-one/29.jpg" alt="Page 29">
+                                    </div>
+                                    <div class="slide" data-page="30">
+                                        <img src="img/all-in-one/30.jpg" alt="Page 30">
+                                    </div>
+                                    <div class="slide" data-page="31">
+                                        <img src="img/all-in-one/31.jpg" alt="Page 31">
+                                    </div>
+                                    <div class="slide" data-page="32">
+                                        <img src="img/all-in-one/32.jpg" alt="Page 32">
+                                    </div>
+                                    <div class="slide" data-page="33">
+                                        <img src="img/all-in-one/33.jpg" alt="Page 33">
+                                    </div>
+                                    <div class="slide" data-page="34">
+                                        <img src="img/all-in-one/34.jpg" alt="Page 34">
+                                    </div>
+                                    <div class="slide" data-page="35">
+                                        <img src="img/all-in-one/35.jpg" alt="Page 35">
+                                    </div>
+                                </div>
+                                <div class="mobile-gallery-controls">
+                                    <button class="prev-btn" onclick="prevSlide()">Önceki</button>
+                                    <div class="page-num">
+                                        <span id="mobile-current-page">1</span> / <span>16</span>
+                                    </div>
+                                    <button class="next-btn" onclick="nextSlide()">Sonraki</button>
+                                </div>
+                            </div>
+                        </div>
 
                         <script>
-                            // PDF.js worker script'ini yükle
-                            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js';
-
                             let currentScale = 1;
                             let pdfDoc = null;
                             let pageNum = 1;
@@ -633,15 +928,25 @@
                                     const viewport = firstPage.getViewport({ scale: 1.0 });
                                     currentScale = calculateScale(viewport);
 
+                                    // Ekran piksel oranını al (Retina ekranlar için)
+                                    const pixelRatio = window.devicePixelRatio || 1;
+                                    
                                     // Tüm sayfaları yükle
                                     for (let i = 1; i <= pdfDoc.numPages; i++) {
                                         const page = await pdfDoc.getPage(i);
                                         const canvas = document.createElement('canvas');
                                         const context = canvas.getContext('2d');
 
-                                        const scaledViewport = page.getViewport({ scale: currentScale });
+                                        // Yüksek çözünürlük için ölçeklendirilmiş viewport
+                                        const scaledViewport = page.getViewport({ scale: currentScale * pixelRatio });
+                                        
+                                        // Canvas boyutlarını piksel oranına göre ayarla
                                         canvas.height = scaledViewport.height;
                                         canvas.width = scaledViewport.width;
+                                        
+                                        // CSS ile görüntü boyutunu ayarla
+                                        canvas.style.width = (scaledViewport.width / pixelRatio) + 'px';
+                                        canvas.style.height = (scaledViewport.height / pixelRatio) + 'px';
 
                                         const renderContext = {
                                             canvasContext: context,
@@ -657,32 +962,99 @@
                                         flipbookElement.appendChild(div);
                                     }
 
-                                    // Turn.js'yi başlat
-                                    if (flipBook) {
-                                        flipBook.turn('destroy');
-                                    }
-
                                     // Yükleme tamamlandığında
                                     flipbookElement.style.display = 'block';
                                     loader.style.display = 'none';
 
-                                    const containerWidth = $('.pdf-container').width();
-                                    const containerHeight = $('.pdf-container').height();
-
-                                    flipBook = $('#flipbook').turn({
-                                        width: containerWidth * 0.9,
-                                        height: containerHeight * 0.9,
-                                        autoCenter: true,
-                                        gradients: true,
-                                        acceleration: true,
-                                        display: 'single',
-                                        elevation: 50,
-                                        when: {
-                                            turning: function (event, page, pageObject) {
-                                                document.getElementById('current-page').textContent = page;
-                                            }
+                                    // Mobil cihaz kontrolü
+                                    const isMobile = window.innerWidth <= 768;
+                                    
+                                    if (!isMobile) {
+                                        // Sadece masaüstü için Turn.js'yi başlat
+                                        if (flipBook) {
+                                            flipBook.turn('destroy');
                                         }
-                                    });
+
+                                        const containerWidth = $('.pdf-container').width();
+                                        const containerHeight = $('.pdf-container').height();
+
+                                        flipBook = $('#flipbook').turn({
+                                            width: containerWidth * 0.9,
+                                            height: containerHeight * 0.9,
+                                            autoCenter: true,
+                                            gradients: true,
+                                            acceleration: true,
+                                            display: 'single',
+                                            elevation: 50,
+                                            when: {
+                                                turning: function (event, page, pageObject) {
+                                                    document.getElementById('current-page').textContent = page;
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        // Mobil cihazlar için kontrolleri güncelle
+                                        document.getElementById('current-page').textContent = "1";
+                                        
+                                        // Mobil'de sayfa gezinme işlevleri
+                                        window.previousPage = function() {
+                                            const currentPage = parseInt(document.getElementById('current-page').textContent);
+                                            if (currentPage > 1) {
+                                                const newPage = currentPage - 1;
+                                                document.getElementById('current-page').textContent = newPage;
+                                                
+                                                // İlgili sayfaya kaydır
+                                                const pages = document.querySelectorAll('#flipbook .page');
+                                                if (pages[newPage - 1]) {
+                                                    pages[newPage - 1].scrollIntoView({ behavior: 'smooth' });
+                                                }
+                                            }
+                                        };
+                                        
+                                        window.nextPage = function() {
+                                            const currentPage = parseInt(document.getElementById('current-page').textContent);
+                                            const totalPages = pdfDoc.numPages;
+                                            if (currentPage < totalPages) {
+                                                const newPage = currentPage + 1;
+                                                document.getElementById('current-page').textContent = newPage;
+                                                
+                                                // İlgili sayfaya kaydır
+                                                const pages = document.querySelectorAll('#flipbook .page');
+                                                if (pages[newPage - 1]) {
+                                                    pages[newPage - 1].scrollIntoView({ behavior: 'smooth' });
+                                                }
+                                            }
+                                        };
+                                        
+                                        // Mobil'de kaydırma olayını dinle
+                                        const pdfContainer = document.querySelector('.pdf-container');
+                                        pdfContainer.addEventListener('scroll', function() {
+                                            const pages = document.querySelectorAll('#flipbook .page');
+                                            const containerTop = pdfContainer.scrollTop;
+                                            const containerHeight = pdfContainer.clientHeight;
+                                            
+                                            // En çok görünen sayfayı bul
+                                            let maxVisiblePage = 1;
+                                            let maxVisibleArea = 0;
+                                            
+                                            pages.forEach((page, index) => {
+                                                const rect = page.getBoundingClientRect();
+                                                const pageTop = rect.top;
+                                                const pageBottom = rect.bottom;
+                                                const visibleTop = Math.max(pageTop, 0);
+                                                const visibleBottom = Math.min(pageBottom, containerHeight);
+                                                const visibleArea = Math.max(0, visibleBottom - visibleTop);
+                                                
+                                                if (visibleArea > maxVisibleArea) {
+                                                    maxVisibleArea = visibleArea;
+                                                    maxVisiblePage = index + 1;
+                                                }
+                                            });
+                                            
+                                            // Sayfa numarasını güncelle
+                                            document.getElementById('current-page').textContent = maxVisiblePage;
+                                        });
+                                    }
 
                                 } catch (error) {
                                     console.error('PDF yüklenirken hata oluştu:', error);
@@ -692,14 +1064,22 @@
 
                             // Sayfa geçiş fonksiyonları
                             function previousPage() {
-                                if (flipBook && flipBook.turn) {
+                                const isMobile = window.innerWidth <= 768;
+                                if (!isMobile && flipBook && flipBook.turn) {
                                     flipBook.turn('previous');
+                                } else if (isMobile) {
+                                    // Mobil için özel previousPage fonksiyonu
+                                    window.previousPage();
                                 }
                             }
 
                             function nextPage() {
-                                if (flipBook && flipBook.turn) {
+                                const isMobile = window.innerWidth <= 768;
+                                if (!isMobile && flipBook && flipBook.turn) {
                                     flipBook.turn('next');
+                                } else if (isMobile) {
+                                    // Mobil için özel nextPage fonksiyonu
+                                    window.nextPage();
                                 }
                             }
 
@@ -886,7 +1266,20 @@
         // Pencere boyutu değiştiğinde tam ekran modunda yeniden boyutlandır
         window.addEventListener('resize', function () {
             const container = document.querySelector('.pdf-container');
-            if (container.classList.contains('fullscreen-mode')) {
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // Mobil görünümde turn.js'yi kaldır
+                if (flipBook && typeof flipBook.turn === 'function') {
+                    try {
+                        flipBook.turn('destroy');
+                        flipBook = null;
+                    } catch (e) {
+                        console.log('Turn.js zaten yüklü değil');
+                    }
+                }
+            } else if (container.classList.contains('fullscreen-mode')) {
+                // Masaüstünde tam ekranda yeniden boyutlandır
                 const containerWidth = window.innerWidth * 0.95;
                 const containerHeight = window.innerHeight * 0.9;
 
@@ -894,12 +1287,65 @@
                     flipBook.turn('size', containerWidth, containerHeight);
                     flipBook.turn('center');
                 }
+            } else {
+                // Masaüstünde normal modda reloadPDF() çağır
+                reloadPDF();
             }
         });
     </script>
     <script src="js/style-docs-update.js"></script>
     <!-- Yasal Uyarı Popup'ı JS -->
     <script src="js/legal-notice.js"></script>
+
+    <script>
+        // Galeri için gezinme fonksiyonları
+        function prevSlide() {
+            const slides = document.querySelectorAll('.slide');
+            const currentPageElem = document.getElementById('mobile-current-page');
+            let currentPage = parseInt(currentPageElem.textContent);
+            
+            if (currentPage > 1) {
+                document.querySelector('.slide.active').classList.remove('active');
+                currentPage--;
+                document.querySelector(`.slide[data-page="${currentPage}"]`).classList.add('active');
+                currentPageElem.textContent = currentPage;
+            }
+        }
+        
+        function nextSlide() {
+            const slides = document.querySelectorAll('.slide');
+            const currentPageElem = document.getElementById('mobile-current-page');
+            let currentPage = parseInt(currentPageElem.textContent);
+            
+            if (currentPage < slides.length) {
+                document.querySelector('.slide.active').classList.remove('active');
+                currentPage++;
+                document.querySelector(`.slide[data-page="${currentPage}"]`).classList.add('active');
+                currentPageElem.textContent = currentPage;
+            }
+        }
+        
+        // Kaydırma için dokunma olayları
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryContainer = document.querySelector('.gallery-container');
+            let startX;
+            let endX;
+            
+            galleryContainer.addEventListener('touchstart', function(e) {
+                startX = e.touches[0].clientX;
+            });
+            
+            galleryContainer.addEventListener('touchend', function(e) {
+                endX = e.changedTouches[0].clientX;
+                
+                if (startX - endX > 50) { // Sola kaydırma
+                    nextSlide();
+                } else if (endX - startX > 50) { // Sağa kaydırma
+                    prevSlide();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
