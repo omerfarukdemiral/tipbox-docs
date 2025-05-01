@@ -112,6 +112,22 @@
     const $sidebarOverlay = $('.sidebar-overlay');
     const isSafari = detectSafari();
     
+    // Safari tarayıcısı tespiti yapıldıysa, tüm sidebar-dropdown öğelerine active sınıfı ekle
+    if (isSafari) {
+      $('.sidebar-dropdown').addClass('active');
+      
+      // Dropdown menülerin içindeki submenu'leri göster
+      $('.sidebar-dropdown').each(function() {
+        const $submenu = $(this).find('.sidebar-submenu');
+        
+        // Görünürlük ayarları
+        $submenu.css({
+          'display': 'block',
+          'max-height': $submenu[0] ? $submenu[0].scrollHeight + 'px' : 'none'
+        });
+      });
+    }
+    
     // Event listener'ları ekle
     if ($sidebarToggleBtn.length) {
       // Safari için farklı event binding yöntemi kullan
@@ -242,52 +258,71 @@
           e.preventDefault();
           e.stopPropagation(); // Olay kabarcıklanmasını durdur
           
-          $dropdown.toggleClass('active');
-          
-          // Mobil ve desktop için ortak submenu görünürlüğü
-          if ($dropdown.hasClass('active')) {            
-            // Yumuşak açılma animasyonu için önce display block yapıp sonra transition
-            $submenu.css({
-              'display': 'block',
-              'transition': 'max-height 300ms ease-in-out'
-            });
-            
-            // Küçük bir gecikme ekleyerek animasyonun daha düzgün başlamasını sağla
-            setTimeout(function() {
-              $submenu.css('max-height', $submenu[0].scrollHeight + 'px');
-            }, 10);
-            
-            // Diğer açık menüleri kapat (hem desktop hem mobil için)
-            $('.sidebar-dropdown').not($dropdown).each(function() {
-              const $otherDropdown = $(this);
-              const $otherSubmenu = $otherDropdown.find('.sidebar-submenu');
+          // Safari için her zaman açık tutmak istediğimizden, toggle işlemini engelle
+          if (isSafari) {
+            // Safari için dropdown menüyü kapatma, sadece aç
+            if (!$dropdown.hasClass('active')) {
+              $dropdown.addClass('active');
               
-              $otherDropdown.removeClass('active');
-              
-              // Yumuşak kapanma animasyonu
-              $otherSubmenu.css({
-                'max-height': '0',
+              // Yumuşak açılma animasyonu için önce display block yapıp sonra transition
+              $submenu.css({
+                'display': 'block',
                 'transition': 'max-height 300ms ease-in-out'
               });
               
               setTimeout(function() {
-                if (!$otherDropdown.hasClass('active')) {
-                  $otherSubmenu.css('display', 'none');
-                }
-              }, 300);
-            });
-          } else {            
-            // Yumuşak kapanma animasyonu
-            $submenu.css({
-              'max-height': '0',
-              'transition': 'max-height 300ms ease-in-out'
-            });
+                $submenu.css('max-height', $submenu[0].scrollHeight + 'px');
+              }, 10);
+            }
+          } else {
+            // Diğer tarayıcılar için normal toggle davranışı
+            $dropdown.toggleClass('active');
             
-            setTimeout(function() { 
-              if (!$dropdown.hasClass('active')) {
-                $submenu.css('display', 'none');
-              }
-            }, 300); // display none yapmak için animasyonun bitmesini bekle
+            // Mobil ve desktop için ortak submenu görünürlüğü
+            if ($dropdown.hasClass('active')) {            
+              // Yumuşak açılma animasyonu için önce display block yapıp sonra transition
+              $submenu.css({
+                'display': 'block',
+                'transition': 'max-height 300ms ease-in-out'
+              });
+              
+              // Küçük bir gecikme ekleyerek animasyonun daha düzgün başlamasını sağla
+              setTimeout(function() {
+                $submenu.css('max-height', $submenu[0].scrollHeight + 'px');
+              }, 10);
+              
+              // Diğer açık menüleri kapat (hem desktop hem mobil için)
+              $('.sidebar-dropdown').not($dropdown).each(function() {
+                const $otherDropdown = $(this);
+                const $otherSubmenu = $otherDropdown.find('.sidebar-submenu');
+                
+                $otherDropdown.removeClass('active');
+                
+                // Yumuşak kapanma animasyonu
+                $otherSubmenu.css({
+                  'max-height': '0',
+                  'transition': 'max-height 300ms ease-in-out'
+                });
+                
+                setTimeout(function() {
+                  if (!$otherDropdown.hasClass('active')) {
+                    $otherSubmenu.css('display', 'none');
+                  }
+                }, 300);
+              });
+            } else {            
+              // Yumuşak kapanma animasyonu
+              $submenu.css({
+                'max-height': '0',
+                'transition': 'max-height 300ms ease-in-out'
+              });
+              
+              setTimeout(function() { 
+                if (!$dropdown.hasClass('active')) {
+                  $submenu.css('display', 'none');
+                }
+              }, 300); // display none yapmak için animasyonun bitmesini bekle
+            }
           }
         });
       }
