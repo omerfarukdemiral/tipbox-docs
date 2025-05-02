@@ -1819,6 +1819,7 @@ async function loadUsersForFilter() {
         allUsers = [];
         usersSnapshot.forEach(doc => {
             const user = doc.data();
+            console.log(user);
             allUsers.push({
                 id: doc.id,
                 displayName: user.displayName || user.email || 'İsimsiz Kullanıcı',
